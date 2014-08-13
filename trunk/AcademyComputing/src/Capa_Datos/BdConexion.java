@@ -19,7 +19,7 @@ public class BdConexion {
     private static Statement st = null;
     private static PreparedStatement ps = null;
     private static String host = "localhost";
-    private static String dataBase = "ps_pruebas"; //nombre base de datos
+    private static String dataBase = "academia"; //nombre base de datos
     private static String user = "root"; // usuario de la base de datos
     private static String pass = "adolfo123"; // contraseña de la base de datos
     public static int TODO = 1;
