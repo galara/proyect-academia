@@ -1,17 +1,16 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AddForms;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 
 /**
- * @author Ferz
+ * @author Glara
  */
 public class Principal extends javax.swing.JFrame {
 
     private static Alumno frmAlumno = new Alumno();
-
+    private static Profesor frmProfesor = new Profesor();
+    
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -48,7 +47,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mProfesor = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -102,13 +101,13 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Mantenimiento");
 
-        jMenuItem1.setText("Alumnos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mProfesor.setText("Profesor");
+        mProfesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mProfesorActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu3.add(mProfesor);
 
         jMenuBar1.add(jMenu3);
 
@@ -123,20 +122,18 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        
-        if (frmAlumno == null) {
-            frmAlumno = new Alumno();
-        }
-        AddForms.adminInternalFrame(dp, frmAlumno);
-
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
          cerrarVentana();
     }//GEN-LAST:event_formWindowClosing
+
+    private void mProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mProfesorActionPerformed
+        // TODO add your handling code here:
+        if (frmProfesor == null) {
+            frmProfesor = new Profesor();
+        }
+        AddForms.adminInternalFrame(dp, frmProfesor);
+    }//GEN-LAST:event_mProfesorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,8 +157,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem mProfesor;
     // End of variables declaration//GEN-END:variables
 }

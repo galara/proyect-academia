@@ -29,12 +29,12 @@
             <Property name="text" type="java.lang.String" value="Mantenimiento"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="mProfesor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alumnos"/>
+                <Property name="text" type="java.lang.String" value="Profesor"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mProfesorActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

@@ -1,6 +1,7 @@
 package Capa_Negocio;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Datos.OpSql;
 import static Capa_Negocio.JOptionMessage.Datos;
 import static Capa_Negocio.JOptionMessage.TituloDatos;
 import static Capa_Presentacion.Alumno.msg;
@@ -37,6 +38,28 @@ public class Peticiones extends AccesoDatos {
 
     }
 
+    public boolean guardarRegistros(String nombreTabla, String campos, Object[] valores) {
+        //prv = (Proveedor)mdl;
+        int gravado = 0;
+        //String campo = "ruc, razon_social, direccion, ciudad, telefono, nextel, movil, fax, cta_bancaria, nom_contacto, email, rubro, productos";
+        gravado = this.agregarRegistroPss(nombreTabla, this.stringToArray(campos, ","), valores);
+
+        if (gravado == 1) {
+            return true;
+        } else {
+            return false;
+        }
+                
+    }
+    
+    
+    public int actualizarRegistro(String nomTabla, String campos, Object[] valores,String columnaId, Object id) {
+        int gravado = 0;
+        gravado = this.actualizarRegistroPs(nomTabla, this.adjuntarSimbolo(campos, ",", "?")+OpSql.WHERE+columnaId+" = ? ", valores);
+        return gravado;
+    }
+    
+    
     /**
      * Paa varias condiciones WHERE campo1=condicionid1 and campo2=condicionid2
      * ...
@@ -72,10 +95,10 @@ public class Peticiones extends AccesoDatos {
                         for (int i = 0; i < cantcampos; i++) {
 
                             fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals("T")) {
+                            if (fila[i].equals("true")) {
                                 fila[i] = "Activo";
                             }
-                            if (fila[i].equals("F")) {
+                            if (fila[i].equals("false")) {
                                 fila[i] = "Activo";
                             }
                             //System.out.print(fila[i] + "\n");
@@ -124,10 +147,10 @@ public class Peticiones extends AccesoDatos {
                         for (int i = 0; i < cantcampos; i++) {
 
                             fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals("T")) {
+                            if (fila[i].equals("true")) {
                                 fila[i] = "Activo";
                             }
-                            if (fila[i].equals("F")) {
+                            if (fila[i].equals("false")) {
                                 fila[i] = "Activo";
                             }
                             System.out.print(fila[i] + "\n");
@@ -140,7 +163,7 @@ public class Peticiones extends AccesoDatos {
                     msg.Error(Datos + " " + condicionid, TituloDatos);
                 }
             }
-            rs.close();
+            //rs.close();
             return modelo;
         } catch (SQLException ex) {
             msg.Error(Datos + ": " + ex, TituloDatos);
@@ -159,9 +182,9 @@ public class Peticiones extends AccesoDatos {
      * idalumno etc
      * @param id , los valores que se compararan con campocondicion ejem: "lara"
      */
-    public void getRegistroSeleccionado(Component[] cmps, String tabla, String[] campos, String campocondicion, String id) {
+    public void getRegistroSeleccionado(Component[] cmps, String tabla, String[] campos, String[] campocondicion, String[] id) {
         try {
-            rs = this.selectPorLike(tabla, campos, campocondicion, id);
+            rs = this.getRegistros(tabla, campos, campocondicion, id);
             int cantcampos = campos.length;
             Object[] fila = new Object[cantcampos];
 
@@ -180,10 +203,10 @@ public class Peticiones extends AccesoDatos {
                             if (cmps[i] instanceof JTextField) {
                                 JTextComponent tmp = (JTextComponent) cmps[i];
                                 tmp.setText(rs.getString(i + 1));
-                                if (rs.getString(i + 1).equals("T")) {
+                                if (rs.getString(i + 1).equals("true")) {
                                     tmp.setText("Activo");
                                 }
-                                if (rs.getString(i + 1).equals("F")) {
+                                if (rs.getString(i + 1).equals("false")) {
                                     tmp.setText("Inactivo");
                                 }
                                 continue;
@@ -194,7 +217,7 @@ public class Peticiones extends AccesoDatos {
                             } else if (cmps[i] instanceof JRadioButton) {
                                 JRadioButton tmp = (JRadioButton) cmps[i];
 
-                                if (rs.getString(i + 1).equals("T")) {
+                                if (rs.getString(i + 1).equals("1")) {
                                     tmp.setSelected(true);
                                     tmp.setBackground(new java.awt.Color(102, 204, 0));
                                 } else {

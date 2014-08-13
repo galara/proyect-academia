@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -134,22 +135,22 @@ public class AccesoDatos {
      * @param id valor id
      * @return
      */
-    public ResultSet getRegistros(String nombreTabla, String[] campos, String columnaId, Object id) {
-
-        Number vl = null;
-        if (esNumerico(id)) {
-            vl = (Number) id;
-        } else {
-            id = "'" + id + "'";
-        }
-
-        sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
-                + nombreTabla + (columnaId != null ? (!columnaId.isEmpty() ? OpSql.WHERE + columnaId + OpSql.IGUAL + (vl == null ? id : vl) : "") : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
-
-        rs = BdConexion.getResultSet(sql);
-        System.out.println(sql);
-        return rs;
-    }
+//    public ResultSet getRegistros(String nombreTabla, String[] campos, String columnaId, Object id) {
+//
+//        Number vl = null;
+//        if (esNumerico(id)) {
+//            vl = (Number) id;
+//        } else {
+//            id = "'" + id + "'";
+//        }
+//
+//        sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
+//                + nombreTabla + (columnaId != null ? (!columnaId.isEmpty() ? OpSql.WHERE + columnaId + OpSql.IGUAL + (vl == null ? id : vl) : "") : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
+//
+//        rs = BdConexion.getResultSet(sql);
+//        System.out.println(sql);
+//        return rs;
+//    }
 
     /**
      * Para varias condiciones where ejem: where id = ? and estado = 'T'
@@ -310,7 +311,61 @@ public class AccesoDatos {
 
         return op;
     }
-
+    
+    /**
+     * Agrega resitros usando un objetos PreparedStatemen
+     * @param nombreTabla
+     * @param campos
+     * @param valores
+     * @return 
+     */
+    public int agregarRegistroPss(String nombreTabla, String[] campos, Object[] valores) {
+        
+        sql = "insert into "+nombreTabla+"("+generarArrayAString(campos)+") values("+
+                formatearValores(valores.length)+")";
+        System.out.println(sql);
+        int op = 0;
+        try{
+            ps = BdConexion.getPreparedStatement(sql);
+            setValores(ps,valores);
+            op = ps.executeUpdate();
+            ps.close();
+        }catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, ex);
+            //agregar mensage de error
+        }
+        return op;
+    }
+    
+    /**
+     * se debe especificar el valor da la calve primaria
+     * @param nomTabla nombre tabla
+     * @param cnls lista de columnas y sus valor ejem: nombre= ? 
+     * @param columnaId campo id
+     * @param id id
+     * @return 
+     */
+    public int actualizarRegistroPs(String nomTabla, String cnls,Object[] valores) {
+       
+        sql = "update "+nomTabla+" set "+cnls;
+        int op = 0;
+        try{
+            System.out.println("actuaizar registro valores"+valores);
+            ps = BdConexion.getPreparedStatement(sql);
+            setValores(ps,valores);
+            op = ps.executeUpdate();
+            ps.close();
+        }catch(SQLException ex){
+            System.out.println("actuaizar registro "+ex);
+            ex.printStackTrace();
+        }
+        
+        System.out.println(sql);
+        return op;
+    }
+    
+    
     /**
      * Obtiene el ultimo resitro de una tabla de una columna indicada
      *
@@ -350,6 +405,7 @@ public class AccesoDatos {
                 }
             }
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"acceso datos"+ex);
         }
     }
 
