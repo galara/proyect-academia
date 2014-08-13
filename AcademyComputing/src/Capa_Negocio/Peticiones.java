@@ -59,6 +59,13 @@ public class Peticiones extends AccesoDatos {
         return gravado;
     }
     
+    public int eliminarRegistro(String nombreTabla, String nomColumnaCambiar, String nomColumnaId, Object id) {
+        
+        int gravado = 0;
+        gravado = this.eliminacionReal(nombreTabla,nomColumnaCambiar,nomColumnaId,id);
+        return gravado;
+    }
+    
     
     /**
      * Paa varias condiciones WHERE campo1=condicionid1 and campo2=condicionid2
@@ -95,14 +102,13 @@ public class Peticiones extends AccesoDatos {
                         for (int i = 0; i < cantcampos; i++) {
 
                             fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals("true")) {
+                            if (fila[i].equals(true)) {
                                 fila[i] = "Activo";
                             }
-                            if (fila[i].equals("false")) {
-                                fila[i] = "Activo";
+                            if (fila[i].equals(false)) {
+                                fila[i] = "Retirado";
                             }
-                            //System.out.print(fila[i] + "\n");
-                        }
+                          }
                         modelo.addRow(fila);
                     }
                 } else {
@@ -110,6 +116,10 @@ public class Peticiones extends AccesoDatos {
                     msg.Error(Datos + " La busqeuda", TituloDatos);
                 }
             }
+            else {
+
+                    msg.Error(Datos + " La busqeuda", TituloDatos);
+                }
             rs.close();
             return modelo;
         } catch (SQLException ex) {
@@ -147,14 +157,13 @@ public class Peticiones extends AccesoDatos {
                         for (int i = 0; i < cantcampos; i++) {
 
                             fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals("true")) {
+                            if (fila[i].equals(true)) {
                                 fila[i] = "Activo";
                             }
-                            if (fila[i].equals("false")) {
-                                fila[i] = "Activo";
+                            if (fila[i].equals(false)) {
+                                fila[i] = "Retirado";
                             }
-                            System.out.print(fila[i] + "\n");
-                        }
+                            }
                         modelo.addRow(fila);
                         //count = count + 1;
                     }
@@ -203,12 +212,12 @@ public class Peticiones extends AccesoDatos {
                             if (cmps[i] instanceof JTextField) {
                                 JTextComponent tmp = (JTextComponent) cmps[i];
                                 tmp.setText(rs.getString(i + 1));
-                                if (rs.getString(i + 1).equals("true")) {
-                                    tmp.setText("Activo");
-                                }
-                                if (rs.getString(i + 1).equals("false")) {
-                                    tmp.setText("Inactivo");
-                                }
+//                                if (rs.getString(i + 1).equals("true")) {
+//                                    tmp.setText("Activo");
+//                                }
+//                                if (rs.getString(i + 1).equals("false")) {
+//                                    tmp.setText("Inactivo");
+//                                }
                                 continue;
                             } else if (cmps[i] instanceof JDateChooser) {
                                 JDateChooser tmp = (JDateChooser) cmps[i];
@@ -218,16 +227,16 @@ public class Peticiones extends AccesoDatos {
                                 JRadioButton tmp = (JRadioButton) cmps[i];
 
                                 if (rs.getString(i + 1).equals("1")) {
+                                    tmp.setText("Activo");
                                     tmp.setSelected(true);
                                     tmp.setBackground(new java.awt.Color(102, 204, 0));
                                 } else {
+                                    tmp.setText("Retirado");
                                     tmp.setSelected(false);
                                     tmp.setBackground(Color.red);
                                 }
                                 continue;
                             }
-
-                            System.out.print(fila[i] + "\n");
                         }
                     }
 

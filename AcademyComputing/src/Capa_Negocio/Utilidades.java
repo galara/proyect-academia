@@ -145,8 +145,7 @@ public class Utilidades {
                         cm[i].setForeground(Color.BLACK);
                     }
                 } else if (cm[i] instanceof JComboBox) {
-                    //System.out.print("combo" + ((JComboBox) cm[i]).getSelectedIndex());
-                    if (((JComboBox) cm[i]).getSelectedIndex() == -1) {
+                        if (((JComboBox) cm[i]).getSelectedIndex() == -1) {
                         if (opcion) {
                             cm[i].setBackground(BObligatorio);
                             cm[i].setForeground(FObligatorio);
@@ -172,8 +171,7 @@ public class Utilidades {
                     }
                 }//
                 else if (cm[i] instanceof ComboBoxRectIcon) {
-                    System.out.print("combo" + ((ComboBoxRectIcon) cm[i]).getSelectedIndex());
-                    if (((ComboBoxRectIcon) cm[i]).getSelectedIndex() == -1) {
+                        if (((ComboBoxRectIcon) cm[i]).getSelectedIndex() == -1) {
                         if (opcion) {
                             cm[i].setBackground(BObligatorio);
                             cm[i].setForeground(FObligatorio);
@@ -232,6 +230,9 @@ public class Utilidades {
             }
             if (cmps[i] instanceof JRadioButton) {
                 JRadioButton rb = (JRadioButton) cmps[i];
+                rb.setText("Activo");
+                rb.setSelected(false);
+                rb.setBackground(new java.awt.Color(102, 204, 0));
                 rb.setEnabled(habilitar);
                 continue;
             }

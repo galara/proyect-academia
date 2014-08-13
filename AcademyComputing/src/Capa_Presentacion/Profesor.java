@@ -123,15 +123,9 @@ public class Profesor extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        //String sql = "";
         String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado"};
-        //Para consulta simple con un where
         String[] condiciones = {"codigo"};
         String[] Id = {Dato};
-
-        //Para consulta compuesta para varios where
-        String[] Id2 = {Dato, "1"};
-        String[] condiciones2 = {"codigo", "estado"};
 
         if (this.rbCodigo.isSelected()) {
             if (!Dato.isEmpty()) {
@@ -139,9 +133,8 @@ public class Profesor extends javax.swing.JInternalFrame {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
                 model = peticiones.getRegistroPorPks(model, "profesor", campos, condiciones, Id);
-                //model = cl.getRegistroPorPks(model, "clientes", campos, condiciones2, Id2);
             } else {
-
+                JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
         }
         if (this.rbNombre.isSelected()) {
@@ -153,10 +146,9 @@ public class Profesor extends javax.swing.JInternalFrame {
         Utilidades.ajustarAnchoColumnas(profesores);
     }
 
-    //modificar solo pedir datos n oestablecer coneccion aca
     private void filaseleccionada() {
         int fila = profesores.getSelectedRow();
-        String[] cond={"codigo"};
+        String[] cond = {"codigo"};
         String[] id = {(String) profesores.getValueAt(fila, 0)};
         if (profesores.getValueAt(fila, 0) != null) {
 
@@ -600,7 +592,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
                 if (seguardo) {
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                    MostrarDatos(busqueda.getText());    //   HABILITAR AL CAMBIAR MOSTRAR DATOS
+                    MostrarDatos(busqueda.getText());
                     busqueda.requestFocus();
                     msg.Mensage(Guardar, TituloGuardar);
                 }
@@ -608,7 +600,6 @@ public class Profesor extends javax.swing.JInternalFrame {
                 msg.Error(ErrorGuardar + ": " + e, TituloGuardar);
             }
         }
-        //}
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void bntSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalirActionPerformed
@@ -623,39 +614,28 @@ public class Profesor extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
-        
+
         //pendinte modificar quitar el procedimiento almacenado
         int resp = msg.Confirm(EliminarConfirm, ConfirmTitulo);
         if (resp == 0) {
 
             int fila = profesores.getSelectedRow();
-            String idc = (String) "" + profesores.getValueAt(fila, 0);
-            char est = 'F';
-            String ps = "sp_modificaCliente", ps2 = "sp_eliminaCliente";
-            boolean seguardo = false;
-
-            Object[] valores2 = {idc};
-            Object[] valores = {idc, est};
+            String id = (String) "" + profesores.getValueAt(fila, 0);
+            String nombreTabla = "profesor", nomColumnaCambiar = "estado";
+            String nomColumnaId = "codigo";
+            int seguardo = 0;
 
             try {
-                seguardo = peticiones.guardarRegistro(valores2, ps2);
-            } catch (Exception e) {
-                msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
-            }
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                busqueda.requestFocus();
-                msg.Mensage(Eliminar, TituloEliminar);
-            } else {
-                seguardo = peticiones.guardarRegistro(valores, ps);
-                if (seguardo) {
+                if (seguardo == 1) {
                     Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
                     MostrarDatos(busqueda.getText());
                     busqueda.requestFocus();
                     msg.Mensage(Eliminar, TituloEliminar);
                 }
+            } catch (Exception e) {
+                msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
             }
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
@@ -671,23 +651,24 @@ public class Profesor extends javax.swing.JInternalFrame {
         int resp = msg.Confirm(ModificarConfirm, ConfirmTitulo);
         if (resp == 0) {
 
-            String nomTabla = "profesor"; String columnaId="codigo";
+            String nomTabla = "profesor";
+            String columnaId = "codigo";
             int seguardo = 0;
             int fila = profesores.getSelectedRow();
             String id = (String) "" + profesores.getValueAt(fila, 0);
             String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
-            
+
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
             Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
                 estad, direccion.getText(), telefono.getText(),
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D),id
+                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
             };
             try {
-                seguardo=peticiones.actualizarRegistro(nomTabla, campos, valores,columnaId, id);    
-                if (seguardo==1) {
+                seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
+                if (seguardo == 1) {
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                     MostrarDatos(busqueda.getText());
                     busqueda.requestFocus();
