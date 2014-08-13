@@ -392,6 +392,7 @@ public class Profesor extends javax.swing.JInternalFrame {
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        codigo.setName("codigo"); // NOI18N
         codigo.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(codigo);
         codigo.setBounds(180, 30, 130, 21);
@@ -412,7 +413,7 @@ public class Profesor extends javax.swing.JInternalFrame {
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        direccion.setName("dirección"); // NOI18N
+        direccion.setName(""); // NOI18N
         direccion.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(direccion);
         direccion.setBounds(180, 120, 250, 21);

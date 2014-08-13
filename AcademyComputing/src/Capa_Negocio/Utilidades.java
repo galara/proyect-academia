@@ -34,9 +34,9 @@ public class Utilidades {
     public final static int HABILITAR_DESABILITAR = 3;
     public final static int HABILITAR_TODO = 4;
     public final static int HABILITAR_POR_NOMBRE = 5;
-    static Color BObligatorio = RED; //Color ColorR;  //cambiar por uno mas claro
+    //static Color BObligatorio = RED; //Color ColorR;  //cambiar por uno mas claro
     static Color FObligatorio = WHITE; //Color ColorR; //cambiar por uno mas claro    
-
+    static Color BObligatorio=(Color.getHSBColor(0,155,185));
     /**
      * metedo que buscas los botonoes que tiene contiene un contenedor y los
      * habilias o desabihilitas.
