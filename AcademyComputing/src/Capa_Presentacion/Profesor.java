@@ -5,7 +5,6 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.FiltroCampos;
-import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.JOptionMessage;
 import static Capa_Negocio.JOptionMessage.*;
@@ -137,11 +136,17 @@ public class Profesor extends javax.swing.JInternalFrame {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
         }
-        if (this.rbNombre.isSelected()) {
+        if (this.rbNombres.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
             model = peticiones.getRegistroPorLike(model, "profesor", campos, "nombre", Dato);
+        }
+        if (this.rbApellidos.isSelected()) {
+            removejtable();
+            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+            Utilidades.esObligatorio(this.JPanelCampos, false);
+            model = peticiones.getRegistroPorLike(model, "profesor", campos, "apellido", Dato);
         }
         Utilidades.ajustarAnchoColumnas(profesores);
     }
@@ -206,7 +211,8 @@ public class Profesor extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         busqueda = new elaprendiz.gui.textField.TextField();
         rbCodigo = new javax.swing.JRadioButton();
-        rbNombre = new javax.swing.JRadioButton();
+        rbNombres = new javax.swing.JRadioButton();
+        rbApellidos = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
@@ -521,20 +527,32 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(330, 40, 80, 25);
+            rbCodigo.setBounds(270, 40, 80, 25);
 
-            rbNombre.setBackground(new java.awt.Color(51, 153, 255));
-            rbNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombre.setForeground(new java.awt.Color(255, 255, 255));
-            rbNombre.setSelected(true);
-            rbNombre.setText("Nombre");
-            rbNombre.addActionListener(new java.awt.event.ActionListener() {
+            rbNombres.setBackground(new java.awt.Color(51, 153, 255));
+            rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            rbNombres.setForeground(new java.awt.Color(255, 255, 255));
+            rbNombres.setSelected(true);
+            rbNombres.setText("Nombres");
+            rbNombres.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbNombreActionPerformed(evt);
+                    rbNombresActionPerformed(evt);
                 }
             });
-            JPanelBusqueda.add(rbNombre);
-            rbNombre.setBounds(450, 40, 81, 25);
+            JPanelBusqueda.add(rbNombres);
+            rbNombres.setBounds(380, 40, 90, 25);
+
+            rbApellidos.setBackground(new java.awt.Color(51, 153, 255));
+            rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            rbApellidos.setForeground(new java.awt.Color(255, 255, 255));
+            rbApellidos.setText("apellidos");
+            rbApellidos.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    rbApellidosActionPerformed(evt);
+                }
+            });
+            JPanelBusqueda.add(rbApellidos);
+            rbApellidos.setBounds(500, 40, 90, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -698,15 +716,17 @@ public class Profesor extends javax.swing.JInternalFrame {
 
     private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
         // TODO add your handling code here:
-        rbNombre.setSelected(false);
+        rbNombres.setSelected(false);
+        rbApellidos.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbCodigoActionPerformed
 
-    private void rbNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombreActionPerformed
+    private void rbNombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombresActionPerformed
         // TODO add your handling code here:
         rbCodigo.setSelected(false);
+        rbApellidos.setSelected(false);
         busqueda.requestFocus();
-    }//GEN-LAST:event_rbNombreActionPerformed
+    }//GEN-LAST:event_rbNombresActionPerformed
 
     private void busquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaActionPerformed
         // TODO add your handling code here:
@@ -728,6 +748,13 @@ public class Profesor extends javax.swing.JInternalFrame {
             limpiar();
         }
     }//GEN-LAST:event_profesoresKeyPressed
+
+    private void rbApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbApellidosActionPerformed
+        // TODO add your handling code here:
+        rbNombres.setSelected(false);
+        rbCodigo.setSelected(false);
+        busqueda.requestFocus();
+    }//GEN-LAST:event_rbApellidosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -763,8 +790,9 @@ public class Profesor extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
     private javax.swing.JTable profesores;
+    private javax.swing.JRadioButton rbApellidos;
     private javax.swing.JRadioButton rbCodigo;
-    private javax.swing.JRadioButton rbNombre;
+    private javax.swing.JRadioButton rbNombres;
     private elaprendiz.gui.textField.TextField telefono;
     // End of variables declaration//GEN-END:variables
 }
