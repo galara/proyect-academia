@@ -235,6 +235,14 @@ public class Utilidades {
                 rb.setEnabled(habilitar);
                 continue;
             }
+            if (cmps[i] instanceof JComboBox) {
+                JComboBox tm = (JComboBox) cmps[i];
+                tm.setEnabled(habilitar);
+                if (limpiar) {
+                        tm.setSelectedIndex(-1);
+                    }
+                continue;
+            }
             if (cmps[i] instanceof JPanel || cmps[i] instanceof JScrollPane || cmps[i] instanceof JViewport) {
                 setEditableTexto(cmps[i], habilitar, excepcion, limpiar, valor);
                 continue;

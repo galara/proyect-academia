@@ -373,7 +373,6 @@ public class AccesoDatos {
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
-            //agregar mensage de error
         }
         return op;
     }

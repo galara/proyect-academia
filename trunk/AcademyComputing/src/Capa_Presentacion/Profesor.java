@@ -6,8 +6,6 @@ package Capa_Presentacion;
 
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
-import Capa_Negocio.JOptionMessage;
-import static Capa_Negocio.JOptionMessage.*;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
@@ -17,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -30,14 +29,12 @@ public class Profesor extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    String[] titulos = {"Codigo", "Nombre Cliente", "Dirección", "Nit", "Estado"};//Titulos para Jtabla
-
+    String[] titulos = {"Codigo", "Nombres", "Apellidos", "Telefono", "Estado", "Fecha Inicio"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
-    public static JOptionMessage msg = new JOptionMessage();
-
+    //public static JOptionMessage msg = new JOptionMessage();
     /**
      * Creates new form Cliente
      */
@@ -103,10 +100,12 @@ public class Profesor extends javax.swing.JInternalFrame {
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
 
-        TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
+        TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
+        TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
+        TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
         TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        TipoFiltro.setFiltraEntrada(identificacion.getDocument(), FiltroCampos.NUM_LETRAS, 16, true);
-        TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 14, false);
+        TipoFiltro.setFiltraEntrada(identificacion.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
+        TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 16, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
     }
 
@@ -122,7 +121,7 @@ public class Profesor extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado"};
+        String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado", "fechainicio"};
         String[] condiciones = {"codigo"};
         String[] Id = {Dato};
 
@@ -151,14 +150,19 @@ public class Profesor extends javax.swing.JInternalFrame {
         Utilidades.ajustarAnchoColumnas(profesores);
     }
 
+    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
+     * de la parte superior del formulario con los datos obtenidos.
+     * 
+     * @return 
+     */
     private void filaseleccionada() {
         int fila = profesores.getSelectedRow();
         String[] cond = {"codigo"};
         String[] id = {(String) profesores.getValueAt(fila, 0)};
         if (profesores.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"codigo", "nombre", "direccion", "apellido", "identificacion", "telefono", "estado", "fechainicio"};
-            Component[] cmps = {codigo, nombres, direccion, apellidos, identificacion, telefono, estado, fecharegistro};
+            String[] campos = {"codigo", "nombre", "direccion", "apellido", "doc", "identificacion", "telefono", "estado", "fechainicio"};
+            Component[] cmps = {codigo, nombres, direccion, apellidos, documento, identificacion, telefono, estado, fecharegistro};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
             peticiones.getRegistroSeleccionado(cmps, "profesor", campos, cond, id);
 
@@ -193,7 +197,6 @@ public class Profesor extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         codigo = new elaprendiz.gui.textField.TextField();
@@ -204,6 +207,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         identificacion = new elaprendiz.gui.textField.TextField();
         telefono = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JRadioButton();
+        documento = new javax.swing.JComboBox();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         profesores = new javax.swing.JTable();
@@ -346,6 +350,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         JPanelCampos.setBackground(java.awt.SystemColor.activeCaption);
         JPanelCampos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         JPanelCampos.setForeground(new java.awt.Color(204, 204, 204));
+        JPanelCampos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         JPanelCampos.setLayout(null);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -378,12 +383,6 @@ public class Profesor extends javax.swing.JInternalFrame {
         JPanelCampos.add(jLabel6);
         jLabel6.setBounds(450, 30, 150, 21);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Identificación:");
-        JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(490, 60, 110, 20);
-
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel9.setText("Telefono:");
@@ -399,6 +398,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         codigo.setName("codigo"); // NOI18N
+        codigo.setNextFocusableComponent(nombres);
         codigo.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(codigo);
         codigo.setBounds(180, 30, 130, 21);
@@ -406,21 +406,20 @@ public class Profesor extends javax.swing.JInternalFrame {
         nombres.setEditable(false);
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         nombres.setName("nombres"); // NOI18N
-        nombres.setPreferredSize(new java.awt.Dimension(120, 21));
+        nombres.setNextFocusableComponent(apellidos);
         JPanelCampos.add(nombres);
         nombres.setBounds(180, 60, 250, 21);
 
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         apellidos.setName("apellidos"); // NOI18N
-        apellidos.setPreferredSize(new java.awt.Dimension(120, 21));
+        apellidos.setNextFocusableComponent(direccion);
         JPanelCampos.add(apellidos);
         apellidos.setBounds(180, 90, 250, 21);
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        direccion.setName(""); // NOI18N
-        direccion.setPreferredSize(new java.awt.Dimension(120, 21));
+        direccion.setNextFocusableComponent(fecharegistro);
         JPanelCampos.add(direccion);
         direccion.setBounds(180, 120, 250, 21);
 
@@ -430,18 +429,21 @@ public class Profesor extends javax.swing.JInternalFrame {
         fecharegistro.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fecharegistro.setNextFocusableComponent(documento);
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fecharegistro);
         fecharegistro.setBounds(610, 30, 160, 21);
 
         identificacion.setEditable(false);
         identificacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        identificacion.setNextFocusableComponent(telefono);
         identificacion.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(identificacion);
         identificacion.setBounds(610, 60, 160, 21);
 
         telefono.setEditable(false);
         telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        telefono.setNextFocusableComponent(estado);
         telefono.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(telefono);
         telefono.setBounds(610, 90, 160, 21);
@@ -454,6 +456,13 @@ public class Profesor extends javax.swing.JInternalFrame {
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
         estado.setBounds(610, 120, 160, 21);
+
+        documento.setBackground(java.awt.SystemColor.inactiveCaption);
+        documento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "DPI", "CEDULA", "LICENCIA", "PASAPORTE" }));
+        documento.setEnabled(false);
+        documento.setNextFocusableComponent(identificacion);
+        JPanelCampos.add(documento);
+        documento.setBounds(500, 60, 100, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -571,6 +580,8 @@ public class Profesor extends javax.swing.JInternalFrame {
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
+            getAccessibleContext().setAccessibleName("Profesores");
+
             setBounds(0, 0, 893, 512);
         }// </editor-fold>//GEN-END:initComponents
 
@@ -581,43 +592,42 @@ public class Profesor extends javax.swing.JInternalFrame {
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        nombres.requestFocus();
+        codigo.requestFocus();
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
         if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            msg.Error(CamposObligatorios, TituloCamposObligatorios);
+            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        int resp = msg.Confirm(GuardarConfirm, ConfirmTitulo);
+        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
             boolean seguardo = false;
             String nombreTabla = "profesor";
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            String campos = "codigo, doc, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+            Object[] valores = {codigo.getText(), documento.getSelectedItem(), identificacion.getText(), nombres.getText(), apellidos.getText(),
                 estad, direccion.getText(), telefono.getText(),
                 FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
             };
 
-            try {
-                seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-                if (seguardo) {
-                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                    MostrarDatos(busqueda.getText());
-                    busqueda.requestFocus();
-                    msg.Mensage(Guardar, TituloGuardar);
-                }
-            } catch (Exception e) {
-                msg.Error(ErrorGuardar + ": " + e, TituloGuardar);
+            //try {
+            seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+            if (seguardo) {
+                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                MostrarDatos(busqueda.getText());
+                busqueda.requestFocus();
+                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             }
+            //} catch (HeadlessException e) {
+            //  JOptionPane.showInternalMessageDialog(this, "Ocurrio un error: "+e,"Error",JOptionPane.ERROR_MESSAGE);
+            //}
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -634,8 +644,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
 
-        //pendinte modificar quitar el procedimiento almacenado
-        int resp = msg.Confirm(EliminarConfirm, ConfirmTitulo);
+        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
             int fila = profesores.getSelectedRow();
@@ -644,18 +653,18 @@ public class Profesor extends javax.swing.JInternalFrame {
             String nomColumnaId = "codigo";
             int seguardo = 0;
 
-            try {
-                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+            //try {
+            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-                if (seguardo == 1) {
-                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                    MostrarDatos(busqueda.getText());
-                    busqueda.requestFocus();
-                    msg.Mensage(Eliminar, TituloEliminar);
-                }
-            } catch (Exception e) {
-                msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
+            if (seguardo == 1) {
+                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                MostrarDatos(busqueda.getText());
+                busqueda.requestFocus();
+                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             }
+            //} catch (Exception e) {
+            //    msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
+            // }
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
@@ -663,11 +672,10 @@ public class Profesor extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            msg.Error(CamposObligatorios, TituloCamposObligatorios);
+            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        int resp = msg.Confirm(ModificarConfirm, ConfirmTitulo);
+        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
             String nomTabla = "profesor";
@@ -675,27 +683,27 @@ public class Profesor extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = profesores.getSelectedRow();
             String id = (String) "" + profesores.getValueAt(fila, 0);
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            String campos = "codigo, doc, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+            Object[] valores = {codigo.getText(), documento.getSelectedItem(), identificacion.getText(), nombres.getText(), apellidos.getText(),
                 estad, direccion.getText(), telefono.getText(),
                 FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
             };
-            try {
-                seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
-                if (seguardo == 1) {
-                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                    MostrarDatos(busqueda.getText());
-                    busqueda.requestFocus();
-                    msg.Mensage(Modificar, TituloModificar);
-                }
-            } catch (Exception e) {
-                msg.Error(ErrorModificar + ": " + e, TituloModificar);
+            // try {
+            seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
+            if (seguardo == 1) {
+                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                MostrarDatos(busqueda.getText());
+                busqueda.requestFocus();
+                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
             }
+            //} catch (Exception e) {
+            //    msg.Error(ErrorModificar + ": " + e, TituloModificar);
+            // }
 
         }
     }//GEN-LAST:event_bntModificarActionPerformed
@@ -771,6 +779,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField busqueda;
     private elaprendiz.gui.textField.TextField codigo;
     private elaprendiz.gui.textField.TextField direccion;
+    private javax.swing.JComboBox documento;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fecharegistro;
     private elaprendiz.gui.textField.TextField identificacion;
@@ -779,7 +788,6 @@ public class Profesor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

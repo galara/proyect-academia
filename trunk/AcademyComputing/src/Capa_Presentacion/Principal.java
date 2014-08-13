@@ -1,6 +1,7 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AddForms;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +16,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+             this.setIconImage(new ImageIcon(getClass().getResource("/Recursos/milogo.png")).getImage());
 
     }
     

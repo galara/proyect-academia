@@ -9,6 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Component;
 import java.sql.SQLException;
+import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -111,13 +112,13 @@ public class Peticiones extends AccesoDatos {
                           }
                         modelo.addRow(fila);
                     }
-                } else {
-
-                    msg.Error(Datos + " La busqeuda", TituloDatos);
-                }
+                } 
+//                    else {
+//
+//                    msg.Error(Datos + " La busqeuda", TituloDatos);
+//                }
             }
             else {
-
                     msg.Error(Datos + " La busqeuda", TituloDatos);
                 }
             rs.close();
@@ -168,10 +169,14 @@ public class Peticiones extends AccesoDatos {
                         //count = count + 1;
                     }
 
-                } else {
+                } 
+//                else {
+//                    msg.Error(Datos + " " + condicionid, TituloDatos);
+//                }
+            }
+            else {
                     msg.Error(Datos + " " + condicionid, TituloDatos);
                 }
-            }
             //rs.close();
             return modelo;
         } catch (SQLException ex) {
@@ -212,18 +217,16 @@ public class Peticiones extends AccesoDatos {
                             if (cmps[i] instanceof JTextField) {
                                 JTextComponent tmp = (JTextComponent) cmps[i];
                                 tmp.setText(rs.getString(i + 1));
-//                                if (rs.getString(i + 1).equals("true")) {
-//                                    tmp.setText("Activo");
-//                                }
-//                                if (rs.getString(i + 1).equals("false")) {
-//                                    tmp.setText("Inactivo");
-//                                }
                                 continue;
                             } else if (cmps[i] instanceof JDateChooser) {
                                 JDateChooser tmp = (JDateChooser) cmps[i];
                                 tmp.setDate((rs.getDate(i + 1)));
                                 continue;
-                            } else if (cmps[i] instanceof JRadioButton) {
+                            } else if (cmps[i] instanceof JComboBox) {
+                                JComboBox tmp = (JComboBox) cmps[i];
+                                tmp.setSelectedItem(rs.getString(i + 1)); 
+                                continue;
+                            }else if (cmps[i] instanceof JRadioButton) {
                                 JRadioButton tmp = (JRadioButton) cmps[i];
 
                                 if (rs.getString(i + 1).equals("1")) {
@@ -240,10 +243,14 @@ public class Peticiones extends AccesoDatos {
                         }
                     }
 
-                } else {
+                } 
+//                else {
+//                    msg.Error(Datos + " " + id, TituloDatos);
+//                }
+            }
+            else {
                     msg.Error(Datos + " " + id, TituloDatos);
                 }
-            }
             rs.close();
 
         } catch (SQLException ex) {
