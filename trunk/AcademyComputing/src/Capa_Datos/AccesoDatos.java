@@ -51,11 +51,41 @@ public class AccesoDatos {
         try {
             resultado = BdConexion.getStatement().executeUpdate(sql);
         } catch (SQLException ex) {
-
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
         }
-        System.out.println(sql);
+        //System.out.println(sql);
         return resultado;
+    }
+
+    /**
+     * Si el dato no esta en otras tablas se borrara totalmente de la BD
+     *
+     * @param nombreTabla nombre de la Tabla
+     * @param nomColumnaId nombre de la columnas con las claves primarias
+     * @param id clave primaria
+     *
+     * Si el dato esta en otras tablas no se borrara totalmente de la BD solo se
+     * le cambiara el estado
+     * @param nomColumnaCambiar nombre de la columan de la cual se cambiara el
+     * valor si no es posible eliminarlo totalmetne de la bd
+     * @return
+     */
+    public int eliminacionReal(String nombreTabla, String nomColumnaCambiar, String nomColumnaId, Object id) {
+        sql = "delete from " + nombreTabla + " where " + nomColumnaId + OpSql.IGUAL + "'" + id + "'";
+        int opcion = 0;
+        try {
+            opcion = BdConexion.getStatement().executeUpdate(sql);
+            BdConexion.cerrarEnlacesConexion(BdConexion.SOLO_STATEMENT);
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 1451) {
+                Object nuevoValor = "0";
+                opcion = eliminacionTemporal(nombreTabla, nomColumnaCambiar, nomColumnaId, id, nuevoValor);
+            } else {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+
+        return opcion;
     }
 
     public int getNumeroRegistros(String nomTabla, String columnaContar, String columaCod, Object valor) {
@@ -75,7 +105,7 @@ public class AccesoDatos {
             }
             rs.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
         }
         return numReg;
     }
@@ -94,7 +124,7 @@ public class AccesoDatos {
         }
 
         String sql2 = "select sum(" + columna + ") from " + nomTabla + " " + (columaCod != null ? OpSql.WHERE + columaCod + OpSql.IGUAL + (vl != null ? vl : valor) : "");
-        System.out.println(sql2);
+        //System.out.println(sql2);
         try {
             rs = BdConexion.getResultSet(sql2);
             while (rs.next()) {
@@ -102,7 +132,7 @@ public class AccesoDatos {
             }
             //st.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex);
         }
 
         return sum;
@@ -151,7 +181,6 @@ public class AccesoDatos {
 //        System.out.println(sql);
 //        return rs;
 //    }
-
     /**
      * Para varias condiciones where ejem: where id = ? and estado = 'T'
      *
@@ -162,13 +191,19 @@ public class AccesoDatos {
      * @return
      */
     public ResultSet getRegistros(String nombreTabla, String[] campos, String[] columnaId, Object[] id) {
-        String condiciones = unirColumnasValores(columnaId, id);
 
-        sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
-                + nombreTabla + (condiciones != null ? OpSql.WHERE + condiciones : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
-        System.out.println(sql);
-        rs = BdConexion.getResultSet(sql);
-        //No se cierra el rs ya que no se podria retornar 
+        try {
+            String condiciones = unirColumnasValores(columnaId, id);
+
+            sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
+                    + nombreTabla + (condiciones != null ? OpSql.WHERE + condiciones : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
+            //System.out.println(sql);
+            rs = BdConexion.getResultSet(sql);
+            //No se cierra el rs ya que no se podria retornar 
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
         return rs;
     }
 
@@ -183,9 +218,14 @@ public class AccesoDatos {
      * @return
      */
     private ResultSet getRegistroLike(String nombreTabla, String[] campos, String columnaid, String id) {
-        sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from " + nombreTabla + OpSql.WHERE + columnaid + OpSql.LIKE + "'" + OpSql.CUALQUIERA + id + OpSql.CUALQUIERA + "'";
-        System.out.print(sql);
-        rs = BdConexion.getResultSet(sql);
+        try {
+            sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from " + nombreTabla + OpSql.WHERE + columnaid + OpSql.LIKE + "'" + OpSql.CUALQUIERA + id + OpSql.CUALQUIERA + "'";
+            //System.out.print(sql);
+            rs = BdConexion.getResultSet(sql);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
         return rs;
     }
 
@@ -221,7 +261,6 @@ public class AccesoDatos {
                     cad += (i == 0 ? "" : OpSql.AND) + columnas[i] + (nb == null ?/*OpSql.WHERE+*/ OpSql.IGUAL : OpSql.IGUAL) + (nb == null ? val : nb) + " ";
 
                 }
-                //System.out.print("sql = " + cad + "\n");
             }
 
         }
@@ -253,9 +292,10 @@ public class AccesoDatos {
             op = BdConexion.getStatement().executeUpdate(sql);
             BdConexion.cerrarEnlacesConexion(BdConexion.SOLO_STATEMENT);
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
 
-        System.out.println(sql);
+        //System.out.println(sql);
         return op;
     }
 
@@ -280,8 +320,9 @@ public class AccesoDatos {
             op = BdConexion.getStatement().executeUpdate(sql);
             BdConexion.cerrarEnlacesConexion(BdConexion.SOLO_STATEMENT);
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
-        System.out.println(sql);
+        //System.out.println(sql);
         return op;
     }
 
@@ -302,70 +343,68 @@ public class AccesoDatos {
             ps = BdConexion.getPreparedStatement(sql);
             setValores(ps, valores);
             op = ps.executeUpdate();
-            System.out.print(op);
+            //System.out.print(op);
             ps.close();
         } catch (SQLException ex) {
-            System.out.print(ex);
-            // ex.printStackTrace(System.err);
+            JOptionPane.showMessageDialog(null, ex);
         }
 
         return op;
     }
-    
+
     /**
      * Agrega resitros usando un objetos PreparedStatemen
+     *
      * @param nombreTabla
      * @param campos
      * @param valores
-     * @return 
+     * @return
      */
     public int agregarRegistroPss(String nombreTabla, String[] campos, Object[] valores) {
-        
-        sql = "insert into "+nombreTabla+"("+generarArrayAString(campos)+") values("+
-                formatearValores(valores.length)+")";
-        System.out.println(sql);
+
+        sql = "insert into " + nombreTabla + "(" + generarArrayAString(campos) + ") values("
+                + formatearValores(valores.length) + ")";
+        //System.out.println(sql);
         int op = 0;
-        try{
+        try {
             ps = BdConexion.getPreparedStatement(sql);
-            setValores(ps,valores);
+            setValores(ps, valores);
             op = ps.executeUpdate();
             ps.close();
-        }catch(SQLException ex)
-        {
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
             //agregar mensage de error
         }
         return op;
     }
-    
+
     /**
      * se debe especificar el valor da la calve primaria
+     *
      * @param nomTabla nombre tabla
-     * @param cnls lista de columnas y sus valor ejem: nombre= ? 
+     * @param cnls lista de columnas y sus valor ejem: nombre= ?
      * @param columnaId campo id
      * @param id id
-     * @return 
+     * @return
      */
-    public int actualizarRegistroPs(String nomTabla, String cnls,Object[] valores) {
-       
-        sql = "update "+nomTabla+" set "+cnls;
+    public int actualizarRegistroPs(String nomTabla, String cnls, Object[] valores) {
+
+        sql = "update " + nomTabla + " set " + cnls;
         int op = 0;
-        try{
-            System.out.println("actuaizar registro valores"+valores);
+        try {
+            //System.out.println("actuaizar registro valores" + valores);
             ps = BdConexion.getPreparedStatement(sql);
-            setValores(ps,valores);
+            setValores(ps, valores);
             op = ps.executeUpdate();
             ps.close();
-        }catch(SQLException ex){
-            System.out.println("actuaizar registro "+ex);
-            ex.printStackTrace();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
-        
-        System.out.println(sql);
+
+        //System.out.println(sql);
         return op;
     }
-    
-    
+
     /**
      * Obtiene el ultimo resitro de una tabla de una columna indicada
      *
@@ -375,7 +414,12 @@ public class AccesoDatos {
      */
     public ResultSet getUltimoRegistro(String table, String column) {
         sql = "select * from " + table + " order by " + column + " desc limit 0,1";
-        rs = BdConexion.getResultSet(sql);
+        try {
+            rs = BdConexion.getResultSet(sql);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
         return rs;
     }
 
@@ -405,7 +449,7 @@ public class AccesoDatos {
                 }
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"acceso datos"+ex);
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
 
@@ -568,6 +612,7 @@ public class AccesoDatos {
             }
             rs.close();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
 
         return encontrado;
