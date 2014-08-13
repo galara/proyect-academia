@@ -4,7 +4,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import elaprendiz.gui.comboBox.ComboBoxRectIcon;
 import java.awt.Color;
-import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 import java.awt.Component;
 import java.util.Date;
