@@ -74,6 +74,7 @@ public class Profesor extends javax.swing.JInternalFrame {
             removejtable();
             busqueda.setText("");
             busqueda.requestFocus();
+            
             this.dispose();
         }
     }
