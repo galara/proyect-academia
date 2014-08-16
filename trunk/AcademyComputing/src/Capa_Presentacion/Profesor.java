@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -74,7 +73,7 @@ public class Profesor extends javax.swing.JInternalFrame {
             removejtable();
             busqueda.setText("");
             busqueda.requestFocus();
-            
+
             this.dispose();
         }
     }

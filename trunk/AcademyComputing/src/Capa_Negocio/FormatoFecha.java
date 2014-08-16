@@ -1,10 +1,10 @@
 package Capa_Negocio;
 
-import static Capa_Negocio.JOptionMessage.ErrorDatos;
-import static Capa_Negocio.JOptionMessage.TituloErrDatos;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,11 +16,10 @@ public class FormatoFecha {
     public static final int A_M_D = 1;
     public static final int D_M_A = 2;
     private static Date fechaString;
-    public static JOptionMessage msg;
 
     /**
-     * Este metodo recibe un Date y le coloca un formato de año-mes-dia o dia-mes-año devuelve
-     * un String con el formato indicado.
+     * Este metodo recibe un Date y le coloca un formato de año-mes-dia o
+     * dia-mes-año devuelve un String con el formato indicado.
      *
      * @param fecha
      * @param tipoFormato
@@ -28,7 +27,7 @@ public class FormatoFecha {
      */
     public static String getFormato(Date fecha, int tipoFormato) {
         formato = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         try {
             if (tipoFormato == D_M_A) {
                 formato = new SimpleDateFormat("dd-MM-yyyy");
@@ -37,7 +36,8 @@ public class FormatoFecha {
                 formato = new SimpleDateFormat("yyy/MM/dd");
             }
         } catch (Exception ex) {
-         msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            //msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);
         }
         return formato.format((Date) fecha);
     }
@@ -54,8 +54,27 @@ public class FormatoFecha {
         try {
             fechaString = (Date) formato.parseObject(text);
         } catch (ParseException ex) {
-            msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            //msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);
         }
         return fechaString;
+    }
+    
+    
+    /**
+     * Este metodo recibe un Time  y le coloca un formato de 24 hrs o
+     * devuelve un String con el formato indicado para guardarlo en la BD.
+     *
+     * @param time
+     * @return
+     */
+    public static String getTime(Object time) {
+      //modificar
+        try {
+                formato = new SimpleDateFormat("HH:mm:ss");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return formato.format(time);
     }
 }
