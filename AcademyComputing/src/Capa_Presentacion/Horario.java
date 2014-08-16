@@ -438,7 +438,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        profesor.setNextFocusableComponent(fechainicio);
+        profesor.setNextFocusableComponent(horade);
         JPanelCampos.add(profesor);
         profesor.setBounds(180, 120, 250, 21);
 
@@ -448,6 +448,7 @@ public class Horario extends javax.swing.JInternalFrame {
         fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechainicio.setNextFocusableComponent(inscripcion);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
         fechainicio.setBounds(610, 30, 130, 21);
@@ -470,12 +471,14 @@ public class Horario extends javax.swing.JInternalFrame {
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
         horade.setEnabled(false);
+        horade.setNextFocusableComponent(horaa);
         JPanelCampos.add(horade);
         horade.setBounds(180, 150, 100, 21);
 
         JSpinner.DateEditor de2 = new JSpinner.DateEditor(horaa, "hh:mm a");
         horaa.setEditor(de2);
         horaa.setEnabled(false);
+        horaa.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(horaa);
         horaa.setBounds(330, 150, 100, 21);
 
@@ -496,6 +499,7 @@ public class Horario extends javax.swing.JInternalFrame {
         inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         inscripcion.setName("inscripcion"); // NOI18N
+        inscripcion.setNextFocusableComponent(colegiatura);
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(inscripcion);
         inscripcion.setBounds(610, 60, 130, 21);
@@ -505,6 +509,7 @@ public class Horario extends javax.swing.JInternalFrame {
         colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         colegiatura.setName("precioalmayor"); // NOI18N
+        colegiatura.setNextFocusableComponent(estado);
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(colegiatura);
         colegiatura.setBounds(610, 90, 130, 23);
