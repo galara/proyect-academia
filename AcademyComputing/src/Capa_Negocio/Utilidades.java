@@ -6,6 +6,7 @@ import elaprendiz.gui.comboBox.ComboBoxRectIcon;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
 import java.awt.Component;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.AbstractButton;
 import javax.swing.JComboBox;
@@ -13,10 +14,12 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JViewport;
+import javax.swing.SpinnerDateModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -35,7 +38,8 @@ public class Utilidades {
     public final static int HABILITAR_POR_NOMBRE = 5;
     //static Color BObligatorio = RED; //Color ColorR;  //cambiar por uno mas claro
     static Color FObligatorio = WHITE; //Color ColorR; //cambiar por uno mas claro    
-    static Color BObligatorio=(Color.getHSBColor(0,155,185));
+    static Color BObligatorio = (Color.getHSBColor(0, 155, 185));
+
     /**
      * metedo que buscas los botonoes que tiene contiene un contenedor y los
      * habilias o desabihilitas.
@@ -137,14 +141,13 @@ public class Utilidades {
                             cm[i].setBackground(Color.white);
                             cm[i].setForeground(Color.BLACK);
                         }
-
                         existen = true;
                     } else if (!((JTextComponent) cm[i]).getText().isEmpty()) {
                         cm[i].setBackground(Color.white);
                         cm[i].setForeground(Color.BLACK);
                     }
                 } else if (cm[i] instanceof JComboBox) {
-                        if (((JComboBox) cm[i]).getSelectedIndex() == -1) {
+                    if (((JComboBox) cm[i]).getSelectedIndex() == -1) {
                         if (opcion) {
                             cm[i].setBackground(BObligatorio);
                             cm[i].setForeground(FObligatorio);
@@ -170,7 +173,7 @@ public class Utilidades {
                     }
                 }//
                 else if (cm[i] instanceof ComboBoxRectIcon) {
-                        if (((ComboBoxRectIcon) cm[i]).getSelectedIndex() == -1) {
+                    if (((ComboBoxRectIcon) cm[i]).getSelectedIndex() == -1) {
                         if (opcion) {
                             cm[i].setBackground(BObligatorio);
                             cm[i].setForeground(FObligatorio);
@@ -239,8 +242,16 @@ public class Utilidades {
                 JComboBox tm = (JComboBox) cmps[i];
                 tm.setEnabled(habilitar);
                 if (limpiar) {
-                        tm.setSelectedIndex(-1);
-                    }
+                    tm.setSelectedIndex(-1);
+                }
+                continue;
+            }
+            if (cmps[i] instanceof JSpinner) {
+                JSpinner tm = (JSpinner) cmps[i];
+                tm.setEnabled(habilitar);
+                if (limpiar) {
+                      tm.setValue(new Date());
+                }
                 continue;
             }
             if (cmps[i] instanceof JPanel || cmps[i] instanceof JScrollPane || cmps[i] instanceof JViewport) {

@@ -2,16 +2,19 @@ package Capa_Negocio;
 
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.OpSql;
-import static Capa_Negocio.JOptionMessage.Datos;
-import static Capa_Negocio.JOptionMessage.TituloDatos;
-import static Capa_Presentacion.Alumno.msg;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Component;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
@@ -50,24 +53,22 @@ public class Peticiones extends AccesoDatos {
         } else {
             return false;
         }
-                
+
     }
-    
-    
-    public int actualizarRegistro(String nomTabla, String campos, Object[] valores,String columnaId, Object id) {
+
+    public int actualizarRegistro(String nomTabla, String campos, Object[] valores, String columnaId, Object id) {
         int gravado = 0;
-        gravado = this.actualizarRegistroPs(nomTabla, this.adjuntarSimbolo(campos, ",", "?")+OpSql.WHERE+columnaId+" = ? ", valores);
+        gravado = this.actualizarRegistroPs(nomTabla, this.adjuntarSimbolo(campos, ",", "?") + OpSql.WHERE + columnaId + " = ? ", valores);
         return gravado;
     }
-    
+
     public int eliminarRegistro(String nombreTabla, String nomColumnaCambiar, String nomColumnaId, Object id) {
-        
+
         int gravado = 0;
-        gravado = this.eliminacionReal(nombreTabla,nomColumnaCambiar,nomColumnaId,id);
+        gravado = this.eliminacionReal(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
         return gravado;
     }
-    
-    
+
     /**
      * Paa varias condiciones WHERE campo1=condicionid1 and campo2=condicionid2
      * ...
@@ -109,23 +110,23 @@ public class Peticiones extends AccesoDatos {
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
                             }
-                          }
+                        }
                         modelo.addRow(fila);
                     }
-                } 
+                }
 //                    else {
 //
 //                    msg.Error(Datos + " La busqeuda", TituloDatos);
 //                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+                //msg.Error(Datos + " La busqeuda", TituloDatos);
             }
-            else {
-                    msg.Error(Datos + " La busqeuda", TituloDatos);
-                }
             rs.close();
             return modelo;
         } catch (SQLException ex) {
-
-            msg.Error(Datos + ": " + ex, TituloDatos);
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            //msg.Error(Datos + ": " + ex, TituloDatos);
             return null;
         }
     }
@@ -164,23 +165,24 @@ public class Peticiones extends AccesoDatos {
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
                             }
-                            }
+                        }
                         modelo.addRow(fila);
                         //count = count + 1;
                     }
 
-                } 
+                }
 //                else {
 //                    msg.Error(Datos + " " + condicionid, TituloDatos);
 //                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+                //msg.Error(Datos + " " + condicionid, TituloDatos);
             }
-            else {
-                    msg.Error(Datos + " " + condicionid, TituloDatos);
-                }
             //rs.close();
             return modelo;
         } catch (SQLException ex) {
-            msg.Error(Datos + ": " + ex, TituloDatos);
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            //msg.Error(Datos + ": " + ex, TituloDatos);
             return null;
         }
     }
@@ -218,15 +220,23 @@ public class Peticiones extends AccesoDatos {
                                 JTextComponent tmp = (JTextComponent) cmps[i];
                                 tmp.setText(rs.getString(i + 1));
                                 continue;
+                            } else if (cmps[i] instanceof JSpinner) {
+                                JSpinner tmp = (JSpinner) cmps[i];
+                                tmp.setValue(rs.getTime(i + 1));
+                                continue;
+                            } else if (cmps[i] instanceof JFormattedTextField) {
+                                JFormattedTextField tmp = (JFormattedTextField) cmps[i];
+                                tmp.setValue(rs.getString(i + 1));
+                                continue;
                             } else if (cmps[i] instanceof JDateChooser) {
                                 JDateChooser tmp = (JDateChooser) cmps[i];
                                 tmp.setDate((rs.getDate(i + 1)));
                                 continue;
                             } else if (cmps[i] instanceof JComboBox) {
                                 JComboBox tmp = (JComboBox) cmps[i];
-                                tmp.setSelectedItem(rs.getString(i + 1)); 
+                                tmp.setSelectedItem(rs.getString(i + 1));
                                 continue;
-                            }else if (cmps[i] instanceof JRadioButton) {
+                            } else if (cmps[i] instanceof JRadioButton) {
                                 JRadioButton tmp = (JRadioButton) cmps[i];
 
                                 if (rs.getString(i + 1).equals("1")) {
@@ -243,18 +253,19 @@ public class Peticiones extends AccesoDatos {
                         }
                     }
 
-                } 
+                }
 //                else {
 //                    msg.Error(Datos + " " + id, TituloDatos);
 //                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+                //msg.Error(Datos + " " + id, TituloDatos);
             }
-            else {
-                    msg.Error(Datos + " " + id, TituloDatos);
-                }
             rs.close();
 
         } catch (SQLException ex) {
-            msg.Error(Datos + ": " + ex, TituloDatos);
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            //msg.Error(Datos + ": " + ex, TituloDatos);
         }
     }
 

@@ -9,30 +9,28 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
-    private static Alumno frmAlumno = new Alumno();
     private static Profesor frmProfesor = new Profesor();
-    
+    private static Horario frmHorario = new Horario();
+
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-             this.setIconImage(new ImageIcon(getClass().getResource("/Recursos/milogo.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/Recursos/milogo.png")).getImage());
 
     }
-    
-    
+
     private void cerrarVentana() {
         int nu = JOptionPane.showConfirmDialog(this, "Todos los datos que no se ha guardadooo "
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
-       
+
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
             System.exit(0);
-            }
-        else{}
+        } else {
+        }
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,6 +48,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mProfesor = new javax.swing.JMenuItem();
+        mHoraio = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -111,6 +110,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mProfesor);
 
+        mHoraio.setText("Horario");
+        mHoraio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mHoraioActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mHoraio);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -120,13 +127,13 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
-        
+
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-         cerrarVentana();
+        cerrarVentana();
     }//GEN-LAST:event_formWindowClosing
 
     private void mProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mProfesorActionPerformed
@@ -136,6 +143,14 @@ public class Principal extends javax.swing.JFrame {
         }
         AddForms.adminInternalFrame(dp, frmProfesor);
     }//GEN-LAST:event_mProfesorActionPerformed
+
+    private void mHoraioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mHoraioActionPerformed
+        // TODO add your handling code here:
+        if (frmHorario == null) {
+            frmHorario = new Horario();
+        }
+        AddForms.adminInternalFrame(dp, frmHorario);
+    }//GEN-LAST:event_mHoraioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,6 +176,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem mHoraio;
     private javax.swing.JMenuItem mProfesor;
     // End of variables declaration//GEN-END:variables
 }

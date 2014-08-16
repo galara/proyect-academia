@@ -397,10 +397,10 @@ public class AccesoDatos {
             op = ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "dfasdf"+ex);
         }
 
-        //System.out.println(sql);
+        System.out.println(sql);
         return op;
     }
 
@@ -431,6 +431,7 @@ public class AccesoDatos {
     private void setValores(PreparedStatement ps, Object[] valores) {
         try {
             for (int i = 0; i < valores.length; i++) {
+                System.out.print("valor "+valores[i]+"\n");
                 if (getInt(valores[i]) != null) {
                     ps.setInt(i + 1, getInt(valores[i]));
                 } else if (getDouble(valores[i]) != null) {
