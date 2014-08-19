@@ -72,6 +72,9 @@ public class Profesor extends javax.swing.JInternalFrame {
             this.bntNuevo.setEnabled(true);
             removejtable();
             busqueda.setText("");
+            rbNombres.setSelected(true);
+            rbCodigo.setSelected(false);
+            rbApellidos.setSelected(false);
             busqueda.requestFocus();
 
             this.dispose();
@@ -104,7 +107,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
         TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
         TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        TipoFiltro.setFiltraEntrada(identificacion.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
+        TipoFiltro.setFiltraEntrada(identificacion.getDocument(), FiltroCampos.NUM_LETRAS, 45, true);
         TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 16, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
     }
@@ -161,10 +164,10 @@ public class Profesor extends javax.swing.JInternalFrame {
         String[] id = {(String) profesores.getValueAt(fila, 0)};
         if (profesores.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"codigo", "nombre", "direccion", "apellido", "doc", "identificacion", "telefono", "estado", "fechainicio"};
-            Component[] cmps = {codigo, nombres, direccion, apellidos, documento, identificacion, telefono, estado, fecharegistro};
+            String[] campos = {"codigo", "nombre", "direccion", "apellido", "identificacion", "telefono", "estado", "fechainicio"};
+            Component[] cmps = {codigo, nombres, direccion, apellidos, identificacion, telefono, estado, fecharegistro};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-            peticiones.getRegistroSeleccionado(cmps, "profesor", campos, cond, id);
+            peticiones.getRegistroSeleccionado(cmps, "profesor", campos, cond, id,"",null);
 
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
@@ -207,7 +210,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         identificacion = new elaprendiz.gui.textField.TextField();
         telefono = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JRadioButton();
-        documento = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         profesores = new javax.swing.JTable();
@@ -408,20 +411,20 @@ public class Profesor extends javax.swing.JInternalFrame {
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(apellidos);
         JPanelCampos.add(nombres);
-        nombres.setBounds(180, 60, 250, 25);
+        nombres.setBounds(180, 60, 250, 21);
 
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         apellidos.setName("apellidos"); // NOI18N
         apellidos.setNextFocusableComponent(direccion);
         JPanelCampos.add(apellidos);
-        apellidos.setBounds(180, 90, 250, 25);
+        apellidos.setBounds(180, 90, 250, 21);
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         direccion.setNextFocusableComponent(fecharegistro);
         JPanelCampos.add(direccion);
-        direccion.setBounds(180, 120, 250, 25);
+        direccion.setBounds(180, 120, 250, 21);
 
         fecharegistro.setDate(Calendar.getInstance().getTime());
         fecharegistro.setDateFormatString("dd/MM/yyyy");
@@ -429,7 +432,6 @@ public class Profesor extends javax.swing.JInternalFrame {
         fecharegistro.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fecharegistro.setNextFocusableComponent(documento);
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fecharegistro);
         fecharegistro.setBounds(610, 30, 160, 21);
@@ -457,12 +459,11 @@ public class Profesor extends javax.swing.JInternalFrame {
         JPanelCampos.add(estado);
         estado.setBounds(610, 120, 160, 21);
 
-        documento.setBackground(java.awt.SystemColor.inactiveCaption);
-        documento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "DPI", "CEDULA", "LICENCIA", "PASAPORTE" }));
-        documento.setEnabled(false);
-        documento.setNextFocusableComponent(identificacion);
-        JPanelCampos.add(documento);
-        documento.setBounds(500, 60, 100, 27);
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("Identificación:");
+        JPanelCampos.add(jLabel5);
+        jLabel5.setBounds(503, 60, 100, 17);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -515,7 +516,7 @@ public class Profesor extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 92, 17);
+            jLabel7.setBounds(210, 10, 80, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -536,7 +537,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(270, 40, 80, 24);
+            rbCodigo.setBounds(270, 40, 80, 25);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -549,7 +550,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(380, 40, 90, 24);
+            rbNombres.setBounds(380, 40, 90, 25);
 
             rbApellidos.setBackground(new java.awt.Color(51, 153, 255));
             rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -561,7 +562,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbApellidos);
-            rbApellidos.setBounds(500, 40, 90, 24);
+            rbApellidos.setBounds(500, 40, 90, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -605,12 +606,12 @@ public class Profesor extends javax.swing.JInternalFrame {
 
             boolean seguardo = false;
             String nombreTabla = "profesor";
-            String campos = "codigo, doc, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), documento.getSelectedItem(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
                 estad, direccion.getText(), telefono.getText(),
                 FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
             };
@@ -681,13 +682,13 @@ public class Profesor extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = profesores.getSelectedRow();
             String id = (String) "" + profesores.getValueAt(fila, 0);
-            String campos = "codigo, doc, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), documento.getSelectedItem(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
                 estad, direccion.getText(), telefono.getText(),
                 FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
             };
@@ -777,7 +778,6 @@ public class Profesor extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField busqueda;
     private elaprendiz.gui.textField.TextField codigo;
     private elaprendiz.gui.textField.TextField direccion;
-    private javax.swing.JComboBox documento;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fecharegistro;
     private elaprendiz.gui.textField.TextField identificacion;
@@ -786,6 +786,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
