@@ -188,18 +188,23 @@ public class AccesoDatos {
      * @param campos nombres de los campos
      * @param columnaId columnas id
      * @param id valores id
+     * @param inner , condiciones INNER JOINS ejem: INNER JOIN profesor on
+     * horario.id=profesor.id
      * @return
      */
-    public ResultSet getRegistros(String nombreTabla, String[] campos, String[] columnaId, Object[] id) {
+    public ResultSet getRegistros(String nombreTabla, String[] campos, String[] columnaId, Object[] id, String inner) {
 
         try {
             String condiciones = unirColumnasValores(columnaId, id);
-
-            sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
-                    + nombreTabla + (condiciones != null ? OpSql.WHERE + condiciones : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
-            //System.out.println(sql);
+            if (inner.isEmpty()) {
+                sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
+                        + nombreTabla + (condiciones != null ? OpSql.WHERE + condiciones : "") + OpSql.LIMIT + this.inicioPag + "," + this.finalPag;
+            } else if (!inner.isEmpty()) {
+                sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
+                        + nombreTabla + (condiciones != null ? inner + " " + OpSql.WHERE + condiciones : "");
+            }
             rs = BdConexion.getResultSet(sql);
-            //No se cierra el rs ya que no se podria retornar 
+            //No se cierra el rs ya que no se podria retornar el rs
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -207,6 +212,30 @@ public class AccesoDatos {
         return rs;
     }
 
+//    /**  Se utiliza  getRegistros poe eso se comento
+//     * modificar comentarios Para varias condiciones where ejem: where id = ?
+//     * and estado = 'T'
+//     *
+//     * @param nombreTabla nombre de la tabla
+//     * @param campos nombres de los campos
+//     * @param columnaId columnas id
+//     * @param id valores id
+//     * @return
+//     */
+//    public ResultSet getRegistrosCombo(String nombreTabla, String[] campos, String[] columnaId, Object[] id) {
+//
+//        try {
+//            String condiciones = unirColumnasValores(columnaId, id);
+//            sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
+//                    + nombreTabla + (condiciones != null ? OpSql.WHERE + condiciones : "");
+//            rs = BdConexion.getResultSet(sql);
+//            //No se cierra el rs ya que no se podria retornar 
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, ex);
+//        }
+//
+//        return rs;
+//    }
     /**
      * Obtiene los datos de una tabla segun una condicion ejem: where nombre
      * like '% dato '
@@ -294,8 +323,6 @@ public class AccesoDatos {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
-        //System.out.println(sql);
         return op;
     }
 
@@ -327,7 +354,8 @@ public class AccesoDatos {
     }
 
     /**
-     * Agrega resitros usando un objetos PreparedStatemen
+     * Agrega resitros usando un objetos PreparedStatemen y un procedimiento
+     * almacenado
      *
      * @param nombreTabla , nombre de ta bala en la BD param campos , estan el
      * el procedimiento almacenado por lo que no son necesarios
@@ -397,10 +425,10 @@ public class AccesoDatos {
             op = ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "dfasdf"+ex);
+            JOptionPane.showMessageDialog(null, "dfasdf" + ex);
         }
 
-        System.out.println(sql);
+        //System.out.println(sql);
         return op;
     }
 
@@ -431,7 +459,6 @@ public class AccesoDatos {
     private void setValores(PreparedStatement ps, Object[] valores) {
         try {
             for (int i = 0; i < valores.length; i++) {
-                System.out.print("valor "+valores[i]+"\n");
                 if (getInt(valores[i]) != null) {
                     ps.setInt(i + 1, getInt(valores[i]));
                 } else if (getDouble(valores[i]) != null) {
@@ -445,7 +472,6 @@ public class AccesoDatos {
                         ps.setString(i + 1, null);
                         ps.setCharacterStream(i, null);
                     }
-
                 }
             }
         } catch (SQLException ex) {

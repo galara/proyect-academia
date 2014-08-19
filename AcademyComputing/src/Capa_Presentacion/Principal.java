@@ -11,7 +11,8 @@ public class Principal extends javax.swing.JFrame {
 
     private static Profesor frmProfesor = new Profesor();
     private static Horario frmHorario = new Horario();
-
+    
+    
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
