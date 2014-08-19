@@ -225,7 +225,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Alumnos");
+        setTitle("Profesor");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -408,20 +408,20 @@ public class Profesor extends javax.swing.JInternalFrame {
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(apellidos);
         JPanelCampos.add(nombres);
-        nombres.setBounds(180, 60, 250, 21);
+        nombres.setBounds(180, 60, 250, 25);
 
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         apellidos.setName("apellidos"); // NOI18N
         apellidos.setNextFocusableComponent(direccion);
         JPanelCampos.add(apellidos);
-        apellidos.setBounds(180, 90, 250, 21);
+        apellidos.setBounds(180, 90, 250, 25);
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         direccion.setNextFocusableComponent(fecharegistro);
         JPanelCampos.add(direccion);
-        direccion.setBounds(180, 120, 250, 21);
+        direccion.setBounds(180, 120, 250, 25);
 
         fecharegistro.setDate(Calendar.getInstance().getTime());
         fecharegistro.setDateFormatString("dd/MM/yyyy");
@@ -462,7 +462,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         documento.setEnabled(false);
         documento.setNextFocusableComponent(identificacion);
         JPanelCampos.add(documento);
-        documento.setBounds(500, 60, 100, 20);
+        documento.setBounds(500, 60, 100, 27);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -515,7 +515,7 @@ public class Profesor extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 80, 17);
+            jLabel7.setBounds(210, 10, 92, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -536,7 +536,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(270, 40, 80, 25);
+            rbCodigo.setBounds(270, 40, 80, 24);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -549,7 +549,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(380, 40, 90, 25);
+            rbNombres.setBounds(380, 40, 90, 24);
 
             rbApellidos.setBackground(new java.awt.Color(51, 153, 255));
             rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -561,7 +561,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbApellidos);
-            rbApellidos.setBounds(500, 40, 90, 25);
+            rbApellidos.setBounds(500, 40, 90, 24);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -579,8 +579,6 @@ public class Profesor extends javax.swing.JInternalFrame {
             pnlPaginador.setBounds(0, 0, 880, 40);
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
-
-            getAccessibleContext().setAccessibleName("Profesores");
 
             setBounds(0, 0, 893, 512);
         }// </editor-fold>//GEN-END:initComponents
