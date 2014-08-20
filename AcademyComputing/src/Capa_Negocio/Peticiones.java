@@ -116,6 +116,9 @@ public class Peticiones extends AccesoDatos {
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
                             }
+                            if(campos[i].equals("horariode")||campos[i].equals("horarioa")){
+                                fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
+                            }
                         }
                         modelo.addRow(fila);
                     }
@@ -164,6 +167,9 @@ public class Peticiones extends AccesoDatos {
                             }
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
+                            }
+                            if(campos[i].equals("horariode")||campos[i].equals("horarioa")){
+                                fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
                             }
                         }
                         modelo.addRow(fila);
