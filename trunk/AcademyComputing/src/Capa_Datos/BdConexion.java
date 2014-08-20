@@ -39,9 +39,9 @@ public class BdConexion {
             JOptionPane.showMessageDialog(null, "Fue imposible conectarse al servidor.", host, JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);
         } catch (SQLException ex) {
-            System.out.println("No se pudo establecer la connecion");
+            System.out.println("No se pudo establecer la conexión");
             JOptionPane.showMessageDialog(null, "no se pudo conectar con el servidor "
-                    + "jdbc:mysql://" + host + ":3306/" + dataBase, "Error de Conecion", JOptionPane.ERROR_MESSAGE);
+                    + "jdbc:mysql://" + host + ":3306/" + dataBase, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
             JOptionPane.showMessageDialog(null, "Fue imposible conectarse al servidor.", host, JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);
             System.exit(0);
