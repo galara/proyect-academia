@@ -11,7 +11,7 @@ public class Principal extends javax.swing.JFrame {
 
     private static Profesor frmProfesor = new Profesor();
     private static Horario frmHorario = new Horario();
-    
+    private static Curso frmCurso = new Curso();
     
     public Principal() {
         initComponents();
@@ -50,6 +50,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         mProfesor = new javax.swing.JMenuItem();
         mHoraio = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -119,6 +120,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mHoraio);
 
+        jMenuItem1.setText("Curso");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -153,6 +162,14 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmHorario);
     }//GEN-LAST:event_mHoraioActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        if (frmCurso == null) {
+            frmCurso = new Curso();
+        }
+        AddForms.adminInternalFrame(dp, frmCurso);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -175,6 +192,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mHoraio;

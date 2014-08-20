@@ -11,6 +11,7 @@ import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import Recursos.mHorario;
 import Recursos.mProfesor;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -34,22 +35,22 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author GLARA
  */
-public class Horario extends javax.swing.JInternalFrame {
+public class Curso extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Dia", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
-    public Hashtable<String, String> hashProfesor = new Hashtable<>();
+    public Hashtable<String, String> hashHorario = new Hashtable<>();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
     /**
      * Creates new form Cliente
      */
-    public Horario() {
+    public Curso() {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
@@ -117,12 +118,12 @@ public class Horario extends javax.swing.JInternalFrame {
      */
     public void llenarcombo() {
         String Dato = "1";
-        String[] campos = {"nombre", "apellido", "idcatedratico"};
+        String[] campos = {"codigo","dia", "horariode","horarioa", "idhorarios"};
         String[] condiciones = {"estado"};
         String[] Id = {Dato};
-        profesor.removeAllItems();
-        Component cmps = profesor;
-        getRegistroCombo("profesor", campos, condiciones, Id);
+        cHorario.removeAllItems();
+        Component cmps = cHorario;
+        getRegistroCombo("horario", campos, condiciones, Id);
 
     }
 
@@ -143,17 +144,17 @@ public class Horario extends javax.swing.JInternalFrame {
 
                 DefaultComboBoxModel modeloComboBox;
                 modeloComboBox = new DefaultComboBoxModel();
-                profesor.setModel(modeloComboBox);
+                cHorario.setModel(modeloComboBox);
 
-                modeloComboBox.addElement(new mProfesor("", "0"));
+                modeloComboBox.addElement(new mHorario("", "0"));
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     int count = 0;
                     rs.beforeFirst();//regresa el puntero al primer registro
                     Object[] fila = new Object[cantcampos];
                     while (rs.next()) {//mientras tenga registros que haga lo siguiente
                         count++;
-                        modeloComboBox.addElement(new mProfesor(rs.getString(1) + " " + rs.getString(2), "" + rs.getInt(3)));
-                        hashProfesor.put(rs.getString(1) + " " + rs.getString(2), "" + count);
+                        modeloComboBox.addElement(new mHorario(rs.getString(1) + " " + rs.getString(2)+" "+FormatoFecha.getTimedoce(rs.getTime(3))+" "+FormatoFecha.getTimedoce(rs.getTime(4)), "" + rs.getInt(5)));
+                        hashHorario.put(rs.getString(1) + " " + rs.getString(2)+" "+FormatoFecha.getTimedoce(rs.getTime(3))+" "+FormatoFecha.getTimedoce(rs.getTime(4)), "" + count);
                     }
                 }
             } else {
@@ -194,7 +195,7 @@ public class Horario extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         //String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De","Hora A", "Fecha Inicio","Estado"};
-        String[] campos = {"codigo", "descripcion", "dia", "horariode", "horarioa", "fechainicio", "estado"};
+        String[] campos = {"codigo", "descripcion", "dia", "maestro_idcatedratico", "horariode", "horarioa", "fechainicio", "estado"};
         String[] condiciones = {"codigo"};
         String[] Id = {Dato};
 
@@ -240,10 +241,10 @@ public class Horario extends javax.swing.JInternalFrame {
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
             String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.montoinscripcion", "horario.colegiatura", "horario.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {codigo, descripcion, dia, profesor, horade, horaa, fechainicio, inscripcion, colegiatura, estado};
+            Component[] cmps = {codigo, descripcion, dia, cHorario, horade, horaa, fechainicio, inscripcion, colegiatura, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-            peticiones.getRegistroSeleccionado(cmps, "horario", campos, cond, id, inner, hashProfesor);
+            peticiones.getRegistroSeleccionado(cmps, "horario", campos, cond, id, inner, hashHorario);
 
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
@@ -299,7 +300,7 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         inscripcion = new javax.swing.JFormattedTextField();
         colegiatura = new javax.swing.JFormattedTextField();
-        profesor = new javax.swing.JComboBox();
+        cHorario = new javax.swing.JComboBox();
         dia = new javax.swing.JComboBox();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -575,13 +576,13 @@ public class Horario extends javax.swing.JInternalFrame {
         JPanelCampos.add(colegiatura);
         colegiatura.setBounds(610, 90, 130, 23);
 
-        profesor.setModel(modelCombo = new DefaultComboBoxModel());
-        profesor.setNextFocusableComponent(horade);
-        JPanelCampos.add(profesor);
-        profesor.setBounds(180, 120, 250, 21);
+        cHorario.setModel(modelCombo = new DefaultComboBoxModel());
+        cHorario.setNextFocusableComponent(horade);
+        JPanelCampos.add(cHorario);
+        cHorario.setBounds(180, 120, 250, 21);
 
         dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
-        dia.setNextFocusableComponent(profesor);
+        dia.setNextFocusableComponent(cHorario);
         JPanelCampos.add(dia);
         dia.setBounds(180, 90, 250, 21);
 
@@ -693,7 +694,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setText("<--Horarios-->");
+            jLabel8.setText("<--Cursos-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
@@ -733,7 +734,7 @@ public class Horario extends javax.swing.JInternalFrame {
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             //Para obtener el id en la base de datos
-            mProfesor prof = (mProfesor) profesor.getSelectedItem();
+            mHorario prof = (mHorario) cHorario.getSelectedItem();
             String idprof = prof.getID();
 
             int estad = 0;
@@ -807,7 +808,7 @@ public class Horario extends javax.swing.JInternalFrame {
             String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, montoinscripcion, colegiatura, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
-            mProfesor prof = (mProfesor) profesor.getSelectedItem();
+            mHorario prof = (mHorario) cHorario.getSelectedItem();
             String idprof = prof.getID();
 
             int estad = 0;
@@ -894,6 +895,7 @@ public class Horario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
+    private javax.swing.JComboBox cHorario;
     private elaprendiz.gui.textField.TextField codigo;
     private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
@@ -920,7 +922,6 @@ public class Horario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
-    private javax.swing.JComboBox profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbDia;
     private javax.swing.JRadioButton rbNombres;

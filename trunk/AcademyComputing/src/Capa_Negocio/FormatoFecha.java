@@ -77,4 +77,14 @@ public class FormatoFecha {
         }
         return formato.format(time);
     }
+    
+    public static String getTimedoce(Object time) {
+      //modificar
+        try {
+                formato = new SimpleDateFormat("hh:mm a");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return formato.format(time);
+    }
 }
