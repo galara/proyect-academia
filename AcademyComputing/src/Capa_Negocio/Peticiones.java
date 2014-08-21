@@ -89,13 +89,13 @@ public class Peticiones extends AccesoDatos {
      * ejem: campocondicion = condicionid
      * @return
      */
-    public DefaultTableModel getRegistroPorPks(DefaultTableModel modelo, String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
+    public DefaultTableModel getRegistroPorPks(DefaultTableModel modelo, String tabla, String[] campos, String[] campocondicion, String[] condicionid, String inner) {
         try {
 
             /*rs es un ResultSet, una tabla de datos que representan un conjunto de resultados de base de datos,
              * generados mediante la ejecución de una consulta a la base de datos en el metodo getRegistros()
              */
-            rs = this.getRegistros(tabla, campos, campocondicion, condicionid, "");
+            rs = this.getRegistros(tabla, campos, campocondicion, condicionid, inner);
             int cantcampos = campos.length;
 
             if (rs != null) {
@@ -116,7 +116,7 @@ public class Peticiones extends AccesoDatos {
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
                             }
-                            if(campos[i].equals("horariode")||campos[i].equals("horarioa")){
+                            if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
                                 fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
                             }
                         }
@@ -135,9 +135,8 @@ public class Peticiones extends AccesoDatos {
     }
 
     /**
-     * Para una condicion WHERE condicionid LIKE '% campocondicion'
-     *      * 
-     * @param modelo ,modelo de la JTable
+     * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
+     * modelo ,modelo de la JTable
      * @param tabla , el nombre de la tabla a consultar en la BD
      * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
      * ,dirección etc
@@ -147,9 +146,9 @@ public class Peticiones extends AccesoDatos {
      * ejem: campocondicion = condicionid
      * @return
      */
-    public DefaultTableModel getRegistroPorLike(DefaultTableModel modelo, String tabla, String[] campos, String campocondicion, String condicionid) {
+    public DefaultTableModel getRegistroPorLike(DefaultTableModel modelo, String tabla, String[] campos, String campocondicion, String condicionid, String inner) {
         try {
-            rs = this.selectPorLike(tabla, campos, campocondicion, condicionid);
+            rs = this.selectPorLike(tabla, campos, campocondicion, condicionid, inner);
             int cantcampos = campos.length;
             if (rs != null) {
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
@@ -168,7 +167,7 @@ public class Peticiones extends AccesoDatos {
                             if (fila[i].equals(false)) {
                                 fila[i] = "Retirado";
                             }
-                            if(campos[i].equals("horariode")||campos[i].equals("horarioa")){
+                            if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
                                 fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
                             }
                         }
@@ -188,9 +187,9 @@ public class Peticiones extends AccesoDatos {
     }
 
     /**
-     * Obtiene datos para una condición WHERE campocondicion = id
-     * Luego rellena los componentes del form con los datos obtenridos
-     * 
+     * Obtiene datos para una condición WHERE campocondicion = id Luego rellena
+     * los componentes del form con los datos obtenridos
+     *
      * @param cmps , los componentes JComboBox , JTextFiel etc
      * @param tabla , el nombre de la tabla a consultar en la BD
      * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
@@ -238,7 +237,7 @@ public class Peticiones extends AccesoDatos {
                                 } catch (SQLException | NumberFormatException e) {
                                     tmp.setSelectedItem(rs.getString(i + 1));
                                 }
-                                 
+
                             } else if (cmps[i] instanceof JRadioButton) {
                                 JRadioButton tmp = (JRadioButton) cmps[i];
 
