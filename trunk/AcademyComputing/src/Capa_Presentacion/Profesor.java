@@ -133,7 +133,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "profesor", campos, condiciones, Id);
+                model = peticiones.getRegistroPorPks(model, "profesor", campos, condiciones, Id,"");
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -142,13 +142,13 @@ public class Profesor extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "profesor", campos, "nombre", Dato);
+            model = peticiones.getRegistroPorLike(model, "profesor", campos, "nombre", Dato,"");
         }
         if (this.rbApellidos.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "profesor", campos, "apellido", Dato);
+            model = peticiones.getRegistroPorLike(model, "profesor", campos, "apellido", Dato,"");
         }
         Utilidades.ajustarAnchoColumnas(profesores);
     }

@@ -40,7 +40,7 @@ public class Curso extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Descripción", "Horario", "Fecha Registro", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
@@ -118,7 +118,7 @@ public class Curso extends javax.swing.JInternalFrame {
      */
     public void llenarcombo() {
         String Dato = "1";
-        String[] campos = {"codigo","dia", "horariode","horarioa", "idhorarios"};
+        String[] campos = {"codigo", "dia", "horariode", "horarioa", "idhorarios"};
         String[] condiciones = {"estado"};
         String[] Id = {Dato};
         cHorario.removeAllItems();
@@ -153,14 +153,14 @@ public class Curso extends javax.swing.JInternalFrame {
                     Object[] fila = new Object[cantcampos];
                     while (rs.next()) {//mientras tenga registros que haga lo siguiente
                         count++;
-                        modeloComboBox.addElement(new mHorario(rs.getString(1) + " " + rs.getString(2)+" "+FormatoFecha.getTimedoce(rs.getTime(3))+" "+FormatoFecha.getTimedoce(rs.getTime(4)), "" + rs.getInt(5)));
-                        hashHorario.put(rs.getString(1) + " " + rs.getString(2)+" "+FormatoFecha.getTimedoce(rs.getTime(3))+" "+FormatoFecha.getTimedoce(rs.getTime(4)), "" + count);
+                        modeloComboBox.addElement(new mHorario(rs.getString(1) + " " + rs.getString(2) + " " + FormatoFecha.getTimedoce(rs.getTime(3)) + " " + FormatoFecha.getTimedoce(rs.getTime(4)), "" + rs.getInt(5)));
+                        hashHorario.put(rs.getString(1) + " " + rs.getString(2) + " " + FormatoFecha.getTimedoce(rs.getTime(3)) + " " + FormatoFecha.getTimedoce(rs.getTime(4)), "" + count);
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            rs.close();
+            //rs.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
@@ -173,12 +173,12 @@ public class Curso extends javax.swing.JInternalFrame {
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
 
-        TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
-        TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 60, true);
+        //TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
+        TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
         //TipoFiltro.setFiltraEntrada(dia.getDocument(), FiltroCampos.SOLO_LETRAS, 45, false);
         //TipoFiltro.setFiltraEntrada(profesor.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        TipoFiltro.setFiltraEntrada(inscripcion.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, true);
-        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
+        //TipoFiltro.setFiltraEntrada(inscripcion.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, true);
+        //TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
     }
 
@@ -195,8 +195,13 @@ public class Curso extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         //String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De","Hora A", "Fecha Inicio","Estado"};
-        String[] campos = {"codigo", "descripcion", "dia", "maestro_idcatedratico", "horariode", "horarioa", "fechainicio", "estado"};
-        String[] condiciones = {"codigo"};
+        //String[] titulos = {"Descripción", "Horario", "Fecha Registro", "Estado"};//Titulos para Jtabla
+        String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%H:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%H:%i %p'))";
+        String[] campos = {"curso.idcurso", "curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
+
+        //String[] campos = {"idcurso", "nombrecurso","horario_idhorarios", "fecharegistro", "estado"};
+        String[] condiciones = {"curso.idcurso"};
+        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -204,7 +209,7 @@ public class Curso extends javax.swing.JInternalFrame {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id);
+                model = peticiones.getRegistroPorPks(model, "curso", campos, condiciones, Id, inner);
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -213,14 +218,14 @@ public class Curso extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "descripcion", Dato);
+            model = peticiones.getRegistroPorLike(model, "curso", campos, "curso.nombrecurso", Dato, inner);
         }
-        if (this.rbDia.isSelected()) {
-            removejtable();
-            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "dia", Dato);
-        }
+//        if (this.rbDia.isSelected()) {
+//            removejtable();
+//            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+//            Utilidades.esObligatorio(this.JPanelCampos, false);
+//            model = peticiones.getRegistroPorLike(model, "curso", campos, "", Dato);
+//        }
         Utilidades.ajustarAnchoColumnas(horarios);
     }
 
@@ -232,19 +237,21 @@ public class Curso extends javax.swing.JInternalFrame {
     private void filaseleccionada() {
 
         int fila = horarios.getSelectedRow();
-        String[] cond = {"horario.codigo"};
-        String[] id = {(String) horarios.getValueAt(fila, 0)};
-        String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
+        String[] cond = {"curso.idcurso"};
+        String[] id = {"" + horarios.getValueAt(fila, 0)};
+        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
 
         if (horarios.getValueAt(fila, 0) != null) {
 
-            String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.montoinscripcion", "horario.colegiatura", "horario.estado"};
+            String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%H:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%H:%i %p'))";
+            //String conct = "concat(horario.codigo,' ',horario.dia,' ',horario.horariode,' ',horario.horarioa)";
+            String[] campos = {"curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
+            //String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.montoinscripcion", "horario.colegiatura", "horario.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {codigo, descripcion, dia, cHorario, horade, horaa, fechainicio, inscripcion, colegiatura, estado};
+            Component[] cmps = {descripcion, cHorario, fechainicio, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-            peticiones.getRegistroSeleccionado(cmps, "horario", campos, cond, id, inner, hashHorario);
+            peticiones.getRegistroSeleccionado(cmps, "curso", campos, cond, id, inner, hashHorario);
 
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
@@ -272,36 +279,14 @@ public class Curso extends javax.swing.JInternalFrame {
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        codigo = new elaprendiz.gui.textField.TextField();
         descripcion = new elaprendiz.gui.textField.TextField();
         fechainicio = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
-        jLabel11 = new javax.swing.JLabel();
-        //http://www.forosdelweb.com/f45/formato-horade-559125/
-        //https://www.youtube.com/watch?v=Uh77miF-YMY
-        Date date = new Date();
-        SpinnerDateModel sm =
-        new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        horade = new javax.swing.JSpinner(sm);
-        //http://www.forosdelweb.com/f45/formato-horade-559125/
-        //https://www.youtube.com/watch?v=Uh77miF-YMY
-        Date date2 = new Date();
-        SpinnerDateModel sm2 =
-        new SpinnerDateModel(date2, null, null, Calendar.HOUR_OF_DAY);
-        horaa = new javax.swing.JSpinner(sm2);
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        inscripcion = new javax.swing.JFormattedTextField();
-        colegiatura = new javax.swing.JFormattedTextField();
         cHorario = new javax.swing.JComboBox();
-        dia = new javax.swing.JComboBox();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         horarios = new javax.swing.JTable();
@@ -447,29 +432,17 @@ public class Curso extends javax.swing.JInternalFrame {
         JPanelCampos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         JPanelCampos.setLayout(null);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("A:");
-        JPanelCampos.add(jLabel10);
-        jLabel10.setBounds(300, 150, 20, 17);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(70, 60, 100, 20);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Día:");
-        JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(90, 90, 80, 20);
+        jLabel1.setBounds(70, 30, 100, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 120, 80, 20);
+        jLabel3.setBounds(90, 70, 80, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -477,32 +450,17 @@ public class Curso extends javax.swing.JInternalFrame {
         JPanelCampos.add(jLabel6);
         jLabel6.setBounds(450, 30, 150, 21);
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Colegiatura:");
-        JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(490, 90, 110, 20);
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 120, 110, 20);
-
-        codigo.setEditable(false);
-        codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        codigo.setName("codigo"); // NOI18N
-        codigo.setNextFocusableComponent(descripcion);
-        codigo.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(codigo);
-        codigo.setBounds(180, 30, 130, 21);
+        jLabel4.setBounds(490, 70, 110, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
-        descripcion.setNextFocusableComponent(dia);
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 60, 250, 21);
+        descripcion.setBounds(180, 30, 250, 21);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -510,7 +468,6 @@ public class Curso extends javax.swing.JInternalFrame {
         fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fechainicio.setNextFocusableComponent(inscripcion);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
         fechainicio.setBounds(610, 30, 130, 21);
@@ -522,69 +479,11 @@ public class Curso extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(610, 120, 130, 21);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel11.setText("Inscripción:");
-        JPanelCampos.add(jLabel11);
-        jLabel11.setBounds(464, 60, 140, 17);
-
-        JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
-        horade.setEditor(de);
-        horade.setEnabled(false);
-        horade.setNextFocusableComponent(horaa);
-        JPanelCampos.add(horade);
-        horade.setBounds(180, 150, 100, 21);
-
-        JSpinner.DateEditor de2 = new JSpinner.DateEditor(horaa, "hh:mm a");
-        horaa.setEditor(de2);
-        horaa.setEnabled(false);
-        horaa.setNextFocusableComponent(fechainicio);
-        JPanelCampos.add(horaa);
-        horaa.setBounds(330, 150, 100, 21);
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel12.setText("Codigo:");
-        JPanelCampos.add(jLabel12);
-        jLabel12.setBounds(90, 30, 80, 17);
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel13.setText("Horario De:");
-        JPanelCampos.add(jLabel13);
-        jLabel13.setBounds(80, 150, 90, 17);
-
-        inscripcion.setEditable(false);
-        inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        inscripcion.setName("inscripcion"); // NOI18N
-        inscripcion.setNextFocusableComponent(colegiatura);
-        inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(inscripcion);
-        inscripcion.setBounds(610, 60, 130, 21);
-
-        colegiatura.setEditable(false);
-        colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        colegiatura.setName("precioalmayor"); // NOI18N
-        colegiatura.setNextFocusableComponent(estado);
-        colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(colegiatura);
-        colegiatura.setBounds(610, 90, 130, 23);
+        estado.setBounds(610, 70, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
-        cHorario.setNextFocusableComponent(horade);
         JPanelCampos.add(cHorario);
-        cHorario.setBounds(180, 120, 250, 21);
-
-        dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
-        dia.setNextFocusableComponent(cHorario);
-        JPanelCampos.add(dia);
-        dia.setBounds(180, 90, 250, 21);
+        cHorario.setBounds(180, 70, 250, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -715,7 +614,7 @@ public class Curso extends javax.swing.JInternalFrame {
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        codigo.requestFocus();
+        descripcion.requestFocus();
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -729,21 +628,19 @@ public class Curso extends javax.swing.JInternalFrame {
         if (resp == 0) {
 
             boolean seguardo = false;
-            String nombreTabla = "horario";
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, montoinscripcion, colegiatura, estado";
+            String nombreTabla = "curso";
+            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             //Para obtener el id en la base de datos
-            mHorario prof = (mHorario) cHorario.getSelectedItem();
-            String idprof = prof.getID();
+            mHorario horari = (mHorario) cHorario.getSelectedItem();
+            String idhorario = horari.getID();
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()),
-                fechaini, inscripcion.getText(), colegiatura.getText(), estad
+            Object[] valores = {descripcion.getText(), /*profesor.getText()*/ idhorario, fechaini, estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -775,8 +672,8 @@ public class Curso extends javax.swing.JInternalFrame {
 
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
-            String nombreTabla = "horario", nomColumnaCambiar = "estado";
-            String nomColumnaId = "codigo";
+            String nombreTabla = "curso", nomColumnaCambiar = "estado";
+            String nomColumnaId = "idcurso";
             int seguardo = 0;
 
             seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
@@ -800,23 +697,22 @@ public class Curso extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "horario";
-            String columnaId = "codigo";
+            String nomTabla = "curso";
+            String columnaId = "idcurso";
             int seguardo = 0;
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, montoinscripcion, colegiatura, estado";
+            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
-            mHorario prof = (mHorario) cHorario.getSelectedItem();
-            String idprof = prof.getID();
+            mHorario horari = (mHorario) cHorario.getSelectedItem();
+            String idhorario = horari.getID();
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, colegiatura.getText(), inscripcion.getText(), estad, id};
+            Object[] valores = {descripcion.getText(), idhorario, fechaini, estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -896,28 +792,16 @@ public class Curso extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
     private javax.swing.JComboBox cHorario;
-    private elaprendiz.gui.textField.TextField codigo;
-    private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
-    private javax.swing.JComboBox dia;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fechainicio;
-    private javax.swing.JSpinner horaa;
-    private javax.swing.JSpinner horade;
     private javax.swing.JTable horarios;
-    private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;

@@ -39,7 +39,7 @@ public class Horario extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Dia", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor","Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
@@ -159,7 +159,7 @@ public class Horario extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            rs.close();
+            //rs.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
@@ -194,16 +194,19 @@ public class Horario extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         //String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De","Hora A", "Fecha Inicio","Estado"};
-        String[] campos = {"codigo", "descripcion", "dia", "horariode", "horarioa", "fechainicio", "estado"};
-        String[] condiciones = {"codigo"};
+        String conct = "concat(profesor.nombre,' ',profesor.apellido)";
+        String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.estado"};
+        //String[] campos = {"codigo", "descripcion", "dia", "horariode", "horarioa", "fechainicio", "estado"};
+        String[] condiciones = {"horario.codigo"};
         String[] Id = {Dato};
-
+        String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
+        
         if (this.rbCodigo.isSelected()) {
             if (!Dato.isEmpty()) {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id);
+                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id,inner);
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -212,13 +215,13 @@ public class Horario extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "descripcion", Dato);
+            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.descripcion", Dato,inner);
         }
         if (this.rbDia.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "dia", Dato);
+            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.dia", Dato,inner);
         }
         Utilidades.ajustarAnchoColumnas(horarios);
     }
@@ -815,7 +818,7 @@ public class Horario extends javax.swing.JInternalFrame {
                 estad = 1;
             }
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, colegiatura.getText(), inscripcion.getText(), estad, id};
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, inscripcion.getText(),colegiatura.getText(), estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
