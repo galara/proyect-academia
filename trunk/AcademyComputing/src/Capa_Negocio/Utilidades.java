@@ -112,18 +112,20 @@ public class Utilidades {
 
             if (cm[i].getName() != null) {
                 if (cm[i] instanceof JDateChooser) {
-                    try {
-                        Date time = ((JDateChooser) cm[i]).getCalendar().getTime();
-                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setBackground(Color.WHITE);
 
-                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setForeground(Color.BLACK);
-                        //existen = true;
-                    } catch (Exception e) {
-                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setBackground(BObligatorio);
-                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setForeground(FObligatorio);
+                    if (((JDateChooser) cm[i]).getDate() == null) {
+                        if (opcion) {
+                            ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setBackground(BObligatorio);
+                            ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setForeground(FObligatorio);
+                        } else {
+                            ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setBackground(Color.WHITE);
+                            ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setForeground(Color.BLACK);
+                        }
                         existen = true;
+                    } else if (((JDateChooser) cm[i]).getDate() != null) {
+                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setBackground(Color.WHITE);
+                        ((JTextFieldDateEditor) ((JDateChooser) cm[i]).getDateEditor()).setForeground(Color.BLACK);
                     }
-                    //continue;
                 }
             }
 
@@ -250,7 +252,7 @@ public class Utilidades {
                 JSpinner tm = (JSpinner) cmps[i];
                 tm.setEnabled(habilitar);
                 if (limpiar) {
-                      tm.setValue(new Date());
+                    tm.setValue(new Date());
                 }
                 continue;
             }
