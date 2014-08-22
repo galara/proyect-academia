@@ -203,7 +203,7 @@ public class AccesoDatos {
                 sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
                         + nombreTabla + (condiciones != null ? inner + " " + OpSql.WHERE + condiciones : "");
             }
-            System.out.print(sql);
+            //System.out.print(sql);
             rs = BdConexion.getResultSet(sql);
             //No se cierra el rs ya que no se podria retornar el rs
         } catch (Exception ex) {
@@ -250,12 +250,11 @@ public class AccesoDatos {
     private ResultSet getRegistroLike(String nombreTabla, String[] campos, String columnaid, String id,String inner) {
         try {
             sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from " + nombreTabla + inner+" "+OpSql.WHERE + columnaid + OpSql.LIKE + "'" + OpSql.CUALQUIERA + id + OpSql.CUALQUIERA + "'";
-            System.out.print(sql);
+            //System.out.print(sql);
             rs = BdConexion.getResultSet(sql);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
         return rs;
     }
 

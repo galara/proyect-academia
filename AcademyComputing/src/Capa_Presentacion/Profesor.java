@@ -432,6 +432,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         fecharegistro.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fecharegistro.setNextFocusableComponent(identificacion);
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fecharegistro);
         fecharegistro.setBounds(610, 30, 160, 21);
@@ -587,6 +588,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+        estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);

@@ -12,7 +12,7 @@ public class Principal extends javax.swing.JFrame {
     private static Profesor frmProfesor = new Profesor();
     private static Horario frmHorario = new Horario();
     private static Curso frmCurso = new Curso();
-    
+
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -137,7 +137,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
-
+        cerrarVentana();
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 

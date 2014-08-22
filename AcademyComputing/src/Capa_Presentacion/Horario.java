@@ -535,6 +535,7 @@ public class Horario extends javax.swing.JInternalFrame {
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
         horade.setEnabled(false);
+        horade.setName("horade"); // NOI18N
         horade.setNextFocusableComponent(horaa);
         JPanelCampos.add(horade);
         horade.setBounds(180, 150, 100, 21);
@@ -542,6 +543,7 @@ public class Horario extends javax.swing.JInternalFrame {
         JSpinner.DateEditor de2 = new JSpinner.DateEditor(horaa, "hh:mm a");
         horaa.setEditor(de2);
         horaa.setEnabled(false);
+        horaa.setName("horaa"); // NOI18N
         horaa.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(horaa);
         horaa.setBounds(330, 150, 100, 21);
@@ -562,7 +564,6 @@ public class Horario extends javax.swing.JInternalFrame {
         inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        inscripcion.setName("inscripcion"); // NOI18N
         inscripcion.setNextFocusableComponent(colegiatura);
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(inscripcion);
@@ -572,18 +573,19 @@ public class Horario extends javax.swing.JInternalFrame {
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        colegiatura.setName("precioalmayor"); // NOI18N
         colegiatura.setNextFocusableComponent(estado);
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(colegiatura);
         colegiatura.setBounds(610, 90, 130, 23);
 
         profesor.setModel(modelCombo = new DefaultComboBoxModel());
+        profesor.setName("Profesor"); // NOI18N
         profesor.setNextFocusableComponent(horade);
         JPanelCampos.add(profesor);
         profesor.setBounds(180, 120, 250, 21);
 
         dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
+        dia.setName("Dia"); // NOI18N
         dia.setNextFocusableComponent(profesor);
         JPanelCampos.add(dia);
         dia.setBounds(180, 90, 250, 21);
@@ -713,6 +715,7 @@ public class Horario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
         llenarcombo();
+        estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
