@@ -137,6 +137,7 @@ public class Peticiones extends AccesoDatos {
     /**
      * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
      * modelo ,modelo de la JTable
+     *
      * @param tabla , el nombre de la tabla a consultar en la BD
      * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
      * ,dirección etc
@@ -161,14 +162,18 @@ public class Peticiones extends AccesoDatos {
                         for (int i = 0; i < cantcampos; i++) {
 
                             fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals(true)) {
-                                fila[i] = "Activo";
-                            }
-                            if (fila[i].equals(false)) {
-                                fila[i] = "Retirado";
-                            }
-                            if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
-                                fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
+                            if (fila[i] == null) {
+                                fila[i] = "";
+                            } else {
+                                if (fila[i].equals(true)) {
+                                    fila[i] = "Activo";
+                                }
+                                if (fila[i].equals(false)) {
+                                    fila[i] = "Retirado";
+                                }
+                                if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
+                                    fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
+                                }
                             }
                         }
                         modelo.addRow(fila);

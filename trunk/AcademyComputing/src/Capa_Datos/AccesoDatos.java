@@ -316,6 +316,7 @@ public class AccesoDatos {
         }
 
         sql = "update " + nomTabla + " set " + generarArrayAString(cnls) + OpSql.WHERE + columnaId + OpSql.IGUAL + (vl == null ? id : vl);
+        System.out.print(sql);
         int op = 0;
         try {
             op = BdConexion.getStatement().executeUpdate(sql);
@@ -327,6 +328,7 @@ public class AccesoDatos {
     }
 
     public int actualizarRegistro(String nomTabla, String cnls, String columnaId, Object id) {
+        System.out.print(cnls);
         return actualizarRegistro(nomTabla, new String[]{cnls}, columnaId, id);
     }
 
@@ -417,6 +419,7 @@ public class AccesoDatos {
     public int actualizarRegistroPs(String nomTabla, String cnls, Object[] valores) {
 
         sql = "update " + nomTabla + " set " + cnls;
+        System.out.print(sql+valores);
         int op = 0;
         try {
             //System.out.println("actuaizar registro valores" + valores);
@@ -459,6 +462,8 @@ public class AccesoDatos {
     private void setValores(PreparedStatement ps, Object[] valores) {
         try {
             for (int i = 0; i < valores.length; i++) {
+                System.out.print(valores[i]+"\n");
+                
                 if (getInt(valores[i]) != null) {
                     ps.setInt(i + 1, getInt(valores[i]));
                 } else if (getDouble(valores[i]) != null) {
