@@ -31,12 +31,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author GLARA
  */
-public class Curso extends javax.swing.JInternalFrame {
+public class Grupo extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Descripción", "Horario", "Fecha Registro", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Descripción", "Fecha Inicio", "Fecha Fin","Horario", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
@@ -46,7 +46,7 @@ public class Curso extends javax.swing.JInternalFrame {
     /**
      * Creates new form Cliente
      */
-    public Curso() {
+    public Grupo() {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
@@ -107,7 +107,7 @@ public class Curso extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-        while (curso.getRowCount() != 0) {
+        while (grupos.getRowCount() != 0) {
             model.removeRow(0);
         }
     }
@@ -191,10 +191,10 @@ public class Curso extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        String[] campos = {"curso.idcurso", "curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
+        String[] campos = {"grupo.idgrupo", "grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct,"grupo.estado"};
 
-        String[] condiciones = {"curso.idcurso"};
-        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
+        String[] condiciones = {"grupo.idgrupo"};
+        String inner = " INNER JOIN horario on grupo.horarios_idhorarios=horario.idhorarios";
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -202,7 +202,7 @@ public class Curso extends javax.swing.JInternalFrame {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "curso", campos, condiciones, Id, inner);
+                model = peticiones.getRegistroPorPks(model, "grupo", campos, condiciones, Id, inner);
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -211,9 +211,9 @@ public class Curso extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "curso", campos, "curso.nombrecurso", Dato, inner);
+            model = peticiones.getRegistroPorLike(model, "grupo", campos, "grupo.grupo", Dato, inner);
         }
-        Utilidades.ajustarAnchoColumnas(curso);
+        Utilidades.ajustarAnchoColumnas(grupos);
     }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
@@ -223,20 +223,20 @@ public class Curso extends javax.swing.JInternalFrame {
      */
     private void filaseleccionada() {
 
-        int fila = curso.getSelectedRow();
-        String[] cond = {"curso.idcurso"};
-        String[] id = {"" + curso.getValueAt(fila, 0)};
-        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
+        int fila = grupos.getSelectedRow();
+        String[] cond = {"grupo.idgrupo"};
+        String[] id = {"" + grupos.getValueAt(fila, 0)};
+        String inner = " INNER JOIN horario on grupo.horarios_idhorarios=horario.idhorarios";
 
-        if (curso.getValueAt(fila, 0) != null) {
+        if (grupos.getValueAt(fila, 0) != null) {
 
             String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-            String[] campos = {"curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
+            String[] campos = {"grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct, "grupo.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {descripcion, cHorario, fechainicio, estado};
+            Component[] cmps = {descripcion, fechainicio,fechafin,cHorario, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-            peticiones.getRegistroSeleccionado(cmps, "curso", campos, cond, id, inner, hashHorario);
+            peticiones.getRegistroSeleccionado(cmps, "grupo", campos, cond, id, inner, hashHorario);
             profesor();
 
             this.bntGuardar.setEnabled(false);
@@ -311,9 +311,11 @@ public class Curso extends javax.swing.JInternalFrame {
         cHorario = new javax.swing.JComboBox();
         profesor = new elaprendiz.gui.textField.TextField();
         jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        fechafin = new com.toedter.calendar.JDateChooser();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        curso = new javax.swing.JTable();
+        grupos = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         busqueda = new elaprendiz.gui.textField.TextField();
@@ -477,7 +479,7 @@ public class Curso extends javax.swing.JInternalFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 70, 110, 20);
+        jLabel4.setBounds(490, 110, 110, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -502,7 +504,7 @@ public class Curso extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(610, 70, 130, 21);
+        estado.setBounds(610, 110, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
         cHorario.setName("Horario"); // NOI18N
@@ -520,6 +522,22 @@ public class Curso extends javax.swing.JInternalFrame {
         JPanelCampos.add(jLabel5);
         jLabel5.setBounds(90, 70, 80, 20);
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Fecha Fin:");
+        JPanelCampos.add(jLabel9);
+        jLabel9.setBounds(507, 70, 90, 17);
+
+        fechafin.setDate(Calendar.getInstance().getTime());
+        fechafin.setDateFormatString("dd/MM/yyyy");
+        fechafin.setEnabled(false);
+        fechafin.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        fechafin.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+        fechafin.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechafin.setPreferredSize(new java.awt.Dimension(120, 22));
+        JPanelCampos.add(fechafin);
+        fechafin.setBounds(610, 70, 130, 21);
+
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
 
@@ -529,35 +547,35 @@ public class Curso extends javax.swing.JInternalFrame {
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        curso.setForeground(new java.awt.Color(51, 51, 51));
-        curso.setModel(model = new DefaultTableModel(null, titulos)
+        grupos.setForeground(new java.awt.Color(51, 51, 51));
+        grupos.setModel(model = new DefaultTableModel(null, titulos)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             });
-            curso.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            curso.setFocusCycleRoot(true);
-            curso.setGridColor(new java.awt.Color(51, 51, 255));
-            curso.setRowHeight(22);
-            curso.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            curso.setSurrendersFocusOnKeystroke(true);
-            curso.addMouseListener(new java.awt.event.MouseAdapter() {
+            grupos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            grupos.setFocusCycleRoot(true);
+            grupos.setGridColor(new java.awt.Color(51, 51, 255));
+            grupos.setRowHeight(22);
+            grupos.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            grupos.setSurrendersFocusOnKeystroke(true);
+            grupos.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    cursoMouseClicked(evt);
+                    gruposMouseClicked(evt);
                 }
                 public void mousePressed(java.awt.event.MouseEvent evt) {
-                    cursoMouseClicked(evt);
+                    gruposMouseClicked(evt);
                 }
             });
-            curso.addKeyListener(new java.awt.event.KeyAdapter() {
+            grupos.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    cursoKeyPressed(evt);
+                    gruposKeyPressed(evt);
                 }
             });
-            jScrollPane1.setViewportView(curso);
-            curso.getAccessibleContext().setAccessibleName("");
+            jScrollPane1.setViewportView(grupos);
+            grupos.getAccessibleContext().setAccessibleName("");
 
             JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -616,7 +634,7 @@ public class Curso extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setText("<--Cursos-->");
+            jLabel8.setText("<--Gupos-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
@@ -652,10 +670,10 @@ public class Curso extends javax.swing.JInternalFrame {
         if (resp == 0) {
 
             boolean seguardo = false;
-            String nombreTabla = "curso";
-            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
+            String nombreTabla = "grupo";
+            String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
             mHorario horari = (mHorario) cHorario.getSelectedItem();
             String idhorario = horari.getID();
@@ -664,7 +682,7 @@ public class Curso extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), /*profesor.getText()*/ idhorario, fechaini, estad
+            Object[] valores = {descripcion.getText(), fechaini, fechafn, estad, idhorario
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -682,11 +700,11 @@ public class Curso extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_bntSalirActionPerformed
 
-    private void cursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cursoMouseClicked
+    private void gruposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gruposMouseClicked
         // TODO add your handling code here:
         filaseleccionada();
 
-    }//GEN-LAST:event_cursoMouseClicked
+    }//GEN-LAST:event_gruposMouseClicked
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
@@ -694,10 +712,10 @@ public class Curso extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            int fila = curso.getSelectedRow();
-            String id = (String) "" + curso.getValueAt(fila, 0);
-            String nombreTabla = "curso", nomColumnaCambiar = "estado";
-            String nomColumnaId = "idcurso";
+            int fila = grupos.getSelectedRow();
+            String id = (String) "" + grupos.getValueAt(fila, 0);
+            String nombreTabla = "grupo", nomColumnaCambiar = "estado";
+            String nomColumnaId = "idgrupo";
             int seguardo = 0;
 
             seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
@@ -721,13 +739,14 @@ public class Curso extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "curso";
-            String columnaId = "idcurso";
+            String nomTabla = "grupo";
+            String columnaId = "idgrupo";
             int seguardo = 0;
-            int fila = curso.getSelectedRow();
-            String id = (String) "" + curso.getValueAt(fila, 0);
-            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
+            int fila = grupos.getSelectedRow();
+            String id = (String) "" + grupos.getValueAt(fila, 0);
+            String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             mHorario horari = (mHorario) cHorario.getSelectedItem();
             String idhorario = horari.getID();
@@ -737,7 +756,7 @@ public class Curso extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), idhorario, fechaini, estad, id};
+            Object[] valores = {descripcion.getText(), fechaini, fechafn, estad, idhorario, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -784,7 +803,7 @@ public class Curso extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void cursoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cursoKeyPressed
+    private void gruposKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_gruposKeyPressed
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == java.awt.event.KeyEvent.VK_SPACE) {
@@ -793,7 +812,7 @@ public class Curso extends javax.swing.JInternalFrame {
         if (key == java.awt.event.KeyEvent.VK_DOWN || key == java.awt.event.KeyEvent.VK_UP) {
             limpiar();
         }
-    }//GEN-LAST:event_cursoKeyPressed
+    }//GEN-LAST:event_gruposKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -808,10 +827,11 @@ public class Curso extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
     private javax.swing.JComboBox cHorario;
-    private javax.swing.JTable curso;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JRadioButton estado;
+    private com.toedter.calendar.JDateChooser fechafin;
     private com.toedter.calendar.JDateChooser fechainicio;
+    private javax.swing.JTable grupos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -819,6 +839,7 @@ public class Curso extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;

@@ -12,6 +12,8 @@ public class Principal extends javax.swing.JFrame {
     private static Profesor frmProfesor = new Profesor();
     private static Horario frmHorario = new Horario();
     private static Curso frmCurso = new Curso();
+    private static Usuario frmUsuario = new Usuario();
+    private static Grupo frmGrupo = new Grupo();
 
     public Principal() {
         initComponents();
@@ -51,6 +53,9 @@ public class Principal extends javax.swing.JFrame {
         mProfesor = new javax.swing.JMenuItem();
         mHoraio = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -104,6 +109,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Mantenimiento");
 
+        mProfesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         mProfesor.setText("Profesor");
         mProfesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +118,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mProfesor);
 
+        mHoraio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
         mHoraio.setText("Horario");
         mHoraio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,6 +127,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mHoraio);
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         jMenuItem1.setText("Curso");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,7 +136,29 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem1);
 
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
+        jMenuItem3.setText("Grupo");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
         jMenuBar1.add(jMenu3);
+
+        jMenu2.setText("Systema");
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
+        jMenuItem2.setText("Usuario");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -170,6 +200,22 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmCurso);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        if (frmUsuario == null) {
+            frmUsuario = new Usuario();
+        }
+        AddForms.adminInternalFrame(dp, frmUsuario);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        if (frmGrupo == null) {
+            frmGrupo = new Grupo();
+        }
+        AddForms.adminInternalFrame(dp, frmGrupo);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -190,9 +236,12 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JDesktopPane dp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mHoraio;
