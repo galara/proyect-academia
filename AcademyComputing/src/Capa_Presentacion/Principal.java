@@ -147,6 +147,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
         jMenuItem4.setText("Alumno");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +158,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu2.setText("Systema");
+        jMenu2.setText("Sistema");
 
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
         jMenuItem2.setText("Usuario");

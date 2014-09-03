@@ -75,6 +75,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/alumno.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Alumno"/>
               </Properties>
               <Events>
@@ -85,7 +88,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Systema"/>
+            <Property name="text" type="java.lang.String" value="Sistema"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
