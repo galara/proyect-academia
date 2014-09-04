@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -214,13 +215,16 @@ public class Utilidades {
      * @param valor valor para establecer cuando se limpie los campso de texto
      */
     public static void setEditableTexto(Component cm, boolean habilitar, Component[] excepcion, boolean limpiar, String valor) {
+        
         if (cm instanceof JPanel) {
             habilitarTexto(((JPanel) cm).getComponents(), habilitar, excepcion, limpiar, valor);
         } else if (cm instanceof JScrollPane) {
             habilitarTexto(((JScrollPane) cm).getComponents(), habilitar, excepcion, limpiar, valor);
         } else if (cm instanceof JViewport) {
             habilitarTexto(((JViewport) cm).getComponents(), habilitar, excepcion, limpiar, valor);
-        } else {
+        }else if (cm instanceof JTabbedPane) {
+            habilitarTexto(((JTabbedPane) cm).getComponents(), habilitar, excepcion, limpiar, valor);
+        }else {
             habilitarTexto(new Component[]{cm}, habilitar, excepcion, limpiar, valor);
         }
     }
@@ -256,7 +260,7 @@ public class Utilidades {
                 }
                 continue;
             }
-            if (cmps[i] instanceof JPanel || cmps[i] instanceof JScrollPane || cmps[i] instanceof JViewport) {
+            if (cmps[i] instanceof JPanel || cmps[i] instanceof JScrollPane || cmps[i] instanceof JTabbedPane || cmps[i] instanceof JViewport) {
                 setEditableTexto(cmps[i], habilitar, excepcion, limpiar, valor);
                 continue;
             }
