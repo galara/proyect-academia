@@ -5,13 +5,14 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
-import Capa_Negocio.AddForms;
+import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Principal.dp;
 import Recursos.mGrupo;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -1046,8 +1047,8 @@ public class Alumno extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (frmHorario == null) {
             frmHorario = new Horario();
-        }
-        //AddForms.adminInternalFrame(dp, frmHorario);
+        } 
+        adminInternalFrame(dp, frmHorario);
     }//GEN-LAST:event_addHorarioActionPerformed
 
 
