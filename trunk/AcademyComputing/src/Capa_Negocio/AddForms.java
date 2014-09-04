@@ -35,6 +35,7 @@ public class AddForms {
                 dp.remove(vnt);
                 try {
                     dp.add(vnt, JLayeredPane.DEFAULT_LAYER);
+                    vnt.toFront();
                 } catch (IllegalArgumentException ex) {
                     dp.add(vnt, JLayeredPane.DEFAULT_LAYER);
                 }
