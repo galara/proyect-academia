@@ -329,7 +329,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Horarios");
+        setTitle("Grupo");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -485,7 +485,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 30, 250, 21);
+        descripcion.setBounds(180, 30, 250, 25);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -514,7 +514,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         JPanelCampos.add(profesor);
-        profesor.setBounds(180, 110, 250, 21);
+        profesor.setBounds(180, 110, 250, 25);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -589,7 +589,7 @@ public class Grupo extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 80, 17);
+            jLabel7.setBounds(210, 10, 92, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -610,7 +610,7 @@ public class Grupo extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(320, 40, 80, 25);
+            rbCodigo.setBounds(320, 40, 80, 24);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -623,7 +623,7 @@ public class Grupo extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(420, 40, 110, 25);
+            rbNombres.setBounds(420, 40, 110, 24);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
