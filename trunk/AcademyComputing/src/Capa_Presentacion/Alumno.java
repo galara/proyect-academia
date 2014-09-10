@@ -383,7 +383,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Horarios");
+        setTitle("Alumno");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -525,7 +525,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel1.add(codigo);
-        codigo.setBounds(190, 30, 130, 21);
+        codigo.setBounds(190, 30, 130, 25);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -537,7 +537,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         nombres.setName("nombres"); // NOI18N
         jPanel1.add(nombres);
-        nombres.setBounds(190, 60, 250, 21);
+        nombres.setBounds(190, 60, 250, 25);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -548,7 +548,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel1.add(apellidos);
-        apellidos.setBounds(190, 90, 250, 21);
+        apellidos.setBounds(190, 90, 250, 25);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -559,7 +559,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel1.add(direccion);
-        direccion.setBounds(190, 120, 250, 21);
+        direccion.setBounds(190, 120, 250, 25);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -618,7 +618,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         titularnombre.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         titularnombre.setName("descripcion"); // NOI18N
         jPanel3.add(titularnombre);
-        titularnombre.setBounds(190, 30, 250, 21);
+        titularnombre.setBounds(190, 30, 250, 25);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -629,7 +629,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         titularapellido.setEditable(false);
         titularapellido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel3.add(titularapellido);
-        titularapellido.setBounds(190, 70, 250, 21);
+        titularapellido.setBounds(190, 70, 250, 25);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -640,7 +640,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         telefono.setEditable(false);
         telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel3.add(telefono);
-        telefono.setBounds(190, 110, 250, 21);
+        telefono.setBounds(190, 110, 250, 25);
 
         jTabbedPane1.addTab("Titular", jPanel3);
 
@@ -672,7 +672,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         horario.setEditable(false);
         horario.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel2.add(horario);
-        horario.setBounds(170, 60, 270, 21);
+        horario.setBounds(170, 60, 270, 25);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -738,7 +738,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel2.add(profesor);
-        profesor.setBounds(170, 90, 270, 21);
+        profesor.setBounds(170, 90, 270, 25);
 
         addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         addHorario.setToolTipText("Pulse para crear un nuevo Horario");
@@ -806,7 +806,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 80, 17);
+            jLabel7.setBounds(210, 10, 92, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -827,7 +827,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(280, 40, 80, 25);
+            rbCodigo.setBounds(280, 40, 80, 24);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -840,7 +840,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(380, 40, 90, 25);
+            rbNombres.setBounds(380, 40, 90, 24);
 
             rbNombres1.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -853,7 +853,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres1);
-            rbNombres1.setBounds(490, 40, 79, 25);
+            rbNombres1.setBounds(490, 40, 89, 24);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
