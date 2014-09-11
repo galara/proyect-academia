@@ -240,13 +240,14 @@ public class Alumno extends javax.swing.JInternalFrame {
         int fila = alumnos.getSelectedRow();
         String[] cond = {"alumno.codigo"};
         String[] id = {"" + alumnos.getValueAt(fila, 0)};
-        String inner = " INNER JOIN alumno on alumnosengrupo.alumno_idalumno=alumno.idalumno INNER JOIN grupo on alumnosengrupo.grupo_idgrupo=grupo.idgrupo ";
+        String inner = " INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno   INNER JOIN grupo ON alumnosengrupo.grupo_idgrupo = grupo.idgrupo INNER JOIN horario ON grupo.horarios_idhorarios = horario.idhorarios";
 
         if (alumnos.getValueAt(fila, 0) != null) {
 
             String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
             //String[] campos={"alumno.codigo","alumno.nombres","alumno.apellidos","alumno.fechanacimiento","alumno.colegiatura","alumno.cantidadbeca","alumno.fechadeinicio","alumno.estado"};
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.sexo", "alumno.direccion", "alumno.telefono", "alumno.colegiatura", "alumno.fechainscripcion", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.estado",conct};
+            String concat2="concat(grupo.grupo,' ',horario.dia)";
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.sexo", "alumno.direccion", "alumno.telefono", "alumno.colegiatura", "alumno.fechainscripcion", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.estado",concat2};
             //String[] campos = {"grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct, "grupo.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
             //Component[] cmps = {nombres, fechainscripcion,fechainicio,horario, estado};
@@ -902,9 +903,9 @@ public class Alumno extends javax.swing.JInternalFrame {
             boolean seguardo = false;
             String nombreTabla = "alumno";
             String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, colegiatura, fechainscripcion, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, estado";
-            String fechaini = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechafn = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechanac = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechainscripcio = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
             
             mGrupo horari = (mGrupo) grupo.getSelectedItem();
@@ -914,11 +915,16 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(),nombres.getText(),apellidos.getText(),fechanac, sexo.getSelectedItem(),direccion.getText(), telefono.getText(), colegiatura.getValue(),fechaini,beca.getValue(),fechafn, titularnombre.getText(),titularapellido.getText(),estad
+            Object[] valores = {codigo.getText(),nombres.getText(),apellidos.getText(),fechanacimient, sexo.getSelectedItem(),direccion.getText(), telefono.getText(), colegiatura.getText() ,fechainscripcio,beca.getText() ,fechainici, titularnombre.getText(),titularapellido.getText(),estad
             };
-
+            
+            boolean seguardo2 = false;
+            String nombreTabla2 = "alumnosengrupo";
+            String campos2 = "grupo_idgrupo, alumno_idalumno, estado";
+            
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-
+            
+            
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
@@ -974,13 +980,13 @@ public class Alumno extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = alumnos.getSelectedRow();
             String id = (String) "" + alumnos.getValueAt(fila, 0);
-            String columnaId = "idalumno";
+            String columnaId = "codigo";
             
             String nombreTabla = "alumno";
             String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, colegiatura, fechainscripcion, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, estado";
-            String fechaini = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechafn = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechanac = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechainscripcio = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechainici =      FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechanacimient =  FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
             
             mGrupo horari = (mGrupo) grupo.getSelectedItem();
@@ -990,7 +996,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(),nombres.getText(),apellidos.getText(),fechanac, sexo.getSelectedItem(),direccion.getText(), telefono.getText(), colegiatura.getValue(),fechaini,beca.getValue(),fechafn, titularnombre.getText(),titularapellido.getText(),estad,id
+            Object[] valores = {codigo.getText(),nombres.getText(),apellidos.getText(),fechanacimient, sexo.getSelectedItem(),direccion.getText(), telefono.getText(), colegiatura.getText() ,fechainscripcio,beca.getText() ,fechainici, titularnombre.getText(),titularapellido.getText(),estad,id
             };
                       
             seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
