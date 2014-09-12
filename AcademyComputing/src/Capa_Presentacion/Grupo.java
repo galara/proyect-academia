@@ -5,11 +5,13 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Principal.dp;
 import Recursos.mHorario;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -36,10 +38,11 @@ public class Grupo extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Descripción", "Fecha Inicio", "Fecha Fin","Horario", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Descripción", "Fecha Inicio", "Fecha Fin", "Horario", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
+    /*private static  */Horario frmHorario = new Horario();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -91,7 +94,6 @@ public class Grupo extends javax.swing.JInternalFrame {
             rbNombres.setSelected(true);
             rbCodigo.setSelected(false);
             busqueda.requestFocus();
-
             this.dispose();
         }
     }
@@ -191,7 +193,7 @@ public class Grupo extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        String[] campos = {"grupo.idgrupo", "grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct,"grupo.estado"};
+        String[] campos = {"grupo.idgrupo", "grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct, "grupo.estado"};
 
         String[] condiciones = {"grupo.idgrupo"};
         String inner = " INNER JOIN horario on grupo.horarios_idhorarios=horario.idhorarios";
@@ -233,7 +235,7 @@ public class Grupo extends javax.swing.JInternalFrame {
             String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
             String[] campos = {"grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct, "grupo.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {descripcion, fechainicio,fechafin,cHorario, estado};
+            Component[] cmps = {descripcion, fechainicio, fechafin, cHorario, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             peticiones.getRegistroSeleccionado(cmps, "grupo", campos, cond, id, inner, hashHorario);
@@ -247,7 +249,9 @@ public class Grupo extends javax.swing.JInternalFrame {
     }
 
     public void profesor() {
-        if (cHorario.getSelectedIndex() != -1) {
+        if (cHorario.getSelectedIndex() == 0) {
+            profesor.setText("");
+        } else if (cHorario.getSelectedIndex() != -1) {
             mHorario horari = (mHorario) cHorario.getSelectedItem();
             String[] id = {horari.getID()};
 
@@ -313,6 +317,8 @@ public class Grupo extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         fechafin = new com.toedter.calendar.JDateChooser();
+        addHorario = new javax.swing.JButton();
+        updatecombo = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         grupos = new javax.swing.JTable();
@@ -407,6 +413,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
+        bntEliminar.setEnabled(false);
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -467,25 +474,26 @@ public class Grupo extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 110, 80, 20);
+        jLabel3.setBounds(90, 70, 80, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 30, 150, 21);
+        jLabel6.setBounds(450, 70, 150, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 110, 110, 20);
+        jLabel4.setBounds(490, 30, 110, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
+        descripcion.setNextFocusableComponent(cHorario);
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 30, 250, 25);
+        descripcion.setBounds(180, 30, 250, 21);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -493,9 +501,10 @@ public class Grupo extends javax.swing.JInternalFrame {
         fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechainicio.setNextFocusableComponent(fechafin);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(610, 30, 130, 21);
+        fechainicio.setBounds(610, 70, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -503,30 +512,32 @@ public class Grupo extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
+        estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
-        estado.setBounds(610, 110, 130, 21);
+        estado.setBounds(610, 30, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
         cHorario.setName("Horario"); // NOI18N
+        cHorario.setNextFocusableComponent(estado);
         JPanelCampos.add(cHorario);
-        cHorario.setBounds(180, 70, 250, 21);
+        cHorario.setBounds(180, 110, 250, 21);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         JPanelCampos.add(profesor);
-        profesor.setBounds(180, 110, 250, 25);
+        profesor.setBounds(180, 70, 250, 21);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Horario:");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(90, 70, 80, 20);
+        jLabel5.setBounds(90, 110, 80, 20);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Fecha Fin:");
         JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(507, 70, 90, 17);
+        jLabel9.setBounds(510, 110, 90, 17);
 
         fechafin.setDate(Calendar.getInstance().getTime());
         fechafin.setDateFormatString("dd/MM/yyyy");
@@ -536,7 +547,28 @@ public class Grupo extends javax.swing.JInternalFrame {
         fechafin.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechafin.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechafin);
-        fechafin.setBounds(610, 70, 130, 21);
+        fechafin.setBounds(610, 110, 130, 21);
+
+        addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
+        addHorario.setToolTipText("Pulse para crear un nuevo Horario");
+        addHorario.setFocusable(false);
+        addHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addHorarioActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(addHorario);
+        addHorario.setBounds(20, 100, 40, 40);
+
+        updatecombo.setEnabled(false);
+        updatecombo.setFocusable(false);
+        updatecombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatecomboActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(updatecombo);
+        updatecombo.setBounds(430, 110, 20, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -589,7 +621,7 @@ public class Grupo extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 92, 17);
+            jLabel7.setBounds(210, 10, 80, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -610,7 +642,7 @@ public class Grupo extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(320, 40, 80, 24);
+            rbCodigo.setBounds(320, 40, 80, 25);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -623,7 +655,7 @@ public class Grupo extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(420, 40, 110, 24);
+            rbNombres.setBounds(420, 40, 110, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -777,6 +809,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        busqueda.setText("");
         busqueda.requestFocus();
 
     }//GEN-LAST:event_bntCancelarActionPerformed
@@ -814,11 +847,26 @@ public class Grupo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_gruposKeyPressed
 
+    private void addHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHorarioActionPerformed
+        // TODO add your handling code here:
+        if (frmHorario == null) {
+            frmHorario = new Horario();
+        }
+        adminInternalFrame(dp, frmHorario);
+        updatecombo.setEnabled(true);
+    }//GEN-LAST:event_addHorarioActionPerformed
+
+    private void updatecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatecomboActionPerformed
+        // TODO add your handling code here:
+        llenarcombo();
+    }//GEN-LAST:event_updatecomboActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
+    private javax.swing.JButton addHorario;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -847,5 +895,6 @@ public class Grupo extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
+    private javax.swing.JButton updatecombo;
     // End of variables declaration//GEN-END:variables
 }

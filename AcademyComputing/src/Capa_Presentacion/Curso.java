@@ -5,11 +5,13 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Principal.dp;
 import Recursos.mHorario;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -40,7 +42,7 @@ public class Curso extends javax.swing.JInternalFrame {
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
-
+    private static Horario frmHorario = new Horario();
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
     /**
@@ -91,7 +93,6 @@ public class Curso extends javax.swing.JInternalFrame {
             rbNombres.setSelected(true);
             rbCodigo.setSelected(false);
             busqueda.requestFocus();
-
             this.dispose();
         }
     }
@@ -247,7 +248,9 @@ public class Curso extends javax.swing.JInternalFrame {
     }
 
     public void profesor() {
-        if (cHorario.getSelectedIndex() != -1) {
+        if (cHorario.getSelectedIndex() == 0) {
+            profesor.setText("");
+        } else if (cHorario.getSelectedIndex() != -1) {
             mHorario horari = (mHorario) cHorario.getSelectedItem();
             String[] id = {horari.getID()};
 
@@ -311,6 +314,8 @@ public class Curso extends javax.swing.JInternalFrame {
         cHorario = new javax.swing.JComboBox();
         profesor = new elaprendiz.gui.textField.TextField();
         jLabel5 = new javax.swing.JLabel();
+        addHorario = new javax.swing.JButton();
+        updatecombo = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         curso = new javax.swing.JTable();
@@ -405,6 +410,7 @@ public class Curso extends javax.swing.JInternalFrame {
         bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
+        bntEliminar.setEnabled(false);
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -459,31 +465,32 @@ public class Curso extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(70, 30, 100, 20);
+        jLabel1.setBounds(40, 30, 100, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 110, 80, 20);
+        jLabel3.setBounds(460, 30, 100, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 30, 150, 21);
+        jLabel6.setBounds(460, 110, 100, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 70, 110, 20);
+        jLabel4.setBounds(460, 70, 100, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
+        descripcion.setNextFocusableComponent(cHorario);
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 30, 250, 25);
+        descripcion.setBounds(150, 30, 250, 21);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -493,7 +500,7 @@ public class Curso extends javax.swing.JInternalFrame {
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(610, 30, 130, 21);
+        fechainicio.setBounds(570, 110, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -502,23 +509,47 @@ public class Curso extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(610, 70, 130, 21);
+        estado.setBounds(570, 70, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
+        cHorario.setEnabled(false);
         cHorario.setName("Horario"); // NOI18N
+        cHorario.setNextFocusableComponent(estado);
         JPanelCampos.add(cHorario);
-        cHorario.setBounds(180, 70, 250, 21);
+        cHorario.setBounds(150, 70, 250, 21);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        profesor.setFocusable(false);
         JPanelCampos.add(profesor);
-        profesor.setBounds(180, 110, 250, 25);
+        profesor.setBounds(570, 30, 250, 21);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Horario:");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(90, 70, 80, 20);
+        jLabel5.setBounds(60, 70, 80, 20);
+
+        addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
+        addHorario.setToolTipText("Pulse para crear un nuevo Horario");
+        addHorario.setFocusable(false);
+        addHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addHorarioActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(addHorario);
+        addHorario.setBounds(20, 60, 40, 40);
+
+        updatecombo.setEnabled(false);
+        updatecombo.setFocusable(false);
+        updatecombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatecomboActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(updatecombo);
+        updatecombo.setBounds(400, 70, 20, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -571,7 +602,7 @@ public class Curso extends javax.swing.JInternalFrame {
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 92, 17);
+            jLabel7.setBounds(210, 10, 80, 17);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -592,7 +623,7 @@ public class Curso extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(320, 40, 80, 24);
+            rbCodigo.setBounds(320, 40, 80, 25);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -605,7 +636,7 @@ public class Curso extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(420, 40, 110, 24);
+            rbNombres.setBounds(420, 40, 110, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -758,6 +789,7 @@ public class Curso extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        busqueda.setText("");
         busqueda.requestFocus();
 
     }//GEN-LAST:event_bntCancelarActionPerformed
@@ -795,11 +827,26 @@ public class Curso extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cursoKeyPressed
 
+    private void addHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHorarioActionPerformed
+        // TODO add your handling code here:
+        if (frmHorario == null) {
+            frmHorario = new Horario();
+        }
+        adminInternalFrame(dp, frmHorario);
+        updatecombo.setEnabled(true);
+    }//GEN-LAST:event_addHorarioActionPerformed
+
+    private void updatecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatecomboActionPerformed
+        // TODO add your handling code here:
+        llenarcombo();
+    }//GEN-LAST:event_updatecomboActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
+    private javax.swing.JButton addHorario;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -826,5 +873,6 @@ public class Curso extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
+    private javax.swing.JButton updatecombo;
     // End of variables declaration//GEN-END:variables
 }

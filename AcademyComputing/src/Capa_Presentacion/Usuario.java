@@ -28,7 +28,7 @@ public class Usuario extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    String[] titulos = {"Id", "Nombre", "Usuario", "Password", "Estado", "Fecha Alta"};//Titulos para Jtabla
+    String[] titulos = {"Código", "Nombre", "Usuario", "Password", "Estado", "Fecha Alta"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
@@ -121,8 +121,8 @@ public class Usuario extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"idusuario", "nombre", "usuario", "password", "estado", "fechacreacion"};
-        String[] condiciones = {"idusuario"};
+        String[] campos = {"usuario.idusuario", "usuario.nombre", "usuario.usuario", "usuario.password", "usuario.estado", "usuario.fechacreacion"};
+        String[] condiciones = {"usuario.idusuario"};
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -139,13 +139,13 @@ public class Usuario extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "usuario", campos, "nombre", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario.nombre", Dato, "");
         }
         if (this.rbApellidos.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario.usuario", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(usuarios);
     }
@@ -297,6 +297,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
+        bntEliminar.setEnabled(false);
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -369,13 +370,13 @@ public class Usuario extends javax.swing.JInternalFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Alta:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 60, 150, 21);
+        jLabel6.setBounds(450, 120, 150, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 120, 110, 20);
+        jLabel4.setBounds(490, 60, 110, 20);
 
         nombres.setEditable(false);
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -394,7 +395,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         password.setEditable(false);
         password.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         password.setName("password"); // NOI18N
-        password.setNextFocusableComponent(fecharegistro);
+        password.setNextFocusableComponent(estado);
         JPanelCampos.add(password);
         password.setBounds(180, 120, 250, 21);
 
@@ -406,7 +407,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fecharegistro);
-        fecharegistro.setBounds(610, 60, 160, 21);
+        fecharegistro.setBounds(610, 120, 160, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -416,7 +417,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(610, 120, 160, 21);
+        estado.setBounds(610, 60, 160, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -657,6 +658,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        busqueda.setText("");
         busqueda.requestFocus();
 
     }//GEN-LAST:event_bntCancelarActionPerformed

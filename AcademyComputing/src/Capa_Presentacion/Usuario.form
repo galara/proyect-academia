@@ -146,6 +146,7 @@
                   <Connection code="KeyEvent.VK_E" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntEliminarActionPerformed"/>
@@ -272,7 +273,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="450" y="60" width="150" height="21"/>
+                  <AbsoluteConstraints x="450" y="120" width="150" height="21"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -286,7 +287,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="490" y="120" width="110" height="20"/>
+                  <AbsoluteConstraints x="490" y="60" width="110" height="20"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -326,7 +327,7 @@
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="name" type="java.lang.String" value="password" noResource="true"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="fecharegistro"/>
+                  <ComponentRef name="estado"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -357,7 +358,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="610" y="60" width="160" height="21"/>
+                  <AbsoluteConstraints x="610" y="120" width="160" height="21"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -379,7 +380,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="610" y="120" width="160" height="21"/>
+                  <AbsoluteConstraints x="610" y="60" width="160" height="21"/>
                 </Constraint>
               </Constraints>
             </Component>

@@ -76,7 +76,6 @@ public class Profesor extends javax.swing.JInternalFrame {
             rbCodigo.setSelected(false);
             rbApellidos.setSelected(false);
             busqueda.requestFocus();
-
             this.dispose();
         }
     }
@@ -306,6 +305,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
+        bntEliminar.setEnabled(false);
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -384,19 +384,19 @@ public class Profesor extends javax.swing.JInternalFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 30, 150, 21);
+        jLabel6.setBounds(450, 120, 150, 21);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel9.setText("Telefono:");
         JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(490, 90, 110, 20);
+        jLabel9.setBounds(490, 60, 110, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 120, 110, 20);
+        jLabel4.setBounds(490, 90, 110, 20);
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -422,7 +422,7 @@ public class Profesor extends javax.swing.JInternalFrame {
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        direccion.setNextFocusableComponent(fecharegistro);
+        direccion.setNextFocusableComponent(identificacion);
         JPanelCampos.add(direccion);
         direccion.setBounds(180, 120, 250, 21);
 
@@ -432,24 +432,23 @@ public class Profesor extends javax.swing.JInternalFrame {
         fecharegistro.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fecharegistro.setNextFocusableComponent(identificacion);
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fecharegistro);
-        fecharegistro.setBounds(610, 30, 160, 21);
+        fecharegistro.setBounds(610, 120, 160, 21);
 
         identificacion.setEditable(false);
         identificacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         identificacion.setNextFocusableComponent(telefono);
         identificacion.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(identificacion);
-        identificacion.setBounds(610, 60, 160, 21);
+        identificacion.setBounds(610, 30, 160, 21);
 
         telefono.setEditable(false);
         telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         telefono.setNextFocusableComponent(estado);
         telefono.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(telefono);
-        telefono.setBounds(610, 90, 160, 21);
+        telefono.setBounds(610, 60, 160, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -457,14 +456,15 @@ public class Profesor extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
+        estado.setNextFocusableComponent(fecharegistro);
         JPanelCampos.add(estado);
-        estado.setBounds(610, 120, 160, 21);
+        estado.setBounds(610, 90, 160, 21);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Identificación:");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(503, 60, 100, 17);
+        jLabel5.setBounds(500, 30, 100, 17);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -719,6 +719,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        busqueda.setText("");
         busqueda.requestFocus();
 
     }//GEN-LAST:event_bntCancelarActionPerformed
