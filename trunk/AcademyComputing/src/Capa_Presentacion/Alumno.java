@@ -55,6 +55,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
         llenarcombo();
+        limpiar();
         grupo.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -268,7 +269,11 @@ public class Alumno extends javax.swing.JInternalFrame {
     }
 
     public void profesor() {
-        if (grupo.getSelectedIndex() != -1) {
+        if (grupo.getSelectedIndex() == 0) {
+            profesor.setText("");
+            horario.setText("");
+            colegiatura.setValue(null);
+        } else if (grupo.getSelectedIndex() != -1) {
             mGrupo horari = (mGrupo) grupo.getSelectedItem();
             String[] id = {horari.getID()};
 
@@ -297,17 +302,20 @@ public class Alumno extends javax.swing.JInternalFrame {
                         }
                         profesor.setEditable(false);
                         horario.setEditable(false);
-                        colegiatura.setEditable(false);
+                        //colegiatura.setEditable(false);
                     } catch (SQLException e) {
                         profesor.setEditable(false);
                         horario.setEditable(false);
-                        colegiatura.setEditable(false);
+                        //colegiatura.setEditable(false);
                         JOptionPane.showInternalMessageDialog(this, e);
                     }
                 }
 
             }
         }
+
+        System.out.print("................." + grupo.getSelectedIndex());
+
     }
 
     public void idasignagrupo(String codigo) {
@@ -317,9 +325,9 @@ public class Alumno extends javax.swing.JInternalFrame {
         ResultSet rs;
         AccesoDatos ac = new AccesoDatos();
         String[] cond = {"alumno.codigo"};
-        String[] campos = {"alumno.idalumno","alumnosengrupo.idasignagrupo"};
-        String inner=" inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.alumno_idalumno ";
-        
+        String[] campos = {"alumno.idalumno", "alumnosengrupo.idasignagrupo"};
+        String inner = " inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.alumno_idalumno ";
+
         rs = ac.getRegistros("alumno", campos, cond, id, inner);
 
         if (rs != null) {
@@ -337,7 +345,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     public void idalumno(String codigo) {
 
         String[] id = {codigo};
@@ -347,7 +355,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         String[] cond = {"alumno.codigo"};
         String[] campos = {"alumno.idalumno"};
         //String inner=" inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.idasignagrupo ";
-        
+
         rs = ac.getRegistros("alumno", campos, cond, id, "");
 
         if (rs != null) {
@@ -365,6 +373,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -584,6 +593,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        codigo.setName("codigo"); // NOI18N
         jPanel1.add(codigo);
         codigo.setBounds(190, 30, 130, 21);
 
@@ -607,6 +617,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        apellidos.setName("apellidos"); // NOI18N
         jPanel1.add(apellidos);
         apellidos.setBounds(190, 90, 250, 21);
 
@@ -638,7 +649,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         fechanacimiento.setBounds(610, 30, 130, 21);
 
         sexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Hombre", "Mujer" }));
-        sexo.setName("Horario"); // NOI18N
+        sexo.setName("sexo"); // NOI18N
         jPanel1.add(sexo);
         sexo.setBounds(610, 60, 130, 21);
 
@@ -711,13 +722,13 @@ public class Alumno extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(70, 90, 80, 20);
+        jLabel3.setBounds(470, 60, 80, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Incripción:");
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(510, 30, 150, 21);
+        jLabel6.setBounds(0, 60, 150, 21);
 
         fechainscripcion.setDate(Calendar.getInstance().getTime());
         fechainscripcion.setDateFormatString("dd/MM/yyyy");
@@ -727,18 +738,18 @@ public class Alumno extends javax.swing.JInternalFrame {
         fechainscripcion.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechainscripcion.setPreferredSize(new java.awt.Dimension(120, 22));
         jPanel2.add(fechainscripcion);
-        fechainscripcion.setBounds(680, 30, 130, 21);
+        fechainscripcion.setBounds(170, 60, 130, 21);
 
         horario.setEditable(false);
         horario.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel2.add(horario);
-        horario.setBounds(170, 60, 270, 21);
+        horario.setBounds(570, 30, 270, 21);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Fecha Inicio:");
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(550, 60, 110, 17);
+        jLabel9.setBounds(40, 90, 110, 17);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -748,7 +759,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         jPanel2.add(fechainicio);
-        fechainicio.setBounds(680, 60, 130, 21);
+        fechainicio.setBounds(170, 90, 130, 21);
 
         grupo.setModel(modelCombo = new DefaultComboBoxModel());
         grupo.setName("Horario"); // NOI18N
@@ -765,40 +776,42 @@ public class Alumno extends javax.swing.JInternalFrame {
         beca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         beca.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         beca.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        beca.setName("beca"); // NOI18N
         beca.setPreferredSize(new java.awt.Dimension(80, 23));
         jPanel2.add(beca);
-        beca.setBounds(170, 120, 80, 23);
+        beca.setBounds(570, 120, 80, 23);
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel16.setText("Beca:");
         jPanel2.add(jLabel16);
-        jLabel16.setBounds(40, 120, 110, 20);
+        jLabel16.setBounds(440, 120, 110, 20);
 
         colegiatura.setEditable(false);
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        colegiatura.setName("colegiatura"); // NOI18N
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         jPanel2.add(colegiatura);
-        colegiatura.setBounds(370, 120, 70, 23);
+        colegiatura.setBounds(570, 90, 80, 23);
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel19.setText("Colegiatura:");
         jPanel2.add(jLabel19);
-        jLabel19.setBounds(260, 120, 100, 20);
+        jLabel19.setBounds(460, 90, 90, 20);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Horario:");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(70, 60, 80, 20);
+        jLabel5.setBounds(470, 30, 80, 20);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel2.add(profesor);
-        profesor.setBounds(170, 90, 270, 21);
+        profesor.setBounds(570, 60, 270, 21);
 
         addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         addHorario.setToolTipText("Pulse para crear un nuevo Horario");
@@ -808,7 +821,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(addHorario);
-        addHorario.setBounds(30, 50, 40, 40);
+        addHorario.setBounds(10, 10, 40, 40);
 
         updatecombo.setEnabled(false);
         updatecombo.addActionListener(new java.awt.event.ActionListener() {
@@ -923,10 +936,16 @@ public class Alumno extends javax.swing.JInternalFrame {
             });
             JPanelBusqueda.add(rbNombres1);
             rbNombres1.setBounds(490, 40, 79, 25);
+
+            idalumno.setVisible(false);
+            idalumno.setOpaque(false);
             JPanelBusqueda.add(idalumno);
-            idalumno.setBounds(40, 20, 59, 20);
+            idalumno.setBounds(0, 20, 20, 20);
+
+            idasignagrupo.setVisible(false);
+            idasignagrupo.setOpaque(false);
             JPanelBusqueda.add(idasignagrupo);
-            idasignagrupo.setBounds(40, 40, 59, 20);
+            idasignagrupo.setBounds(0, 40, 20, 20);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -965,7 +984,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+        if (Utilidades.esObligatorio(this.jPanel1, true) & (Utilidades.esObligatorio(this.jPanel2, true))) {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -1080,16 +1099,16 @@ public class Alumno extends javax.swing.JInternalFrame {
 
             String nombreTabla2 = "alumnosengrupo";
             String campos2 = "grupo_idgrupo, alumno_idalumno, estado";
-            String columnaId2="idasignagrupo";
-            
+            String columnaId2 = "idasignagrupo";
+
             if (seguardo == 1) {
                 idasignagrupo(id);
-                String idasignagrup=idasignagrupo.getText();
-                String idalumn=idalumno.getText();
-                
-                Object[] valores2 = {idgrupo, idalumn, 1,idasignagrup};
+                String idasignagrup = idasignagrupo.getText();
+                String idalumn = idalumno.getText();
+
+                Object[] valores2 = {idgrupo, idalumn, 1, idasignagrup};
                 seguardo = peticiones.actualizarRegistro(nombreTabla2, campos2, valores2, columnaId2, idasignagrup);
-                if (seguardo==1) {
+                if (seguardo == 1) {
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                     MostrarDatos(busqueda.getText());
                     idasignagrupo.setText("");
