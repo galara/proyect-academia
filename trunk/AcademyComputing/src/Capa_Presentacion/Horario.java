@@ -5,12 +5,14 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Principal.dp;
 import Recursos.mProfesor;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -43,6 +45,7 @@ public class Horario extends javax.swing.JInternalFrame {
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
+    private static Profesor frmProfesor = new Profesor();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -89,7 +92,6 @@ public class Horario extends javax.swing.JInternalFrame {
             rbCodigo.setSelected(false);
             rbDia.setSelected(false);
             busqueda.requestFocus();
-
             this.dispose();
         }
     }
@@ -304,6 +306,8 @@ public class Horario extends javax.swing.JInternalFrame {
         colegiatura = new javax.swing.JFormattedTextField();
         profesor = new javax.swing.JComboBox();
         dia = new javax.swing.JComboBox();
+        addHorario = new javax.swing.JButton();
+        updatecombo = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         horarios = new javax.swing.JTable();
@@ -399,6 +403,7 @@ public class Horario extends javax.swing.JInternalFrame {
         bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
+        bntEliminar.setEnabled(false);
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -477,13 +482,13 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 30, 150, 21);
+        jLabel6.setBounds(450, 150, 150, 21);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Colegiatura:");
+        jLabel9.setText("Colegiatura Q:");
         JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(490, 90, 110, 20);
+        jLabel9.setBounds(494, 90, 110, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -509,13 +514,13 @@ public class Horario extends javax.swing.JInternalFrame {
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
         fechainicio.setEnabled(false);
+        fechainicio.setFocusable(false);
         fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fechainicio.setNextFocusableComponent(inscripcion);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(610, 30, 130, 21);
+        fechainicio.setBounds(610, 150, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -523,14 +528,15 @@ public class Horario extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
+        estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
         estado.setBounds(610, 120, 130, 21);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel11.setText("Inscripción:");
+        jLabel11.setText("Inscripción Q:");
         JPanelCampos.add(jLabel11);
-        jLabel11.setBounds(464, 60, 140, 17);
+        jLabel11.setBounds(494, 60, 110, 17);
 
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
@@ -544,7 +550,7 @@ public class Horario extends javax.swing.JInternalFrame {
         horaa.setEditor(de2);
         horaa.setEnabled(false);
         horaa.setName("horaa"); // NOI18N
-        horaa.setNextFocusableComponent(fechainicio);
+        horaa.setNextFocusableComponent(inscripcion);
         JPanelCampos.add(horaa);
         horaa.setBounds(330, 150, 100, 21);
 
@@ -589,6 +595,27 @@ public class Horario extends javax.swing.JInternalFrame {
         dia.setNextFocusableComponent(profesor);
         JPanelCampos.add(dia);
         dia.setBounds(180, 90, 250, 21);
+
+        addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
+        addHorario.setToolTipText("Pulse para crear un nuevo Horario");
+        addHorario.setFocusable(false);
+        addHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addHorarioActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(addHorario);
+        addHorario.setBounds(20, 110, 40, 40);
+
+        updatecombo.setEnabled(false);
+        updatecombo.setFocusable(false);
+        updatecombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatecomboActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(updatecombo);
+        updatecombo.setBounds(430, 120, 20, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -842,6 +869,7 @@ public class Horario extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        busqueda.setText("");
         busqueda.requestFocus();
 
     }//GEN-LAST:event_bntCancelarActionPerformed
@@ -888,11 +916,26 @@ public class Horario extends javax.swing.JInternalFrame {
         busqueda.requestFocus();
     }//GEN-LAST:event_rbDiaActionPerformed
 
+    private void addHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHorarioActionPerformed
+        // TODO add your handling code here:
+        if (frmProfesor == null) {
+            frmProfesor = new Profesor();
+        }
+        adminInternalFrame(dp, frmProfesor);  
+        updatecombo.setEnabled(true);
+    }//GEN-LAST:event_addHorarioActionPerformed
+
+    private void updatecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatecomboActionPerformed
+        // TODO add your handling code here:
+        llenarcombo();
+    }//GEN-LAST:event_updatecomboActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
+    private javax.swing.JButton addHorario;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -930,5 +973,6 @@ public class Horario extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbDia;
     private javax.swing.JRadioButton rbNombres;
+    private javax.swing.JButton updatecombo;
     // End of variables declaration//GEN-END:variables
 }

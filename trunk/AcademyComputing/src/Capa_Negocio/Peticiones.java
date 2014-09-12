@@ -98,7 +98,7 @@ public class Peticiones extends AccesoDatos {
             rs = this.getRegistros(tabla, campos, campocondicion, condicionid, inner);
             int cantcampos = campos.length;
 
-            if (rs != null) {
+            //if (rs != null) {
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     rs.beforeFirst();//regresa el puntero al primer registro
 
@@ -114,7 +114,7 @@ public class Peticiones extends AccesoDatos {
                                 fila[i] = "Activo";
                             }
                             if (fila[i].equals(false)) {
-                                fila[i] = "Retirado";
+                                fila[i] = "Inactivo";
                             }
                             if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
                                 fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
@@ -123,8 +123,9 @@ public class Peticiones extends AccesoDatos {
                         modelo.addRow(fila);
                     }
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+            //} 
+            else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
             rs.close();
             return modelo;
@@ -151,7 +152,7 @@ public class Peticiones extends AccesoDatos {
         try {
             rs = this.selectPorLike(tabla, campos, campocondicion, condicionid, inner);
             int cantcampos = campos.length;
-            if (rs != null) {
+            //if (rs != null) {
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     //int count = 0;
                     rs.beforeFirst();//regresa el puntero al primer registro
@@ -169,7 +170,7 @@ public class Peticiones extends AccesoDatos {
                                     fila[i] = "Activo";
                                 }
                                 if (fila[i].equals(false)) {
-                                    fila[i] = "Retirado";
+                                    fila[i] = "Inactivo";
                                 }
                                 if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
                                     fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
@@ -180,8 +181,9 @@ public class Peticiones extends AccesoDatos {
                     }
 
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+            //} 
+            else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
             rs.close();
             return modelo;
@@ -211,7 +213,7 @@ public class Peticiones extends AccesoDatos {
             int cantcampos = campos.length;
             Object[] fila = new Object[cantcampos];
 
-            if (rs != null) {
+            //if (rs != null) {
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     rs.beforeFirst();//regresa el puntero al primer registro
 
@@ -251,7 +253,7 @@ public class Peticiones extends AccesoDatos {
                                     tmp.setSelected(true);
                                     tmp.setBackground(new java.awt.Color(102, 204, 0));
                                 } else {
-                                    tmp.setText("Retirado");
+                                    tmp.setText("Inactivo");
                                     tmp.setSelected(false);
                                     tmp.setBackground(Color.red);
                                 }
@@ -260,8 +262,9 @@ public class Peticiones extends AccesoDatos {
                     }
 
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+            //} 
+            else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
             rs.close();
 
