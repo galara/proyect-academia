@@ -15,7 +15,9 @@ public class Principal extends javax.swing.JFrame {
     private static Usuario frmUsuario = new Usuario();
     private static Grupo frmGrupo = new Grupo();
     private static Alumno frmAlumno = new Alumno();
-
+    private static Ciclo frmCiclo = new Ciclo();
+    private static OtrosPagos frmOtrosPagos = new OtrosPagos();
+    
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -73,8 +75,10 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        Ciclo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -181,6 +185,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem4);
 
+        jMenuItem5.setText("Otros Pagos");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Sistema");
@@ -193,6 +205,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+
+        Ciclo.setText("Ciclo Escolar");
+        Ciclo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CicloActionPerformed(evt);
+            }
+        });
+        jMenu2.add(Ciclo);
 
         jMenuBar1.add(jMenu2);
 
@@ -260,6 +280,22 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmAlumno);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void CicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CicloActionPerformed
+        // TODO add your handling code here:
+        if (frmCiclo == null) {
+            frmCiclo = new Ciclo();
+        }
+        AddForms.adminInternalFrame(dp, frmCiclo);
+    }//GEN-LAST:event_CicloActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        if (frmOtrosPagos == null) {
+            frmOtrosPagos = new OtrosPagos();
+        }
+        AddForms.adminInternalFrame(dp, frmOtrosPagos);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -277,6 +313,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Ciclo;
     public static javax.swing.JDesktopPane dp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -288,6 +325,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mHoraio;

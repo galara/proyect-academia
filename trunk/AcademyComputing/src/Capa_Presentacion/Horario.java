@@ -41,7 +41,7 @@ public class Horario extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor","Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
@@ -202,13 +202,13 @@ public class Horario extends javax.swing.JInternalFrame {
         String[] condiciones = {"horario.codigo"};
         String[] Id = {Dato};
         String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
-        
+
         if (this.rbCodigo.isSelected()) {
             if (!Dato.isEmpty()) {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id,inner);
+                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id, inner);
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -217,13 +217,13 @@ public class Horario extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.descripcion", Dato,inner);
+            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.descripcion", Dato, inner);
         }
         if (this.rbDia.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.dia", Dato,inner);
+            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.dia", Dato, inner);
         }
         Utilidades.ajustarAnchoColumnas(horarios);
     }
@@ -783,6 +783,10 @@ public class Horario extends javax.swing.JInternalFrame {
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -816,6 +820,10 @@ public class Horario extends javax.swing.JInternalFrame {
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -848,7 +856,7 @@ public class Horario extends javax.swing.JInternalFrame {
                 estad = 1;
             }
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, inscripcion.getText(),colegiatura.getText(), estad, id};
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, inscripcion.getText(), colegiatura.getText(), estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -921,7 +929,7 @@ public class Horario extends javax.swing.JInternalFrame {
         if (frmProfesor == null) {
             frmProfesor = new Profesor();
         }
-        adminInternalFrame(dp, frmProfesor);  
+        adminInternalFrame(dp, frmProfesor);
         updatecombo.setEnabled(true);
     }//GEN-LAST:event_addHorarioActionPerformed
 
