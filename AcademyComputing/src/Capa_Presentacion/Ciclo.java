@@ -13,8 +13,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Calendar;
+import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -24,11 +26,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author GLARA
  */
-public class Profesor extends javax.swing.JInternalFrame {
+public class Ciclo extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    String[] titulos = {"Codigo", "Nombres", "Apellidos", "Telefono", "Estado", "Fecha Inicio"};//Titulos para Jtabla
+    DefaultComboBoxModel modelCombo;
+    String[] titulos = {"Id", "Descripción", "Fecha Inicio", "Fecha Fin", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
@@ -37,7 +40,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     /**
      * Creates new form Cliente
      */
-    public Profesor() {
+    public Ciclo() {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
@@ -74,7 +77,6 @@ public class Profesor extends javax.swing.JInternalFrame {
             busqueda.setText("");
             rbNombres.setSelected(true);
             rbCodigo.setSelected(false);
-            rbApellidos.setSelected(false);
             busqueda.requestFocus();
             this.dispose();
         }
@@ -91,24 +93,24 @@ public class Profesor extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-        while (profesores.getRowCount() != 0) {
+        while (cicloescolar.getRowCount() != 0) {
             model.removeRow(0);
         }
     }
 
+    /*
+     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
+     *y se los envia a un metodo interno getRegistroCombo() 
+     *
+     */
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
 
-        TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
-        TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
-        TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 45, true);
-        TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        TipoFiltro.setFiltraEntrada(identificacion.getDocument(), FiltroCampos.NUM_LETRAS, 45, true);
-        TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 16, false);
-        TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
+        TipoFiltro.setFiltraEntrada(año.getDocument(), FiltroCampos.SOLO_NUMEROS, 5, true);
+        TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.SOLO_NUMEROS, 5, true);
     }
 
     /* Este metodo recibe de el campo busqueda un parametro que es el que servirá para realizar la cunsulta
@@ -123,8 +125,10 @@ public class Profesor extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado", "fechainicio"};
-        String[] condiciones = {"codigo"};
+        //String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
+        String[] campos = {"cicloescolar.idañoescolar", "cicloescolar.descripcion", "cicloescolar.fechainicio", "cicloescolar.fechacierre", "cicloescolar.estado"};
+
+        String[] condiciones = {"cicloescolar.idañoescolar"};
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -132,7 +136,7 @@ public class Profesor extends javax.swing.JInternalFrame {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "profesor", campos, condiciones, Id, "");
+                model = peticiones.getRegistroPorPks(model, "cicloescolar", campos, condiciones, Id, "");
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -141,32 +145,28 @@ public class Profesor extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "profesor", campos, "nombre", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "cicloescolar", campos, "cicloescolar.descripcion", Dato, "");
         }
-        if (this.rbApellidos.isSelected()) {
-            removejtable();
-            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "profesor", campos, "apellido", Dato, "");
-        }
-        Utilidades.ajustarAnchoColumnas(profesores);
+        Utilidades.ajustarAnchoColumnas(cicloescolar);
     }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
-     * de la parte superior del formulario con los datos obtenidos.
+     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
      * 
      * @return 
      */
     private void filaseleccionada() {
-        int fila = profesores.getSelectedRow();
-        String[] cond = {"codigo"};
-        String[] id = {(String) profesores.getValueAt(fila, 0)};
-        if (profesores.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"codigo", "nombre", "direccion", "apellido", "identificacion", "telefono", "estado", "fechainicio"};
-            Component[] cmps = {codigo, nombres, direccion, apellidos, identificacion, telefono, estado, fecharegistro};
+        int fila = cicloescolar.getSelectedRow();
+        String[] cond = {"cicloescolar.idañoescolar"};
+        String[] id = {"" + cicloescolar.getValueAt(fila, 0)};
+
+        if (cicloescolar.getValueAt(fila, 0) != null) {
+            String[] campos = {"cicloescolar.descripcion", "cicloescolar.fechainicio", "cicloescolar.fechacierre", "cicloescolar.estado"};
+            Component[] cmps = {año, fechainicio, fechafin, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-            peticiones.getRegistroSeleccionado(cmps, "profesor", campos, cond, id, "", null);
+
+            peticiones.getRegistroSeleccionado(cmps, "cicloescolar", campos, cond, id, "", null);
 
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
@@ -194,31 +194,22 @@ public class Profesor extends javax.swing.JInternalFrame {
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        codigo = new elaprendiz.gui.textField.TextField();
-        nombres = new elaprendiz.gui.textField.TextField();
-        apellidos = new elaprendiz.gui.textField.TextField();
-        direccion = new elaprendiz.gui.textField.TextField();
-        fecharegistro = new com.toedter.calendar.JDateChooser();
-        identificacion = new elaprendiz.gui.textField.TextField();
-        telefono = new elaprendiz.gui.textField.TextField();
+        año = new elaprendiz.gui.textField.TextField();
+        fechainicio = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
-        jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        fechafin = new com.toedter.calendar.JDateChooser();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        profesores = new javax.swing.JTable();
+        cicloescolar = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         busqueda = new elaprendiz.gui.textField.TextField();
         rbCodigo = new javax.swing.JRadioButton();
         rbNombres = new javax.swing.JRadioButton();
-        rbApellidos = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
@@ -227,7 +218,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Profesor");
+        setTitle("Grupo");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -356,99 +347,40 @@ public class Profesor extends javax.swing.JInternalFrame {
         JPanelCampos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         JPanelCampos.setLayout(null);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("Codigo:");
-        JPanelCampos.add(jLabel10);
-        jLabel10.setBounds(90, 30, 80, 17);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Nombres:");
+        jLabel1.setText("Año:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(90, 60, 80, 20);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Apellidos");
-        JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(90, 90, 80, 20);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText("Dirección:");
-        JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 120, 80, 20);
+        jLabel1.setBounds(70, 30, 100, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 120, 150, 21);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Telefono:");
-        JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(490, 60, 110, 20);
+        jLabel6.setBounds(20, 60, 150, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 90, 110, 20);
+        jLabel4.setBounds(60, 130, 110, 20);
 
-        codigo.setEditable(false);
-        codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        codigo.setName("codigo"); // NOI18N
-        codigo.setNextFocusableComponent(nombres);
-        codigo.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(codigo);
-        codigo.setBounds(180, 30, 130, 21);
+        año.setEditable(false);
+        año.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        año.setName("año"); // NOI18N
+        JPanelCampos.add(año);
+        año.setBounds(180, 30, 130, 21);
 
-        nombres.setEditable(false);
-        nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        nombres.setName("nombres"); // NOI18N
-        nombres.setNextFocusableComponent(apellidos);
-        JPanelCampos.add(nombres);
-        nombres.setBounds(180, 60, 250, 21);
-
-        apellidos.setEditable(false);
-        apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        apellidos.setName("apellidos"); // NOI18N
-        apellidos.setNextFocusableComponent(direccion);
-        JPanelCampos.add(apellidos);
-        apellidos.setBounds(180, 90, 250, 21);
-
-        direccion.setEditable(false);
-        direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        direccion.setNextFocusableComponent(identificacion);
-        JPanelCampos.add(direccion);
-        direccion.setBounds(180, 120, 250, 21);
-
-        fecharegistro.setDate(Calendar.getInstance().getTime());
-        fecharegistro.setDateFormatString("dd/MM/yyyy");
-        fecharegistro.setEnabled(false);
-        fecharegistro.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-        fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
-        JPanelCampos.add(fecharegistro);
-        fecharegistro.setBounds(610, 120, 160, 21);
-
-        identificacion.setEditable(false);
-        identificacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        identificacion.setNextFocusableComponent(telefono);
-        identificacion.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(identificacion);
-        identificacion.setBounds(610, 30, 160, 21);
-
-        telefono.setEditable(false);
-        telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        telefono.setNextFocusableComponent(estado);
-        telefono.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(telefono);
-        telefono.setBounds(610, 60, 160, 21);
+        fechainicio.setDate(Calendar.getInstance().getTime());
+        fechainicio.setDateFormatString("dd/MM/yyyy");
+        fechainicio.setEnabled(false);
+        fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+        fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechainicio.setNextFocusableComponent(fechafin);
+        fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
+        JPanelCampos.add(fechainicio);
+        fechainicio.setBounds(180, 60, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -456,15 +388,25 @@ public class Profesor extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
-        estado.setNextFocusableComponent(fecharegistro);
+        estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
-        estado.setBounds(610, 90, 160, 21);
+        estado.setBounds(180, 130, 130, 21);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Identificación:");
-        JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(500, 30, 100, 17);
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Fecha Fin:");
+        JPanelCampos.add(jLabel9);
+        jLabel9.setBounds(80, 100, 90, 17);
+
+        fechafin.setDate(Calendar.getInstance().getTime());
+        fechafin.setDateFormatString("dd/MM/yyyy");
+        fechafin.setEnabled(false);
+        fechafin.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        fechafin.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+        fechafin.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechafin.setPreferredSize(new java.awt.Dimension(120, 22));
+        JPanelCampos.add(fechafin);
+        fechafin.setBounds(180, 100, 130, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -475,35 +417,35 @@ public class Profesor extends javax.swing.JInternalFrame {
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        profesores.setForeground(new java.awt.Color(51, 51, 51));
-        profesores.setModel(model = new DefaultTableModel(null, titulos)
+        cicloescolar.setForeground(new java.awt.Color(51, 51, 51));
+        cicloescolar.setModel(model = new DefaultTableModel(null, titulos)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             });
-            profesores.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            profesores.setFocusCycleRoot(true);
-            profesores.setGridColor(new java.awt.Color(51, 51, 255));
-            profesores.setRowHeight(22);
-            profesores.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            profesores.setSurrendersFocusOnKeystroke(true);
-            profesores.addMouseListener(new java.awt.event.MouseAdapter() {
+            cicloescolar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            cicloescolar.setFocusCycleRoot(true);
+            cicloescolar.setGridColor(new java.awt.Color(51, 51, 255));
+            cicloescolar.setRowHeight(22);
+            cicloescolar.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            cicloescolar.setSurrendersFocusOnKeystroke(true);
+            cicloescolar.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    profesoresMouseClicked(evt);
+                    cicloescolarMouseClicked(evt);
                 }
                 public void mousePressed(java.awt.event.MouseEvent evt) {
-                    profesoresMouseClicked(evt);
+                    cicloescolarMouseClicked(evt);
                 }
             });
-            profesores.addKeyListener(new java.awt.event.KeyAdapter() {
+            cicloescolar.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    profesoresKeyPressed(evt);
+                    cicloescolarKeyPressed(evt);
                 }
             });
-            jScrollPane1.setViewportView(profesores);
-            profesores.getAccessibleContext().setAccessibleName("");
+            jScrollPane1.setViewportView(cicloescolar);
+            cicloescolar.getAccessibleContext().setAccessibleName("");
 
             JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -538,32 +480,20 @@ public class Profesor extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(270, 40, 80, 25);
+            rbCodigo.setBounds(320, 40, 80, 25);
 
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             rbNombres.setForeground(new java.awt.Color(255, 255, 255));
             rbNombres.setSelected(true);
-            rbNombres.setText("Nombres");
+            rbNombres.setText("Descripción");
             rbNombres.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     rbNombresActionPerformed(evt);
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(380, 40, 90, 25);
-
-            rbApellidos.setBackground(new java.awt.Color(51, 153, 255));
-            rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbApellidos.setForeground(new java.awt.Color(255, 255, 255));
-            rbApellidos.setText("apellidos");
-            rbApellidos.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbApellidosActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(rbApellidos);
-            rbApellidos.setBounds(500, 40, 90, 25);
+            rbNombres.setBounds(420, 40, 110, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -574,7 +504,7 @@ public class Profesor extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setText("<--Profesores-->");
+            jLabel8.setText("<--Ciclo Escolar-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
@@ -582,18 +512,21 @@ public class Profesor extends javax.swing.JInternalFrame {
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
+            getAccessibleContext().setAccessibleName("Profesores");
+
             setBounds(0, 0, 893, 512);
         }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+        //llenarcombo();
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        codigo.requestFocus();
+        año.requestFocus();
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -607,19 +540,22 @@ public class Profesor extends javax.swing.JInternalFrame {
         if (resp == 0) {
 
             boolean seguardo = false;
-            String nombreTabla = "profesor";
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            String nombreTabla = "cicloescolar";
+            String campos = "cicloescolar.descripcion, cicloescolar.fechainicio, cicloescolar.fechacierre, cicloescolar.estado";
+            //String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
+            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+            //Para obtener el id en la base de datos
+
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
-                estad, direccion.getText(), telefono.getText(),
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
+            Object[] valores = {año.getText(), fechaini, fechafn, estad
             };
 
-            //try {
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
@@ -630,9 +566,6 @@ public class Profesor extends javax.swing.JInternalFrame {
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             }
-            //} catch (HeadlessException e) {
-            //  JOptionPane.showInternalMessageDialog(this, "Ocurrio un error: "+e,"Error",JOptionPane.ERROR_MESSAGE);
-            //}
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -640,11 +573,11 @@ public class Profesor extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_bntSalirActionPerformed
 
-    private void profesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profesoresMouseClicked
+    private void cicloescolarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cicloescolarMouseClicked
         // TODO add your handling code here:
         filaseleccionada();
 
-    }//GEN-LAST:event_profesoresMouseClicked
+    }//GEN-LAST:event_cicloescolarMouseClicked
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
@@ -652,13 +585,12 @@ public class Profesor extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            int fila = profesores.getSelectedRow();
-            String id = (String) "" + profesores.getValueAt(fila, 0);
-            String nombreTabla = "profesor", nomColumnaCambiar = "estado";
-            String nomColumnaId = "codigo";
+            int fila = cicloescolar.getSelectedRow();
+            String id = (String) "" + cicloescolar.getValueAt(fila, 0);
+            String nombreTabla = "cicloescolar", nomColumnaCambiar = "estado";
+            String nomColumnaId = "idañoescolar";
             int seguardo = 0;
 
-            //try {
             seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
             if (seguardo == 1) {
@@ -671,9 +603,6 @@ public class Profesor extends javax.swing.JInternalFrame {
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             }
-            //} catch (Exception e) {
-            //    msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
-            // }
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
@@ -687,33 +616,32 @@ public class Profesor extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "profesor";
-            String columnaId = "codigo";
+            String nomTabla = "cicloescolar";
+            String columnaId = "idañoescolar";
             int seguardo = 0;
-            int fila = profesores.getSelectedRow();
-            String id = (String) "" + profesores.getValueAt(fila, 0);
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+            int fila = cicloescolar.getSelectedRow();
+            String id = (String) "" + cicloescolar.getValueAt(fila, 0);
+            String campos = "cicloescolar.descripcion, cicloescolar.fechainicio, cicloescolar.fechacierre, cicloescolar.estado";
+            //String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
+            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
-                estad, direccion.getText(), telefono.getText(),
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
-            };
-            // try {
+            Object[] valores = {año.getText(), fechaini, fechafn, estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
             }
-            //} catch (Exception e) {
-            //    msg.Error(ErrorModificar + ": " + e, TituloModificar);
-            // }
-
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 
@@ -735,14 +663,12 @@ public class Profesor extends javax.swing.JInternalFrame {
     private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
         // TODO add your handling code here:
         rbNombres.setSelected(false);
-        rbApellidos.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbCodigoActionPerformed
 
     private void rbNombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombresActionPerformed
         // TODO add your handling code here:
         rbCodigo.setSelected(false);
-        rbApellidos.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbNombresActionPerformed
 
@@ -756,7 +682,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void profesoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profesoresKeyPressed
+    private void cicloescolarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cicloescolarKeyPressed
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == java.awt.event.KeyEvent.VK_SPACE) {
@@ -765,21 +691,14 @@ public class Profesor extends javax.swing.JInternalFrame {
         if (key == java.awt.event.KeyEvent.VK_DOWN || key == java.awt.event.KeyEvent.VK_UP) {
             limpiar();
         }
-    }//GEN-LAST:event_profesoresKeyPressed
-
-    private void rbApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbApellidosActionPerformed
-        // TODO add your handling code here:
-        rbNombres.setSelected(false);
-        rbCodigo.setSelected(false);
-        busqueda.requestFocus();
-    }//GEN-LAST:event_rbApellidosActionPerformed
+    }//GEN-LAST:event_cicloescolarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
-    private elaprendiz.gui.textField.TextField apellidos;
+    private elaprendiz.gui.textField.TextField año;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -787,30 +706,21 @@ public class Profesor extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
-    private elaprendiz.gui.textField.TextField codigo;
-    private elaprendiz.gui.textField.TextField direccion;
+    private javax.swing.JTable cicloescolar;
     private javax.swing.JRadioButton estado;
-    private com.toedter.calendar.JDateChooser fecharegistro;
-    private elaprendiz.gui.textField.TextField identificacion;
+    private com.toedter.calendar.JDateChooser fechafin;
+    private com.toedter.calendar.JDateChooser fechainicio;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private elaprendiz.gui.textField.TextField nombres;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
-    private javax.swing.JTable profesores;
-    private javax.swing.JRadioButton rbApellidos;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
-    private elaprendiz.gui.textField.TextField telefono;
     // End of variables declaration//GEN-END:variables
 }

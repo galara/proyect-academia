@@ -1045,6 +1045,10 @@ public class Alumno extends javax.swing.JInternalFrame {
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                     idalumno.setText("");
                     MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
                     busqueda.requestFocus();
                     JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1079,6 +1083,10 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -1134,6 +1142,10 @@ public class Alumno extends javax.swing.JInternalFrame {
                     MostrarDatos(busqueda.getText());
                     idasignagrupo.setText("");
                     idalumno.setText("");
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
                     busqueda.requestFocus();
                     JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
                 }

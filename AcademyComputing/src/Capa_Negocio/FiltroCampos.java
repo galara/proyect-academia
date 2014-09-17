@@ -146,7 +146,7 @@ public class FiltroCampos extends DocumentFilter {
         boolean encontrado = false;
         char[] noPermitidas = {'\\', '!', '|', '"', '@', '·', '$', '%', '&', '¬', '/',
             '=', '?', '¿', '¡', '^', '[', ']', '+', '*',
-            '¨', '{', 'ç', '}', ',', ';', ':'};
+            '¨', '{', 'ç', '}', ',', ';', ':','\''};
         for (int i = 0; i < noPermitidas.length; i++) {
             if (cr == noPermitidas[i]) {
                 encontrado = true;

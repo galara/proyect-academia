@@ -42,7 +42,8 @@ public class Grupo extends javax.swing.JInternalFrame {
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
-    /*private static  */Horario frmHorario = new Horario();
+    /*private static  */
+    Horario frmHorario = new Horario();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -722,6 +723,10 @@ public class Grupo extends javax.swing.JInternalFrame {
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -755,6 +760,10 @@ public class Grupo extends javax.swing.JInternalFrame {
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
                 MostrarDatos(busqueda.getText());
+                this.bntGuardar.setEnabled(false);
+                this.bntModificar.setEnabled(false);
+                this.bntEliminar.setEnabled(false);
+                this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             }
