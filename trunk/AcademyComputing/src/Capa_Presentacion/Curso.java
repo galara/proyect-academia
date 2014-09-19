@@ -295,6 +295,8 @@ public class Curso extends javax.swing.JInternalFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        popuphorario = new javax.swing.JPopupMenu();
+        Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntNuevo = new elaprendiz.gui.button.ButtonRect();
@@ -315,7 +317,6 @@ public class Curso extends javax.swing.JInternalFrame {
         profesor = new elaprendiz.gui.textField.TextField();
         jLabel5 = new javax.swing.JLabel();
         addHorario = new javax.swing.JButton();
-        updatecombo = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         curso = new javax.swing.JTable();
@@ -326,6 +327,14 @@ public class Curso extends javax.swing.JInternalFrame {
         rbNombres = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+
+        Actualizar.setText("Actualizar");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarActionPerformed(evt);
+            }
+        });
+        popuphorario.add(Actualizar);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -512,6 +521,7 @@ public class Curso extends javax.swing.JInternalFrame {
         estado.setBounds(570, 70, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
+        cHorario.setComponentPopupMenu(popuphorario);
         cHorario.setEnabled(false);
         cHorario.setName("Horario"); // NOI18N
         cHorario.setNextFocusableComponent(estado);
@@ -540,16 +550,6 @@ public class Curso extends javax.swing.JInternalFrame {
         });
         JPanelCampos.add(addHorario);
         addHorario.setBounds(20, 60, 40, 40);
-
-        updatecombo.setEnabled(false);
-        updatecombo.setFocusable(false);
-        updatecombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updatecomboActionPerformed(evt);
-            }
-        });
-        JPanelCampos.add(updatecombo);
-        updatecombo.setBounds(400, 70, 20, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -841,16 +841,16 @@ public class Curso extends javax.swing.JInternalFrame {
             frmHorario = new Horario();
         }
         adminInternalFrame(dp, frmHorario);
-        updatecombo.setEnabled(true);
     }//GEN-LAST:event_addHorarioActionPerformed
 
-    private void updatecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatecomboActionPerformed
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
         // TODO add your handling code here:
         llenarcombo();
-    }//GEN-LAST:event_updatecomboActionPerformed
+    }//GEN-LAST:event_ActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Actualizar;
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
@@ -878,9 +878,9 @@ public class Curso extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
+    private javax.swing.JPopupMenu popuphorario;
     private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
-    private javax.swing.JButton updatecombo;
     // End of variables declaration//GEN-END:variables
 }

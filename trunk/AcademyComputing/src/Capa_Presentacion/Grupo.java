@@ -297,6 +297,8 @@ public class Grupo extends javax.swing.JInternalFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        popuphorario = new javax.swing.JPopupMenu();
+        Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntNuevo = new elaprendiz.gui.button.ButtonRect();
@@ -319,7 +321,6 @@ public class Grupo extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         fechafin = new com.toedter.calendar.JDateChooser();
         addHorario = new javax.swing.JButton();
-        updatecombo = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         grupos = new javax.swing.JTable();
@@ -330,6 +331,16 @@ public class Grupo extends javax.swing.JInternalFrame {
         rbNombres = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+
+        popuphorario.setComponentPopupMenu(popuphorario);
+
+        Actualizar.setText("Actualizar");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarActionPerformed(evt);
+            }
+        });
+        popuphorario.add(Actualizar);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -518,6 +529,7 @@ public class Grupo extends javax.swing.JInternalFrame {
         estado.setBounds(610, 30, 130, 21);
 
         cHorario.setModel(modelCombo = new DefaultComboBoxModel());
+        cHorario.setComponentPopupMenu(popuphorario);
         cHorario.setName("Horario"); // NOI18N
         cHorario.setNextFocusableComponent(estado);
         JPanelCampos.add(cHorario);
@@ -560,16 +572,6 @@ public class Grupo extends javax.swing.JInternalFrame {
         });
         JPanelCampos.add(addHorario);
         addHorario.setBounds(20, 100, 40, 40);
-
-        updatecombo.setEnabled(false);
-        updatecombo.setFocusable(false);
-        updatecombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updatecomboActionPerformed(evt);
-            }
-        });
-        JPanelCampos.add(updatecombo);
-        updatecombo.setBounds(430, 110, 20, 20);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -862,16 +864,16 @@ public class Grupo extends javax.swing.JInternalFrame {
             frmHorario = new Horario();
         }
         adminInternalFrame(dp, frmHorario);
-        updatecombo.setEnabled(true);
     }//GEN-LAST:event_addHorarioActionPerformed
 
-    private void updatecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatecomboActionPerformed
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
         // TODO add your handling code here:
         llenarcombo();
-    }//GEN-LAST:event_updatecomboActionPerformed
+    }//GEN-LAST:event_ActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Actualizar;
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
@@ -901,9 +903,9 @@ public class Grupo extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
+    private javax.swing.JPopupMenu popuphorario;
     private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
-    private javax.swing.JButton updatecombo;
     // End of variables declaration//GEN-END:variables
 }
