@@ -14,10 +14,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Calendar;
-import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -27,12 +25,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author GLARA
  */
-public class OtrosPagos extends javax.swing.JInternalFrame {
+public class Carrera extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Descripción", "Costo Q.", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Código", "Descripción", "Inscripción","Colegiatura","Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
@@ -41,7 +38,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Cliente
      */
-    public OtrosPagos() {
+    public Carrera() {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
@@ -77,8 +74,8 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
             removejtable();
             busqueda.setText("");
             rbNombres.setSelected(true);
-            rbCodigo.setSelected(false);
             busqueda.requestFocus();
+
             this.dispose();
         }
     }
@@ -94,24 +91,20 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-        while (otrospagos.getRowCount() != 0) {
+        while (usuarios.getRowCount() != 0) {
             model.removeRow(0);
         }
     }
 
-    /*
-     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
-     *y se los envia a un metodo interno getRegistroCombo() 
-     *
-     */
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
 
-        TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 45, true);
-        TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 45, true);
+        TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
+        TipoFiltro.setFiltraEntrada(observacion.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
+        TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
     }
 
     /* Este metodo recibe de el campo busqueda un parametro que es el que servirá para realizar la cunsulta
@@ -126,48 +119,50 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        //String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        String[] campos = {"otrospagos.idpago", "otrospagos.descripcion", "otrospagos.costo", "otrospagos.estado"};
-
-        String[] condiciones = {"otrospagos.idpago"};
+        String[] campos = {"carrera.idcarrera", "carrera.descripcion", "carrera.inscripcion", "carrera.colegiatura", "carrera.estado"};
+        String[] condiciones = {"carrera.idcarrera"};
         String[] Id = {Dato};
 
-        if (this.rbCodigo.isSelected()) {
-            if (!Dato.isEmpty()) {
-                removejtable();
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "otrospagos", campos, condiciones, Id, "");
-            } else {
-                JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
-            }
-        }
+//        if (this.rbCodigo.isSelected()) {
+//            if (!Dato.isEmpty()) {
+//                removejtable();
+//                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+//                Utilidades.esObligatorio(this.JPanelCampos, false);
+//                model = peticiones.getRegistroPorPks(model, "usuario", campos, condiciones, Id, "");
+//            } else {
+//                JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
+//            }
+//        }
         if (this.rbNombres.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "otrospagos", campos, "otrospagos.descripcion", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "carrera", campos, "carrera.descripcion", Dato, "");
         }
-        Utilidades.ajustarAnchoColumnas(otrospagos);
+//        if (this.rbApellidos.isSelected()) {
+//            removejtable();
+//            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+//            Utilidades.esObligatorio(this.JPanelCampos, false);
+//            model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario.usuario", Dato, "");
+//        }
+        Utilidades.ajustarAnchoColumnas(usuarios);
     }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
-     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
+     * de la parte superior del formulario con los datos obtenidos.
      * 
      * @return 
      */
     private void filaseleccionada() {
+        int fila = usuarios.getSelectedRow();
+        String[] cond = {"carrera.idcarrera"};
+        String[] id = {"" + usuarios.getValueAt(fila, 0)};
+        if (usuarios.getValueAt(fila, 0) != null) {
 
-        int fila = otrospagos.getSelectedRow();
-        String[] cond = {"otrospagos.idpago"};
-        String[] id = {"" + otrospagos.getValueAt(fila, 0)};
-
-        if (otrospagos.getValueAt(fila, 0) != null) {
-            String[] campos = {"otrospagos.descripcion", "otrospagos.costo", "otrospagos.estado"};
-            Component[] cmps = {descripcion, costo, estado};
+            String[] campos = {"carrera.descripcion", "carrera.inscripcion","carrera.colegiatura", "carrera.estado", "carrera.observacion"};
+            Component[] cmps = {descripcion, inscripcion,colegiatura,estado,observacion};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-
-            peticiones.getRegistroSeleccionado(cmps, "otrospagos", campos, cond, id, "", null);
+            peticiones.getRegistroSeleccionado(cmps, "carrera", campos, cond, id, "", null);
 
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
@@ -196,18 +191,21 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         descripcion = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JRadioButton();
-        costo = new javax.swing.JFormattedTextField();
-        jLabel5 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        inscripcion = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        colegiatura = new javax.swing.JFormattedTextField();
+        observacion = new elaprendiz.gui.textField.TextField();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        otrospagos = new javax.swing.JTable();
+        usuarios = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         busqueda = new elaprendiz.gui.textField.TextField();
-        rbCodigo = new javax.swing.JRadioButton();
         rbNombres = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -217,7 +215,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Grupo");
+        setTitle("Carrera");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -350,42 +348,70 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(70, 30, 100, 20);
+        jLabel1.setBounds(80, 40, 90, 20);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText("Observación:");
+        JPanelCampos.add(jLabel2);
+        jLabel2.setBounds(70, 130, 100, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText("Costo Q:");
+        jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(60, 80, 110, 20);
+        jLabel4.setBounds(490, 40, 110, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 30, 260, 21);
+        descripcion.setBounds(180, 40, 250, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         estado.setForeground(new java.awt.Color(255, 255, 255));
+        estado.setSelected(true);
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(180, 130, 130, 21);
+        estado.setBounds(610, 40, 160, 21);
 
-        costo.setEditable(false);
-        costo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        costo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        costo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        costo.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(costo);
-        costo.setBounds(180, 80, 130, 21);
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel11.setText("Inscripción Q:");
+        JPanelCampos.add(jLabel11);
+        jLabel11.setBounds(60, 70, 110, 17);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Estado:");
-        JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(60, 130, 110, 20);
+        inscripcion.setEditable(false);
+        inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+        inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        inscripcion.setName("inscripcion"); // NOI18N
+        inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
+        JPanelCampos.add(inscripcion);
+        inscripcion.setBounds(180, 70, 130, 21);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setText("Colegiatura Q:");
+        JPanelCampos.add(jLabel9);
+        jLabel9.setBounds(60, 100, 110, 20);
+
+        colegiatura.setEditable(false);
+        colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+        colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        colegiatura.setName("colegiatura"); // NOI18N
+        colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
+        JPanelCampos.add(colegiatura);
+        colegiatura.setBounds(180, 100, 130, 23);
+
+        observacion.setEditable(false);
+        observacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        JPanelCampos.add(observacion);
+        observacion.setBounds(180, 130, 590, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -396,35 +422,35 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        otrospagos.setForeground(new java.awt.Color(51, 51, 51));
-        otrospagos.setModel(model = new DefaultTableModel(null, titulos)
+        usuarios.setForeground(new java.awt.Color(51, 51, 51));
+        usuarios.setModel(model = new DefaultTableModel(null, titulos)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             });
-            otrospagos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            otrospagos.setFocusCycleRoot(true);
-            otrospagos.setGridColor(new java.awt.Color(51, 51, 255));
-            otrospagos.setRowHeight(22);
-            otrospagos.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            otrospagos.setSurrendersFocusOnKeystroke(true);
-            otrospagos.addMouseListener(new java.awt.event.MouseAdapter() {
+            usuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            usuarios.setFocusCycleRoot(true);
+            usuarios.setGridColor(new java.awt.Color(51, 51, 255));
+            usuarios.setRowHeight(22);
+            usuarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            usuarios.setSurrendersFocusOnKeystroke(true);
+            usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    otrospagosMouseClicked(evt);
+                    usuariosMouseClicked(evt);
                 }
                 public void mousePressed(java.awt.event.MouseEvent evt) {
-                    otrospagosMouseClicked(evt);
+                    usuariosMouseClicked(evt);
                 }
             });
-            otrospagos.addKeyListener(new java.awt.event.KeyAdapter() {
+            usuarios.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    otrospagosKeyPressed(evt);
+                    usuariosKeyPressed(evt);
                 }
             });
-            jScrollPane1.setViewportView(otrospagos);
-            otrospagos.getAccessibleContext().setAccessibleName("");
+            jScrollPane1.setViewportView(usuarios);
+            usuarios.getAccessibleContext().setAccessibleName("");
 
             JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -449,18 +475,6 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(300, 10, 250, 27);
 
-            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
-            rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
-            rbCodigo.setText("Codigo");
-            rbCodigo.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbCodigoActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(320, 40, 80, 25);
-
             rbNombres.setBackground(new java.awt.Color(51, 153, 255));
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             rbNombres.setForeground(new java.awt.Color(255, 255, 255));
@@ -472,7 +486,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(420, 40, 110, 25);
+            rbNombres.setBounds(370, 40, 110, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -483,7 +497,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setText("<--Otros Pagos-->");
+            jLabel8.setText("<--Carrera-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
@@ -491,15 +505,12 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
-            getAccessibleContext().setAccessibleName("Profesores");
-
             setBounds(0, 0, 893, 512);
         }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        //llenarcombo();
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
@@ -519,22 +530,16 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         if (resp == 0) {
 
             boolean seguardo = false;
-            String nombreTabla = "otrospagos";
-            String campos = "otrospagos.descripcion, otrospagos.costo, otrospagos.estado";
-            //String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
-            //String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //Para obtener el id en la base de datos
-
+            String nombreTabla = "carrera";
+            String campos = "descripcion, inscripcion, colegiatura,  estado, observacion";
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), costo.getText(), estad
+            Object[] valores = {descripcion.getText(), inscripcion.getText(),colegiatura.getText(), estad,observacion.getText()                
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
@@ -552,11 +557,11 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_bntSalirActionPerformed
 
-    private void otrospagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_otrospagosMouseClicked
+    private void usuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usuariosMouseClicked
         // TODO add your handling code here:
         filaseleccionada();
 
-    }//GEN-LAST:event_otrospagosMouseClicked
+    }//GEN-LAST:event_usuariosMouseClicked
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
@@ -564,10 +569,10 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            int fila = otrospagos.getSelectedRow();
-            String id = (String) "" + otrospagos.getValueAt(fila, 0);
-            String nombreTabla = "otrospagos", nomColumnaCambiar = "estado";
-            String nomColumnaId = "otrospagos.idpago";
+            int fila = usuarios.getSelectedRow();
+            String id = (String) "" + usuarios.getValueAt(fila, 0);
+            String nombreTabla = "carrera", nomColumnaCambiar = "estado";
+            String nomColumnaId = "idcarrera";
             int seguardo = 0;
 
             seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
@@ -595,21 +600,20 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "otrospagos";
-            String columnaId = "otrospagos.idpago";
+            String nomTabla = "carrera";
+            String columnaId = "idcarrera";
             int seguardo = 0;
-            int fila = otrospagos.getSelectedRow();
-            String id = (String) "" + otrospagos.getValueAt(fila, 0);
-            String campos = "otrospagos.descripcion, otrospagos.costo, otrospagos.estado";
-            //String campos = "grupo, fechainicio, fechafin, estado, horarios_idhorarios";
-            //String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+            int fila = usuarios.getSelectedRow();
+            String id = (String) "" + usuarios.getValueAt(fila, 0);
+            String campos = "descripcion, inscripcion, colegiatura,  estado, observacion";
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), costo.getText(), estad, id};
+            Object[] valores = {descripcion.getText(), inscripcion.getText(),colegiatura.getText(), estad,observacion.getText(), id
+            };
+
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -635,15 +639,8 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_bntCancelarActionPerformed
 
-    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
-        // TODO add your handling code here:
-        rbNombres.setSelected(false);
-        busqueda.requestFocus();
-    }//GEN-LAST:event_rbCodigoActionPerformed
-
     private void rbNombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombresActionPerformed
         // TODO add your handling code here:
-        rbCodigo.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbNombresActionPerformed
 
@@ -657,7 +654,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void otrospagosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_otrospagosKeyPressed
+    private void usuariosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuariosKeyPressed
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == java.awt.event.KeyEvent.VK_SPACE) {
@@ -666,7 +663,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         if (key == java.awt.event.KeyEvent.VK_DOWN || key == java.awt.event.KeyEvent.VK_UP) {
             limpiar();
         }
-    }//GEN-LAST:event_otrospagosKeyPressed
+    }//GEN-LAST:event_usuariosKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -680,20 +677,23 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
-    private javax.swing.JFormattedTextField costo;
+    private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JRadioButton estado;
+    private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable otrospagos;
+    private elaprendiz.gui.textField.TextField observacion;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
-    private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
+    private javax.swing.JTable usuarios;
     // End of variables declaration//GEN-END:variables
 }
