@@ -178,8 +178,8 @@ public class Horario extends javax.swing.JInternalFrame {
         TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 60, true);
         //TipoFiltro.setFiltraEntrada(dia.getDocument(), FiltroCampos.SOLO_LETRAS, 45, false);
         //TipoFiltro.setFiltraEntrada(profesor.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        TipoFiltro.setFiltraEntrada(inscripcion.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, true);
-        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
+//        TipoFiltro.setFiltraEntrada(inscripcion.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, true);
+//        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
     }
 
@@ -243,9 +243,9 @@ public class Horario extends javax.swing.JInternalFrame {
         if (horarios.getValueAt(fila, 0) != null) {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.montoinscripcion", "horario.colegiatura", "horario.estado"};
+            String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.estado"};
             llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {codigo, descripcion, dia, profesor, horade, horaa, fechainicio, inscripcion, colegiatura, estado};
+            Component[] cmps = {codigo, descripcion, dia, profesor, horade, horaa, fechainicio, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             peticiones.getRegistroSeleccionado(cmps, "horario", campos, cond, id, inner, hashProfesor);
@@ -283,13 +283,11 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         codigo = new elaprendiz.gui.textField.TextField();
         descripcion = new elaprendiz.gui.textField.TextField();
         fechainicio = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
-        jLabel11 = new javax.swing.JLabel();
         //http://www.forosdelweb.com/f45/formato-horade-559125/
         //https://www.youtube.com/watch?v=Uh77miF-YMY
         Date date = new Date();
@@ -304,8 +302,6 @@ public class Horario extends javax.swing.JInternalFrame {
         horaa = new javax.swing.JSpinner(sm2);
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        inscripcion = new javax.swing.JFormattedTextField();
-        colegiatura = new javax.swing.JFormattedTextField();
         profesor = new javax.swing.JComboBox();
         dia = new javax.swing.JComboBox();
         addHorario = new javax.swing.JButton();
@@ -491,19 +487,13 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 150, 150, 21);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Colegiatura Q:");
-        JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(494, 90, 110, 20);
+        jLabel6.setBounds(440, 90, 150, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 120, 110, 20);
+        jLabel4.setBounds(480, 60, 110, 20);
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -529,7 +519,7 @@ public class Horario extends javax.swing.JInternalFrame {
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(610, 150, 130, 21);
+        fechainicio.setBounds(600, 90, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -539,13 +529,7 @@ public class Horario extends javax.swing.JInternalFrame {
         estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
-        estado.setBounds(610, 120, 130, 21);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel11.setText("Inscripción Q:");
-        JPanelCampos.add(jLabel11);
-        jLabel11.setBounds(494, 60, 110, 17);
+        estado.setBounds(600, 60, 130, 21);
 
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
@@ -559,7 +543,6 @@ public class Horario extends javax.swing.JInternalFrame {
         horaa.setEditor(de2);
         horaa.setEnabled(false);
         horaa.setName("horaa"); // NOI18N
-        horaa.setNextFocusableComponent(inscripcion);
         JPanelCampos.add(horaa);
         horaa.setBounds(330, 150, 100, 21);
 
@@ -574,24 +557,6 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel13.setText("Horario De:");
         JPanelCampos.add(jLabel13);
         jLabel13.setBounds(80, 150, 90, 17);
-
-        inscripcion.setEditable(false);
-        inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        inscripcion.setNextFocusableComponent(colegiatura);
-        inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(inscripcion);
-        inscripcion.setBounds(610, 60, 130, 21);
-
-        colegiatura.setEditable(false);
-        colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        colegiatura.setNextFocusableComponent(estado);
-        colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(colegiatura);
-        colegiatura.setBounds(610, 90, 130, 23);
 
         profesor.setModel(modelCombo = new DefaultComboBoxModel());
         profesor.setComponentPopupMenu(popupprofesor);
@@ -762,7 +727,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             boolean seguardo = false;
             String nombreTabla = "horario";
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, montoinscripcion, colegiatura, estado";
+            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             //Para obtener el id en la base de datos
@@ -775,7 +740,7 @@ public class Horario extends javax.swing.JInternalFrame {
             }
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
                 FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()),
-                fechaini, inscripcion.getText(), colegiatura.getText(), estad
+                fechaini, estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -845,7 +810,7 @@ public class Horario extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, montoinscripcion, colegiatura, estado";
+            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             mProfesor prof = (mProfesor) profesor.getSelectedItem();
@@ -856,7 +821,7 @@ public class Horario extends javax.swing.JInternalFrame {
                 estad = 1;
             }
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, inscripcion.getText(), colegiatura.getText(), estad, id};
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -952,7 +917,6 @@ public class Horario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
     private elaprendiz.gui.textField.TextField codigo;
-    private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JComboBox dia;
     private javax.swing.JRadioButton estado;
@@ -960,10 +924,8 @@ public class Horario extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner horaa;
     private javax.swing.JSpinner horade;
     private javax.swing.JTable horarios;
-    private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -972,7 +934,6 @@ public class Horario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
