@@ -215,16 +215,16 @@ public class Utilidades {
      * @param valor valor para establecer cuando se limpie los campso de texto
      */
     public static void setEditableTexto(Component cm, boolean habilitar, Component[] excepcion, boolean limpiar, String valor) {
-        
+
         if (cm instanceof JPanel) {
             habilitarTexto(((JPanel) cm).getComponents(), habilitar, excepcion, limpiar, valor);
         } else if (cm instanceof JScrollPane) {
             habilitarTexto(((JScrollPane) cm).getComponents(), habilitar, excepcion, limpiar, valor);
         } else if (cm instanceof JViewport) {
             habilitarTexto(((JViewport) cm).getComponents(), habilitar, excepcion, limpiar, valor);
-        }else if (cm instanceof JTabbedPane) {
+        } else if (cm instanceof JTabbedPane) {
             habilitarTexto(((JTabbedPane) cm).getComponents(), habilitar, excepcion, limpiar, valor);
-        }else {
+        } else {
             habilitarTexto(new Component[]{cm}, habilitar, excepcion, limpiar, valor);
         }
     }
@@ -314,6 +314,7 @@ public class Utilidades {
             TableColumn column = columnModel.getColumn(col);
             column.setPreferredWidth(maxwidth);
         } // para columnas 
+        table.setAutoCreateRowSorter(true);//para ordenar el Jtable al dar clic encima del titulo de la columna
     }
 
 }

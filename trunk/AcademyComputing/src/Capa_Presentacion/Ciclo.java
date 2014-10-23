@@ -126,7 +126,7 @@ public class Ciclo extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         //String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        String[] campos = {"cicloescolar.idañoescolar", "cicloescolar.descripcion", "cicloescolar.fechainicio", "cicloescolar.fechacierre", "cicloescolar.estado"};
+        String[] campos = {"cicloescolar.idañoescolar", "cicloescolar.descripcion", "DATE_FORMAT(cicloescolar.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(cicloescolar.fechacierre,'%d-%m-%Y')", "cicloescolar.estado"};
 
         String[] condiciones = {"cicloescolar.idañoescolar"};
         String[] Id = {Dato};

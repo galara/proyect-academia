@@ -13,7 +13,9 @@ import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import Recursos.mCarrera;
 import Recursos.mProfesor;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -41,12 +43,13 @@ public class Horario extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De", "Hora A", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Carrera", "Hora De", "Hora A", "Fecha Inicio", "Fecha Fin", "Alumnos", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
+    public Hashtable<String, String> hashCarrera = new Hashtable<>();
     private static Profesor frmProfesor = new Profesor();
-
+    private static Carrera frmCarrera = new Carrera();
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
     /**
@@ -56,7 +59,8 @@ public class Horario extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
-        llenarcombo();
+        llenarcomboprofesor();
+        llenarcombocarrera();
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -117,7 +121,7 @@ public class Horario extends javax.swing.JInternalFrame {
      *y se los envia a un metodo interno getRegistroCombo() 
      *
      */
-    public void llenarcombo() {
+    public void llenarcomboprofesor() {
         String Dato = "1";
         String[] campos = {"nombre", "apellido", "idcatedratico"};
         String[] condiciones = {"estado"};
@@ -168,6 +172,62 @@ public class Horario extends javax.swing.JInternalFrame {
         }
     }
 
+    /*
+     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
+     *y se los envia a un metodo interno getRegistroCombo() 
+     *
+     */
+    public void llenarcombocarrera() {
+        String Dato = "1";
+        String[] campos = {"descripcion", "idcarrera"};
+        String[] condiciones = {"estado"};
+        String[] Id = {Dato};
+        carrera.removeAllItems();
+        Component cmps = carrera;
+        getRegistroCombocarrera("carrera", campos, condiciones, Id);
+
+    }
+
+    /*El metodo llenarcombo() envia los parametros para la consulta a la BD y el medoto
+     *getRegistroCombo() se encarga de enviarlos a la capa de AccesoDatos.getRegistros()
+     *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
+     *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
+     */
+    public void getRegistroCombocarrera(String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
+        try {
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
+
+            int cantcampos = campos.length;
+            if (rs != null) {
+
+                DefaultComboBoxModel modeloComboBox;
+                modeloComboBox = new DefaultComboBoxModel();
+                carrera.setModel(modeloComboBox);
+
+                modeloComboBox.addElement(new mCarrera("", "0"));
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    int count = 0;
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    Object[] fila = new Object[cantcampos];
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        count++;
+                        modeloComboBox.addElement(new mCarrera(rs.getString(1), "" + rs.getInt(2)));
+                        hashCarrera.put(rs.getString(1), "" + count);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+            //rs.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
@@ -178,7 +238,7 @@ public class Horario extends javax.swing.JInternalFrame {
         TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 60, true);
         //TipoFiltro.setFiltraEntrada(dia.getDocument(), FiltroCampos.SOLO_LETRAS, 45, false);
         //TipoFiltro.setFiltraEntrada(profesor.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-//        TipoFiltro.setFiltraEntrada(inscripcion.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, true);
+        TipoFiltro.setFiltraEntrada(cantalumnos.getDocument(), FiltroCampos.SOLO_NUMEROS, 5, true);
 //        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
     }
@@ -195,20 +255,20 @@ public class Horario extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        //String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor", "Hora De","Hora A", "Fecha Inicio","Estado"};
+        //String[] titulos = {"Codigo", "Descripción", "Dia", "Profesor","Carrera", "Hora De", "Hora A", "Fecha Inicio","Fecha Fin", "Alumnos","Estado"};//Titulos para Jtabla
         String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-        String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.estado"};
+        String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.cantalumnos", "grupo.estado"};
         //String[] campos = {"codigo", "descripcion", "dia", "horariode", "horarioa", "fechainicio", "estado"};
-        String[] condiciones = {"horario.codigo"};
+        String[] condiciones = {"grupo.codigo"};
         String[] Id = {Dato};
-        String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
+        String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
 
         if (this.rbCodigo.isSelected()) {
             if (!Dato.isEmpty()) {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "horario", campos, condiciones, Id, inner);
+                model = peticiones.getRegistroPorPks(model, "grupo", campos, condiciones, Id, inner);
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -217,16 +277,44 @@ public class Horario extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.descripcion", Dato, inner);
+            model = peticiones.getRegistroPorLike(model, "grupo", campos, "grupo.descripcion", Dato, inner);
         }
         if (this.rbDia.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "horario", campos, "horario.dia", Dato, inner);
+            model = peticiones.getRegistroPorLike(model, "grupo", campos, "grupo.dia", Dato, inner);
         }
         Utilidades.ajustarAnchoColumnas(horarios);
-    }
+        }
+
+//    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
+//     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
+//     * 
+//     * @return 
+//     */
+//    private void filaseleccionada3() {
+//
+//        int fila = horarios.getSelectedRow();
+//        String[] cond = {"grupo.codigo"};
+//        String[] id = {(String) horarios.getValueAt(fila, 0)};
+//        String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
+//        if (horarios.getValueAt(fila, 0) != null) {
+//
+//            String conct = "concat(profesor.nombre,' ',profesor.apellido)";
+//            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.graduados"};
+//            llenarcomboprofesor(); // borra los items de comboBox y lo vuelve a llenar
+//            Component[] cmps = {codigo, descripcion, dia, profesor, carrera, horade, horaa, fechainicio, fechafin, cantalumnos, estado, graduados};
+//            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+//
+//            peticiones.getRegistroSeleccionado(cmps, "grupo", campos, cond, id, inner, hashProfesor);
+//
+//            this.bntGuardar.setEnabled(false);
+//            this.bntModificar.setEnabled(true);
+//            this.bntEliminar.setEnabled(true);
+//            this.bntNuevo.setEnabled(false);
+//        }
+//    }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
      * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
@@ -236,20 +324,55 @@ public class Horario extends javax.swing.JInternalFrame {
     private void filaseleccionada() {
 
         int fila = horarios.getSelectedRow();
-        String[] cond = {"horario.codigo"};
+        String[] cond = {"grupo.codigo"};
         String[] id = {(String) horarios.getValueAt(fila, 0)};
-        String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
-
+        String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
         if (horarios.getValueAt(fila, 0) != null) {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"horario.codigo", "horario.descripcion", "horario.dia", conct, "horario.horariode", "horario.horarioa", "horario.fechainicio", "horario.estado"};
-            llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {codigo, descripcion, dia, profesor, horade, horaa, fechainicio, estado};
+            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.graduados"};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-            peticiones.getRegistroSeleccionado(cmps, "horario", campos, cond, id, inner, hashProfesor);
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
 
+            rs = ac.getRegistros("grupo", campos, cond, id, inner);
+
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+
+                            codigo.setText(rs.getString(1));
+                            descripcion.setText(rs.getString(2));
+                            dia.setSelectedItem(rs.getString(3));
+                            int pr = Integer.parseInt((String) hashProfesor.get(rs.getString(4)));
+                            profesor.setSelectedIndex(pr);
+                            int car = Integer.parseInt((String) hashCarrera.get(rs.getString(5)));
+                            carrera.setSelectedIndex(car);
+                            horade.setValue(rs.getTime(6));
+                            horaa.setValue(rs.getTime(7));
+                            fechainicio.setDate((rs.getDate(8)));
+                            fechafin.setDate((rs.getDate(9)));
+                            cantalumnos.setText(rs.getString(10));
+
+                            if (rs.getObject(11).equals(true)) {
+                                estado.setText("Activo");
+                                estado.setSelected(true);
+                                estado.setBackground(new java.awt.Color(102, 204, 0));
+                            } else {
+                                estado.setText("Inactivo");
+                                estado.setSelected(false);
+                                estado.setBackground(Color.red);
+                            }
+                            graduados.setSelectedItem(rs.getString(12));
+                        }
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
             this.bntEliminar.setEnabled(true);
@@ -268,7 +391,11 @@ public class Horario extends javax.swing.JInternalFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         popupprofesor = new javax.swing.JPopupMenu();
-        Actualizar = new javax.swing.JMenuItem();
+        Nuevo_Profesor = new javax.swing.JMenuItem();
+        Actualizar_Profesor = new javax.swing.JMenuItem();
+        popupcarrera = new javax.swing.JPopupMenu();
+        Nueva_Carrera = new javax.swing.JMenuItem();
+        Actualizar_Carrera = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntNuevo = new elaprendiz.gui.button.ButtonRect();
@@ -286,7 +413,7 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         codigo = new elaprendiz.gui.textField.TextField();
         descripcion = new elaprendiz.gui.textField.TextField();
-        fechainicio = new com.toedter.calendar.JDateChooser();
+        fechafin = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
         //http://www.forosdelweb.com/f45/formato-horade-559125/
         //https://www.youtube.com/watch?v=Uh77miF-YMY
@@ -304,7 +431,14 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         profesor = new javax.swing.JComboBox();
         dia = new javax.swing.JComboBox();
-        addHorario = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        fechainicio = new com.toedter.calendar.JDateChooser();
+        jLabel5 = new javax.swing.JLabel();
+        carrera = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        cantalumnos = new elaprendiz.gui.textField.TextField();
+        jLabel15 = new javax.swing.JLabel();
+        graduados = new javax.swing.JComboBox();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         horarios = new javax.swing.JTable();
@@ -317,13 +451,37 @@ public class Horario extends javax.swing.JInternalFrame {
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
-        Actualizar.setText("Actualizar");
-        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+        Nuevo_Profesor.setText("jMenuItem1");
+        Nuevo_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActualizarActionPerformed(evt);
+                Nuevo_ProfesorActionPerformed(evt);
             }
         });
-        popupprofesor.add(Actualizar);
+        popupprofesor.add(Nuevo_Profesor);
+
+        Actualizar_Profesor.setText("Actualizar");
+        Actualizar_Profesor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Actualizar_ProfesorActionPerformed(evt);
+            }
+        });
+        popupprofesor.add(Actualizar_Profesor);
+
+        Nueva_Carrera.setText("jMenuItem1");
+        Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Nueva_CarreraActionPerformed(evt);
+            }
+        });
+        popupcarrera.add(Nueva_Carrera);
+
+        Actualizar_Carrera.setText("jMenuItem1");
+        Actualizar_Carrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Actualizar_CarreraActionPerformed(evt);
+            }
+        });
+        popupcarrera.add(Actualizar_Carrera);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -475,25 +633,25 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Día:");
         JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(90, 90, 80, 20);
+        jLabel2.setBounds(510, 60, 80, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 120, 80, 20);
+        jLabel3.setBounds(90, 90, 80, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Fecha Inicio:");
+        jLabel6.setText("Fecha Fin:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(440, 90, 150, 21);
+        jLabel6.setBounds(490, 150, 100, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(480, 60, 110, 20);
+        jLabel4.setBounds(480, 90, 110, 20);
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -506,20 +664,21 @@ public class Horario extends javax.swing.JInternalFrame {
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
-        descripcion.setNextFocusableComponent(dia);
+        descripcion.setNextFocusableComponent(profesor);
         JPanelCampos.add(descripcion);
         descripcion.setBounds(180, 60, 250, 21);
 
-        fechainicio.setDate(Calendar.getInstance().getTime());
-        fechainicio.setDateFormatString("dd/MM/yyyy");
-        fechainicio.setEnabled(false);
-        fechainicio.setFocusable(false);
-        fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-        fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
-        JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(600, 90, 130, 21);
+        fechafin.setDate(Calendar.getInstance().getTime());
+        fechafin.setDateFormatString("dd/MM/yyyy");
+        fechafin.setEnabled(false);
+        fechafin.setFocusable(false);
+        fechafin.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        fechafin.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+        fechafin.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechafin.setNextFocusableComponent(graduados);
+        fechafin.setPreferredSize(new java.awt.Dimension(120, 22));
+        JPanelCampos.add(fechafin);
+        fechafin.setBounds(600, 150, 120, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -529,7 +688,7 @@ public class Horario extends javax.swing.JInternalFrame {
         estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
-        estado.setBounds(600, 60, 130, 21);
+        estado.setBounds(600, 90, 120, 21);
 
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
@@ -543,6 +702,7 @@ public class Horario extends javax.swing.JInternalFrame {
         horaa.setEditor(de2);
         horaa.setEnabled(false);
         horaa.setName("horaa"); // NOI18N
+        horaa.setNextFocusableComponent(cantalumnos);
         JPanelCampos.add(horaa);
         horaa.setBounds(330, 150, 100, 21);
 
@@ -561,26 +721,71 @@ public class Horario extends javax.swing.JInternalFrame {
         profesor.setModel(modelCombo = new DefaultComboBoxModel());
         profesor.setComponentPopupMenu(popupprofesor);
         profesor.setName("Profesor"); // NOI18N
-        profesor.setNextFocusableComponent(horade);
+        profesor.setNextFocusableComponent(carrera);
         JPanelCampos.add(profesor);
-        profesor.setBounds(180, 120, 250, 21);
+        profesor.setBounds(180, 90, 250, 21);
 
         dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
         dia.setName("Dia"); // NOI18N
-        dia.setNextFocusableComponent(profesor);
+        dia.setNextFocusableComponent(estado);
         JPanelCampos.add(dia);
-        dia.setBounds(180, 90, 250, 21);
+        dia.setBounds(600, 60, 120, 21);
 
-        addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
-        addHorario.setToolTipText("Pulse para crear un nuevo Horario");
-        addHorario.setFocusable(false);
-        addHorario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addHorarioActionPerformed(evt);
-            }
-        });
-        JPanelCampos.add(addHorario);
-        addHorario.setBounds(20, 110, 40, 40);
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Fecha Inicio:");
+        JPanelCampos.add(jLabel9);
+        jLabel9.setBounds(490, 120, 100, 21);
+
+        fechainicio.setDate(Calendar.getInstance().getTime());
+        fechainicio.setDateFormatString("dd/MM/yyyy");
+        fechainicio.setEnabled(false);
+        fechainicio.setFocusable(false);
+        fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+        fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
+        fechainicio.setNextFocusableComponent(fechafin);
+        fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
+        JPanelCampos.add(fechainicio);
+        fechainicio.setBounds(600, 120, 120, 21);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("Carrera:");
+        JPanelCampos.add(jLabel5);
+        jLabel5.setBounds(90, 120, 80, 20);
+
+        carrera.setModel(modelCombo = new DefaultComboBoxModel());
+        carrera.setComponentPopupMenu(popupprofesor);
+        carrera.setName("Profesor"); // NOI18N
+        carrera.setNextFocusableComponent(horade);
+        JPanelCampos.add(carrera);
+        carrera.setBounds(180, 120, 250, 21);
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel14.setText("No. Alumnos:");
+        JPanelCampos.add(jLabel14);
+        jLabel14.setBounds(480, 30, 110, 17);
+
+        cantalumnos.setEditable(false);
+        cantalumnos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        cantalumnos.setName("codigo"); // NOI18N
+        cantalumnos.setNextFocusableComponent(dia);
+        cantalumnos.setPreferredSize(new java.awt.Dimension(120, 21));
+        JPanelCampos.add(cantalumnos);
+        cantalumnos.setBounds(600, 30, 120, 21);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Graduados:");
+        JPanelCampos.add(jLabel15);
+        jLabel15.setBounds(750, 130, 110, 20);
+
+        graduados.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "No Graduados", "Graduados" }));
+        graduados.setName("graduados"); // NOI18N
+        JPanelCampos.add(graduados);
+        graduados.setBounds(750, 150, 110, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -603,6 +808,7 @@ public class Horario extends javax.swing.JInternalFrame {
             horarios.setFocusCycleRoot(true);
             horarios.setGridColor(new java.awt.Color(51, 51, 255));
             horarios.setRowHeight(22);
+            horarios.setRowSorter(null);
             horarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
             horarios.setSurrendersFocusOnKeystroke(true);
             horarios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -690,7 +896,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setText("<--Horarios-->");
+            jLabel8.setText("<--Grupos y Horarios-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
@@ -706,7 +912,8 @@ public class Horario extends javax.swing.JInternalFrame {
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        llenarcombo();
+        llenarcomboprofesor();
+        llenarcombocarrera();
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
@@ -726,21 +933,24 @@ public class Horario extends javax.swing.JInternalFrame {
         if (resp == 0) {
 
             boolean seguardo = false;
-            String nombreTabla = "horario";
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, estado";
+            String nombreTabla = "grupo";
+            //String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion","grupo.horariode", "grupo.horarioa", "grupo.fechainicio","grupo.fechafin","grupo.cantalumnos","grupo.estado"};
+            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, graduados";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
             mProfesor prof = (mProfesor) profesor.getSelectedItem();
             String idprof = prof.getID();
+            mCarrera carr = (mCarrera) carrera.getSelectedItem();
+            String idcarrera = carr.getID();
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()),
-                fechaini, estad
+
+            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, graduados.getSelectedItem()
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -776,7 +986,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
-            String nombreTabla = "horario", nomColumnaCambiar = "estado";
+            String nombreTabla = "grupo", nomColumnaCambiar = "estado";
             String nomColumnaId = "codigo";
             int seguardo = 0;
 
@@ -805,23 +1015,30 @@ public class Horario extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "horario";
+            String nomTabla = "grupo";
             String columnaId = "codigo";
             int seguardo = 0;
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
-            String campos = "codigo, descripcion, dia, maestro_idcatedratico, horariode, horarioa, fechainicio, estado";
-            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
 
+            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera,horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, graduados";
+            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+            //Para obtener el id en la base de datos
             mProfesor prof = (mProfesor) profesor.getSelectedItem();
             String idprof = prof.getID();
+            mCarrera carr = (mCarrera) carrera.getSelectedItem();
+            String idcarrera = carr.getID();
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), /*profesor.getText()*/ idprof,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, estad, id};
+
+            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, graduados.getSelectedItem(), id
+            };
+
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -889,26 +1106,41 @@ public class Horario extends javax.swing.JInternalFrame {
         busqueda.requestFocus();
     }//GEN-LAST:event_rbDiaActionPerformed
 
-    private void addHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHorarioActionPerformed
+    private void Actualizar_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_ProfesorActionPerformed
+        // TODO add your handling code here:
+        llenarcomboprofesor();
+    }//GEN-LAST:event_Actualizar_ProfesorActionPerformed
+
+    private void Nuevo_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_ProfesorActionPerformed
         // TODO add your handling code here:
         if (frmProfesor == null) {
             frmProfesor = new Profesor();
         }
         adminInternalFrame(dp, frmProfesor);
-    }//GEN-LAST:event_addHorarioActionPerformed
+    }//GEN-LAST:event_Nuevo_ProfesorActionPerformed
 
-    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
+    private void Nueva_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_CarreraActionPerformed
         // TODO add your handling code here:
-        llenarcombo();
-    }//GEN-LAST:event_ActualizarActionPerformed
+        if (frmCarrera == null) {
+            frmCarrera = new Carrera();
+        }
+        adminInternalFrame(dp, frmCarrera);
+    }//GEN-LAST:event_Nueva_CarreraActionPerformed
+
+    private void Actualizar_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_CarreraActionPerformed
+        // TODO add your handling code here:
+        llenarcombocarrera();
+    }//GEN-LAST:event_Actualizar_CarreraActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Actualizar;
+    private javax.swing.JMenuItem Actualizar_Carrera;
+    private javax.swing.JMenuItem Actualizar_Profesor;
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
-    private javax.swing.JButton addHorario;
+    private javax.swing.JMenuItem Nueva_Carrera;
+    private javax.swing.JMenuItem Nuevo_Profesor;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -916,11 +1148,15 @@ public class Horario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
+    private elaprendiz.gui.textField.TextField cantalumnos;
+    private javax.swing.JComboBox carrera;
     private elaprendiz.gui.textField.TextField codigo;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JComboBox dia;
     private javax.swing.JRadioButton estado;
+    private com.toedter.calendar.JDateChooser fechafin;
     private com.toedter.calendar.JDateChooser fechainicio;
+    private javax.swing.JComboBox graduados;
     private javax.swing.JSpinner horaa;
     private javax.swing.JSpinner horade;
     private javax.swing.JTable horarios;
@@ -928,16 +1164,21 @@ public class Horario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
+    private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
     private javax.swing.JComboBox profesor;
     private javax.swing.JRadioButton rbCodigo;

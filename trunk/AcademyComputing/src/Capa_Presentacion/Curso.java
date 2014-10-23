@@ -4,21 +4,14 @@
  */
 package Capa_Presentacion;
 
-import Capa_Datos.AccesoDatos;
-import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
-import static Capa_Presentacion.Principal.dp;
-import Recursos.mHorario;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
@@ -38,7 +31,7 @@ public class Curso extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Descripción", "Horario", "Fecha Registro", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Descripción", "Fecha Registro", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashHorario = new Hashtable<>();
@@ -53,12 +46,6 @@ public class Curso extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
 
-        cHorario.addItemListener(
-                (ItemEvent e) -> {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        profesor();
-                    }
-                });
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -113,62 +100,6 @@ public class Curso extends javax.swing.JInternalFrame {
         }
     }
 
-    /*
-     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
-     *y se los envia a un metodo interno getRegistroCombo() 
-     *
-     */
-    public void llenarcombo() {
-        String Dato = "1";
-        String[] campos = {"codigo", "dia", "horariode", "horarioa", "idhorarios"};
-        String[] condiciones = {"estado"};
-        String[] Id = {Dato};
-        cHorario.removeAllItems();
-        Component cmps = cHorario;
-        getRegistroCombo("horario", campos, condiciones, Id);
-
-    }
-
-    /*El metodo llenarcombo() envia los parametros para la consulta a la BD y el medoto
-     *getRegistroCombo() se encarga de enviarlos a la capa de AccesoDatos.getRegistros()
-     *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
-     *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
-     */
-    public void getRegistroCombo(String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
-        try {
-            ResultSet rs;
-            AccesoDatos ac = new AccesoDatos();
-
-            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
-
-            int cantcampos = campos.length;
-            if (rs != null) {
-
-                DefaultComboBoxModel modeloComboBox;
-                modeloComboBox = new DefaultComboBoxModel();
-                cHorario.setModel(modeloComboBox);
-
-                modeloComboBox.addElement(new mHorario("", "0"));
-                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                    int count = 0;
-                    rs.beforeFirst();//regresa el puntero al primer registro
-                    Object[] fila = new Object[cantcampos];
-                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                        count++;
-                        modeloComboBox.addElement(new mHorario(rs.getString(1) + " " + rs.getString(2) + " " + FormatoFecha.getTimedoce(rs.getTime(3)) + " " + FormatoFecha.getTimedoce(rs.getTime(4)), "" + rs.getInt(5)));
-                        hashHorario.put(rs.getString(1) + " " + rs.getString(2) + " " + FormatoFecha.getTimedoce(rs.getTime(3)) + " " + FormatoFecha.getTimedoce(rs.getTime(4)), "" + count);
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
-            rs.close();
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
@@ -191,11 +122,9 @@ public class Curso extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        String[] campos = {"curso.idcurso", "curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
+        String[] campos = {"curso.idcurso", "curso.nombrecurso", "DATE_FORMAT(curso.fecharegistro,'%d-%m-%Y')", "curso.estado"};
 
         String[] condiciones = {"curso.idcurso"};
-        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -203,7 +132,7 @@ public class Curso extends javax.swing.JInternalFrame {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 Utilidades.esObligatorio(this.JPanelCampos, false);
-                model = peticiones.getRegistroPorPks(model, "curso", campos, condiciones, Id, inner);
+                model = peticiones.getRegistroPorPks(model, "curso", campos, condiciones, Id, "");
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
             }
@@ -212,7 +141,7 @@ public class Curso extends javax.swing.JInternalFrame {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
-            model = peticiones.getRegistroPorLike(model, "curso", campos, "curso.nombrecurso", Dato, inner);
+            model = peticiones.getRegistroPorLike(model, "curso", campos, "curso.nombrecurso", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(curso);
     }
@@ -227,61 +156,19 @@ public class Curso extends javax.swing.JInternalFrame {
         int fila = curso.getSelectedRow();
         String[] cond = {"curso.idcurso"};
         String[] id = {"" + curso.getValueAt(fila, 0)};
-        String inner = " INNER JOIN horario on curso.horario_idhorarios=horario.idhorarios";
-
+       
         if (curso.getValueAt(fila, 0) != null) {
 
-            String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-            String[] campos = {"curso.nombrecurso", conct, "curso.fecharegistro", "curso.estado"};
-            llenarcombo(); // borra los items de comboBox y lo vuelve a llenar
-            Component[] cmps = {descripcion, cHorario, fechainicio, estado};
+            String[] campos = {"curso.nombrecurso", "curso.fecharegistro", "curso.estado"};
+            Component[] cmps = {descripcion, fechainicio, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-            peticiones.getRegistroSeleccionado(cmps, "curso", campos, cond, id, inner, hashHorario);
-            profesor();
-
+            peticiones.getRegistroSeleccionado(cmps, "curso", campos, cond, id, "", null);
+      
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
             this.bntEliminar.setEnabled(true);
             this.bntNuevo.setEnabled(false);
-        }
-    }
-
-    public void profesor() {
-        if (cHorario.getSelectedIndex() == 0) {
-            profesor.setText("");
-        } else if (cHorario.getSelectedIndex() != -1) {
-            mHorario horari = (mHorario) cHorario.getSelectedItem();
-            String[] id = {horari.getID()};
-
-            ResultSet rs;
-            AccesoDatos ac = new AccesoDatos();
-            String[] cond = {"horario.idhorarios"};
-            String inner = " INNER JOIN profesor on horario.maestro_idcatedratico=profesor.idcatedratico";
-            if (!id.equals(0)) {
-
-                String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-                String[] campos = {conct};
-                Component[] cmps = {profesor};
-
-                rs = ac.getRegistros("horario", campos, cond, id, inner);
-
-                if (rs != null) {
-                    try {
-                        if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                            rs.beforeFirst();//regresa el puntero al primer registro
-                            while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                                profesor.setText(rs.getString(1));
-                            }
-                        }
-                        profesor.setEditable(false);
-                    } catch (SQLException e) {
-                        profesor.setEditable(false);
-                        JOptionPane.showInternalMessageDialog(this, e);
-                    }
-                }
-
-            }
         }
     }
 
@@ -307,16 +194,11 @@ public class Curso extends javax.swing.JInternalFrame {
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         descripcion = new elaprendiz.gui.textField.TextField();
         fechainicio = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
-        cHorario = new javax.swing.JComboBox();
-        profesor = new elaprendiz.gui.textField.TextField();
-        jLabel5 = new javax.swing.JLabel();
-        addHorario = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         curso = new javax.swing.JTable();
@@ -474,32 +356,25 @@ public class Curso extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(40, 30, 100, 20);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText("Profesor:");
-        JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(460, 30, 100, 20);
+        jLabel1.setBounds(120, 40, 100, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(460, 110, 100, 21);
+        jLabel6.setBounds(120, 120, 100, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(460, 70, 100, 20);
+        jLabel4.setBounds(120, 80, 100, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
-        descripcion.setNextFocusableComponent(cHorario);
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(150, 30, 250, 21);
+        descripcion.setBounds(230, 40, 250, 21);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -509,7 +384,7 @@ public class Curso extends javax.swing.JInternalFrame {
         fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(570, 110, 130, 21);
+        fechainicio.setBounds(230, 120, 130, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -518,38 +393,7 @@ public class Curso extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(570, 70, 130, 21);
-
-        cHorario.setModel(modelCombo = new DefaultComboBoxModel());
-        cHorario.setComponentPopupMenu(popuphorario);
-        cHorario.setEnabled(false);
-        cHorario.setName("Horario"); // NOI18N
-        cHorario.setNextFocusableComponent(estado);
-        JPanelCampos.add(cHorario);
-        cHorario.setBounds(150, 70, 250, 21);
-
-        profesor.setEditable(false);
-        profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        profesor.setFocusable(false);
-        JPanelCampos.add(profesor);
-        profesor.setBounds(570, 30, 250, 21);
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Horario:");
-        JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(60, 70, 80, 20);
-
-        addHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
-        addHorario.setToolTipText("Pulse para crear un nuevo Horario");
-        addHorario.setFocusable(false);
-        addHorario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addHorarioActionPerformed(evt);
-            }
-        });
-        JPanelCampos.add(addHorario);
-        addHorario.setBounds(20, 60, 40, 40);
+        estado.setBounds(230, 80, 130, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -663,7 +507,7 @@ public class Curso extends javax.swing.JInternalFrame {
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        llenarcombo();
+        //llenarcombo();
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
@@ -684,18 +528,14 @@ public class Curso extends javax.swing.JInternalFrame {
 
             boolean seguardo = false;
             String nombreTabla = "curso";
-            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
+            String campos = "nombrecurso, fecharegistro, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-
-            //Para obtener el id en la base de datos
-            mHorario horari = (mHorario) cHorario.getSelectedItem();
-            String idhorario = horari.getID();
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), /*profesor.getText()*/ idhorario, fechaini, estad
+            Object[] valores = {descripcion.getText(), fechaini, estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -765,18 +605,14 @@ public class Curso extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = curso.getSelectedRow();
             String id = (String) "" + curso.getValueAt(fila, 0);
-            String campos = "nombrecurso, horario_idhorarios, fecharegistro, estado";
+            String campos = "nombrecurso, fecharegistro, estado";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-
-            mHorario horari = (mHorario) cHorario.getSelectedItem();
-            String idhorario = horari.getID();
-            System.out.print(idhorario + "\n");
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), idhorario, fechaini, estad, id};
+            Object[] valores = {descripcion.getText(), fechaini, estad, id};
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
             if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
@@ -835,17 +671,9 @@ public class Curso extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cursoKeyPressed
 
-    private void addHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHorarioActionPerformed
-        // TODO add your handling code here:
-        if (frmHorario == null) {
-            frmHorario = new Horario();
-        }
-        adminInternalFrame(dp, frmHorario);
-    }//GEN-LAST:event_addHorarioActionPerformed
-
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
         // TODO add your handling code here:
-        llenarcombo();
+        //llenarcombo();
     }//GEN-LAST:event_ActualizarActionPerformed
 
 
@@ -854,7 +682,6 @@ public class Curso extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
-    private javax.swing.JButton addHorario;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -862,15 +689,12 @@ public class Curso extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
-    private javax.swing.JComboBox cHorario;
     private javax.swing.JTable curso;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fechainicio;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -879,7 +703,6 @@ public class Curso extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
     private javax.swing.JPopupMenu popuphorario;
-    private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
     // End of variables declaration//GEN-END:variables

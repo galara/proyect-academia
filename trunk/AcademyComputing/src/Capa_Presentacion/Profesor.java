@@ -123,7 +123,7 @@ public class Profesor extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado", "fechainicio"};
+        String[] campos = {"codigo", "nombre", "apellido", "telefono", "estado", "DATE_FORMAT(fechainicio,'%d-%m-%Y')"};
         String[] condiciones = {"codigo"};
         String[] Id = {Dato};
 

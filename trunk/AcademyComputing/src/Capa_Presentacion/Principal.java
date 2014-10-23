@@ -152,7 +152,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.add(mprofesor);
 
         mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
-        mhorario.setText("Horario");
+        mhorario.setText("Grupo/Horario");
         mhorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mhorarioActionPerformed(evt);
@@ -170,7 +170,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.add(mcurso);
 
         mgrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
-        mgrupo.setText("Grupo");
+        mgrupo.setText("??????");
         mgrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mgrupoActionPerformed(evt);
@@ -278,10 +278,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void mgrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mgrupoActionPerformed
         // TODO add your handling code here:
-        if (frmGrupo == null) {
-            frmGrupo = new Grupo();
-        }
-        AddForms.adminInternalFrame(dp, frmGrupo);
+//        if (frmGrupo == null) {
+//            frmGrupo = new Grupo();
+//        }
+//        AddForms.adminInternalFrame(dp, frmGrupo);
     }//GEN-LAST:event_mgrupoActionPerformed
 
     private void malumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_malumnoActionPerformed
