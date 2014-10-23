@@ -121,7 +121,7 @@ public class Usuario extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"usuario.idusuario", "usuario.nombre", "usuario.usuario", "usuario.password", "usuario.estado", "usuario.fechacreacion"};
+        String[] campos = {"usuario.idusuario", "usuario.nombre", "usuario.usuario", "usuario.password", "usuario.estado", "DATE_FORMAT(usuario.fechacreacion,'%d-%m-%Y')"};
         String[] condiciones = {"usuario.idusuario"};
         String[] Id = {Dato};
 

@@ -48,7 +48,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Recursos/horario.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Horario"/>
+                <Property name="text" type="java.lang.String" value="Grupo/Horario"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mhorarioActionPerformed"/>
@@ -70,7 +70,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Recursos/grupos.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Grupo"/>
+                <Property name="text" type="java.lang.String" value="??????"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mgrupoActionPerformed"/>

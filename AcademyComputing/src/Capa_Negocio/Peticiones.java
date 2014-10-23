@@ -99,31 +99,30 @@ public class Peticiones extends AccesoDatos {
             int cantcampos = campos.length;
 
             //if (rs != null) {
-                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                    rs.beforeFirst();//regresa el puntero al primer registro
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                rs.beforeFirst();//regresa el puntero al primer registro
 
-                    Object[] fila = new Object[cantcampos];
+                Object[] fila = new Object[cantcampos];
 
-                    while (rs.next()) {//mientras tenga registros 
+                while (rs.next()) {//mientras tenga registros 
 
-                        // Se rellena cada posición del array con una de las columnas de la tabla del rs.
-                        for (int i = 0; i < cantcampos; i++) {
+                    // Se rellena cada posición del array con una de las columnas de la tabla del rs.
+                    for (int i = 0; i < cantcampos; i++) {
 
-                            fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i].equals(true)) {
-                                fila[i] = "Activo";
-                            }
-                            if (fila[i].equals(false)) {
-                                fila[i] = "Inactivo";
-                            }
-                            if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
-                                fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
-                            }
+                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        if (fila[i].equals(true)) {
+                            fila[i] = "Activo";
                         }
-                        modelo.addRow(fila);
+                        if (fila[i].equals(false)) {
+                            fila[i] = "Inactivo";
+                        }
+                        if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
+                            fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
+                        }
                     }
+                    modelo.addRow(fila);
                 }
-            //} 
+            } //} 
             else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -153,35 +152,34 @@ public class Peticiones extends AccesoDatos {
             rs = this.selectPorLike(tabla, campos, campocondicion, condicionid, inner);
             int cantcampos = campos.length;
             //if (rs != null) {
-                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                    //int count = 0;
-                    rs.beforeFirst();//regresa el puntero al primer registro
-                    Object[] fila = new Object[cantcampos];
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                //int count = 0;
+                rs.beforeFirst();//regresa el puntero al primer registro
+                Object[] fila = new Object[cantcampos];
 
-                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                        // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                        for (int i = 0; i < cantcampos; i++) {
+                while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                    for (int i = 0; i < cantcampos; i++) {
 
-                            fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                            if (fila[i] == null) {
-                                fila[i] = "";
-                            } else {
-                                if (fila[i].equals(true)) {
-                                    fila[i] = "Activo";
-                                }
-                                if (fila[i].equals(false)) {
-                                    fila[i] = "Inactivo";
-                                }
-                                if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
-                                    fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
-                                }
+                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        if (fila[i] == null) {
+                            fila[i] = "";
+                        } else {
+                            if (fila[i].equals(true)) {
+                                fila[i] = "Activo";
+                            }
+                            if (fila[i].equals(false)) {
+                                fila[i] = "Inactivo";
+                            }
+                            if (campos[i].equals("horario.horariode") || campos[i].equals("horario.horarioa") || campos[i].equals("horariode") || campos[i].equals("horarioa")) {
+                                fila[i] = FormatoFecha.getTimedoce(rs.getTime(i + 1));
                             }
                         }
-                        modelo.addRow(fila);
                     }
-
+                    modelo.addRow(fila);
                 }
-            //} 
+
+            } //} 
             else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -214,55 +212,55 @@ public class Peticiones extends AccesoDatos {
             Object[] fila = new Object[cantcampos];
 
             //if (rs != null) {
-                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                    rs.beforeFirst();//regresa el puntero al primer registro
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                rs.beforeFirst();//regresa el puntero al primer registro
 
-                    while (rs.next()) {//mientras tenga registros 
-                        // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                        for (int i = 0; i < cantcampos; i++) {
+                while (rs.next()) {//mientras tenga registros 
+                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                    for (int i = 0; i < cantcampos; i++) {
 
-                            /*
-                             * Agregar los componenetes que falten 
-                             */
-                            if (cmps[i] instanceof JTextField) {
-                                JTextComponent tmp = (JTextComponent) cmps[i];
-                                tmp.setText(rs.getString(i + 1));
-                            } else if (cmps[i] instanceof JSpinner) {
-                                JSpinner tmp = (JSpinner) cmps[i];
-                                tmp.setValue(rs.getTime(i + 1));
-                            } else if (cmps[i] instanceof JFormattedTextField) {
-                                JFormattedTextField tmp = (JFormattedTextField) cmps[i];
-                                tmp.setValue(rs.getString(i + 1));
-                            } else if (cmps[i] instanceof JDateChooser) {
-                                JDateChooser tmp = (JDateChooser) cmps[i];
-                                tmp.setDate((rs.getDate(i + 1)));
-                            } else if (cmps[i] instanceof JComboBox) {
-                                JComboBox tmp = (JComboBox) cmps[i];
-                                try {
-                                    int pr = Integer.parseInt((String) has.get(rs.getString(i + 1)));
-                                    tmp.setSelectedIndex(pr);
-                                } catch (SQLException | NumberFormatException e) {
-                                    tmp.setSelectedItem(rs.getString(i + 1));
-                                }
-
-                            } else if (cmps[i] instanceof JRadioButton) {
-                                JRadioButton tmp = (JRadioButton) cmps[i];
-
-                                if (rs.getString(i + 1).equals("1")) {
-                                    tmp.setText("Activo");
-                                    tmp.setSelected(true);
-                                    tmp.setBackground(new java.awt.Color(102, 204, 0));
-                                } else {
-                                    tmp.setText("Inactivo");
-                                    tmp.setSelected(false);
-                                    tmp.setBackground(Color.red);
-                                }
+                        /*
+                         * Agregar los componenetes que falten 
+                         */
+                        if (cmps[i] instanceof JTextField) {
+                            JTextComponent tmp = (JTextComponent) cmps[i];
+                            tmp.setText(rs.getString(i + 1));
+                        } else if (cmps[i] instanceof JSpinner) {
+                            JSpinner tmp = (JSpinner) cmps[i];
+                            tmp.setValue(rs.getTime(i + 1));
+                        } else if (cmps[i] instanceof JFormattedTextField) {
+                            JFormattedTextField tmp = (JFormattedTextField) cmps[i];
+                            tmp.setValue(rs.getString(i + 1));
+                        } else if (cmps[i] instanceof JDateChooser) {
+                            JDateChooser tmp = (JDateChooser) cmps[i];
+                            tmp.setDate((rs.getDate(i + 1)));
+                        } else if (cmps[i] instanceof JComboBox) {
+                            JComboBox tmp = (JComboBox) cmps[i];
+                            try {
+                                int pr = Integer.parseInt((String) has.get(rs.getString(i + 1)));
+                                tmp.setSelectedIndex(pr);
+                            } catch (SQLException | NumberFormatException e) {
+                                tmp.setSelectedItem(rs.getString(i + 1));
                             }
+
+                        } else if (cmps[i] instanceof JRadioButton) {
+                            JRadioButton tmp = (JRadioButton) cmps[i];
+
+                            if (rs.getObject(i + 1).equals(true)) {
+                                tmp.setText("Activo");
+                                tmp.setSelected(true);
+                                tmp.setBackground(new java.awt.Color(102, 204, 0));
+                            } else {
+                                tmp.setText("Inactivo");
+                                tmp.setSelected(false);
+                                tmp.setBackground(Color.red);
+                            }
+
                         }
                     }
-
                 }
-            //} 
+
+            } //} 
             else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
