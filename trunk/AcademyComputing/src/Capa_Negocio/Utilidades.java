@@ -233,6 +233,7 @@ public class Utilidades {
         for (int i = 0; i < cmps.length; i++) {
             if (cmps[i] instanceof JDateChooser) {
                 JDateChooser tm = (JDateChooser) cmps[i];
+                tm.setDate(Calendar.getInstance().getTime());
                 tm.setEnabled(habilitar);
                 continue;
             }
