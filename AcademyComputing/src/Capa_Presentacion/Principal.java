@@ -18,6 +18,7 @@ public class Principal extends javax.swing.JFrame {
     private static Ciclo frmCiclo = new Ciclo();
     private static OtrosPagos frmOtrosPagos = new OtrosPagos();
     private static Carrera frmCarrera = new Carrera();
+    private static TipoPago frmTipoPago = new TipoPago();
     
     public Principal() {
         initComponents();
@@ -72,17 +73,19 @@ public class Principal extends javax.swing.JFrame {
         msalir = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mprofesor = new javax.swing.JMenuItem();
+        mcarrera = new javax.swing.JMenuItem();
         mhorario = new javax.swing.JMenuItem();
         mcurso = new javax.swing.JMenuItem();
+        motrospagos = new javax.swing.JMenuItem();
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
-        motrospagos = new javax.swing.JMenuItem();
-        mcarrera = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("SYSTEMA DE GESTIÓN COMPUVISIÓN");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -90,7 +93,7 @@ public class Principal extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        dp.setBackground(new java.awt.Color(153, 153, 153));
+        dp.setBackground(new java.awt.Color(204, 204, 204));
         getContentPane().add(dp);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(549, 30));
@@ -125,10 +128,12 @@ public class Principal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1);
 
-        jMenuBar1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jMenuBar1.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
 
         jMenu1.setText("File");
+        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        msalir.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         msalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/salir.png"))); // NOI18N
         msalir.setText("Salir");
         msalir.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +146,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Mantenimiento");
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        mprofesor.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mprofesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         mprofesor.setText("Profesor");
         mprofesor.addActionListener(new java.awt.event.ActionListener() {
@@ -151,7 +158,18 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mprofesor);
 
-        mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
+        mcarrera.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        mcarrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
+        mcarrera.setText("Carrera");
+        mcarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mcarreraActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mcarrera);
+
+        mhorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         mhorario.setText("Grupo/Horario");
         mhorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,7 +178,8 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mhorario);
 
-        mcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
+        mcurso.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        mcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ciclo.png"))); // NOI18N
         mcurso.setText("Curso");
         mcurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,24 +188,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mcurso);
 
-        mgrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
-        mgrupo.setText("??????");
-        mgrupo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mgrupoActionPerformed(evt);
-            }
-        });
-        jMenu3.add(mgrupo);
-
-        malumno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
-        malumno.setText("Alumno");
-        malumno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                malumnoActionPerformed(evt);
-            }
-        });
-        jMenu3.add(malumno);
-
+        motrospagos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         motrospagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/productos.png"))); // NOI18N
         motrospagos.setText("Otros Pagos");
         motrospagos.addActionListener(new java.awt.event.ActionListener() {
@@ -196,18 +198,32 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(motrospagos);
 
-        mcarrera.setText("Carrera");
-        mcarrera.addActionListener(new java.awt.event.ActionListener() {
+        mgrupo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        mgrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/tipopago.png"))); // NOI18N
+        mgrupo.setText("Tipo de Pago");
+        mgrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mcarreraActionPerformed(evt);
+                mgrupoActionPerformed(evt);
             }
         });
-        jMenu3.add(mcarrera);
+        jMenu3.add(mgrupo);
+
+        malumno.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        malumno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
+        malumno.setText("Alumno");
+        malumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                malumnoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(malumno);
 
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Sistema");
+        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        musuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         musuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
         musuario.setText("Usuario");
         musuario.addActionListener(new java.awt.event.ActionListener() {
@@ -217,7 +233,8 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu2.add(musuario);
 
-        mciclo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ciclo.png"))); // NOI18N
+        mciclo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        mciclo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
         mciclo.setText("Ciclo Escolar");
         mciclo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,6 +244,10 @@ public class Principal extends javax.swing.JFrame {
         jMenu2.add(mciclo);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu4.setText("Ayuda");
+        jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -278,10 +299,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void mgrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mgrupoActionPerformed
         // TODO add your handling code here:
-//        if (frmGrupo == null) {
-//            frmGrupo = new Grupo();
-//        }
-//        AddForms.adminInternalFrame(dp, frmGrupo);
+        if (frmTipoPago == null) {
+            frmTipoPago = new TipoPago();
+        }
+        AddForms.adminInternalFrame(dp, frmTipoPago);
     }//GEN-LAST:event_mgrupoActionPerformed
 
     private void malumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_malumnoActionPerformed
@@ -337,6 +358,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;

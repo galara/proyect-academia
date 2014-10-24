@@ -227,7 +227,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Profesor");
+        setTitle("Profesores");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -582,7 +582,7 @@ public class Profesor extends javax.swing.JInternalFrame {
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
-            setBounds(0, 0, 893, 512);
+            setBounds(0, 0, 890, 512);
         }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed

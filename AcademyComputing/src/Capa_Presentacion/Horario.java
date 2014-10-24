@@ -7,7 +7,6 @@ package Capa_Presentacion;
 import Capa_Datos.AccesoDatos;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
-import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
@@ -59,8 +58,8 @@ public class Horario extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
-        llenarcomboprofesor();
-        llenarcombocarrera();
+        //llenarcomboprofesor();
+        //llenarcombocarrera();
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -451,7 +450,7 @@ public class Horario extends javax.swing.JInternalFrame {
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
-        Nuevo_Profesor.setText("jMenuItem1");
+        Nuevo_Profesor.setText("Nuevo Profesor");
         Nuevo_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nuevo_ProfesorActionPerformed(evt);
@@ -459,7 +458,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupprofesor.add(Nuevo_Profesor);
 
-        Actualizar_Profesor.setText("Actualizar");
+        Actualizar_Profesor.setText("Actualizar Combo");
         Actualizar_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Actualizar_ProfesorActionPerformed(evt);
@@ -467,7 +466,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupprofesor.add(Actualizar_Profesor);
 
-        Nueva_Carrera.setText("jMenuItem1");
+        Nueva_Carrera.setText("Nueva Carrera");
         Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nueva_CarreraActionPerformed(evt);
@@ -475,7 +474,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupcarrera.add(Nueva_Carrera);
 
-        Actualizar_Carrera.setText("jMenuItem1");
+        Actualizar_Carrera.setText("Actualizar Combo");
         Actualizar_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Actualizar_CarreraActionPerformed(evt);
@@ -488,7 +487,7 @@ public class Horario extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Horarios");
+        setTitle("Grupos y Horarios");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -720,6 +719,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
         profesor.setModel(modelCombo = new DefaultComboBoxModel());
         profesor.setComponentPopupMenu(popupprofesor);
+        profesor.setEnabled(false);
         profesor.setName("Profesor"); // NOI18N
         profesor.setNextFocusableComponent(carrera);
         JPanelCampos.add(profesor);
@@ -757,6 +757,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
         carrera.setModel(modelCombo = new DefaultComboBoxModel());
         carrera.setComponentPopupMenu(popupprofesor);
+        carrera.setEnabled(false);
         carrera.setName("Profesor"); // NOI18N
         carrera.setNextFocusableComponent(horade);
         JPanelCampos.add(carrera);
@@ -808,7 +809,6 @@ public class Horario extends javax.swing.JInternalFrame {
             horarios.setFocusCycleRoot(true);
             horarios.setGridColor(new java.awt.Color(51, 51, 255));
             horarios.setRowHeight(22);
-            horarios.setRowSorter(null);
             horarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
             horarios.setSurrendersFocusOnKeystroke(true);
             horarios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -906,7 +906,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             getAccessibleContext().setAccessibleName("Profesores");
 
-            setBounds(0, 0, 893, 512);
+            setBounds(0, 0, 890, 512);
         }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
