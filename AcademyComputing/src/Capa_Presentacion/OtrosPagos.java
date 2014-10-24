@@ -377,6 +377,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         costo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         costo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         costo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        costo.setName("otrospagos"); // NOI18N
         costo.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(costo);
         costo.setBounds(180, 80, 130, 21);

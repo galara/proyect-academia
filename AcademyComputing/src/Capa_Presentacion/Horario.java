@@ -285,7 +285,7 @@ public class Horario extends javax.swing.JInternalFrame {
             model = peticiones.getRegistroPorLike(model, "grupo", campos, "grupo.dia", Dato, inner);
         }
         Utilidades.ajustarAnchoColumnas(horarios);
-        }
+    }
 
 //    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
 //     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
@@ -330,6 +330,8 @@ public class Horario extends javax.swing.JInternalFrame {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
             String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.graduados"};
+            llenarcomboprofesor();
+            llenarcombocarrera();
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             ResultSet rs;
