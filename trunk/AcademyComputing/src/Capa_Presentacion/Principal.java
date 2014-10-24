@@ -19,7 +19,8 @@ public class Principal extends javax.swing.JFrame {
     private static OtrosPagos frmOtrosPagos = new OtrosPagos();
     private static Carrera frmCarrera = new Carrera();
     private static TipoPago frmTipoPago = new TipoPago();
-    
+    private static Ayuda frmAyuda = new Ayuda();
+
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -29,7 +30,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cerrarVentana() {
-        
+
 //        int count = dp.getComponentCount();
 //        if (count == 0) {
 //            int nu = JOptionPane.showConfirmDialog(this, "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
@@ -44,7 +45,6 @@ public class Principal extends javax.swing.JFrame {
 //        else if (count > 0) {
 //            JOptionPane.showMessageDialog(null, "Para cerrar el Systema primero debe cerrar los formularios abiertos "+"( "+count+" )");
 //        }
-        
         int nu = JOptionPane.showConfirmDialog(this, "Todos los datos que no se ha guardadooo "
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
@@ -83,6 +83,7 @@ public class Principal extends javax.swing.JFrame {
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("SYSTEMA DE GESTIÓN COMPUVISIÓN");
@@ -130,6 +131,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
 
+        jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu1.setText("File");
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
@@ -145,6 +147,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu3.setText("Mantenimiento");
         jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
@@ -220,6 +223,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu2.setText("Sistema");
         jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
@@ -245,8 +249,19 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu4.setText("Ayuda");
         jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Help.png"))); // NOI18N
+        jMenuItem1.setText("Acerca de");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -337,6 +352,14 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmCarrera);
     }//GEN-LAST:event_mcarreraActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        if (frmAyuda == null) {
+            frmAyuda = new Ayuda();
+        }
+        AddForms.adminInternalFrame(dp, frmAyuda);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -360,6 +383,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;
