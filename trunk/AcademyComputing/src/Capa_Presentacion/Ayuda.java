@@ -157,8 +157,8 @@ public class Ayuda extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(50, Short.MAX_VALUE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(36, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,12 +177,12 @@ public class Ayuda extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(105, Short.MAX_VALUE)))
+                    .addContainerGap(123, Short.MAX_VALUE)))
         );
 
         jLabel7.setBackground(new java.awt.Color(0, 153, 204));
@@ -221,7 +221,7 @@ public class Ayuda extends javax.swing.JInternalFrame {
         );
 
         panelImage1.add(jPanel1);
-        jPanel1.setBounds(0, 0, 463, 220);
+        jPanel1.setBounds(0, 0, 504, 220);
 
         panelCurves1.setOpaque(true);
         panelImage1.add(panelCurves1);
@@ -231,14 +231,14 @@ public class Ayuda extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
         );
 
-        setBounds(0, 0, 482, 259);
+        setBounds(0, 0, 527, 259);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
