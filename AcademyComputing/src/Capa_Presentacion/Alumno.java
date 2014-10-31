@@ -710,9 +710,10 @@ public class Alumno extends javax.swing.JInternalFrame {
             JPanelBusqueda.setLayout(null);
 
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
             jLabel7.setText("Buscar Alumno por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(120, 10, 170, 17);
+            jLabel7.setBounds(117, 2, 173, 40);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -769,6 +770,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
             jLabel8.setText("<--Alumnos-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 

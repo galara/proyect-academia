@@ -452,6 +452,7 @@ public class Horario extends javax.swing.JInternalFrame {
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
+        Nuevo_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         Nuevo_Profesor.setText("Nuevo Profesor");
         Nuevo_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -460,6 +461,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupprofesor.add(Nuevo_Profesor);
 
+        Actualizar_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
         Actualizar_Profesor.setText("Actualizar Combo");
         Actualizar_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -468,6 +470,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupprofesor.add(Actualizar_Profesor);
 
+        Nueva_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         Nueva_Carrera.setText("Nueva Carrera");
         Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -476,6 +479,7 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         popupcarrera.add(Nueva_Carrera);
 
+        Actualizar_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
         Actualizar_Carrera.setText("Actualizar Combo");
         Actualizar_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -758,7 +762,7 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel5.setBounds(90, 120, 80, 20);
 
         carrera.setModel(modelCombo = new DefaultComboBoxModel());
-        carrera.setComponentPopupMenu(popupprofesor);
+        carrera.setComponentPopupMenu(popupcarrera);
         carrera.setEnabled(false);
         carrera.setName("Profesor"); // NOI18N
         carrera.setNextFocusableComponent(horade);
@@ -839,9 +843,10 @@ public class Horario extends javax.swing.JInternalFrame {
             JPanelBusqueda.setLayout(null);
 
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 80, 17);
+            jLabel7.setBounds(170, 2, 120, 40);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -898,6 +903,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
             jLabel8.setText("<--Grupos y Horarios-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
