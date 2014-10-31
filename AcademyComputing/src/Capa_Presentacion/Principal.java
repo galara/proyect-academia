@@ -3,6 +3,8 @@ package Capa_Presentacion;
 import Capa_Negocio.AddForms;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * @author Glara
@@ -398,4 +400,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel sistema;
     private javax.swing.JLabel usuario;
     // End of variables declaration//GEN-END:variables
+
 }

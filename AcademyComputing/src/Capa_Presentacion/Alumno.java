@@ -113,12 +113,12 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void setFiltroTexto() {
 
         TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 25, true);
-        TipoFiltro.setFiltraEntrada(dpi.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
         TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
         TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
         TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
         TipoFiltro.setFiltraEntrada(titularnombre.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
         TipoFiltro.setFiltraEntrada(titularapellido.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
+        TipoFiltro.setFiltraEntrada(dpi.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
         TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 16, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
     }
@@ -178,7 +178,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         if (alumnos.getValueAt(fila, 0) != null) {
 
             String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.colegiatura", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
-            Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, colegiatura, beca, fechainicio, titularnombre, titularapellido, dpi, estado
+            Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, colegiatura, beca, fechainicio, titularnombre, dpi, dpi, estado
             };
 
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
@@ -301,11 +301,11 @@ public class Alumno extends javax.swing.JInternalFrame {
         jLabel17 = new javax.swing.JLabel();
         titularnombre = new elaprendiz.gui.textField.TextField();
         jLabel2 = new javax.swing.JLabel();
-        titularapellido = new elaprendiz.gui.textField.TextField();
+        dpi = new elaprendiz.gui.textField.TextField();
         jLabel15 = new javax.swing.JLabel();
         telefono = new elaprendiz.gui.textField.TextField();
-        jLabel3 = new javax.swing.JLabel();
-        dpi = new javax.swing.JTextField();
+        titularapellido = new elaprendiz.gui.textField.TextField();
+        jLabel20 = new javax.swing.JLabel();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         alumnos = new javax.swing.JTable();
@@ -468,7 +468,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         codigo.setName("codigo"); // NOI18N
         codigo.setNextFocusableComponent(nombres);
         jPanel1.add(codigo);
-        codigo.setBounds(100, 30, 130, 25);
+        codigo.setBounds(100, 30, 130, 21);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -481,7 +481,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(apellidos);
         jPanel1.add(nombres);
-        nombres.setBounds(100, 60, 250, 25);
+        nombres.setBounds(100, 60, 250, 21);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -494,7 +494,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         apellidos.setName("apellidos"); // NOI18N
         apellidos.setNextFocusableComponent(direccion);
         jPanel1.add(apellidos);
-        apellidos.setBounds(100, 90, 250, 25);
+        apellidos.setBounds(100, 90, 250, 21);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -506,7 +506,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         direccion.setNextFocusableComponent(sexo);
         jPanel1.add(direccion);
-        direccion.setBounds(100, 120, 250, 25);
+        direccion.setBounds(100, 120, 250, 21);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -617,9 +617,9 @@ public class Alumno extends javax.swing.JInternalFrame {
         titularnombre.setEditable(false);
         titularnombre.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         titularnombre.setName("descripcion"); // NOI18N
-        titularnombre.setNextFocusableComponent(titularapellido);
+        titularnombre.setNextFocusableComponent(dpi);
         jPanel3.add(titularnombre);
-        titularnombre.setBounds(210, 30, 250, 25);
+        titularnombre.setBounds(210, 30, 250, 21);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -627,30 +627,34 @@ public class Alumno extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel2);
         jLabel2.setBounds(70, 30, 120, 20);
 
-        titularapellido.setEditable(false);
-        titularapellido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        titularapellido.setNextFocusableComponent(telefono);
-        jPanel3.add(titularapellido);
-        titularapellido.setBounds(210, 70, 250, 25);
+        dpi.setEditable(false);
+        dpi.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        dpi.setNextFocusableComponent(telefono);
+        jPanel3.add(dpi);
+        dpi.setBounds(570, 70, 250, 21);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel15.setText("Telefono:");
+        jLabel15.setText("DPI:");
         jPanel3.add(jLabel15);
-        jLabel15.setBounds(480, 30, 80, 20);
+        jLabel15.setBounds(480, 70, 80, 20);
 
         telefono.setEditable(false);
         telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jPanel3.add(telefono);
-        telefono.setBounds(570, 30, 250, 25);
+        telefono.setBounds(570, 30, 250, 21);
 
-        jLabel3.setText("DPI:");
-        jPanel3.add(jLabel3);
-        jLabel3.setBounds(530, 80, 51, 17);
+        titularapellido.setEditable(false);
+        titularapellido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        titularapellido.setNextFocusableComponent(telefono);
+        jPanel3.add(titularapellido);
+        titularapellido.setBounds(210, 70, 250, 21);
 
-        dpi.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
-        jPanel3.add(dpi);
-        dpi.setBounds(570, 70, 250, 25);
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel20.setText("Telefono:");
+        jPanel3.add(jLabel20);
+        jLabel20.setBounds(480, 30, 80, 20);
 
         jTabbedPane1.addTab("Titular", jPanel3);
 
@@ -729,7 +733,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(280, 40, 80, 24);
+            rbCodigo.setBounds(280, 40, 80, 25);
 
             rbNombre.setBackground(new java.awt.Color(51, 153, 255));
             rbNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -742,7 +746,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbNombre);
-            rbNombre.setBounds(380, 40, 90, 24);
+            rbNombre.setBounds(380, 40, 90, 25);
 
             rbApellido.setBackground(new java.awt.Color(51, 153, 255));
             rbApellido.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -754,7 +758,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(rbApellido);
-            rbApellido.setBounds(490, 40, 89, 24);
+            rbApellido.setBounds(490, 40, 79, 25);
 
             panelImage.add(JPanelBusqueda);
             JPanelBusqueda.setBounds(0, 230, 880, 70);
@@ -991,7 +995,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField codigo;
     private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField direccion;
-    private javax.swing.JTextField dpi;
+    private elaprendiz.gui.textField.TextField dpi;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fechainicio;
     private com.toedter.calendar.JDateChooser fechanacimiento;
@@ -1006,7 +1010,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
