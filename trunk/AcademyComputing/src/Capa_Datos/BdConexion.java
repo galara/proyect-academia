@@ -21,7 +21,7 @@ public class BdConexion {
     private static String host = "localhost";
     private static String dataBase = "academia"; //nombre base de datos
     private static String user = "root"; // usuario de la base de datos
-    private static String pass = "adolfo123"; // contraseña de la base de datos
+    private static String pass = "123456"; // contraseña de la base de datos
     public static int TODO = 1;
     public static int SOLO_STATEMENT = 2;
     public static int SOLO_RESULTSET = 3;

@@ -428,7 +428,7 @@ public class AccesoDatos {
             op = ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "dfasdf" + ex);
+            JOptionPane.showMessageDialog(null, "Problema con" + ex);
         }
 
         //System.out.println(sql);
