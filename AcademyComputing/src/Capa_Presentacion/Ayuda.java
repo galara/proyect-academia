@@ -189,7 +189,7 @@ public class Ayuda extends javax.swing.JInternalFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("2014 - BebeloperSystems");
+        jLabel7.setText("2014 - Bebelopers Systems");
         jLabel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jLabel7.setOpaque(true);
 
