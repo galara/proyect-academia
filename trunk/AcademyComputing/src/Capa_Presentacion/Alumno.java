@@ -51,15 +51,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
-        //llenarcombo();
         limpiar();
-
-//        grupo.addItemListener(
-//                (ItemEvent e) -> {
-//                    if (e.getStateChange() == ItemEvent.SELECTED) {
-//                        profesor();
-//                    }
-//                });
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -121,6 +113,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void setFiltroTexto() {
 
         TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 25, true);
+        TipoFiltro.setFiltraEntrada(dpi.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
         TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
         TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
         TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
@@ -142,12 +135,8 @@ public class Alumno extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        //{"codigo", "Nombres", "Apellidos","Fecha Nec","Colegiatura","Beca","Fecha Inicio","Estado"};
-        //String conct = "concat(horario.codigo,' ',horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-        //String[] campos = {"grupo.idgrupo", "grupo.grupo", "grupo.fechainicio", "grupo.fechafin", conct,"grupo.estado"};
         String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.colegiatura", "alumno.cantidadbeca", "DATE_FORMAT(alumno.fechadeinicio,'%d-%m-%Y')", "alumno.estado"};
         String[] condiciones = {"alumno.codigo"};
-        //String inner = " INNER JOIN horario on grupo.horarios_idhorarios=horario.idhorarios";
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -188,7 +177,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         if (alumnos.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.colegiatura", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos","alumno.titulardpi", "alumno.estado"};
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.colegiatura", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
             Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, colegiatura, beca, fechainicio, titularnombre, titularapellido, dpi, estado
             };
 
@@ -230,9 +219,6 @@ public class Alumno extends javax.swing.JInternalFrame {
                     if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                         rs.beforeFirst();//regresa el puntero al primer registro
                         while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                            //Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, 
-                            //direccion, sexo,  telefono, colegiatura, beca,
-                            //fechainicio, titularnombre, titularapellido, estado
                             codigo.setText(rs.getString(1));
                             nombres.setText(rs.getString(2));
                             apellidos.setText(rs.getString(3));
@@ -245,8 +231,8 @@ public class Alumno extends javax.swing.JInternalFrame {
                             fechainicio.setDate((rs.getDate(10)));
                             titularnombre.setText(rs.getString(11));
                             titularapellido.setText(rs.getString(12));
-                            
-                            if (rs.getObject(13).equals(true)) {
+                            dpi.setText(rs.getString(13));
+                            if (rs.getObject(14).equals(true)) {
                                 estado.setText("Activo");
                                 estado.setSelected(true);
                                 estado.setBackground(new java.awt.Color(102, 204, 0));
@@ -255,7 +241,6 @@ public class Alumno extends javax.swing.JInternalFrame {
                                 estado.setSelected(false);
                                 estado.setBackground(Color.red);
                             }
-
                         }
                     }
                 } catch (SQLException e) {
@@ -271,109 +256,6 @@ public class Alumno extends javax.swing.JInternalFrame {
         }
     }
 
-//    public void profesor() {
-//        if (grupo.getSelectedIndex() == 0) {
-//            profesor.setText("");
-//            horario.setText("");
-//            colegiatura.setValue(null);
-//        } else if (grupo.getSelectedIndex() != -1) {
-//            mGrupo horari = (mGrupo) grupo.getSelectedItem();
-//            String[] id = {horari.getID()};
-//
-//            ResultSet rs;
-//            AccesoDatos ac = new AccesoDatos();
-//            String[] cond = {"grupo.idgrupo"};
-//            String inner = " INNER JOIN grupo ON horario.idhorarios=grupo.horarios_idhorarios INNER JOIN profesor ON horario.maestro_idcatedratico=profesor.idcatedratico";
-//            if (!id.equals(0)) {
-//
-//                String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-//                String conct2 = "concat(horario.dia,' ',DATE_FORMAT(horario.horariode,'%h:%i %p'),' ',DATE_FORMAT(horario.horarioa,'%h:%i %p'))";
-//                String[] campos = {conct, conct2, "horario.colegiatura"};
-//                Component[] cmps = {profesor, horario, colegiatura};
-//
-//                rs = ac.getRegistros("horario", campos, cond, id, inner);
-//
-//                if (rs != null) {
-//                    try {
-//                        if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                            rs.beforeFirst();//regresa el puntero al primer registro
-//                            while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                                profesor.setText(rs.getString(1));
-//                                horario.setText(rs.getString(2));
-//                                colegiatura.setValue(rs.getFloat(3));
-//                            }
-//                        }
-//                        profesor.setEditable(false);
-//                        horario.setEditable(false);
-//                        //colegiatura.setEditable(false);
-//                    } catch (SQLException e) {
-//                        profesor.setEditable(false);
-//                        horario.setEditable(false);
-//                        //colegiatura.setEditable(false);
-//                        JOptionPane.showInternalMessageDialog(this, e);
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//        System.out.print("................." + grupo.getSelectedIndex());
-//
-//    }
-//    public void idasignagrupo(String codigo) {
-//
-//        String[] id = {codigo};
-//
-//        ResultSet rs;
-//        AccesoDatos ac = new AccesoDatos();
-//        String[] cond = {"alumno.codigo"};
-//        String[] campos = {"alumno.idalumno", "alumnosengrupo.idasignagrupo"};
-//        String inner = " inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.alumno_idalumno ";
-//
-//        rs = ac.getRegistros("alumno", campos, cond, id, inner);
-//
-//        if (rs != null) {
-//            try {
-//                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                    rs.beforeFirst();//regresa el puntero al primer registro
-//                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                        idalumno.setText(rs.getString(1));
-//                        idasignagrupo.setText(rs.getString(2));
-//                    }
-//                }
-//
-//            } catch (SQLException e) {
-//                JOptionPane.showInternalMessageDialog(this, e);
-//            }
-//        }
-//    }
-//    public void idalumno(String codigo) {
-//
-//        String[] id = {codigo};
-//
-//        ResultSet rs;
-//        AccesoDatos ac = new AccesoDatos();
-//        String[] cond = {"alumno.codigo"};
-//        String[] campos = {"alumno.idalumno"};
-//        //String inner=" inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.idasignagrupo ";
-//
-//        rs = ac.getRegistros("alumno", campos, cond, id, "");
-//
-//        if (rs != null) {
-//            try {
-//                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                    rs.beforeFirst();//regresa el puntero al primer registro
-//                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                        idalumno.setText(rs.getString(1));
-//                        //idasignagrupo.setText(rs.getString(2));
-//                    }
-//                }
-//
-//            } catch (SQLException e) {
-//                JOptionPane.showInternalMessageDialog(this, e);
-//            }
-//        }
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -899,7 +781,6 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        //llenarcombo();
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
         this.bntModificar.setEnabled(false);
@@ -923,33 +804,26 @@ public class Alumno extends javax.swing.JInternalFrame {
             boolean seguardo = false;
             String nombreTabla = "alumno";
             String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, colegiatura, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, titulardpi, estado";
-            //String fechainscripcio = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //Para obtener el id en la base de datos
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            if(colegiatura.getText().isEmpty()){
-            colegiatura.setValue(0);
+            if (colegiatura.getText().isEmpty()) {
+                colegiatura.setValue(0);
             }
-            if(beca.getText().isEmpty()){
-            beca.setValue(0);
-            }                
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), colegiatura.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), dpi.getText(),estad
+            if (beca.getText().isEmpty()) {
+                beca.setValue(0);
+            }
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), colegiatura.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
 
-            //if (seguardo) {
-//                idalumno(codigo.getText());
-//                Object[] valores2 = {idgrupo, idalumno.getText(), 1};
-//                seguardo = peticiones.guardarRegistros(nombreTabla2, campos2, valores2);
             if (seguardo) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                //idalumno.setText("");
                 MostrarDatos(busqueda.getText());
                 this.bntGuardar.setEnabled(false);
                 this.bntModificar.setEnabled(false);
@@ -958,7 +832,6 @@ public class Alumno extends javax.swing.JInternalFrame {
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             }
-            // }
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -1015,10 +888,8 @@ public class Alumno extends javax.swing.JInternalFrame {
 
             String nombreTabla = "alumno";
             String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, colegiatura, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, titulardpi, estado";
-            //String fechainscripcio = FormatoFecha.getFormato(fechainscripcion.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //Para obtener el id en la base de datos
 
             int estad = 0;
             if (this.estado.isSelected()) {
@@ -1030,24 +901,14 @@ public class Alumno extends javax.swing.JInternalFrame {
             seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
 
             if (seguardo == 1) {
-//                idasignagrupo(id);
-//                String idasignagrup = idasignagrupo.getText();
-//                String idalumn = idalumno.getText();
-
-//                Object[] valores2 = {idgrupo, idalumn, 1, idasignagrup};
-//                seguardo = peticiones.actualizarRegistro(nombreTabla2, campos2, valores2, columnaId2, idasignagrup);
-                // if (seguardo == 1) {
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
-                //idasignagrupo.setText("");
-                //idalumno.setText("");
                 this.bntGuardar.setEnabled(false);
                 this.bntModificar.setEnabled(false);
                 this.bntEliminar.setEnabled(false);
                 this.bntNuevo.setEnabled(true);
                 busqueda.requestFocus();
                 JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
-                //  }
             }
         }
     }//GEN-LAST:event_bntModificarActionPerformed
