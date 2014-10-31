@@ -245,7 +245,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                             fechainicio.setDate((rs.getDate(10)));
                             titularnombre.setText(rs.getString(11));
                             titularapellido.setText(rs.getString(12));
-
+                            
                             if (rs.getObject(13).equals(true)) {
                                 estado.setText("Activo");
                                 estado.setSelected(true);
@@ -1024,7 +1024,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), colegiatura.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), estad, id
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), colegiatura.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad, id
             };
 
             seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
