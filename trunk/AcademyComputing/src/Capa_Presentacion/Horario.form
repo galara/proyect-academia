@@ -10,6 +10,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="Nuevo_Profesor">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/profesor.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Nuevo Profesor"/>
           </Properties>
           <Events>
@@ -18,6 +21,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="Actualizar_Profesor">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/update.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Actualizar Combo"/>
           </Properties>
           <Events>
@@ -34,6 +40,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="Nueva_Carrera">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/carrera.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Nueva Carrera"/>
           </Properties>
           <Events>
@@ -42,6 +51,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="Actualizar_Carrera">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/update.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Actualizar Combo"/>
           </Properties>
           <Events>
@@ -621,7 +633,7 @@
                   <Connection code="modelCombo = new DefaultComboBoxModel()" type="code"/>
                 </Property>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="popupprofesor"/>
+                  <ComponentRef name="popupcarrera"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="Profesor" noResource="true"/>
@@ -796,11 +808,14 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/buscar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Buscar Por:"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="210" y="10" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="170" y="2" width="120" height="40"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -912,6 +927,9 @@
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/horario3.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&lt;--Grupos y Horarios--&gt;"/>
               </Properties>

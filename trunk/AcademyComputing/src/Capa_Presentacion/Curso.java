@@ -444,9 +444,10 @@ public class Curso extends javax.swing.JInternalFrame {
             JPanelBusqueda.setLayout(null);
 
             jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
             jLabel7.setText("Buscar Por:");
             JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(210, 10, 80, 17);
+            jLabel7.setBounds(170, 2, 120, 40);
 
             busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
             busqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -491,6 +492,7 @@ public class Curso extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ciclo.png"))); // NOI18N
             jLabel8.setText("<--Cursos-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 

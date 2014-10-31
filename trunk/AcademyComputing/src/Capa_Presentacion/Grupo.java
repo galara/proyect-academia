@@ -669,6 +669,7 @@ public class Grupo extends javax.swing.JInternalFrame {
 
             jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
             jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
             jLabel8.setText("<--Gupos-->");
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
