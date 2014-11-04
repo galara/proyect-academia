@@ -1,7 +1,9 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AddForms;
+import java.awt.Component;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -11,49 +13,32 @@ import javax.swing.UIManager;
  */
 public class Principal extends javax.swing.JFrame {
 
-    private static Profesor frmProfesor = new Profesor();
-    private static Horario frmHorario = new Horario();
-    private static Curso frmCurso = new Curso();
-    private static Usuario frmUsuario = new Usuario();
-    private static Grupo frmGrupo = new Grupo();
-    private static Alumno frmAlumno = new Alumno();
-    private static Ciclo frmCiclo = new Ciclo();
-    private static OtrosPagos frmOtrosPagos = new OtrosPagos();
-    private static Carrera frmCarrera = new Carrera();
-    private static TipoPago frmTipoPago = new TipoPago();
-    private static Ayuda frmAyuda = new Ayuda();
-
     public Principal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setIconImage(new ImageIcon(getClass().getResource("/Recursos/milogo.png")).getImage());
-
     }
 
     private void cerrarVentana() {
+        int count = dp.getComponentCount();
+        JInternalFrame[] cm = dp.getAllFrames();
 
-//        int count = dp.getComponentCount();
-//        if (count == 0) {
-//            int nu = JOptionPane.showConfirmDialog(this, "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
-//
-//            if (nu == JOptionPane.YES_OPTION || nu == 0) {
-//                System.exit(0);
-//            }else{
-//                
-//            }
-//
-//        }
-//        else if (count > 0) {
-//            JOptionPane.showMessageDialog(null, "Para cerrar el Systema primero debe cerrar los formularios abiertos "+"( "+count+" )");
-//        }
-        int nu = JOptionPane.showConfirmDialog(this, "Todos los datos que no se ha guardadooo "
-                + "se perderan.\n"
-                + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
+        for (int i = 0; i < cm.length; i++) {
+            System.out.print(cm[i].getName() + "\n");
+        }
 
-        if (nu == JOptionPane.YES_OPTION || nu == 0) {
-            System.exit(0);
-        } else {
+        if (count == 0) {
+            int nu = JOptionPane.showConfirmDialog(this, "¿Desea Cerrar esta ventana?", "Cerrar Sistema", JOptionPane.YES_NO_OPTION);
+
+            if (nu == JOptionPane.YES_OPTION || nu == 0) {
+                System.exit(0);
+            } else {
+
+            }
+
+        } else if (count > 0) {
+            JOptionPane.showMessageDialog(null, "Para cerrar el Systema primero debe cerrar los formularios abiertos " + "( " + (count) + " )");
         }
     }
 
@@ -97,6 +82,18 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         dp.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout dpLayout = new javax.swing.GroupLayout(dp);
+        dp.setLayout(dpLayout);
+        dpLayout.setHorizontalGroup(
+            dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 684, Short.MAX_VALUE)
+        );
+        dpLayout.setVerticalGroup(
+            dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 470, Short.MAX_VALUE)
+        );
+
         getContentPane().add(dp);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(549, 30));
@@ -118,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(sistema, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addContainerGap(336, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,6 +281,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mprofesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mprofesorActionPerformed
         // TODO add your handling code here:
+        Profesor frmProfesor = new Profesor();
         if (frmProfesor == null) {
             frmProfesor = new Profesor();
         }
@@ -292,6 +290,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mhorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mhorarioActionPerformed
         // TODO add your handling code here:
+        Horario frmHorario = new Horario();
         if (frmHorario == null) {
             frmHorario = new Horario();
         }
@@ -300,6 +299,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcursoActionPerformed
         // TODO add your handling code here:
+        Curso frmCurso = new Curso();
         if (frmCurso == null) {
             frmCurso = new Curso();
         }
@@ -308,6 +308,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void musuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_musuarioActionPerformed
         // TODO add your handling code here:
+        Usuario frmUsuario = new Usuario();
         if (frmUsuario == null) {
             frmUsuario = new Usuario();
         }
@@ -316,6 +317,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mgrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mgrupoActionPerformed
         // TODO add your handling code here:
+        TipoPago frmTipoPago = new TipoPago();
         if (frmTipoPago == null) {
             frmTipoPago = new TipoPago();
         }
@@ -324,6 +326,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void malumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_malumnoActionPerformed
         // TODO add your handling code here:
+        Alumno frmAlumno = new Alumno();
         if (frmAlumno == null) {
             frmAlumno = new Alumno();
         }
@@ -332,6 +335,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mcicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcicloActionPerformed
         // TODO add your handling code here:
+        Ciclo frmCiclo = new Ciclo();
         if (frmCiclo == null) {
             frmCiclo = new Ciclo();
         }
@@ -340,6 +344,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void motrospagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motrospagosActionPerformed
         // TODO add your handling code here:
+        OtrosPagos frmOtrosPagos = new OtrosPagos();
         if (frmOtrosPagos == null) {
             frmOtrosPagos = new OtrosPagos();
         }
@@ -348,6 +353,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mcarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcarreraActionPerformed
         // TODO add your handling code here:
+        Carrera frmCarrera = new Carrera();
         if (frmCarrera == null) {
             frmCarrera = new Carrera();
         }
@@ -356,6 +362,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        Ayuda frmAyuda = new Ayuda();
         if (frmAyuda == null) {
             frmAyuda = new Ayuda();
         }
@@ -400,5 +407,4 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel sistema;
     private javax.swing.JLabel usuario;
     // End of variables declaration//GEN-END:variables
-
 }

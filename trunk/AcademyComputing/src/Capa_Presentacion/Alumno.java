@@ -325,6 +325,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Alumnos");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("alumnos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -453,6 +454,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         JPanelCampos.setLayout(null);
 
         jTabbedPane1.setBackground(java.awt.SystemColor.inactiveCaption);
+        jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jPanel1.setBackground(java.awt.SystemColor.activeCaption);
         jPanel1.setLayout(null);
@@ -656,7 +658,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel20);
         jLabel20.setBounds(480, 30, 80, 20);
 
-        jTabbedPane1.addTab("Titular", jPanel3);
+        jTabbedPane1.addTab("Encargado del Alumno", jPanel3);
 
         JPanelCampos.add(jTabbedPane1);
         jTabbedPane1.setBounds(0, 0, 880, 190);

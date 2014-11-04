@@ -79,6 +79,7 @@ public class Ayuda extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Ayuda / Soporte");
+        setName("ayuda"); // NOI18N
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/índice.jpg"))); // NOI18N
         panelImage1.setOpaque(false);
@@ -143,7 +144,7 @@ public class Ayuda extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -221,7 +222,7 @@ public class Ayuda extends javax.swing.JInternalFrame {
         );
 
         panelImage1.add(jPanel1);
-        jPanel1.setBounds(0, 0, 504, 220);
+        jPanel1.setBounds(0, 0, 492, 220);
 
         panelCurves1.setOpaque(true);
         panelImage1.add(panelCurves1);

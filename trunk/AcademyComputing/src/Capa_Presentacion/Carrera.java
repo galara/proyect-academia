@@ -217,6 +217,7 @@ public class Carrera extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Carreras");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("carrera"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

@@ -220,6 +220,7 @@ public class Ciclo extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Ciclo escolar");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("ciclo"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

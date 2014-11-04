@@ -21,7 +21,7 @@ public class BdConexion {
     private static String host = "localhost";
     private static String dataBase = "academia"; //nombre base de datos
     private static String user = "root"; // usuario de la base de datos
-    private static String pass = "123456"; // contraseña de la base de datos
+    private static String pass = "adolfo123"; // contraseña de la base de datos
     public static int TODO = 1;
     public static int SOLO_STATEMENT = 2;
     public static int SOLO_RESULTSET = 3;
@@ -37,16 +37,17 @@ public class BdConexion {
             }
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Fue imposible conectarse al servidor.", host, JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace(System.err);
+            //ex.printStackTrace(System.err);
         } catch (SQLException ex) {
             System.out.println("No se pudo establecer la conexión");
             JOptionPane.showMessageDialog(null, "no se pudo conectar con el servidor "
                     + "jdbc:mysql://" + host + ":3306/" + dataBase, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
             JOptionPane.showMessageDialog(null, "Fue imposible conectarse al servidor.", host, JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace(System.err);
+            //ex.printStackTrace(System.err);
             System.exit(0);
         } catch (NullPointerException ex) {
-            System.out.println("se esta pasando un objeto nulo");
+            JOptionPane.showMessageDialog(null, "se esta pasando un objeto nulo",host,JOptionPane.ERROR_MESSAGE);
+            //System.out.println("se esta pasando un objeto nulo");
         }
 
     }

@@ -15,6 +15,7 @@
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
       <Color id="Cursor Por defecto"/>
     </Property>
+    <Property name="name" type="java.lang.String" value="alumnos" noResource="true"/>
   </Properties>
   <AccessibilityProperties>
     <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Profesores"/>
@@ -228,6 +229,9 @@
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="db" green="cd" id="Inactive Caption" palette="2" red="bf" type="palette"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="12" style="1"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -610,8 +614,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Titular">
-                        <Property name="tabTitle" type="java.lang.String" value="Titular"/>
+                      <JTabbedPaneConstraints tabName="Encargado del Alumno">
+                        <Property name="tabTitle" type="java.lang.String" value="Encargado del Alumno"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
