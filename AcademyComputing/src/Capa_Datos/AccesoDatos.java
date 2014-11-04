@@ -316,7 +316,7 @@ public class AccesoDatos {
         }
 
         sql = "update " + nomTabla + " set " + generarArrayAString(cnls) + OpSql.WHERE + columnaId + OpSql.IGUAL + (vl == null ? id : vl);
-        System.out.print(sql);
+        //System.out.print(sql);
         int op = 0;
         try {
             op = BdConexion.getStatement().executeUpdate(sql);

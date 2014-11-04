@@ -221,6 +221,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Usuarios");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("usuarios"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

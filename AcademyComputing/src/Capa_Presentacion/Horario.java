@@ -47,8 +47,10 @@ public class Horario extends javax.swing.JInternalFrame {
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
     public Hashtable<String, String> hashCarrera = new Hashtable<>();
-    private static Profesor frmProfesor = new Profesor();
-    private static Carrera frmCarrera = new Carrera();
+    
+    //private static Profesor frmProfesor = new Profesor();
+    //private static Carrera frmCarrera = new Carrera();
+    
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
     /**
@@ -495,6 +497,7 @@ public class Horario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Grupos y Horarios");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("horario"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -1121,6 +1124,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void Nuevo_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_ProfesorActionPerformed
         // TODO add your handling code here:
+        Profesor frmProfesor = new Profesor();
         if (frmProfesor == null) {
             frmProfesor = new Profesor();
         }
@@ -1129,6 +1133,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void Nueva_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_CarreraActionPerformed
         // TODO add your handling code here:
+        Carrera frmCarrera = new Carrera();
         if (frmCarrera == null) {
             frmCarrera = new Carrera();
         }

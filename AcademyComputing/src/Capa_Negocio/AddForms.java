@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 
 /**
  * importare
@@ -20,17 +21,35 @@ public class AddForms {
      */
     public static void adminInternalFrame(JDesktopPane dp, JInternalFrame vnt) {
 
-        if (vnt != null && !vnt.isShowing()) {
+        JInternalFrame[] cm = dp.getAllFrames();
+        boolean estado = false;
+        
+        //Verifica si ya esta abierto o minimizado  estado=true
+        for (JInternalFrame cm1 : cm) {
+            
+            if (cm1.getName().equals(vnt.getName())) {
+                estado = true;
+                JOptionPane.showMessageDialog(null, "EL FORMULARIO YA ESTA ABIERTO \n");
+                cm1.toFront();
 
-            if (vnt.isIcon() == true) {
-                try {
-                    vnt.setIcon(false);
-                    vnt.toFront();
-                } catch (PropertyVetoException ex) {
-                    Logger.getLogger(AddForms.class.getName()).log(Level.SEVERE, null, ex);
+                if (cm1 != null && !cm1.isShowing()) {
+                    if (cm1.isIcon() == true) {
+                        try {
+                            cm1.setIcon(false);
+                            cm1.toFront();
+                        } catch (PropertyVetoException ex) {
+                            Logger.getLogger(AddForms.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+
                 }
-                
-            } else {
+
+            }
+        }
+        //Verifica Si no esta abiero o minimizado estado=false
+        if (estado != true) {
+            if (vnt != null && !vnt.isShowing()) {
                 vnt.show();
                 dp.remove(vnt);
                 try {

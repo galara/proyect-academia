@@ -225,6 +225,7 @@ public class Curso extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Cursos");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("curso"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

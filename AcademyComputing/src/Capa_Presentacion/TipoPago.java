@@ -225,6 +225,7 @@ public class TipoPago extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Tipo de Pago");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("tipopago"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
