@@ -1,6 +1,7 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AddForms;
+import inicio.start;
 import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
@@ -382,6 +383,7 @@ public class Principal extends javax.swing.JFrame {
          */
         //java.awt.EventQueue.invokeLater(() -> {
         new Principal().setVisible(true);
+        
         //});
     }
 
