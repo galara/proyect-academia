@@ -28,7 +28,7 @@ public class start extends javax.swing.JFrame implements Runnable {
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel4.setText("\"Conpuvisión\"");
+        jLabel4.setText("\"Compuvisión\"");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
