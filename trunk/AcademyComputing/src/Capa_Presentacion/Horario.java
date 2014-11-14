@@ -7,6 +7,7 @@ package Capa_Presentacion;
 import Capa_Datos.AccesoDatos;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
+import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
@@ -331,7 +332,7 @@ public class Horario extends javax.swing.JInternalFrame {
         if (horarios.getValueAt(fila, 0) != null) {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.graduados"};
+            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado","grupo.inscripcion","grupo.colegiatura"};
             llenarcomboprofesor();
             llenarcombocarrera();
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
@@ -369,7 +370,9 @@ public class Horario extends javax.swing.JInternalFrame {
                                 estado.setSelected(false);
                                 estado.setBackground(Color.red);
                             }
-                            graduados.setSelectedItem(rs.getString(12));
+                            inscripcion.setValue(rs.getFloat(12));
+                            colegiatura.setValue(rs.getFloat(13));
+                            //graduados.setSelectedItem(rs.getString(12));
                         }
                     }
                 } catch (SQLException e) {
@@ -440,8 +443,10 @@ public class Horario extends javax.swing.JInternalFrame {
         carrera = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
         cantalumnos = new elaprendiz.gui.textField.TextField();
+        jLabel11 = new javax.swing.JLabel();
+        inscripcion = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
-        graduados = new javax.swing.JComboBox();
+        colegiatura = new javax.swing.JFormattedTextField();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         horarios = new javax.swing.JTable();
@@ -629,37 +634,37 @@ public class Horario extends javax.swing.JInternalFrame {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel10.setText("A:");
         JPanelCampos.add(jLabel10);
-        jLabel10.setBounds(300, 150, 20, 17);
+        jLabel10.setBounds(240, 150, 20, 17);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(70, 60, 100, 20);
+        jLabel1.setBounds(10, 60, 100, 20);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Día:");
         JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(510, 60, 80, 20);
+        jLabel2.setBounds(440, 60, 80, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(90, 90, 80, 20);
+        jLabel3.setBounds(30, 90, 80, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Fecha Fin:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(490, 150, 100, 21);
+        jLabel6.setBounds(420, 150, 100, 21);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(480, 90, 110, 20);
+        jLabel4.setBounds(410, 90, 110, 20);
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -667,14 +672,14 @@ public class Horario extends javax.swing.JInternalFrame {
         codigo.setNextFocusableComponent(descripcion);
         codigo.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(codigo);
-        codigo.setBounds(180, 30, 130, 21);
+        codigo.setBounds(120, 30, 130, 21);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
         descripcion.setNextFocusableComponent(profesor);
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 60, 250, 21);
+        descripcion.setBounds(120, 60, 250, 21);
 
         fechafin.setDate(Calendar.getInstance().getTime());
         fechafin.setDateFormatString("dd/MM/yyyy");
@@ -683,10 +688,10 @@ public class Horario extends javax.swing.JInternalFrame {
         fechafin.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         fechafin.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fechafin.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fechafin.setNextFocusableComponent(graduados);
+        fechafin.setNextFocusableComponent(inscripcion);
         fechafin.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechafin);
-        fechafin.setBounds(600, 150, 120, 21);
+        fechafin.setBounds(530, 150, 110, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -696,7 +701,7 @@ public class Horario extends javax.swing.JInternalFrame {
         estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechainicio);
         JPanelCampos.add(estado);
-        estado.setBounds(600, 90, 120, 21);
+        estado.setBounds(530, 90, 110, 21);
 
         JSpinner.DateEditor de = new JSpinner.DateEditor(horade, "hh:mm a");
         horade.setEditor(de);
@@ -704,7 +709,7 @@ public class Horario extends javax.swing.JInternalFrame {
         horade.setName("horade"); // NOI18N
         horade.setNextFocusableComponent(horaa);
         JPanelCampos.add(horade);
-        horade.setBounds(180, 150, 100, 21);
+        horade.setBounds(120, 150, 100, 21);
 
         JSpinner.DateEditor de2 = new JSpinner.DateEditor(horaa, "hh:mm a");
         horaa.setEditor(de2);
@@ -712,19 +717,19 @@ public class Horario extends javax.swing.JInternalFrame {
         horaa.setName("horaa"); // NOI18N
         horaa.setNextFocusableComponent(cantalumnos);
         JPanelCampos.add(horaa);
-        horaa.setBounds(330, 150, 100, 21);
+        horaa.setBounds(270, 150, 100, 21);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel12.setText("Codigo:");
         JPanelCampos.add(jLabel12);
-        jLabel12.setBounds(90, 30, 80, 17);
+        jLabel12.setBounds(30, 30, 80, 17);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel13.setText("Horario De:");
         JPanelCampos.add(jLabel13);
-        jLabel13.setBounds(80, 150, 90, 17);
+        jLabel13.setBounds(20, 150, 90, 17);
 
         profesor.setModel(modelCombo = new DefaultComboBoxModel());
         profesor.setComponentPopupMenu(popupprofesor);
@@ -732,19 +737,19 @@ public class Horario extends javax.swing.JInternalFrame {
         profesor.setName("Profesor"); // NOI18N
         profesor.setNextFocusableComponent(carrera);
         JPanelCampos.add(profesor);
-        profesor.setBounds(180, 90, 250, 21);
+        profesor.setBounds(120, 90, 250, 21);
 
         dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
         dia.setName("Dia"); // NOI18N
         dia.setNextFocusableComponent(estado);
         JPanelCampos.add(dia);
-        dia.setBounds(600, 60, 120, 21);
+        dia.setBounds(530, 60, 110, 21);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(490, 120, 100, 21);
+        jLabel9.setBounds(420, 120, 100, 21);
 
         fechainicio.setDate(Calendar.getInstance().getTime());
         fechainicio.setDateFormatString("dd/MM/yyyy");
@@ -756,13 +761,13 @@ public class Horario extends javax.swing.JInternalFrame {
         fechainicio.setNextFocusableComponent(fechafin);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(600, 120, 120, 21);
+        fechainicio.setBounds(530, 120, 110, 21);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Carrera:");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(90, 120, 80, 20);
+        jLabel5.setBounds(30, 120, 80, 20);
 
         carrera.setModel(modelCombo = new DefaultComboBoxModel());
         carrera.setComponentPopupMenu(popupcarrera);
@@ -770,13 +775,13 @@ public class Horario extends javax.swing.JInternalFrame {
         carrera.setName("Profesor"); // NOI18N
         carrera.setNextFocusableComponent(horade);
         JPanelCampos.add(carrera);
-        carrera.setBounds(180, 120, 250, 21);
+        carrera.setBounds(120, 120, 250, 21);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel14.setText("No. Alumnos:");
         JPanelCampos.add(jLabel14);
-        jLabel14.setBounds(480, 30, 110, 17);
+        jLabel14.setBounds(410, 30, 110, 17);
 
         cantalumnos.setEditable(false);
         cantalumnos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -784,18 +789,38 @@ public class Horario extends javax.swing.JInternalFrame {
         cantalumnos.setNextFocusableComponent(dia);
         cantalumnos.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(cantalumnos);
-        cantalumnos.setBounds(600, 30, 120, 21);
+        cantalumnos.setBounds(530, 30, 110, 21);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel11.setText("Inscripción Q:");
+        JPanelCampos.add(jLabel11);
+        jLabel11.setBounds(680, 30, 100, 17);
+
+        inscripcion.setEditable(false);
+        inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+        inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        inscripcion.setName("inscripcion"); // NOI18N
+        inscripcion.setNextFocusableComponent(colegiatura);
+        inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
+        JPanelCampos.add(inscripcion);
+        inscripcion.setBounds(790, 30, 60, 21);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("Graduados:");
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel15.setText("Colegiatura Q:");
         JPanelCampos.add(jLabel15);
-        jLabel15.setBounds(750, 130, 110, 20);
+        jLabel15.setBounds(680, 60, 99, 20);
 
-        graduados.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "No Graduados", "Graduados" }));
-        graduados.setName("graduados"); // NOI18N
-        JPanelCampos.add(graduados);
-        graduados.setBounds(750, 150, 110, 21);
+        colegiatura.setEditable(false);
+        colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+        colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        colegiatura.setName("colegiatura"); // NOI18N
+        colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
+        JPanelCampos.add(colegiatura);
+        colegiatura.setBounds(790, 60, 60, 23);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -946,7 +971,7 @@ public class Horario extends javax.swing.JInternalFrame {
             boolean seguardo = false;
             String nombreTabla = "grupo";
             //String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion","grupo.horariode", "grupo.horarioa", "grupo.fechainicio","grupo.fechafin","grupo.cantalumnos","grupo.estado"};
-            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, graduados";
+            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
@@ -961,7 +986,7 @@ public class Horario extends javax.swing.JInternalFrame {
             }
 
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, graduados.getSelectedItem()
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText()
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -1032,7 +1057,7 @@ public class Horario extends javax.swing.JInternalFrame {
             int fila = horarios.getSelectedRow();
             String id = (String) "" + horarios.getValueAt(fila, 0);
 
-            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera,horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, graduados";
+            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera,horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
             //Para obtener el id en la base de datos
@@ -1047,7 +1072,7 @@ public class Horario extends javax.swing.JInternalFrame {
             }
 
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, graduados.getSelectedItem(), id
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad,inscripcion.getText(),colegiatura.getText(),id
             };
 
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
@@ -1164,17 +1189,19 @@ public class Horario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField cantalumnos;
     private javax.swing.JComboBox carrera;
     private elaprendiz.gui.textField.TextField codigo;
+    private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JComboBox dia;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fechafin;
     private com.toedter.calendar.JDateChooser fechainicio;
-    private javax.swing.JComboBox graduados;
     private javax.swing.JSpinner horaa;
     private javax.swing.JSpinner horade;
     private javax.swing.JTable horarios;
+    private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
