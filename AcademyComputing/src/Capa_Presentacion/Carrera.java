@@ -29,7 +29,7 @@ public class Carrera extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    String[] titulos = {"Código", "Descripción", "Inscripción","Colegiatura","Estado"};//Titulos para Jtabla
+    String[] titulos = {"Código", "Descripción", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
@@ -119,7 +119,7 @@ public class Carrera extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"carrera.idcarrera", "carrera.descripcion", "carrera.inscripcion", "carrera.colegiatura", "carrera.estado"};
+        String[] campos = {"carrera.idcarrera", "carrera.descripcion", "carrera.estado"};
         String[] condiciones = {"carrera.idcarrera"};
         String[] Id = {Dato};
 
@@ -159,8 +159,8 @@ public class Carrera extends javax.swing.JInternalFrame {
         String[] id = {"" + usuarios.getValueAt(fila, 0)};
         if (usuarios.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"carrera.descripcion", "carrera.inscripcion","carrera.colegiatura", "carrera.estado", "carrera.observacion"};
-            Component[] cmps = {descripcion, inscripcion,colegiatura,estado,observacion};
+            String[] campos = {"carrera.descripcion", "carrera.estado", "carrera.observacion"};
+            Component[] cmps = {descripcion, estado,observacion};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
             peticiones.getRegistroSeleccionado(cmps, "carrera", campos, cond, id, "", null);
 
@@ -195,10 +195,6 @@ public class Carrera extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         descripcion = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JRadioButton();
-        jLabel11 = new javax.swing.JLabel();
-        inscripcion = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
-        colegiatura = new javax.swing.JFormattedTextField();
         observacion = new elaprendiz.gui.textField.TextField();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -349,25 +345,25 @@ public class Carrera extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Descripción:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(80, 40, 90, 20);
+        jLabel1.setBounds(90, 60, 90, 20);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Observación:");
         JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(70, 130, 100, 20);
+        jLabel2.setBounds(80, 110, 100, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 40, 110, 20);
+        jLabel4.setBounds(500, 60, 110, 20);
 
         descripcion.setEditable(false);
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(180, 40, 250, 21);
+        descripcion.setBounds(190, 60, 250, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -377,42 +373,12 @@ public class Carrera extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         JPanelCampos.add(estado);
-        estado.setBounds(610, 40, 160, 21);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel11.setText("Inscripción Q:");
-        JPanelCampos.add(jLabel11);
-        jLabel11.setBounds(60, 70, 110, 17);
-
-        inscripcion.setEditable(false);
-        inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        inscripcion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        inscripcion.setName("inscripcion"); // NOI18N
-        inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(inscripcion);
-        inscripcion.setBounds(180, 70, 130, 21);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Colegiatura Q:");
-        JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(60, 100, 110, 20);
-
-        colegiatura.setEditable(false);
-        colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        colegiatura.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        colegiatura.setName("colegiatura"); // NOI18N
-        colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(colegiatura);
-        colegiatura.setBounds(180, 100, 130, 23);
+        estado.setBounds(620, 60, 160, 21);
 
         observacion.setEditable(false);
         observacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         JPanelCampos.add(observacion);
-        observacion.setBounds(180, 130, 590, 21);
+        observacion.setBounds(190, 110, 590, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -534,12 +500,12 @@ public class Carrera extends javax.swing.JInternalFrame {
 
             boolean seguardo = false;
             String nombreTabla = "carrera";
-            String campos = "descripcion, inscripcion, colegiatura,  estado, observacion";
+            String campos = "descripcion, estado, observacion";
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), inscripcion.getText(),colegiatura.getText(), estad,observacion.getText()                
+            Object[] valores = {descripcion.getText(), estad,observacion.getText()                
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -608,13 +574,13 @@ public class Carrera extends javax.swing.JInternalFrame {
             int seguardo = 0;
             int fila = usuarios.getSelectedRow();
             String id = (String) "" + usuarios.getValueAt(fila, 0);
-            String campos = "descripcion, inscripcion, colegiatura,  estado, observacion";
+            String campos = "descripcion, estado, observacion";
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {descripcion.getText(), inscripcion.getText(),colegiatura.getText(), estad,observacion.getText(), id
+            Object[] valores = {descripcion.getText(), estad,observacion.getText(), id
             };
 
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
@@ -680,17 +646,13 @@ public class Carrera extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
-    private javax.swing.JFormattedTextField colegiatura;
     private elaprendiz.gui.textField.TextField descripcion;
     private javax.swing.JRadioButton estado;
-    private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private elaprendiz.gui.textField.TextField observacion;
     private elaprendiz.gui.panel.PanelImage panelImage;
