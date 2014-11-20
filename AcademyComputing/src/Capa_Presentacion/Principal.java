@@ -67,7 +67,7 @@ public class Principal extends javax.swing.JFrame {
         motrospagos = new javax.swing.JMenuItem();
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
@@ -222,13 +222,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(malumno);
 
-        jMenuItem2.setText("Pensum");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
+        jMenuItem3.setText("Pensum");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jMenu3.add(jMenuItem3);
 
         jMenuBar1.add(jMenu3);
 
@@ -379,14 +380,15 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmAyuda);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        Pensum frmPensum = new Pensum();
+        PensumDetalle frmPensum = new PensumDetalle();
         if (frmPensum == null) {
-            frmPensum = new Pensum();
+            frmPensum = new PensumDetalle();
         }
         AddForms.adminInternalFrame(dp, frmPensum);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -413,7 +415,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;

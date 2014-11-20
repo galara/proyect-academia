@@ -419,7 +419,7 @@ public class AccesoDatos {
     public int actualizarRegistroPs(String nomTabla, String cnls, Object[] valores) {
 
         sql = "update " + nomTabla + " set " + cnls;
-        System.out.print(sql+valores);
+        //System.out.print(sql+valores);
         int op = 0;
         try {
             //System.out.println("actuaizar registro valores" + valores);
@@ -444,6 +444,24 @@ public class AccesoDatos {
      */
     public ResultSet getUltimoRegistro(String table, String column) {
         sql = "select * from " + table + " order by " + column + " desc limit 0,1";
+        try {
+            rs = BdConexion.getResultSet(sql);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+        return rs;
+    }
+    
+    /**
+     * Obtiene el ultimo resitro de una tabla de una columna indicada
+     *
+     * @param table
+     * @param column
+     * @return
+     */
+    public ResultSet getRegistroProc(String table) {
+        sql = table;
         try {
             rs = BdConexion.getResultSet(sql);
         } catch (Exception ex) {
