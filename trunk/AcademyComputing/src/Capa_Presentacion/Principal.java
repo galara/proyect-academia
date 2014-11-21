@@ -52,6 +52,12 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         dp = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
         sistema = new javax.swing.JLabel();
@@ -71,8 +77,30 @@ public class Principal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem4.setText("jMenuItem4");
+
+        jMenuItem5.setText("jMenuItem5");
+
+        jMenuItem6.setText("jMenuItem6");
+
+        jMenuItem7.setText("jMenuItem7");
+
+        jMenuItem15.setText("jMenuItem15");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("SYSTEMA DE GESTIÓN COMPUVISIÓN");
@@ -257,7 +285,45 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu2.add(mciclo);
 
+        jMenu7.setText("Gestionar BD");
+
+        jMenuItem14.setText("Backup");
+        jMenu7.add(jMenuItem14);
+
+        jMenuItem16.setText("Restaurar");
+        jMenu7.add(jMenuItem16);
+
+        jMenu2.add(jMenu7);
+
         jMenuBar1.add(jMenu2);
+
+        jMenu5.setText("Informes");
+
+        jMenuItem8.setText("Cobros del dia");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem8);
+
+        jMenuItem9.setText("Cobros Pendientes");
+        jMenu5.add(jMenuItem9);
+
+        jMenu6.setText("Reporte de Alumnos");
+
+        jMenuItem10.setText("Por Horario");
+        jMenu6.add(jMenuItem10);
+
+        jMenuItem11.setText("Por Profesor");
+        jMenu6.add(jMenuItem11);
+
+        jMenuItem12.setText("Por monto Colegiatura");
+        jMenu6.add(jMenuItem12);
+
+        jMenu5.add(jMenu6);
+
+        jMenuBar1.add(jMenu5);
 
         jMenu4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu4.setText("Ayuda");
@@ -390,6 +456,10 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -413,9 +483,25 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;
