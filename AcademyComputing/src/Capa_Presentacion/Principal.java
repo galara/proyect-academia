@@ -84,7 +84,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        MenuReportHorario = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -285,6 +285,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu2.add(mciclo);
 
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/iconobackup.jpg"))); // NOI18N
         jMenu7.setText("Gestionar BD");
 
         jMenuItem14.setText("Backup");
@@ -299,6 +300,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu5.setText("Informes");
 
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
         jMenuItem8.setText("Cobros del dia");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,13 +309,20 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem8);
 
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
         jMenuItem9.setText("Cobros Pendientes");
         jMenu5.add(jMenuItem9);
 
+        jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/checklist-icon-2.jpg"))); // NOI18N
         jMenu6.setText("Reporte de Alumnos");
 
-        jMenuItem10.setText("Por Horario");
-        jMenu6.add(jMenuItem10);
+        MenuReportHorario.setText("Por Horario");
+        MenuReportHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuReportHorarioActionPerformed(evt);
+            }
+        });
+        jMenu6.add(MenuReportHorario);
 
         jMenuItem11.setText("Por Profesor");
         jMenu6.add(jMenuItem11);
@@ -460,6 +469,15 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void MenuReportHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuReportHorarioActionPerformed
+        // TODO add your handling code here:
+        ReportXHorario frmrepxhorario = new ReportXHorario();
+        if (frmrepxhorario == null) {
+            frmrepxhorario = new ReportXHorario();
+        }
+        AddForms.adminInternalFrame(dp, frmrepxhorario);
+    }//GEN-LAST:event_MenuReportHorarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -478,6 +496,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuReportHorario;
     public static javax.swing.JDesktopPane dp;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -488,7 +507,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem14;

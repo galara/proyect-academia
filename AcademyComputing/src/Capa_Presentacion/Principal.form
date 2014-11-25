@@ -235,6 +235,9 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="jMenu7">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/iconobackup.jpg"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Gestionar BD"/>
               </Properties>
               <SubComponents>
@@ -259,6 +262,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/cobros.jpg"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cobros del dia"/>
               </Properties>
               <Events>
@@ -267,18 +273,27 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/cobros.jpg"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cobros Pendientes"/>
               </Properties>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="jMenu6">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/checklist-icon-2.jpg"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Reporte de Alumnos"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
+                <MenuItem class="javax.swing.JMenuItem" name="MenuReportHorario">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Por Horario"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuReportHorarioActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem11">
                   <Properties>
