@@ -183,14 +183,14 @@ public class ReportXHorario extends javax.swing.JInternalFrame {
         ImprimePDF = new javax.swing.JButton();
         imprimeExcel = new javax.swing.JButton();
         JPanelTable = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tipopago = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         busqueda = new elaprendiz.gui.textField.TextField();
         rbCodigo = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tipopago = new javax.swing.JTable();
 
         Actualizar.setText("Actualizar");
         Actualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -279,7 +279,7 @@ public class ReportXHorario extends javax.swing.JInternalFrame {
         jLabel1.setBounds(80, 40, 180, 20);
 
         JPanelCampos.add(descripcion);
-        descripcion.setBounds(290, 40, 250, 27);
+        descripcion.setBounds(290, 40, 250, 20);
 
         ImprimePDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/print1.png"))); // NOI18N
         JPanelCampos.add(ImprimePDF);
@@ -290,60 +290,11 @@ public class ReportXHorario extends javax.swing.JInternalFrame {
         imprimeExcel.setBounds(650, 30, 60, 50);
 
         panelImage.add(JPanelCampos);
-        JPanelCampos.setBounds(0, 40, 880, 150);
+        JPanelCampos.setBounds(0, 40, 880, 190);
 
         JPanelTable.setOpaque(false);
         JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
         JPanelTable.setLayout(new java.awt.BorderLayout());
-        panelImage.add(JPanelTable);
-        JPanelTable.setBounds(0, 260, 880, 170);
-
-        JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
-        JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        JPanelBusqueda.setLayout(null);
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
-        jLabel7.setText("Buscar Por:");
-        JPanelBusqueda.add(jLabel7);
-        jLabel7.setBounds(174, 2, 128, 40);
-
-        busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
-        busqueda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                busquedaActionPerformed(evt);
-            }
-        });
-        JPanelBusqueda.add(busqueda);
-        busqueda.setBounds(300, 10, 250, 27);
-
-        rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
-        rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
-        rbCodigo.setText("Codigo");
-        rbCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbCodigoActionPerformed(evt);
-            }
-        });
-        JPanelBusqueda.add(rbCodigo);
-        rbCodigo.setBounds(350, 40, 120, 24);
-
-        panelImage.add(JPanelBusqueda);
-        JPanelBusqueda.setBounds(0, 190, 880, 70);
-
-        pnlPaginador.setBackground(new java.awt.Color(57, 104, 163));
-        pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
-        pnlPaginador.setLayout(new java.awt.GridBagLayout());
-
-        jLabel9.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
-        jLabel9.setText("<--Alumnos por Horario-->");
-        pnlPaginador.add(jLabel9, new java.awt.GridBagConstraints());
-
-        panelImage.add(pnlPaginador);
-        pnlPaginador.setBounds(0, 0, 880, 40);
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -377,8 +328,57 @@ public class ReportXHorario extends javax.swing.JInternalFrame {
             jScrollPane1.setViewportView(tipopago);
             tipopago.getAccessibleContext().setAccessibleName("");
 
-            panelImage.add(jScrollPane1);
-            jScrollPane1.setBounds(0, 260, 880, 130);
+            JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+            panelImage.add(JPanelTable);
+            JPanelTable.setBounds(0, 300, 880, 130);
+
+            JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
+            JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+            JPanelBusqueda.setLayout(null);
+
+            jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+            jLabel7.setText("Buscar Por:");
+            JPanelBusqueda.add(jLabel7);
+            jLabel7.setBounds(174, 2, 116, 40);
+
+            busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
+            busqueda.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    busquedaActionPerformed(evt);
+                }
+            });
+            JPanelBusqueda.add(busqueda);
+            busqueda.setBounds(300, 10, 250, 27);
+
+            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
+            rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
+            rbCodigo.setText("Codigo");
+            rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    rbCodigoActionPerformed(evt);
+                }
+            });
+            JPanelBusqueda.add(rbCodigo);
+            rbCodigo.setBounds(350, 40, 120, 25);
+
+            panelImage.add(JPanelBusqueda);
+            JPanelBusqueda.setBounds(0, 230, 880, 70);
+
+            pnlPaginador.setBackground(new java.awt.Color(57, 104, 163));
+            pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
+            pnlPaginador.setLayout(new java.awt.GridBagLayout());
+
+            jLabel9.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
+            jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
+            jLabel9.setText("<--Alumnos por Horario-->");
+            pnlPaginador.add(jLabel9, new java.awt.GridBagConstraints());
+
+            panelImage.add(pnlPaginador);
+            pnlPaginador.setBounds(0, 0, 880, 40);
 
             getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
