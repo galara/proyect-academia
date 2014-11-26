@@ -56,9 +56,9 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
-        cicloescolar1.getColumnModel().getColumn(2).setCellEditor(new Editor_CheckBox());
+        cursos.getColumnModel().getColumn(2).setCellEditor(new Editor_CheckBox());
         //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
-        cicloescolar1.getColumnModel().getColumn(2).setCellRenderer(new Renderer_CheckBox());
+        cursos.getColumnModel().getColumn(2).setCellRenderer(new Renderer_CheckBox());
 
         pensum.addItemListener(
                 (ItemEvent e) -> {
@@ -110,13 +110,13 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-        while (cicloescolar1.getRowCount() != 0) {
+        while (cursos.getRowCount() != 0) {
             model.removeRow(0);
         }
     }
 
     public void removejtable2() {
-        while (cicloescolar.getRowCount() != 0) {
+        while (detallepensum.getRowCount() != 0) {
             model2.removeRow(0);
         }
     }
@@ -209,7 +209,7 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
         removejtable2();
         model2 = getRegistroPorLike(model2, "detallepensun", campos, "detallepensun.pensun_idpensun", Dato, inner);
-        Utilidades.ajustarAnchoColumnas(cicloescolar);
+        Utilidades.ajustarAnchoColumnas(detallepensum);
     }
 
     /* Este metodo recibe de el campo busqueda un parametro que es el que servirá para realizar la cunsulta
@@ -228,7 +228,7 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
         removejtable();
         model = getRegistroPorLikel(model, sql);
-        Utilidades.ajustarAnchoColumnas(cicloescolar1);
+        Utilidades.ajustarAnchoColumnas(cursos);
     }
 
     /**
@@ -385,14 +385,15 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
         pensum = new javax.swing.JComboBox();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        cicloescolar = new javax.swing.JTable();
+        detallepensum = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         JPanelTable1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        cicloescolar1 = new javax.swing.JTable();
+        cursos = new javax.swing.JTable();
 
         Eliminar.setText("Eliminar Curso");
         Eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -507,16 +508,17 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
         jLabel5.setText("Pensum");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(80, 70, 80, 20);
+        jLabel5.setBounds(60, 65, 100, 30);
 
         pensum.setModel(modelCombo = new DefaultComboBoxModel());
         pensum.setComponentPopupMenu(Ppensum);
         pensum.setEnabled(false);
         pensum.setName("Pensum"); // NOI18N
         JPanelCampos.add(pensum);
-        pensum.setBounds(170, 70, 250, 21);
+        pensum.setBounds(170, 70, 310, 21);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -527,41 +529,48 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        cicloescolar.setForeground(new java.awt.Color(51, 51, 51));
-        cicloescolar.setModel(model2 = new DefaultTableModel(null, titulos2)
+        detallepensum.setForeground(new java.awt.Color(51, 51, 51));
+        detallepensum.setModel(model2 = new DefaultTableModel(null, titulos2)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             });
-            cicloescolar.setComponentPopupMenu(PdetallePensum);
-            cicloescolar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            cicloescolar.setFocusCycleRoot(true);
-            cicloescolar.setGridColor(new java.awt.Color(51, 51, 255));
-            cicloescolar.setRowHeight(22);
-            cicloescolar.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            cicloescolar.setSurrendersFocusOnKeystroke(true);
-            jScrollPane1.setViewportView(cicloescolar);
-            cicloescolar.getAccessibleContext().setAccessibleName("");
+            detallepensum.setComponentPopupMenu(PdetallePensum);
+            detallepensum.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            detallepensum.setFocusCycleRoot(true);
+            detallepensum.setGridColor(new java.awt.Color(51, 51, 255));
+            detallepensum.setRowHeight(22);
+            detallepensum.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            detallepensum.setSurrendersFocusOnKeystroke(true);
+            jScrollPane1.setViewportView(detallepensum);
+            detallepensum.getAccessibleContext().setAccessibleName("");
 
             JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
             panelImage.add(JPanelTable);
-            JPanelTable.setBounds(0, 300, 440, 130);
+            JPanelTable.setBounds(0, 270, 440, 160);
 
             JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
             JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
             JPanelBusqueda.setLayout(null);
 
-            jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            jLabel1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+            jLabel1.setForeground(new java.awt.Color(0, 102, 102));
             jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-            jLabel1.setText("Marque con un Check los cursos que desee agregar al pensum");
+            jLabel1.setText("Marque un Check a los cursos que desee agregar al pensum");
             JPanelBusqueda.add(jLabel1);
-            jLabel1.setBounds(440, 50, 430, 14);
+            jLabel1.setBounds(440, 10, 430, 14);
+
+            jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel2.setForeground(new java.awt.Color(0, 102, 102));
+            jLabel2.setText("Detalle de cursos del Pensum");
+            JPanelBusqueda.add(jLabel2);
+            jLabel2.setBounds(10, 10, 260, 17);
 
             panelImage.add(JPanelBusqueda);
-            JPanelBusqueda.setBounds(0, 230, 880, 70);
+            JPanelBusqueda.setBounds(0, 230, 880, 40);
 
             pnlPaginador.setBackground(new java.awt.Color(57, 104, 163));
             pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
@@ -582,8 +591,8 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
             jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-            cicloescolar1.setForeground(new java.awt.Color(51, 51, 51));
-            cicloescolar1.setModel(model = new DefaultTableModel(null, titulos)
+            cursos.setForeground(new java.awt.Color(51, 51, 51));
+            cursos.setModel(model = new DefaultTableModel(null, titulos)
                 {
                     @Override
                     public boolean isCellEditable(int row, int column) {
@@ -593,31 +602,31 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
                             return false;}
                     }
                 });
-                cicloescolar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-                cicloescolar1.setFocusCycleRoot(true);
-                cicloescolar1.setGridColor(new java.awt.Color(51, 51, 255));
-                cicloescolar1.setRowHeight(22);
-                cicloescolar1.setSelectionBackground(java.awt.SystemColor.activeCaption);
-                cicloescolar1.setSurrendersFocusOnKeystroke(true);
-                cicloescolar1.addMouseListener(new java.awt.event.MouseAdapter() {
+                cursos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+                cursos.setFocusCycleRoot(true);
+                cursos.setGridColor(new java.awt.Color(51, 51, 255));
+                cursos.setRowHeight(22);
+                cursos.setSelectionBackground(java.awt.SystemColor.activeCaption);
+                cursos.setSurrendersFocusOnKeystroke(true);
+                cursos.addMouseListener(new java.awt.event.MouseAdapter() {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        cicloescolar1MouseClicked(evt);
+                        cursosMouseClicked(evt);
                     }
                     public void mousePressed(java.awt.event.MouseEvent evt) {
-                        cicloescolar1MouseClicked1(evt);
+                        cursosMouseClicked1(evt);
                     }
                 });
-                cicloescolar1.addKeyListener(new java.awt.event.KeyAdapter() {
+                cursos.addKeyListener(new java.awt.event.KeyAdapter() {
                     public void keyPressed(java.awt.event.KeyEvent evt) {
-                        cicloescolar1KeyPressed(evt);
+                        cursosKeyPressed(evt);
                     }
                 });
-                jScrollPane2.setViewportView(cicloescolar1);
+                jScrollPane2.setViewportView(cursos);
 
                 JPanelTable1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
                 panelImage.add(JPanelTable1);
-                JPanelTable1.setBounds(440, 300, 433, 130);
+                JPanelTable1.setBounds(440, 270, 440, 160);
 
                 getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
@@ -641,67 +650,87 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void cicloescolar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cicloescolar1MouseClicked
+    private void cursosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cursosMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_cicloescolar1MouseClicked
+    }//GEN-LAST:event_cursosMouseClicked
 
-    private void cicloescolar1MouseClicked1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cicloescolar1MouseClicked1
+    private void cursosMouseClicked1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cursosMouseClicked1
         // TODO add your handling code here:
-    }//GEN-LAST:event_cicloescolar1MouseClicked1
+    }//GEN-LAST:event_cursosMouseClicked1
 
-    private void cicloescolar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cicloescolar1KeyPressed
+    private void cursosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cursosKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cicloescolar1KeyPressed
+    }//GEN-LAST:event_cursosKeyPressed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            cicloescolar1.getCellEditor().stopCellEditing();
-            boolean seguardo = false;
-            String nombreTabla = "detallepensun";
-            String campos = "pensun_idpensun, curso_idcurso";
-            mPensum pem = (mPensum) pensum.getSelectedItem();
-            String idpensum = pem.getID();
 
-            Object[] fila = new Object[2];
-            boolean camprec = false;
-            int cant = model.getRowCount();
+        if (pensum.getSelectedIndex() > 0) {
 
-            for (int i = 0; i < cant; i++) {
-                if (model.getValueAt(i, 2).toString().equals("true")) {
-                    fila[0] = idpensum;
-                    fila[1] = model.getValueAt(i, 0).toString();
-                    seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+
+                boolean seguardo = false;
+                String nombreTabla = "detallepensun";
+                String campos = "pensun_idpensun, curso_idcurso";
+                mPensum pem = (mPensum) pensum.getSelectedItem();
+                String idpensum = pem.getID();
+
+                Object[] fila = new Object[2];
+                boolean camprec = false;
+                int cant = model.getRowCount();
+
+                try {
+                    cursos.getCellEditor().stopCellEditing();
+                } catch (Exception e) {
+                }
+
+                for (int i = 0; i < cant; i++) {
+                    if (model.getValueAt(i, 2).toString().equals("true")) {
+                        camprec = true;
+                        fila[0] = idpensum;
+                        fila[1] = model.getValueAt(i, 0).toString();
+                        seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
+                    }
+                }
+                if (!camprec) {
+                    JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun curso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                }
+                if (seguardo) {
+                    MostrarDatos(idpensum);
+                    MostrarDatosDetalle(idpensum);
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-
-            if (seguardo) {
-                MostrarDatos(idpensum);
-                MostrarDatosDetalle(idpensum);
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No se ha seleccionado ningun Pensum", "Mensage", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
 
-            int fila = cicloescolar.getSelectedRow();
-            String id = (String) "" + cicloescolar.getValueAt(fila, 0);
-            String nombreTabla = "detallepensun";
-            String nomColumnaId = "iddetallepensun";
-            int seguardo = 0;
-            mPensum pem = (mPensum) pensum.getSelectedItem();
-            String idpensum = pem.getID();
+        int fila = detallepensum.getSelectedRow();
+        if (fila >= 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            seguardo = peticiones.eliminarRegistro(nombreTabla, "", nomColumnaId, id);
+                String id = (String) "" + detallepensum.getValueAt(fila, 0);
 
-            if (seguardo == 1) {
-                MostrarDatos(idpensum);
-                MostrarDatosDetalle(idpensum);
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                String nombreTabla = "detallepensun";
+                String nomColumnaId = "iddetallepensun";
+                int seguardo = 0;
+                mPensum pem = (mPensum) pensum.getSelectedItem();
+                String idpensum = pem.getID();
+
+                seguardo = peticiones.eliminarRegistro(nombreTabla, "", nomColumnaId, id);
+
+                if (seguardo == 1) {
+                    MostrarDatos(idpensum);
+                    MostrarDatosDetalle(idpensum);
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No ha seleccionado ninguna fila", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_EliminarActionPerformed
 
@@ -733,9 +762,10 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
-    private javax.swing.JTable cicloescolar;
-    private javax.swing.JTable cicloescolar1;
+    private javax.swing.JTable cursos;
+    private javax.swing.JTable detallepensum;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;

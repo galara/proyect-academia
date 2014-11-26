@@ -6,10 +6,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-/**
- * @www.facebook.com/groups/ProgramacionEnGeneral/
- * @author Jheyson Matta
- */
+
 public class Editor_CheckBox extends DefaultCellEditor implements TableCellRenderer  {
     
     private final JComponent component = new JCheckBox();    
