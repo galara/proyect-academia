@@ -161,7 +161,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
 
         jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jMenu1.setText("File");
+        jMenu1.setText("Archivo");
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         msalir.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -287,10 +287,13 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/iconobackup.jpg"))); // NOI18N
         jMenu7.setText("Gestionar BD");
+        jMenu7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        jMenuItem14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem14.setText("Backup");
         jMenu7.add(jMenuItem14);
 
+        jMenuItem16.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem16.setText("Restaurar");
         jMenu7.add(jMenuItem16);
 
@@ -298,8 +301,11 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu5.setText("Informes");
+        jMenu5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
         jMenuItem8.setText("Cobros del dia");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -309,13 +315,16 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem8);
 
+        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
         jMenuItem9.setText("Cobros Pendientes");
         jMenu5.add(jMenuItem9);
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/checklist-icon-2.jpg"))); // NOI18N
         jMenu6.setText("Reporte de Alumnos");
+        jMenu6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        MenuReportHorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         MenuReportHorario.setText("Por Horario");
         MenuReportHorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,9 +333,11 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu6.add(MenuReportHorario);
 
+        jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem11.setText("Por Profesor");
         jMenu6.add(jMenuItem11);
 
+        jMenuItem12.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem12.setText("Por monto Colegiatura");
         jMenu6.add(jMenuItem12);
 
@@ -338,6 +349,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu4.setText("Ayuda");
         jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Help.png"))); // NOI18N
         jMenuItem1.setText("Acerca de");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
