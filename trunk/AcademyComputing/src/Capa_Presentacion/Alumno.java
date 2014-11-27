@@ -5,6 +5,7 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
@@ -40,6 +41,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     String[] titulos = {"codigo", "Nombres", "Apellidos", "Fecha Nec", "Beca", "Fecha Inicio", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
+    int nidalumno;
     //public Hashtable<String, String> hashGrupo = new Hashtable<>();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
@@ -206,7 +208,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         if (alumnos.getValueAt(fila, 0) != null) {
 
             //String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno"};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             ResultSet rs;
@@ -241,6 +243,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                                 estado.setSelected(false);
                                 estado.setBackground(Color.red);
                             }
+                            nidalumno = rs.getInt(14);
                         }
                     }
                 } catch (SQLException e) {
@@ -251,8 +254,40 @@ public class Alumno extends javax.swing.JInternalFrame {
             this.bntModificar.setEnabled(true);
             this.bntEliminar.setEnabled(true);
             this.bntNuevo.setEnabled(false);
-            //colegiatura.setEditable(false);
+            codigo.setEditable(false);
             beca.setEditable(false);
+        }
+    }
+
+    private int ultimoalumno() {
+        if (nidalumno == 0) {
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            rs = ac.getUltimoRegistro("alumno", "idalumno");
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            nidalumno = (rs.getInt(1) + 1);
+                        }
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
+        }
+        return nidalumno;
+
+    }
+
+    private void codigoalumno() {
+        String tx = nombres.getText() + " " + apellidos.getText();
+        if (tx.isEmpty()) {
+        } else {
+            String cod = GeneraCodigo.actualizarRegistro(nombres.getText() + " " + apellidos.getText());
+            codigo.setText(cod + "-" + ultimoalumno());
         }
     }
 
@@ -480,6 +515,19 @@ public class Alumno extends javax.swing.JInternalFrame {
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(apellidos);
+        nombres.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nombresFocusLost(evt);
+            }
+        });
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
         jPanel1.add(nombres);
         nombres.setBounds(100, 60, 250, 21);
 
@@ -493,6 +541,19 @@ public class Alumno extends javax.swing.JInternalFrame {
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         apellidos.setName("apellidos"); // NOI18N
         apellidos.setNextFocusableComponent(direccion);
+        apellidos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                apellidosFocusLost(evt);
+            }
+        });
+        apellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
         jPanel1.add(apellidos);
         apellidos.setBounds(100, 90, 250, 21);
 
@@ -780,7 +841,9 @@ public class Alumno extends javax.swing.JInternalFrame {
         this.bntNuevo.setEnabled(false);
         //colegiatura.setEditable(false);
         beca.setEditable(false);
-        codigo.requestFocus();
+        codigo.setEditable(false);
+        nombres.requestFocus();
+        nidalumno = 0;
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -793,6 +856,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
+            codigoalumno();
             boolean seguardo = false;
             String nombreTabla = "alumno";
             String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, titulardpi, estado";
@@ -870,6 +934,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
+            codigoalumno();
             int seguardo = 0;
             int fila = alumnos.getSelectedRow();
             String id = (String) "" + alumnos.getValueAt(fila, 0);
@@ -913,6 +978,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         this.bntNuevo.setEnabled(true);
         removejtable();
         busqueda.requestFocus();
+        nidalumno=0;
 
     }//GEN-LAST:event_bntCancelarActionPerformed
 
@@ -961,6 +1027,27 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void sexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sexoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sexoActionPerformed
+
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+        // TODO add your handling code here:
+        codigoalumno();
+//        String tx = nombres.getText() + " " + apellidos.getText();
+//        if (tx.isEmpty()) {
+//        } else {
+//            String cod = GeneraCodigo.actualizarRegistro(nombres.getText() + " " + apellidos.getText());
+//            codigo.setText(cod+"-"+ultimoalumno());
+//        }
+    }//GEN-LAST:event_nombresKeyPressed
+
+    private void nombresFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombresFocusLost
+        // TODO add your handling code here:
+        nombres.setText(nombres.getText().toUpperCase());
+    }//GEN-LAST:event_nombresFocusLost
+
+    private void apellidosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_apellidosFocusLost
+        // TODO add your handling code here:
+        apellidos.setText(apellidos.getText().toUpperCase());
+    }//GEN-LAST:event_apellidosFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
