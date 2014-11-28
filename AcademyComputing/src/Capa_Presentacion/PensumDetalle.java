@@ -4,6 +4,8 @@
  */
 package Capa_Presentacion;
 
+import Capa_Negocio.Renderer_CheckBox;
+import Capa_Negocio.Editor_CheckBox;
 import Capa_Datos.AccesoDatos;
 import Capa_Negocio.AddForms;
 import Capa_Negocio.FiltroCampos;
@@ -12,7 +14,7 @@ import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
-import Recursos.mPensum;
+import modelos.mPensum;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;

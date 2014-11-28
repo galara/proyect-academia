@@ -2,19 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Recursos;
+package modelos;
 /**
  *
  * @author GLARA
  */
 
-public class mPensum {
+public class mCarrera {
 
     private final String nombre;
     private final String id;
     
 
-    public mPensum(String nombre,String id) {
+    public mCarrera(String nombre,String id) {
         this.nombre = nombre;
         this.id = id;
     }

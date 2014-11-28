@@ -2,19 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Recursos;
+package modelos;
 /**
  *
  * @author GLARA
  */
 
-public class mHorario {
+public class mProfesor {
 
     private final String nombre;
     private final String id;
     
 
-    public mHorario(String nombre,String id) {
+    public mProfesor(String nombre,String id) {
         this.nombre = nombre;
         this.id = id;
     }
