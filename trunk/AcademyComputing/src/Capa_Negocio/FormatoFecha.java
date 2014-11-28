@@ -53,6 +53,7 @@ public class FormatoFecha {
         formato = new SimpleDateFormat("yyyy-MM-dd");
         try {
             fechaString = (Date) formato.parseObject(text);
+            System.out.print("\n"+fechaString);
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
             //msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);

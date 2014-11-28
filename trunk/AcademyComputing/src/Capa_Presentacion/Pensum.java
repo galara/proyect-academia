@@ -11,7 +11,7 @@ import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
-import Recursos.mCarrera;
+import modelos.mCarrera;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
