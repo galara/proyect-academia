@@ -372,7 +372,6 @@ public class Horario extends javax.swing.JInternalFrame {
                             }
                             inscripcion.setValue(rs.getFloat(12));
                             colegiatura.setValue(rs.getFloat(13));
-                            //graduados.setSelectedItem(rs.getString(12));
                         }
                     }
                 } catch (SQLException e) {
