@@ -50,10 +50,10 @@ public class FormatoFecha {
      * @return
      */
     public static Date StringToDate(String text) {
-        formato = new SimpleDateFormat("yyyy-MM-dd");
+        //formato = new SimpleDateFormat("yyyy-MM-dd");
+        formato = new SimpleDateFormat("dd-MM-yyyy");
         try {
             fechaString = (Date) formato.parseObject(text);
-            System.out.print("\n"+fechaString);
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
             //msg.Error(ErrorDatos + ": " + ex, TituloErrDatos);

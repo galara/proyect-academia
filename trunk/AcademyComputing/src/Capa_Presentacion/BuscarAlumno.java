@@ -26,6 +26,10 @@ import static Capa_Presentacion.Pagos.inicioalumno;
 import static Capa_Presentacion.Pagos.nombrealumno;
 import static Capa_Presentacion.Pagos.beca;
 import static Capa_Presentacion.Pagos.estado;
+import static Capa_Presentacion.Pagos.cGrupo;
+import static Capa_Presentacion.Pagos.cDia;
+import static Capa_Presentacion.Pagos.hashGrupo;
+import java.awt.Color;
 import java.util.Date;
 
 /**
@@ -54,20 +58,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
         limpiar();
-
-        alumnos.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyPressed(java.awt.event.KeyEvent arg0) {
-                int key = arg0.getKeyCode();
-                if (key == java.awt.event.KeyEvent.VK_ENTER) {
-                    int p = alumnos.getSelectedRow();
-
-              //      reportefecha(Fincial.getDate(),Ffinal.getDate(),tablaproductos.getValueAt(p, 0).toString());
-                    //new ESproducto().setVisible(true);
-                    // JOptionPane.showMessageDialog(null,fecha);
-                }
-            }
-        });
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -91,12 +81,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
-            //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            //Utilidades.esObligatorio(this.JPanelCampos, false);
             this.bntGuardar.setEnabled(false);
-            //this.bntModificar.setEnabled(false);
-            //this.bntEliminar.setEnabled(false);
-            //this.bntNuevo.setEnabled(true);
             removejtable();
             busqueda.setText("");
             rbNombre.setSelected(true);
@@ -128,14 +113,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
 
-//        TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 25, true);
-//        TipoFiltro.setFiltraEntrada(nombres.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
-//        TipoFiltro.setFiltraEntrada(apellidos.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
-//        TipoFiltro.setFiltraEntrada(direccion.getDocument(), FiltroCampos.NUM_LETRAS, 150, true);
-//        TipoFiltro.setFiltraEntrada(titularnombre.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
-//        TipoFiltro.setFiltraEntrada(titularapellido.getDocument(), FiltroCampos.SOLO_LETRAS, 60, true);
-//        TipoFiltro.setFiltraEntrada(dpi.getDocument(), FiltroCampos.NUM_LETRAS, 20, true);
-//        TipoFiltro.setFiltraEntrada(telefono.getDocument(), FiltroCampos.SOLO_NUMEROS, 16, false);
         TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
     }
 
@@ -158,8 +135,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         if (this.rbCodigo.isSelected()) {
             if (!Dato.isEmpty()) {
                 removejtable();
-                //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                //Utilidades.esObligatorio(this.JPanelCampos, false);
                 model = peticiones.getRegistroPorPks(model, "alumno", campos, condiciones, Id, "");
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
@@ -167,144 +142,55 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         }
         if (this.rbNombre.isSelected()) {
             removejtable();
-            //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            //Utilidades.esObligatorio(this.JPanelCampos, false);
             model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.nombres", Dato, "");
         }
         if (this.rbApellido.isSelected()) {
             removejtable();
-            //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            //Utilidades.esObligatorio(this.JPanelCampos, false);
             model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.apellidos", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(alumnos);
     }
-
-//    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
-//     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
-//     * 
-//     * @return 
-//     */
-//    private void filaseleccionada2() {
-//
-//        int fila = alumnos.getSelectedRow();
-//        String[] cond = {"alumno.codigo"};
-//        String[] id = {"" + alumnos.getValueAt(fila, 0)};
-//
-//        if (alumnos.getValueAt(fila, 0) != null) {
-//
-//            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
-//            Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, beca, fechainicio, titularnombre, dpi, dpi, estado
-//            };
-//
-//            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-//
-//            peticiones.getRegistroSeleccionado(cmps, "alumno", campos, cond, id, "", null);
-//
-//            this.bntGuardar.setEnabled(false);
-//            this.bntModificar.setEnabled(true);
-//            this.bntEliminar.setEnabled(true);
-//            this.bntNuevo.setEnabled(false);
-//        }
-//    }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
      * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
      * 
      * @return 
      */
-    private void filaseleccionada() {
+    private void filaseleccionada(String codigo) {
 
-        int fila = alumnos.getSelectedRow();
         String[] cond = {"alumno.codigo"};
-        String[] id = {(String) alumnos.getValueAt(fila, 0)};
-        //String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
-        if (alumnos.getValueAt(fila, 0) != null) {
+        String[] id = {codigo};
 
-            //String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno"};
-            //Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+        String inner = " grupo INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
+        if (!codigo.isEmpty()) {
+
+            String conct = "concat(grupo.codigo,' ',grupo.descripcion)";
+            String[] campos = {"grupo.dia", conct, "grupo.idgrupo"};
 
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
 
-            rs = ac.getRegistros("alumno", campos, cond, id, "");
+            rs = ac.getRegistros("grupo", campos, cond, id, inner);
 
             if (rs != null) {
                 try {
                     if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                         rs.beforeFirst();//regresa el puntero al primer registro
                         while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                            codigo.setText(rs.getString(1));
-//                            nombres.setText(rs.getString(2));
-//                            apellidos.setText(rs.getString(3));
-//                            fechanacimiento.setDate((rs.getDate(4)));
-//                            direccion.setText(rs.getString(5));
-//                            sexo.setSelectedItem(rs.getString(6));
-//                            telefono.setText(rs.getString(7));
-//                            //colegiatura.setText(rs.getString(8));
-//                            beca.setText(rs.getString(8));
-//                            fechainicio.setDate((rs.getDate(9)));
-//                            titularnombre.setText(rs.getString(10));
-//                            titularapellido.setText(rs.getString(11));
-//                            dpi.setText(rs.getString(12));
-//                            if (rs.getObject(13).equals(true)) {
-//                                estado.setText("Activo");
-//                                estado.setSelected(true);
-//                                estado.setBackground(new java.awt.Color(102, 204, 0));
-//                            } else {
-//                                estado.setText("Inactivo");
-//                                estado.setSelected(false);
-//                                estado.setBackground(Color.red);
-//                            }
-
-                            nidalumno = rs.getInt(14);
+                            int pr = 0;
+                            cDia.setSelectedItem(rs.getString(1));
+                            pr = Integer.parseInt(hashGrupo.get(rs.getString(2)));
+                            cGrupo.setSelectedIndex(pr);
                         }
                     }
                 } catch (SQLException e) {
                     JOptionPane.showInternalMessageDialog(this, e);
                 }
             }
-            this.bntGuardar.setEnabled(false);
-//            this.bntModificar.setEnabled(true);
-//            this.bntEliminar.setEnabled(true);
-//            this.bntNuevo.setEnabled(false);
-//            codigo.setEditable(false);
-//            beca.setEditable(false);
+            //this.bntGuardar.setEnabled(false);
         }
     }
 
-    private int ultimoalumno() {
-        if (nidalumno == 0) {
-            ResultSet rs;
-            AccesoDatos ac = new AccesoDatos();
-
-            rs = ac.getUltimoRegistro("alumno", "idalumno");
-            if (rs != null) {
-                try {
-                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                        rs.beforeFirst();//regresa el puntero al primer registro
-                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                            nidalumno = (rs.getInt(1) + 1);
-                        }
-                    }
-                } catch (SQLException e) {
-                    JOptionPane.showInternalMessageDialog(this, e);
-                }
-            }
-        }
-        return nidalumno;
-
-    }
-
-//    private void codigoalumno() {
-//        String tx = nombres.getText() + " " + apellidos.getText();
-//        if (tx.isEmpty()) {
-//        } else {
-//            String cod = GeneraCodigo.actualizarRegistro(nombres.getText() + " " + apellidos.getText());
-//            codigo.setText(cod + "-" + ultimoalumno());
-//        }
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -428,14 +314,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
             alumnos.setRowHeight(22);
             alumnos.setSelectionBackground(java.awt.SystemColor.activeCaption);
             alumnos.setSurrendersFocusOnKeystroke(true);
-            alumnos.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    alumnosMouseClicked(evt);
-                }
-                public void mousePressed(java.awt.event.MouseEvent evt) {
-                    alumnosMouseClicked(evt);
-                }
-            });
             alumnos.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     alumnosKeyPressed(evt);
@@ -532,24 +410,10 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_bntSalirActionPerformed
 
-    private void alumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_alumnosMouseClicked
-        // TODO add your handling code here:
-        filaseleccionada();
-
-    }//GEN-LAST:event_alumnosMouseClicked
-
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
-        //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-        //Utilidades.esObligatorio(this.JPanelCampos, false);
         removejtable();
-        //this.bntGuardar.setEnabled(false);
-        //this.bntModificar.setEnabled(false);
-        //this.bntEliminar.setEnabled(false);
-        //this.bntNuevo.setEnabled(true);
-        //removejtable();
         busqueda.requestFocus();
-        //nidalumno=0;
 
     }//GEN-LAST:event_bntCancelarActionPerformed
 
@@ -577,28 +441,29 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void alumnosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_alumnosKeyPressed
-        // TODO add your handling code here:
-        int key = evt.getKeyCode();
-        if (key == java.awt.event.KeyEvent.VK_ENTER) {
-            int p = alumnos.getSelectedRow();
-            
-            codigo.setText(alumnos.getValueAt(p, 0).toString());
-            nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
-            beca.setText(alumnos.getValueAt(p, 4).toString());
-            //inicioalumno.setDate(alumnos.getValueAt(p, 5));
-            estado.setText(alumnos.getValueAt(p, 6).toString());
-            this.dispose();
-        }
-
-    }//GEN-LAST:event_alumnosKeyPressed
-
     private void rbApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbApellidoActionPerformed
         // TODO add your handling code here:
         rbCodigo.setSelected(false);
         rbNombre.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbApellidoActionPerformed
+
+    private void alumnosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_alumnosKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == java.awt.event.KeyEvent.VK_ENTER) {
+            int p = alumnos.getSelectedRow();
+
+            codigo.setText(alumnos.getValueAt(p, 0).toString());
+            filaseleccionada(alumnos.getValueAt(p, 0).toString());
+            nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
+            beca.setText(alumnos.getValueAt(p, 4).toString());
+            Date fechaini = FormatoFecha.StringToDate(alumnos.getValueAt(p, 5).toString());
+            inicioalumno.setDate(fechaini);
+            estado.setText(alumnos.getValueAt(p, 6).toString());
+            this.dispose();
+        }
+    }//GEN-LAST:event_alumnosKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
