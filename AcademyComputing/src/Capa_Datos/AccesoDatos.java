@@ -328,7 +328,7 @@ public class AccesoDatos {
     }
 
     public int actualizarRegistro(String nomTabla, String cnls, String columnaId, Object id) {
-        System.out.print(cnls);
+        //System.out.print(cnls);
         return actualizarRegistro(nomTabla, new String[]{cnls}, columnaId, id);
     }
 
@@ -480,7 +480,7 @@ public class AccesoDatos {
     private void setValores(PreparedStatement ps, Object[] valores) {
         try {
             for (int i = 0; i < valores.length; i++) {
-                System.out.print(valores[i]+"\n");
+                //System.out.print(valores[i]+"\n");
                 
                 if (getInt(valores[i]) != null) {
                     ps.setInt(i + 1, getInt(valores[i]));
