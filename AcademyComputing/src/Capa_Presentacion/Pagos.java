@@ -7,9 +7,11 @@ package Capa_Presentacion;
 import Capa_Datos.AccesoDatos;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FormatoDecimal;
+import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
@@ -53,13 +55,12 @@ public class Pagos extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
 
-        cDia.addItemListener(
-                (ItemEvent e) -> {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        selecciondia();
-                    }
-                });
-
+//        cDia.addItemListener(
+//                (ItemEvent e) -> {
+//                    if (e.getStateChange() == ItemEvent.SELECTED) {
+//                        selecciondia();
+//                    }
+//                });
         cGrupo.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -99,8 +100,8 @@ public class Pagos extends javax.swing.JInternalFrame {
             this.bntEliminar.setEnabled(false);
             this.bntNuevo.setEnabled(true);
             removejtable();
-            codigo.setText("");
-            codigo.requestFocus();
+            codigoa.setText("");
+            codigoa.requestFocus();
             this.dispose();
         }
     }
@@ -122,28 +123,30 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
-    private void selecciondia() {
-        if (cDia.getSelectedIndex() == 0) {
-            cGrupo.removeAllItems();
-        } else if (cDia.getSelectedIndex() > 0) {
-            String sdia = (String) cDia.getSelectedItem();
-            llenarcombogrupo(sdia);
-        }
-    }
+//    private void selecciondia() {
+//        if (cDia.getSelectedIndex() == 0) {
+//            cGrupo.removeAllItems();
+//        } else if (cDia.getSelectedIndex() > 0) {
+//            String sdia = (String) cDia.getSelectedItem();
+//            llenarcombogrupo(sdia);
+//        }
+//    }
 
     /*
      *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
      *y se los envia a un metodo interno getRegistroCombo() 
      *
      */
-    public void llenarcombogrupo(String dia) {
+    public static void llenarcombogrupo(String idalumn) {
         String Dato = "1";
-        String[] campos = {"codigo", "descripcion", "idgrupo"};
-        String[] condiciones = {"estado", "dia"};
-        String[] Id = {Dato, dia};
+        String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.idgrupo"};
+        String[] condiciones = {"grupo.estado", "alumno.codigo"};
+        String[] Id = {Dato, idalumn};
         cGrupo.removeAllItems();
+        String inner = " INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
+
         //Component cmps = profesor;
-        getRegistroCombo("grupo", campos, condiciones, Id);
+        getRegistroCombo("grupo", campos, condiciones, Id, inner);
 
     }
 
@@ -152,12 +155,12 @@ public class Pagos extends javax.swing.JInternalFrame {
      *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
      *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
      */
-    public void getRegistroCombo(String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
+    public static void getRegistroCombo(String tabla, String[] campos, String[] campocondicion, String[] condicionid, String inner) {
         try {
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
 
-            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
+            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, inner);
 
             int cantcampos = campos.length;
             if (rs != null) {
@@ -210,7 +213,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             if (!id.equals(0)) {
 
                 String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-                String[] campos = {conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.inscripcion", "grupo.colegiatura"};
+                String[] campos = {conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.inscripcion", "grupo.colegiatura", "grupo.dia"};
 
                 rs = ac.getRegistros("grupo", campos, cond, id, inner);
 
@@ -227,6 +230,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 fechafin.setText((rs.getString(6)));
                                 inscripcion.setValue(rs.getFloat(7));
                                 colegiatura.setValue(rs.getFloat(8));
+                                dia.setText(rs.getString(9));
 
                             }
                         }
@@ -241,6 +245,99 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
+    /*
+     * Metodo para buscar un alumno por su codigo
+     */
+    public void balumnocodigo(String codigo) {
+        if (codigo.isEmpty()) {
+            //codigoa.setText(rs.getString(1));
+            //filaseleccionada(alumnos.getValueAt(p, 0).toString());
+            //llenarcombogrupo(rs.getString(1));
+            nombrealumno.setText("");
+            beca.setText("");
+            //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
+            inicioalumno.setDate(null);
+            estado.setText("");
+            cGrupo.removeAllItems();
+
+        } else if (!codigo.isEmpty()) {
+
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.cantidadbeca", "DATE_FORMAT(alumno.fechadeinicio,'%d-%m-%Y')", "alumno.estado"};
+            String[] cond = {"alumno.codigo"};
+            String[] id = {codigo};
+            //String[] Id = {Dato};
+
+            //String[] cond = {"alumno.idgrupo"};
+            //String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
+            if (!id.equals(0)) {
+
+                //String conct = "concat(profesor.nombre,' ',profesor.apellido)";
+                //String[] campos = {conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.inscripcion", "grupo.colegiatura","grupo.dia"};
+                rs = ac.getRegistros("alumno", campos, cond, id, "");
+
+                if (rs != null) {
+                    try {
+                        if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                            rs.beforeFirst();//regresa el puntero al primer registro
+                            while (rs.next()) {//mientras tenga registros que haga lo siguiente
+//                                profesor.setText(rs.getString(1));
+//                                carrera.setText(rs.getString(2));
+//                                horade.setText(rs.getString(3));
+//                                horaa.setText(rs.getString(4));
+//                                fechainicio.setText((rs.getString(5)));
+//                                fechafin.setText((rs.getString(6)));
+//                                inscripcion.setValue(rs.getFloat(7));
+//                                colegiatura.setValue(rs.getFloat(8));
+//                                dia.setText(rs.getString(9));
+
+                                codigoa.setText(rs.getString(1));
+                                //filaseleccionada(alumnos.getValueAt(p, 0).toString());
+                                llenarcombogrupo(rs.getString(1));
+                                nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
+                                beca.setText(rs.getString(5));
+                                Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
+                                inicioalumno.setDate(fechaini);
+                                
+                                if (rs.getString(7).equals("0")) {
+                                    estado.setText("Inactivo");
+                                    estado.setForeground(Color.red);
+                                } else if (rs.getString(7).equals("1")) {
+                                    estado.setText("Activo");
+                                    estado.setForeground(Color.WHITE/*new java.awt.Color(102, 204, 0)*/);
+                                }
+                                //estado.setText(rs.getString(7));
+
+                            }
+                        } else {
+                            JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
+                            nombrealumno.setText("");
+                            beca.setText("");
+                            //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
+                            inicioalumno.setDate(null);
+                            estado.setText("");
+                            cGrupo.removeAllItems();
+                        }
+                        //profesor.setEditable(false);
+                    } catch (SQLException e) {
+                        //profesor.setEditable(false);
+                        JOptionPane.showInternalMessageDialog(this, e);
+                    }
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
+                    nombrealumno.setText("");
+                    beca.setText("");
+                    //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
+                    inicioalumno.setDate(null);
+                    estado.setText("");
+                    cGrupo.removeAllItems();
+                }
+
+            }
+        }
+    }
 
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
@@ -273,6 +370,9 @@ public class Pagos extends javax.swing.JInternalFrame {
         popupcarrera = new javax.swing.JPopupMenu();
         Nueva_Carrera = new javax.swing.JMenuItem();
         Actualizar_Carrera = new javax.swing.JMenuItem();
+        popuppromatricula = new javax.swing.JPopupMenu();
+        Nueva_Matricula = new javax.swing.JMenuItem();
+        Actualiza = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntNuevo = new elaprendiz.gui.button.ButtonRect();
@@ -283,11 +383,9 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        cDia = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         cGrupo = new javax.swing.JComboBox();
@@ -302,11 +400,13 @@ public class Pagos extends javax.swing.JInternalFrame {
         horade = new elaprendiz.gui.textField.TextField();
         fechainicio = new elaprendiz.gui.textField.TextField();
         fechafin = new elaprendiz.gui.textField.TextField();
+        jLabel12 = new javax.swing.JLabel();
+        dia = new elaprendiz.gui.textField.TextField();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detallepagos = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
-        codigo = new elaprendiz.gui.textField.TextField();
+        codigoa = new elaprendiz.gui.textField.TextField();
         jLabel16 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         nombrealumno = new elaprendiz.gui.textField.TextField();
@@ -366,6 +466,24 @@ public class Pagos extends javax.swing.JInternalFrame {
             }
         });
         popupcarrera.add(Actualizar_Carrera);
+
+        Nueva_Matricula.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
+        Nueva_Matricula.setText("Nuevo Profesor");
+        Nueva_Matricula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Nueva_MatriculaActionPerformed(evt);
+            }
+        });
+        popuppromatricula.add(Nueva_Matricula);
+
+        Actualiza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
+        Actualiza.setText("Actualizar Combo");
+        Actualiza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizaActionPerformed(evt);
+            }
+        });
+        popuppromatricula.add(Actualiza);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -490,12 +608,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         JPanelCampos.add(jLabel10);
         jLabel10.setBounds(710, 20, 110, 20);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Día:");
-        JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(20, 40, 60, 27);
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
@@ -512,12 +624,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel13.setText("Horario De:");
         JPanelCampos.add(jLabel13);
         jLabel13.setBounds(580, 20, 100, 20);
-
-        cDia.setEditable(true);
-        cDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
-        cDia.setName("Dia"); // NOI18N
-        JPanelCampos.add(cDia);
-        cDia.setBounds(90, 40, 150, 27);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -619,6 +725,19 @@ public class Pagos extends javax.swing.JInternalFrame {
         JPanelCampos.add(fechafin);
         fechafin.setBounds(710, 90, 110, 27);
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setText("Día:");
+        JPanelCampos.add(jLabel12);
+        jLabel12.setBounds(300, 120, 250, 20);
+
+        dia.setEditable(false);
+        dia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        dia.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        dia.setName("codigo"); // NOI18N
+        dia.setPreferredSize(new java.awt.Dimension(120, 21));
+        JPanelCampos.add(dia);
+        dia.setBounds(300, 140, 250, 27);
+
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 200, 880, 190);
 
@@ -667,15 +786,14 @@ public class Pagos extends javax.swing.JInternalFrame {
             JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
             JPanelBusqueda.setLayout(null);
 
-            codigo.setEditable(false);
-            codigo.setPreferredSize(new java.awt.Dimension(250, 27));
-            codigo.addActionListener(new java.awt.event.ActionListener() {
+            codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
+            codigoa.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    codigoActionPerformed(evt);
+                    codigoaActionPerformed(evt);
                 }
             });
-            JPanelBusqueda.add(codigo);
-            codigo.setBounds(120, 10, 97, 27);
+            JPanelBusqueda.add(codigoa);
+            codigoa.setBounds(120, 10, 97, 27);
 
             jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -722,7 +840,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(beca);
             beca.setBounds(440, 50, 130, 27);
 
-            estado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             JPanelBusqueda.add(estado);
             estado.setBounds(700, 50, 110, 27);
@@ -853,8 +971,8 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
         removejtable();
-        codigo.setText("");
-        codigo.requestFocus();
+        codigoa.setText("");
+        codigoa.requestFocus();
         profesor.setText("");
         carrera.setText("");
         horade.setText("");
@@ -866,7 +984,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         nombrealumno.setText("");
         beca.setText("");
         inicioalumno.setDate(null);
-        cDia.setSelectedIndex(-1);
+        //Dia.setSelectedIndex(-1);
         cGrupo.setSelectedIndex(-1);
     }//GEN-LAST:event_bntCancelarActionPerformed
 
@@ -916,14 +1034,31 @@ public class Pagos extends javax.swing.JInternalFrame {
         adminInternalFrame(dp, frmBuscarAlumno);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoActionPerformed
+    private void codigoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoaActionPerformed
         // TODO add your handling code here:
 
+        balumnocodigo(codigoa.getText());
 
-    }//GEN-LAST:event_codigoActionPerformed
+    }//GEN-LAST:event_codigoaActionPerformed
+
+    private void Nueva_MatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_MatriculaActionPerformed
+        // TODO add your handling code here:
+        Alumno frmAlumno = new Alumno();
+        if (frmAlumno == null) {
+            frmAlumno = new Alumno();
+        }
+        adminInternalFrame(dp, frmAlumno);
+
+    }//GEN-LAST:event_Nueva_MatriculaActionPerformed
+
+    private void ActualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizaActionPerformed
+        // TODO add your handling code here:
+        balumnocodigo(codigoa.getText());
+    }//GEN-LAST:event_ActualizaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Actualiza;
     private javax.swing.JMenuItem Actualizar_Carrera;
     private javax.swing.JMenuItem Actualizar_Profesor;
     private javax.swing.JPanel JPanelBusqueda;
@@ -931,6 +1066,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelRecibo;
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JMenuItem Nueva_Carrera;
+    private javax.swing.JMenuItem Nueva_Matricula;
     private javax.swing.JMenuItem Nuevo_Profesor;
     public static elaprendiz.gui.textField.TextField beca;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
@@ -941,14 +1077,14 @@ public class Pagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.button.ButtonAction buttonAction1;
     private elaprendiz.gui.button.ButtonAction buttonAction2;
-    public static javax.swing.JComboBox cDia;
     public static javax.swing.JComboBox cGrupo;
     private elaprendiz.gui.textField.TextField carrera;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
-    public static elaprendiz.gui.textField.TextField codigo;
     private elaprendiz.gui.textField.TextField codigo3;
+    public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JFormattedTextField colegiatura;
     private javax.swing.JTable detallepagos;
+    private elaprendiz.gui.textField.TextField dia;
     public static javax.swing.JLabel estado;
     private elaprendiz.gui.textField.TextField fechafin;
     private elaprendiz.gui.textField.TextField fechainicio;
@@ -960,11 +1096,11 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -986,6 +1122,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlPaginador1;
     private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
+    private javax.swing.JPopupMenu popuppromatricula;
     private elaprendiz.gui.textField.TextField profesor;
     // End of variables declaration//GEN-END:variables
 }

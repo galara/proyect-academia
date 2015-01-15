@@ -4,16 +4,21 @@
  */
 package Capa_Presentacion;
 
-import Capa_Datos.AccesoDatos;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Pagos.beca;
+import static Capa_Presentacion.Pagos.cGrupo;
+import static Capa_Presentacion.Pagos.codigoa;
+import static Capa_Presentacion.Pagos.estado;
+import static Capa_Presentacion.Pagos.inicioalumno;
+import static Capa_Presentacion.Pagos.nombrealumno;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
@@ -21,16 +26,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
-import static Capa_Presentacion.Pagos.codigo;
-import static Capa_Presentacion.Pagos.inicioalumno;
-import static Capa_Presentacion.Pagos.nombrealumno;
-import static Capa_Presentacion.Pagos.beca;
-import static Capa_Presentacion.Pagos.estado;
-import static Capa_Presentacion.Pagos.cGrupo;
-import static Capa_Presentacion.Pagos.cDia;
-import static Capa_Presentacion.Pagos.hashGrupo;
-import java.awt.Color;
-import java.util.Date;
 
 /**
  *
@@ -151,46 +146,45 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         Utilidades.ajustarAnchoColumnas(alumnos);
     }
 
-    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
-     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
-     * 
-     * @return 
-     */
-    private void filaseleccionada(String codigo) {
-
-        String[] cond = {"alumno.codigo"};
-        String[] id = {codigo};
-
-        String inner = " grupo INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
-        if (!codigo.isEmpty()) {
-
-            String conct = "concat(grupo.codigo,' ',grupo.descripcion)";
-            String[] campos = {"grupo.dia", conct, "grupo.idgrupo"};
-
-            ResultSet rs;
-            AccesoDatos ac = new AccesoDatos();
-
-            rs = ac.getRegistros("grupo", campos, cond, id, inner);
-
-            if (rs != null) {
-                try {
-                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                        rs.beforeFirst();//regresa el puntero al primer registro
-                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                            int pr = 0;
-                            cDia.setSelectedItem(rs.getString(1));
-                            pr = Integer.parseInt(hashGrupo.get(rs.getString(2)));
-                            cGrupo.setSelectedIndex(pr);
-                        }
-                    }
-                } catch (SQLException e) {
-                    JOptionPane.showInternalMessageDialog(this, e);
-                }
-            }
-            //this.bntGuardar.setEnabled(false);
-        }
-    }
-
+//    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
+//     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
+//     * 
+//     * @return 
+//     */
+//    private void filaseleccionada(String codigo) {
+//
+//        String[] cond = {"alumno.codigo"};
+//        String[] id = {codigo};
+//
+//        String inner = " grupo INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
+//        if (!codigo.isEmpty()) {
+//
+//            String conct = "concat(grupo.codigo,' ',grupo.descripcion)";
+//            String[] campos = {"grupo.dia", conct, "grupo.idgrupo"};
+//
+//            ResultSet rs;
+//            AccesoDatos ac = new AccesoDatos();
+//
+//            rs = ac.getRegistros("grupo", campos, cond, id, inner);
+//
+//            if (rs != null) {
+//                try {
+//                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+//                        rs.beforeFirst();//regresa el puntero al primer registro
+//                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+//                            int pr = 0;
+//                            cDia.setSelectedItem(rs.getString(1));
+//                            pr = Integer.parseInt(hashGrupo.get(rs.getString(2)));
+//                            cGrupo.setSelectedIndex(pr);
+//                        }
+//                    }
+//                } catch (SQLException e) {
+//                    JOptionPane.showInternalMessageDialog(this, e);
+//                }
+//            }
+//            //this.bntGuardar.setEnabled(false);
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -454,13 +448,24 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         if (key == java.awt.event.KeyEvent.VK_ENTER) {
             int p = alumnos.getSelectedRow();
 
-            codigo.setText(alumnos.getValueAt(p, 0).toString());
-            filaseleccionada(alumnos.getValueAt(p, 0).toString());
+            codigoa.setText(alumnos.getValueAt(p, 0).toString());
+            //filaseleccionada(alumnos.getValueAt(p, 0).toString());
+            cGrupo.removeAllItems();
+            Pagos.llenarcombogrupo(alumnos.getValueAt(p, 0).toString());
             nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
             beca.setText(alumnos.getValueAt(p, 4).toString());
             Date fechaini = FormatoFecha.StringToDate(alumnos.getValueAt(p, 5).toString());
             inicioalumno.setDate(fechaini);
-            estado.setText(alumnos.getValueAt(p, 6).toString());
+
+            if (alumnos.getValueAt(p, 6).toString().equals("Inactivo")) {
+                estado.setText(alumnos.getValueAt(p, 6).toString());
+                //estado.setText("Inactivo");
+                estado.setForeground(Color.red);
+            } else if (alumnos.getValueAt(p, 6).toString().equals("Activo")) {
+                estado.setText(alumnos.getValueAt(p, 6).toString());
+                estado.setForeground(Color.WHITE);
+            }
+            //estado.setText(alumnos.getValueAt(p, 6).toString());
             this.dispose();
         }
     }//GEN-LAST:event_alumnosKeyPressed

@@ -354,6 +354,27 @@ public class AccesoDatos {
         //System.out.println(sql);
         return op;
     }
+    
+    /**
+     * Agrega nuevos registros a la tabla indicada
+     *
+     * @param sql
+     * @param nombreTabla nombre tabla
+     * @param campos lista de columnas ejem:nombre
+     * @param valores valores ejem: 'test'
+     * @return
+     */
+    public int agregarRegistrosql(String sql) {
+
+        int op = 0;
+        try {
+            op = BdConexion.getStatement().executeUpdate(sql);
+            BdConexion.cerrarEnlacesConexion(BdConexion.SOLO_STATEMENT);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return op;
+    }
 
     /**
      * Agrega resitros usando un objetos PreparedStatemen y un procedimiento
