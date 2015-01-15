@@ -53,7 +53,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
         limpiar();
-    }
+        }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
     private void addEscapeKey() {
@@ -91,6 +91,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
      * para que este los limpie,habilite o desabilite dichos componentes */
     public void limpiar() {
 //        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+        busqueda.requestFocus();
     }
 
     /* Para no sobrecargar la memoria y hacer una instancia cada vez que actualizamos la JTable se hace una
@@ -340,9 +341,9 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(300, 10, 250, 27);
 
-            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
+            rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
             rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
+            rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
             rbCodigo.setText("Codigo");
             rbCodigo.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,9 +353,9 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbCodigo);
             rbCodigo.setBounds(280, 40, 80, 25);
 
-            rbNombre.setBackground(new java.awt.Color(51, 153, 255));
+            rbNombre.setBackground(java.awt.SystemColor.inactiveCaption);
             rbNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombre.setForeground(new java.awt.Color(255, 255, 255));
+            rbNombre.setForeground(new java.awt.Color(0, 102, 102));
             rbNombre.setSelected(true);
             rbNombre.setText("Nombre");
             rbNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -365,9 +366,9 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbNombre);
             rbNombre.setBounds(380, 40, 90, 25);
 
-            rbApellido.setBackground(new java.awt.Color(51, 153, 255));
+            rbApellido.setBackground(java.awt.SystemColor.inactiveCaption);
             rbApellido.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbApellido.setForeground(new java.awt.Color(255, 255, 255));
+            rbApellido.setForeground(new java.awt.Color(0, 102, 102));
             rbApellido.setText("Apellido");
             rbApellido.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {

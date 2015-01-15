@@ -530,9 +530,9 @@ public class Profesor extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(300, 10, 250, 27);
 
-            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
+            rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
             rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
+            rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
             rbCodigo.setText("Codigo");
             rbCodigo.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -542,9 +542,9 @@ public class Profesor extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbCodigo);
             rbCodigo.setBounds(270, 40, 80, 25);
 
-            rbNombres.setBackground(new java.awt.Color(51, 153, 255));
+            rbNombres.setBackground(java.awt.SystemColor.inactiveCaption);
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombres.setForeground(new java.awt.Color(255, 255, 255));
+            rbNombres.setForeground(new java.awt.Color(0, 102, 102));
             rbNombres.setSelected(true);
             rbNombres.setText("Nombres");
             rbNombres.addActionListener(new java.awt.event.ActionListener() {
@@ -555,9 +555,9 @@ public class Profesor extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbNombres);
             rbNombres.setBounds(380, 40, 90, 25);
 
-            rbApellidos.setBackground(new java.awt.Color(51, 153, 255));
+            rbApellidos.setBackground(java.awt.SystemColor.inactiveCaption);
             rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbApellidos.setForeground(new java.awt.Color(255, 255, 255));
+            rbApellidos.setForeground(new java.awt.Color(0, 102, 102));
             rbApellidos.setText("apellidos");
             rbApellidos.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
