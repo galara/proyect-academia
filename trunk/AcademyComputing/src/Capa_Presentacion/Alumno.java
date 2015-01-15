@@ -10,6 +10,7 @@ import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
+import Capa_Negocio.ProyeccionPagos;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import java.awt.Color;
@@ -20,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -1502,13 +1504,23 @@ public class Alumno extends javax.swing.JInternalFrame {
 
                         seguardo = peticiones.guardarRegistros(nombreTabla2, campos2, valores2);
                         if (seguardo) {
-//                            Calendar a = ProyeccionPagos.convierteacalendar(fechaini.getText());
-//                            Calendar b = ProyeccionPagos.convierteacalendar(fechafin.getText());
-//                            ProyeccionPagos.calculapagos(a, b);
-//
-//                            String mes = "" + fechafin. getcal getTime().getMonth();
-//                            String año = "" + fechafin.getTime().getYear();
-//                            String mesaño = mes + "-" + año;
+
+                            AccesoDatos ac = new AccesoDatos();
+                            Calendar a = ProyeccionPagos.convierteacalendar(fechaini.getText());
+                            float cole = Float.parseFloat(colegiatura.getText());
+                            Calendar b = ProyeccionPagos.convierteacalendar(fechafin.getText());
+
+                            String sql = ProyeccionPagos.calculapagos(a, b, cole, idg);
+
+                            int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
+
+                            if (pagos == 1) {
+                            } else {
+                                JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            //String mes = "" + fechafin.getTime().getMonth();
+                            //String año = "" + fechafin.getTime().getYear();
+                            //String mesaño = mes + "-" + año;
                             filaseleccionada();
                             JOptionPane.showInternalMessageDialog(this, "El grupo se ha asignado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                         } else {

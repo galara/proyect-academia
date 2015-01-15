@@ -9,12 +9,12 @@ import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
+import static Capa_Negocio.FormatoFecha.D_M_A;
 import Capa_Negocio.Peticiones;
+import Capa_Negocio.ProyeccionPagos;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
-import modelos.mCarrera;
-import modelos.mProfesor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -33,6 +33,8 @@ import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
+import modelos.mCarrera;
+import modelos.mProfesor;
 
 /**
  *
@@ -48,10 +50,9 @@ public class Horario extends javax.swing.JInternalFrame {
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
     public Hashtable<String, String> hashCarrera = new Hashtable<>();
-    
+    int idgrupo;
     //private static Profesor frmProfesor = new Profesor();
     //private static Carrera frmCarrera = new Carrera();
-    
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
     /**
@@ -332,7 +333,7 @@ public class Horario extends javax.swing.JInternalFrame {
         if (horarios.getValueAt(fila, 0) != null) {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado","grupo.inscripcion","grupo.colegiatura"};
+            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.inscripcion", "grupo.colegiatura"};
             llenarcomboprofesor();
             llenarcombocarrera();
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
@@ -384,7 +385,36 @@ public class Horario extends javax.swing.JInternalFrame {
             this.bntNuevo.setEnabled(false);
         }
     }
+    
+    
+    public void idagrupo(String codigo) {
 
+        String[] id = {codigo};
+
+        ResultSet rs;
+        AccesoDatos ac = new AccesoDatos();
+        String[] cond = {"grupo.codigo"};
+        String[] campos = {"grupo.idgrupo"};
+        //String inner=" inner join alumnosengrupo on  alumno.idalumno=alumnosengrupo.idasignagrupo ";
+
+        rs = ac.getRegistros("grupo", campos, cond, id, "");
+
+        if (rs != null) {
+            try {
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        idgrupo = (rs.getInt(1));
+                        //idasignagrupo.setText(rs.getString(2));
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showInternalMessageDialog(this, e);
+            }
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -973,6 +1003,10 @@ public class Horario extends javax.swing.JInternalFrame {
             String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+            
+            String fechaini2 = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.D_M_A);
+            String fechafn2 = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.D_M_A);
+            //System.out.print(fechaini2+fechafn2);
             //Para obtener el id en la base de datos
             mProfesor prof = (mProfesor) profesor.getSelectedItem();
             String idprof = prof.getID();
@@ -991,6 +1025,20 @@ public class Horario extends javax.swing.JInternalFrame {
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
 
             if (seguardo) {
+                
+                AccesoDatos ac = new AccesoDatos();
+                Calendar a = ProyeccionPagos.convierteacalendar(fechaini2);
+                float cole = Float.parseFloat(colegiatura.getText());
+                Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
+                idagrupo(codigo.getText());
+                String sql = ProyeccionPagos.calculapagos(a, b, cole, ""+idgrupo);
+
+                int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
+                System.out.print(pagos);
+                if (pagos > 0) {
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                 MostrarDatos(busqueda.getText());
                 this.bntGuardar.setEnabled(false);
@@ -1071,7 +1119,7 @@ public class Horario extends javax.swing.JInternalFrame {
             }
 
             Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad,inscripcion.getText(),colegiatura.getText(),id
+                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText(), id
             };
 
             seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
