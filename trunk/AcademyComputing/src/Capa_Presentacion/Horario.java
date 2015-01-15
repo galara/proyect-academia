@@ -385,8 +385,7 @@ public class Horario extends javax.swing.JInternalFrame {
             this.bntNuevo.setEnabled(false);
         }
     }
-    
-    
+
     public void idagrupo(String codigo) {
 
         String[] id = {codigo};
@@ -413,8 +412,7 @@ public class Horario extends javax.swing.JInternalFrame {
             }
         }
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -914,9 +912,9 @@ public class Horario extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(300, 10, 250, 27);
 
-            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
+            rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
             rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
+            rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
             rbCodigo.setText("Codigo");
             rbCodigo.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -926,9 +924,9 @@ public class Horario extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbCodigo);
             rbCodigo.setBounds(270, 40, 80, 25);
 
-            rbNombres.setBackground(new java.awt.Color(51, 153, 255));
+            rbNombres.setBackground(java.awt.SystemColor.inactiveCaption);
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombres.setForeground(new java.awt.Color(255, 255, 255));
+            rbNombres.setForeground(new java.awt.Color(0, 102, 102));
             rbNombres.setSelected(true);
             rbNombres.setText("Descripción");
             rbNombres.addActionListener(new java.awt.event.ActionListener() {
@@ -939,9 +937,9 @@ public class Horario extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(rbNombres);
             rbNombres.setBounds(370, 40, 110, 25);
 
-            rbDia.setBackground(new java.awt.Color(51, 153, 255));
+            rbDia.setBackground(java.awt.SystemColor.inactiveCaption);
             rbDia.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbDia.setForeground(new java.awt.Color(255, 255, 255));
+            rbDia.setForeground(new java.awt.Color(0, 102, 102));
             rbDia.setText("Día");
             rbDia.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -994,20 +992,21 @@ public class Horario extends javax.swing.JInternalFrame {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
             boolean seguardo = false;
             String nombreTabla = "grupo";
-            //String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion","grupo.horariode", "grupo.horarioa", "grupo.fechainicio","grupo.fechafin","grupo.cantalumnos","grupo.estado"};
             String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
-            
+
             String fechaini2 = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.D_M_A);
             String fechafn2 = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.D_M_A);
-            //System.out.print(fechaini2+fechafn2);
-            //Para obtener el id en la base de datos
             mProfesor prof = (mProfesor) profesor.getSelectedItem();
             String idprof = prof.getID();
             mCarrera carr = (mCarrera) carrera.getSelectedItem();
@@ -1025,13 +1024,13 @@ public class Horario extends javax.swing.JInternalFrame {
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
 
             if (seguardo) {
-                
+
                 AccesoDatos ac = new AccesoDatos();
                 Calendar a = ProyeccionPagos.convierteacalendar(fechaini2);
                 float cole = Float.parseFloat(colegiatura.getText());
                 Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
                 idagrupo(codigo.getText());
-                String sql = ProyeccionPagos.calculapagos(a, b, cole, ""+idgrupo);
+                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo);
 
                 int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
                 System.out.print(pagos);
@@ -1093,6 +1092,10 @@ public class Horario extends javax.swing.JInternalFrame {
 
         if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);

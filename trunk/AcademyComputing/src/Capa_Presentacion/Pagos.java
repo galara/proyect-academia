@@ -984,8 +984,9 @@ public class Pagos extends javax.swing.JInternalFrame {
         nombrealumno.setText("");
         beca.setText("");
         inicioalumno.setDate(null);
-        //Dia.setSelectedIndex(-1);
+        dia.setText("");
         cGrupo.setSelectedIndex(-1);
+        codigoa.requestFocus();
     }//GEN-LAST:event_bntCancelarActionPerformed
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing

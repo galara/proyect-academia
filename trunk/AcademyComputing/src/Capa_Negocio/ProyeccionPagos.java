@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 30234
+ * @author GLARA
  */
 public class ProyeccionPagos {
 
@@ -37,65 +37,73 @@ public class ProyeccionPagos {
         return null;
     }
 
-    public static String calculapagos(Calendar ini, Calendar fin, float colegiatura, String idg) {
-
-        //int dia = fin.getTime().getDay();
-        //int mes = fin.getTime().getMonth();
-        //int  año = fin.getTime().getYear();
-        int dia = fin.get(Calendar.DAY_OF_MONTH);
-        int mes = fin.get(Calendar.MONTH) + 1;
-        int año = fin.get(Calendar.YEAR);
-
-        String mesaño = (mes + 1) + "-" + año;
-//        dcFecha.getCalendar().get(Calendar.YEAR);
-//            int dias = dcFecha.getCalendar().get(Calendar.DAY_OF_MONTH);
-//            int mess = dcFecha.getCalendar().get(Calendar.MONTH) + 1;
-
-        //System.out.print(dia+"-"+mes+"-"+año);
-        String sql = sumarmes(ini, fin, mesaño, colegiatura, idg);
-        //System.out.print(mesaño + "comparacion" + "\n\n");
-        //sumarmes(fin, mesaño);
-
+    public static String calculapagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg) {
+        String sql = pagos(fechainicial, fechafinal, colegiatura, idg);
         return sql;
     }
 
     /*
-     * metodo para sumar 30 dias a un Calendar 
-     * devuelve un Calendar 
+     * Metodo para calcular los pagos que el alumno debe realizar
+     * Toma la fecha inicial y le se agrega 1 mes hasta que la fecha seha
+     * menor a fecha  final + 1 mes
+     * devuelve un string que contiene la sentencia sql para insertar la proteccion de pagos
      */
-    private static String sumarmes(Calendar fecha, Calendar fechafn, String mesaño, float colegiatura, String idg) {
-        String fv = "", f = "";
+    private static String pagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg) {
+        String fechavenvimiento = "";
         String sql = "";
-        String venc = "08";
-        boolean estado = false;
+        String diavencimiento = "08";
+        //mientras fecha inicial seha menor a fecha final
+        while (fechainicial.before(fechafinal)) {
+            fechainicial.add(Calendar.MONTH, 1); //suma un mes a la fecha inicial
+            int mespago = fechainicial.get(Calendar.MONTH);
+            int añopago = fechainicial.get(Calendar.YEAR);
+            if (mespago == 0) {
+                mespago = 12;
+                añopago = (añopago - 1);
+            }
 
-        while (fecha.before(fechafn)) {
-            fecha.add(Calendar.MONTH, 1);
-            String ff = FormatoFecha.getFormato(fecha.getTime(), FormatoFecha.D_M_A);
-            fv = fecha.get(Calendar.YEAR) + "-" + fecha.get(Calendar.MONTH)+ "-" + venc;
-            f = (fecha.get(Calendar.MONTH) + 1) + "-" + fecha.get(Calendar.YEAR);
-            //System.out.print(f + "calculado" + "\n\n");
+            int añovenvimiento = fechainicial.get(Calendar.YEAR);
+            int mesvencimiento = fechainicial.get(Calendar.MONTH) + 1;
+            if (mesvencimiento == 0) {
+                mesvencimiento = 12;
+                añovenvimiento = añopago + 1;
+            }
+            //fecha de vencimiento es el 08 del siguiente mes
+            fechavenvimiento = añovenvimiento + "-" + mesvencimiento + "-" + diavencimiento;
+
             if (!sql.equals("")) {
                 sql = sql + ",";
             }
-            sql = sql + "('" + (fecha.get(Calendar.MONTH))+ "','" + fecha.get(Calendar.YEAR) + "','" + colegiatura + "','" + fv + "','" + idg + "')";
-            System.out.print(sql + "\n");
-            
+
+            sql = sql + "('" + mespago + "','" + añopago + "','" + colegiatura + "','" + fechavenvimiento + "','" + idg + "')";
         }
-        
-        if (((fecha.get(Calendar.MONTH)+1)+"-"+fecha.get(Calendar.YEAR)).equals(((fechafn.get(Calendar.MONTH)+1)+"-"+fechafn.get(Calendar.YEAR)))) {
-            fecha.add(Calendar.MONTH, 1);
-            String ff = FormatoFecha.getFormato(fecha.getTime(), FormatoFecha.D_M_A);
-            fv = fecha.get(Calendar.YEAR) + "-" + fecha.get(Calendar.MONTH)+ "-" + venc;
-            f = (fecha.get(Calendar.MONTH) + 1) + "-" + fecha.get(Calendar.YEAR);
-            //System.out.print(f + "calculado" + "\n\n");
+        /*Si mes-año de fecha inicial es igual a mes-año de fecha final
+         * unicamene calcula un mes de pago ya que las dos fecha estan en el mismo mes*/
+        if (((fechainicial.get(Calendar.MONTH) + 1) + "-" + fechainicial.get(Calendar.YEAR)).equals(((fechafinal.get(Calendar.MONTH) + 1) + "-" + fechafinal.get(Calendar.YEAR)))) {
+
+            fechainicial.add(Calendar.MONTH, 1); //suma un mes a fecha inicial
+            int mespago = fechainicial.get(Calendar.MONTH);
+            int añopago = fechainicial.get(Calendar.YEAR);
+            if (mespago == 0) {
+                mespago = 12;
+                añopago = (añopago - 1);
+            }
+
+            int mesvencimiento = fechainicial.get(Calendar.MONTH) + 1;
+            int añovencimiento = fechainicial.get(Calendar.YEAR);
+            if (mesvencimiento == 0) {
+                mesvencimiento = 12;
+                añovencimiento = (añopago + 1);
+            }
+            //fecha de vencimiento es el 08 del siguiente mes
+            fechavenvimiento = añovencimiento + "-" + mesvencimiento + "-" + diavencimiento;
+
             if (!sql.equals("")) {
                 sql = sql + ",";
             }
-            sql = sql + "('" + (fecha.get(Calendar.MONTH))+ "','" + fecha.get(Calendar.YEAR) + "','" + colegiatura + "','" + fv + "','" + idg + "')";
-            System.out.print(sql + "\n");
+
+            sql = sql + "('" + mespago + "','" + añopago + "','" + colegiatura + "','" + fechavenvimiento + "','" + idg + "')";
         }
-        //System.out.print(sql);
-        return sql;
+        return sql; //retorna la sentencia sql para insertar los pagos
     }
 }

@@ -582,9 +582,9 @@ public class Pensum extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(210, 10, 250, 27);
 
-            rbNombres.setBackground(new java.awt.Color(51, 153, 255));
+            rbNombres.setBackground(java.awt.SystemColor.inactiveCaption);
             rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombres.setForeground(new java.awt.Color(255, 255, 255));
+            rbNombres.setForeground(new java.awt.Color(0, 102, 102));
             rbNombres.setSelected(true);
             rbNombres.setText("Descripción");
             rbNombres.addActionListener(new java.awt.event.ActionListener() {

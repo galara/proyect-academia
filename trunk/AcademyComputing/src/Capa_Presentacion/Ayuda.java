@@ -186,13 +186,11 @@ public class Ayuda extends javax.swing.JInternalFrame {
                     .addContainerGap(123, Short.MAX_VALUE)))
         );
 
-        jLabel7.setBackground(new java.awt.Color(0, 153, 204));
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("2014 - Bebelopers Systems");
         jLabel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jLabel7.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

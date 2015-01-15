@@ -352,9 +352,9 @@ public class ReportXHorario extends javax.swing.JInternalFrame {
             JPanelBusqueda.add(busqueda);
             busqueda.setBounds(300, 10, 250, 27);
 
-            rbCodigo.setBackground(new java.awt.Color(51, 153, 255));
+            rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
             rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(255, 255, 255));
+            rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
             rbCodigo.setText("Codigo");
             rbCodigo.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
