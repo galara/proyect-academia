@@ -6,9 +6,11 @@ package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
 import static Capa_Negocio.AddForms.adminInternalFrame;
+import Capa_Negocio.Editor_CheckBox;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
+import Capa_Negocio.Renderer_CheckBox;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
 import java.awt.Color;
@@ -38,7 +40,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Monto", "Cantidad", "Subtotal", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Codigo", "Descripción", "Monto", "Cantidad", "Subtotal", "Estado","Check"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
@@ -67,7 +69,9 @@ public class Pagos extends javax.swing.JInternalFrame {
                         selecciongrupo();
                     }
                 });
-
+        colegiaturas.getColumnModel().getColumn(2).setCellEditor(new Editor_CheckBox());
+        //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
+        colegiaturas.getColumnModel().getColumn(2).setCellRenderer(new Renderer_CheckBox());
         //llenarcomboprofesor();
         //llenarcombogrupo();
     }
@@ -118,7 +122,7 @@ public class Pagos extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-        while (detallepagos.getRowCount() != 0) {
+        while (colegiaturas.getRowCount() != 0) {
             model.removeRow(0);
         }
     }
@@ -403,8 +407,13 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         dia = new elaprendiz.gui.textField.TextField();
         JPanelTable = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        detallepagos = new javax.swing.JTable();
+        tbPane = new elaprendiz.gui.panel.TabbedPaneHeader();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        colegiaturas = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblMarca = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         codigoa = new elaprendiz.gui.textField.TextField();
         jLabel16 = new javax.swing.JLabel();
@@ -594,7 +603,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         pnlActionButtons.add(bntSalir, gridBagConstraints);
 
         panelImage.add(pnlActionButtons);
-        pnlActionButtons.setBounds(0, 560, 880, 50);
+        pnlActionButtons.setBounds(0, 580, 880, 50);
 
         JPanelCampos.setBackground(java.awt.SystemColor.activeCaption);
         JPanelCampos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -606,58 +615,58 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Horario A:");
         JPanelCampos.add(jLabel10);
-        jLabel10.setBounds(710, 20, 110, 20);
+        jLabel10.setBounds(730, 10, 110, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Profesor:");
         JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(300, 20, 250, 20);
+        jLabel3.setBounds(320, 10, 250, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Fecha Fin:");
         JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(710, 70, 110, 20);
+        jLabel6.setBounds(730, 60, 110, 20);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Horario De:");
         JPanelCampos.add(jLabel13);
-        jLabel13.setBounds(580, 20, 100, 20);
+        jLabel13.setBounds(600, 10, 100, 20);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Fecha Inicio:");
         JPanelCampos.add(jLabel9);
-        jLabel9.setBounds(580, 70, 110, 20);
+        jLabel9.setBounds(600, 60, 110, 20);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Carrera:");
         JPanelCampos.add(jLabel5);
-        jLabel5.setBounds(300, 70, 250, 20);
+        jLabel5.setBounds(320, 60, 250, 20);
 
         cGrupo.setEditable(true);
         cGrupo.setName("Dia"); // NOI18N
         JPanelCampos.add(cGrupo);
-        cGrupo.setBounds(90, 80, 150, 27);
+        cGrupo.setBounds(110, 70, 150, 24);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Grupo:");
         JPanelCampos.add(jLabel7);
-        jLabel7.setBounds(20, 80, 60, 27);
+        jLabel7.setBounds(40, 70, 60, 27);
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Inscripción Q.");
         JPanelCampos.add(jLabel24);
-        jLabel24.setBounds(580, 120, 110, 20);
+        jLabel24.setBounds(600, 110, 110, 20);
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Colegiatura Q.");
         JPanelCampos.add(jLabel18);
-        jLabel18.setBounds(710, 120, 110, 20);
+        jLabel18.setBounds(730, 110, 110, 20);
 
         carrera.setEditable(false);
         carrera.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -665,7 +674,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         carrera.setName("codigo"); // NOI18N
         carrera.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(carrera);
-        carrera.setBounds(300, 90, 250, 27);
+        carrera.setBounds(320, 80, 250, 24);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -673,7 +682,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         profesor.setName("codigo"); // NOI18N
         profesor.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(profesor);
-        profesor.setBounds(300, 40, 250, 27);
+        profesor.setBounds(320, 30, 250, 24);
 
         inscripcion.setEditable(false);
         inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
@@ -682,7 +691,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         inscripcion.setName("inscripcion"); // NOI18N
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(inscripcion);
-        inscripcion.setBounds(580, 140, 110, 27);
+        inscripcion.setBounds(600, 130, 110, 24);
 
         colegiatura.setEditable(false);
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
@@ -691,7 +700,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         colegiatura.setName("colegiatura"); // NOI18N
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(colegiatura);
-        colegiatura.setBounds(710, 140, 110, 27);
+        colegiatura.setBounds(730, 130, 110, 24);
 
         horaa.setEditable(false);
         horaa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -699,7 +708,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         horaa.setName("codigo"); // NOI18N
         horaa.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(horaa);
-        horaa.setBounds(710, 40, 110, 27);
+        horaa.setBounds(730, 30, 110, 24);
 
         horade.setEditable(false);
         horade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -707,7 +716,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         horade.setName("codigo"); // NOI18N
         horade.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(horade);
-        horade.setBounds(580, 40, 110, 27);
+        horade.setBounds(600, 30, 110, 24);
 
         fechainicio.setEditable(false);
         fechainicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -715,7 +724,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         fechainicio.setName("codigo"); // NOI18N
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(fechainicio);
-        fechainicio.setBounds(580, 90, 110, 27);
+        fechainicio.setBounds(600, 80, 110, 24);
 
         fechafin.setEditable(false);
         fechafin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -723,12 +732,12 @@ public class Pagos extends javax.swing.JInternalFrame {
         fechafin.setName("codigo"); // NOI18N
         fechafin.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(fechafin);
-        fechafin.setBounds(710, 90, 110, 27);
+        fechafin.setBounds(730, 80, 110, 24);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("Día:");
         JPanelCampos.add(jLabel12);
-        jLabel12.setBounds(300, 120, 250, 20);
+        jLabel12.setBounds(320, 110, 250, 20);
 
         dia.setEditable(false);
         dia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -736,51 +745,92 @@ public class Pagos extends javax.swing.JInternalFrame {
         dia.setName("codigo"); // NOI18N
         dia.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(dia);
-        dia.setBounds(300, 140, 250, 27);
+        dia.setBounds(320, 130, 250, 24);
 
         panelImage.add(JPanelCampos);
-        JPanelCampos.setBounds(0, 200, 880, 190);
+        JPanelCampos.setBounds(0, 190, 880, 170);
 
         JPanelTable.setOpaque(false);
         JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
         JPanelTable.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        tbPane.setOpaque(true);
 
-        detallepagos.setForeground(new java.awt.Color(51, 51, 51));
-        detallepagos.setModel(model = new DefaultTableModel(null, titulos)
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        colegiaturas.setForeground(new java.awt.Color(51, 51, 51));
+        colegiaturas.setModel(model = new DefaultTableModel(null, titulos)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return false;
+                    if(column==2){
+                        return true;
+                    }else{
+                        return false;}
                 }
             });
-            detallepagos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            detallepagos.setFocusCycleRoot(true);
-            detallepagos.setGridColor(new java.awt.Color(51, 51, 255));
-            detallepagos.setRowHeight(22);
-            detallepagos.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            detallepagos.setSurrendersFocusOnKeystroke(true);
-            detallepagos.addMouseListener(new java.awt.event.MouseAdapter() {
+            colegiaturas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            colegiaturas.setFocusCycleRoot(true);
+            colegiaturas.setGridColor(new java.awt.Color(51, 51, 255));
+            colegiaturas.setRowHeight(22);
+            colegiaturas.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            colegiaturas.setSurrendersFocusOnKeystroke(true);
+            colegiaturas.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    detallepagosMouseClicked(evt);
+                    colegiaturasMouseClicked(evt);
                 }
                 public void mousePressed(java.awt.event.MouseEvent evt) {
-                    detallepagosMouseClicked(evt);
+                    colegiaturasMouseClicked1(evt);
                 }
             });
-            detallepagos.addKeyListener(new java.awt.event.KeyAdapter() {
+            colegiaturas.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    detallepagosKeyPressed(evt);
+                    colegiaturasKeyPressed(evt);
                 }
             });
-            jScrollPane1.setViewportView(detallepagos);
-            detallepagos.getAccessibleContext().setAccessibleName("");
+            jScrollPane4.setViewportView(colegiaturas);
 
-            JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+            jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 150));
+
+            tbPane.addTab("Colegiatura", jPanel3);
+
+            jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+            jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+            jScrollPane2.setOpaque(false);
+
+            tblMarca.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null}
+                },
+                new String [] {
+                    "Title 1", "Title 2", "Title 3", "Title 4"
+                }
+            ));
+            tblMarca.setName("tblMarca"); // NOI18N
+            tblMarca.setOpaque(false);
+            jScrollPane2.setViewportView(tblMarca);
+
+            jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 150));
+
+            tbPane.addTab("Otros Pagos", jPanel4);
+
+            JPanelTable.add(tbPane, java.awt.BorderLayout.CENTER);
 
             panelImage.add(JPanelTable);
-            JPanelTable.setBounds(0, 430, 760, 130);
+            JPanelTable.setBounds(0, 390, 760, 190);
 
             JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
             JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -793,13 +843,13 @@ public class Pagos extends javax.swing.JInternalFrame {
                 }
             });
             JPanelBusqueda.add(codigoa);
-            codigoa.setBounds(120, 10, 97, 27);
+            codigoa.setBounds(120, 10, 97, 24);
 
             jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
             jLabel16.setText("Codigo:");
             JPanelBusqueda.add(jLabel16);
-            jLabel16.setBounds(10, 10, 100, 27);
+            jLabel16.setBounds(10, 10, 100, 24);
 
             jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
             jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -813,19 +863,19 @@ public class Pagos extends javax.swing.JInternalFrame {
             nombrealumno.setEditable(false);
             nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
             JPanelBusqueda.add(nombrealumno);
-            nombrealumno.setBounds(440, 10, 370, 27);
+            nombrealumno.setBounds(440, 10, 370, 24);
 
             jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
             jLabel19.setText("Alumno:");
             JPanelBusqueda.add(jLabel19);
-            jLabel19.setBounds(310, 10, 120, 27);
+            jLabel19.setBounds(310, 10, 120, 24);
 
             jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
             jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel26.setText("Fecha Inicio:");
             JPanelBusqueda.add(jLabel26);
-            jLabel26.setBounds(10, 50, 100, 27);
+            jLabel26.setBounds(10, 50, 100, 24);
 
             jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
             jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -838,7 +888,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             beca.setName("codigo"); // NOI18N
             beca.setPreferredSize(new java.awt.Dimension(120, 21));
             JPanelBusqueda.add(beca);
-            beca.setBounds(440, 50, 130, 27);
+            beca.setBounds(440, 50, 130, 24);
 
             estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -852,35 +902,39 @@ public class Pagos extends javax.swing.JInternalFrame {
             inicioalumno.setMinSelectableDate(new java.util.Date(-62135744300000L));
             inicioalumno.setPreferredSize(new java.awt.Dimension(120, 22));
             JPanelBusqueda.add(inicioalumno);
-            inicioalumno.setBounds(120, 50, 120, 27);
+            inicioalumno.setBounds(120, 50, 120, 24);
 
             panelImage.add(JPanelBusqueda);
-            JPanelBusqueda.setBounds(0, 110, 880, 90);
+            JPanelBusqueda.setBounds(0, 110, 880, 80);
 
+            pnlPaginador.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
             pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
             pnlPaginador.setLayout(new java.awt.GridBagLayout());
 
-            jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
+            jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 26)); // NOI18N
+            jLabel8.setForeground(new java.awt.Color(0, 102, 102));
+            jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel8.setText("  Detalle de pagos  ");
+            jLabel8.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
             pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
 
             panelImage.add(pnlPaginador);
-            pnlPaginador.setBounds(0, 390, 880, 40);
+            pnlPaginador.setBounds(0, 360, 880, 30);
 
             jPanel1.setLayout(null);
 
             buttonAction1.setText("Colegiatura");
             buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
             jPanel1.add(buttonAction1);
-            buttonAction1.setBounds(10, 0, 90, 35);
+            buttonAction1.setBounds(10, 50, 90, 35);
 
             buttonAction2.setText("Otros Pagos");
             buttonAction2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
             jPanel1.add(buttonAction2);
-            buttonAction2.setBounds(10, 90, 90, 35);
+            buttonAction2.setBounds(10, 120, 90, 35);
 
             panelImage.add(jPanel1);
-            jPanel1.setBounds(760, 430, 120, 130);
+            jPanel1.setBounds(760, 390, 120, 190);
 
             JPanelRecibo.setBackground(java.awt.SystemColor.activeCaption);
             JPanelRecibo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -946,7 +1000,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
             getAccessibleContext().setAccessibleName("Profesores");
 
-            setBounds(0, 0, 890, 643);
+            setBounds(0, 0, 890, 662);
         }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
@@ -962,11 +1016,6 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void bntSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalirActionPerformed
         cerrarVentana();
     }//GEN-LAST:event_bntSalirActionPerformed
-
-    private void detallepagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detallepagosMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_detallepagosMouseClicked
 
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
@@ -993,10 +1042,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
-
-    private void detallepagosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_detallepagosKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_detallepagosKeyPressed
 
     private void Actualizar_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_ProfesorActionPerformed
         // TODO add your handling code here:
@@ -1057,6 +1102,18 @@ public class Pagos extends javax.swing.JInternalFrame {
         balumnocodigo(codigoa.getText());
     }//GEN-LAST:event_ActualizaActionPerformed
 
+    private void colegiaturasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_colegiaturasKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colegiaturasKeyPressed
+
+    private void colegiaturasMouseClicked1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colegiaturasMouseClicked1
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colegiaturasMouseClicked1
+
+    private void colegiaturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colegiaturasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colegiaturasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualiza;
@@ -1084,7 +1141,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField codigo3;
     public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JFormattedTextField colegiatura;
-    private javax.swing.JTable detallepagos;
+    private javax.swing.JTable colegiaturas;
     private elaprendiz.gui.textField.TextField dia;
     public static javax.swing.JLabel estado;
     private elaprendiz.gui.textField.TextField fechafin;
@@ -1115,7 +1172,10 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     public static elaprendiz.gui.textField.TextField nombrealumno;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
@@ -1125,5 +1185,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu popupprofesor;
     private javax.swing.JPopupMenu popuppromatricula;
     private elaprendiz.gui.textField.TextField profesor;
+    private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
+    private javax.swing.JTable tblMarca;
     // End of variables declaration//GEN-END:variables
 }

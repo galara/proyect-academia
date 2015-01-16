@@ -47,7 +47,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
-    int nidalumno, idalumno;
+    int nidalumno, idalumno, iddetallegrupo;
     boolean matricula = true;
     //public Hashtable<String, String> hashGrupo = new Hashtable<>();
 
@@ -490,7 +490,33 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         }
     }
+    
+    public void idalumnosengrupo(String idalumno,String idgrupo ) {
 
+        String[] id = {idalumno,idgrupo};
+
+        ResultSet rs;
+        AccesoDatos ac = new AccesoDatos();
+        String[] cond = {"alumnosengrupo.alumno_idalumno","alumnosengrupo.grupo_idgrupo"};
+        String[] campos = {"alumnosengrupo.iddetallegrupo"};
+        rs = ac.getRegistros("alumnosengrupo", campos, cond, id, "");
+
+        if (rs != null) {
+            try {
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        iddetallegrupo = (rs.getInt(1));
+                    }
+                    
+                }
+            } catch (SQLException e) {
+                JOptionPane.showInternalMessageDialog(this, e);
+            }
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1505,15 +1531,15 @@ public class Alumno extends javax.swing.JInternalFrame {
                         if (seguardo) {
 
                             AccesoDatos ac = new AccesoDatos();
-                            Calendar a = ProyeccionPagos.convierteacalendar(fechaini.getText());
-                            float cole = Float.parseFloat(colegiatura.getText());
-                            Calendar b = ProyeccionPagos.convierteacalendar(fechafin.getText());
-
-                            String sql = ProyeccionPagos.calculapagos(a, b, cole, idg);
-
-                            int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
-
-                            if (pagos == 1) {
+                            idalumnosengrupo(alumnoid,idg);
+                            
+                            String sql="INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n" +
+                            "SELECT mes_idmes, año,monto,fechavencimiento,"+"'"+ iddetallegrupo +"' from pagos \n" +
+                            "WHERE pagos.`grupo_idgrupo`='"+idg+"'";
+                            
+                            int pagos = ac.agregarRegistrosql(sql);
+                            
+                            if (pagos > 0) {
                             } else {
                                 JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
                             }
