@@ -37,8 +37,8 @@ public class ProyeccionPagos {
         return null;
     }
 
-    public static String calculapagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg) {
-        String sql = pagos(fechainicial, fechafinal, colegiatura, idg);
+    public static String calculapagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg, String inscripcion) {
+        String sql = pagos(fechainicial, fechafinal, colegiatura, idg, inscripcion);
         return sql;
     }
 
@@ -48,15 +48,17 @@ public class ProyeccionPagos {
      * menor a fecha  final + 1 mes
      * devuelve un string que contiene la sentencia sql para insertar la proteccion de pagos
      */
-    private static String pagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg) {
+    private static String pagos(Calendar fechainicial, Calendar fechafinal, float colegiatura, String idg, String inscripcion) {
         String fechavenvimiento = "";
         String sql = "";
         String diavencimiento = "08";
-        //mientras fecha inicial seha menor a fecha final
+
+        /*mientras fecha inicial seha menor a fecha final*/
         while (fechainicial.before(fechafinal)) {
             fechainicial.add(Calendar.MONTH, 1); //suma un mes a la fecha inicial
             int mespago = fechainicial.get(Calendar.MONTH);
             int añopago = fechainicial.get(Calendar.YEAR);
+
             if (mespago == 0) {
                 mespago = 12;
                 añopago = (añopago - 1);
@@ -68,8 +70,12 @@ public class ProyeccionPagos {
                 mesvencimiento = 12;
                 añovenvimiento = añopago + 1;
             }
-            //fecha de vencimiento es el 08 del siguiente mes
+            /*Fecha de vencimiento es el 08 del siguiente mes*/
             fechavenvimiento = añovenvimiento + "-" + mesvencimiento + "-" + diavencimiento;
+
+            if (sql.equals("")) {
+                sql = sql + "('" + 13 + "','" + añopago + "','" + inscripcion + "','" + fechavenvimiento + "','" + idg + "')";
+            }
 
             if (!sql.equals("")) {
                 sql = sql + ",";
@@ -95,8 +101,12 @@ public class ProyeccionPagos {
                 mesvencimiento = 12;
                 añovencimiento = (añopago + 1);
             }
-            //fecha de vencimiento es el 08 del siguiente mes
+            /*fecha de vencimiento es el 08 del siguiente mes*/
             fechavenvimiento = añovencimiento + "-" + mesvencimiento + "-" + diavencimiento;
+
+            if (sql.equals("")) {
+                sql = sql + "('" + 13 + "','" + añopago + "','" + inscripcion + "','" + fechavenvimiento + "','" + idg + "')";
+            }
 
             if (!sql.equals("")) {
                 sql = sql + ",";
@@ -104,7 +114,8 @@ public class ProyeccionPagos {
 
             sql = sql + "('" + mespago + "','" + añopago + "','" + colegiatura + "','" + fechavenvimiento + "','" + idg + "')";
         }
-        
-        return sql; //retorna la sentencia sql para insertar los pagos
+
+        return sql; /*retorna la sentencia sql para insertar los pagos*/
+
     }
 }
