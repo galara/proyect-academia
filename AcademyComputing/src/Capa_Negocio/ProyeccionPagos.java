@@ -104,6 +104,7 @@ public class ProyeccionPagos {
 
             sql = sql + "('" + mespago + "','" + añopago + "','" + colegiatura + "','" + fechavenvimiento + "','" + idg + "')";
         }
+        
         return sql; //retorna la sentencia sql para insertar los pagos
     }
 }
