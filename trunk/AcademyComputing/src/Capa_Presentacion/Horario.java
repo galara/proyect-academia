@@ -1030,7 +1030,7 @@ public class Horario extends javax.swing.JInternalFrame {
                 float cole = Float.parseFloat(colegiatura.getText());
                 Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
                 idagrupo(codigo.getText());
-                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo);
+                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo,inscripcion.getText());
 
                 int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
                 System.out.print(pagos);
