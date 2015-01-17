@@ -197,6 +197,9 @@ public class Pagos extends javax.swing.JInternalFrame {
             colegiatura.setValue(null);
             removejtable();
             removejtable2();
+            inicioalumno.setText("");
+            beca.setText("");
+            dia.setText("");
 
         } else if (cGrupo.getSelectedIndex() != -1) {
 
@@ -253,6 +256,9 @@ public class Pagos extends javax.swing.JInternalFrame {
             estado.setText("");
             cGrupo.removeAllItems();
             idalumno = "";
+            inicioalumno.setText("");
+            beca.setText("");
+            dia.setText("");
 
         } else if (!codigo.isEmpty()) {
 
