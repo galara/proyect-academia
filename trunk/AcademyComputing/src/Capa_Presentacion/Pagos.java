@@ -583,6 +583,10 @@ public class Pagos extends javax.swing.JInternalFrame {
         fechafin = new elaprendiz.gui.textField.TextField();
         jLabel12 = new javax.swing.JLabel();
         dia = new elaprendiz.gui.textField.TextField();
+        jLabel26 = new javax.swing.JLabel();
+        inicioalumno = new elaprendiz.gui.textField.TextField();
+        jLabel25 = new javax.swing.JLabel();
+        beca = new elaprendiz.gui.textField.TextField();
         JPanelTable = new javax.swing.JPanel();
         tbPane = new elaprendiz.gui.panel.TabbedPaneHeader();
         jPanel3 = new javax.swing.JPanel();
@@ -597,11 +601,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         nombrealumno = new elaprendiz.gui.textField.TextField();
         jLabel19 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        beca = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JLabel();
-        inicioalumno = new elaprendiz.gui.textField.TextField();
         jPanel1 = new javax.swing.JPanel();
         buttonAction1 = new elaprendiz.gui.button.ButtonAction();
         buttonAction2 = new elaprendiz.gui.button.ButtonAction();
@@ -818,13 +818,13 @@ public class Pagos extends javax.swing.JInternalFrame {
         cGrupo.setEditable(true);
         cGrupo.setName("Dia"); // NOI18N
         JPanelCampos.add(cGrupo);
-        cGrupo.setBounds(80, 80, 210, 24);
+        cGrupo.setBounds(80, 30, 210, 24);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Grupo:");
         JPanelCampos.add(jLabel7);
-        jLabel7.setBounds(10, 80, 60, 27);
+        jLabel7.setBounds(10, 30, 60, 27);
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -909,6 +909,34 @@ public class Pagos extends javax.swing.JInternalFrame {
         dia.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(dia);
         dia.setBounds(320, 130, 260, 24);
+
+        jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel26.setText("Fecha Inicio Alumno:");
+        JPanelCampos.add(jLabel26);
+        jLabel26.setBounds(10, 80, 160, 24);
+
+        inicioalumno.setEditable(false);
+        inicioalumno.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        inicioalumno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        inicioalumno.setName("codigo"); // NOI18N
+        inicioalumno.setPreferredSize(new java.awt.Dimension(120, 21));
+        JPanelCampos.add(inicioalumno);
+        inicioalumno.setBounds(170, 80, 120, 24);
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel25.setText("Beca Alumno: Q.");
+        JPanelCampos.add(jLabel25);
+        jLabel25.setBounds(40, 130, 130, 27);
+
+        beca.setEditable(false);
+        beca.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        beca.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        beca.setName("codigo"); // NOI18N
+        beca.setPreferredSize(new java.awt.Dimension(120, 21));
+        JPanelCampos.add(beca);
+        beca.setBounds(170, 130, 120, 24);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 190, 880, 170);
@@ -1027,38 +1055,10 @@ public class Pagos extends javax.swing.JInternalFrame {
                 JPanelBusqueda.add(jLabel19);
                 jLabel19.setBounds(310, 10, 120, 24);
 
-                jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel26.setText("Fecha Inicio:");
-                JPanelBusqueda.add(jLabel26);
-                jLabel26.setBounds(10, 50, 100, 24);
-
-                jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel25.setText("Becado: Q.");
-                JPanelBusqueda.add(jLabel25);
-                jLabel25.setBounds(340, 50, 90, 27);
-
-                beca.setEditable(false);
-                beca.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-                beca.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-                beca.setName("codigo"); // NOI18N
-                beca.setPreferredSize(new java.awt.Dimension(120, 21));
-                JPanelBusqueda.add(beca);
-                beca.setBounds(440, 50, 130, 24);
-
                 estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 JPanelBusqueda.add(estado);
                 estado.setBounds(700, 50, 110, 27);
-
-                inicioalumno.setEditable(false);
-                inicioalumno.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-                inicioalumno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-                inicioalumno.setName("codigo"); // NOI18N
-                inicioalumno.setPreferredSize(new java.awt.Dimension(120, 21));
-                JPanelBusqueda.add(inicioalumno);
-                inicioalumno.setBounds(120, 50, 120, 24);
 
                 panelImage.add(JPanelBusqueda);
                 JPanelBusqueda.setBounds(0, 110, 880, 80);
