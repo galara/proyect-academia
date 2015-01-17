@@ -34,7 +34,7 @@ public class Editor_CheckBox extends DefaultCellEditor implements TableCellRende
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         //Color de fondo en modo edicion
-        ( (JCheckBox) component).setBackground( new Color(234,176,40) );
+        //( (JCheckBox) component).setBackground( new Color(234,176,40) );
         //obtiene valor de celda y coloca en el JCheckBox
         boolean b = ((boolean) value);
         ( (JCheckBox) component).setSelected( b );

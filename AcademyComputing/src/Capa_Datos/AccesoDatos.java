@@ -203,7 +203,7 @@ public class AccesoDatos {
                 sql = "select " + (campos != null ? (campos.length == 0 ? "* " : generarArrayAString(campos)) : "* ") + " from "
                         + nombreTabla + (condiciones != null ? inner + " " + OpSql.WHERE + condiciones : "");
             }
-            //System.out.print(sql);
+            //System.out.print("\n"+sql);
             rs = BdConexion.getResultSet(sql);
             //No se cierra el rs ya que no se podria retornar el rs
         } catch (Exception ex) {
@@ -488,7 +488,6 @@ public class AccesoDatos {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
         return rs;
     }
 

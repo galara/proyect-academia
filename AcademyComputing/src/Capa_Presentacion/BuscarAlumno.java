@@ -15,6 +15,7 @@ import static Capa_Presentacion.Pagos.codigoa;
 import static Capa_Presentacion.Pagos.estado;
 import static Capa_Presentacion.Pagos.inicioalumno;
 import static Capa_Presentacion.Pagos.nombrealumno;
+import static Capa_Presentacion.Pagos.idalumno;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,7 +38,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"codigo", "Nombres", "Apellidos", "Fecha Nec", "Beca", "Fecha Inicio", "Estado"};//Titulos para Jtabla
+    String[] titulos = {"Código", "Nombres", "Apellidos", "Fecha Nec", "Estado","Id"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     int nidalumno;
@@ -124,7 +125,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.cantidadbeca", "DATE_FORMAT(alumno.fechadeinicio,'%d-%m-%Y')", "alumno.estado"};
+        String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.estado","alumno.idalumno"};
         String[] condiciones = {"alumno.codigo"};
         String[] Id = {Dato};
 
@@ -454,19 +455,19 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
             cGrupo.removeAllItems();
             Pagos.llenarcombogrupo(alumnos.getValueAt(p, 0).toString());
             nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
-            beca.setText(alumnos.getValueAt(p, 4).toString());
-            Date fechaini = FormatoFecha.StringToDate(alumnos.getValueAt(p, 5).toString());
-            inicioalumno.setDate(fechaini);
+            //beca.setText(alumnos.getValueAt(p, 4).toString());
+            //Date fechaini = FormatoFecha.StringToDate(alumnos.getValueAt(p, 5).toString());
+            //inicioalumno.setDate(fechaini);
 
-            if (alumnos.getValueAt(p, 6).toString().equals("Inactivo")) {
-                estado.setText(alumnos.getValueAt(p, 6).toString());
+            if (alumnos.getValueAt(p, 4).toString().equals("Inactivo")) {
+                estado.setText(alumnos.getValueAt(p, 4).toString());
                 //estado.setText("Inactivo");
                 estado.setForeground(Color.red);
-            } else if (alumnos.getValueAt(p, 6).toString().equals("Activo")) {
-                estado.setText(alumnos.getValueAt(p, 6).toString());
+            } else if (alumnos.getValueAt(p, 4).toString().equals("Activo")) {
+                estado.setText(alumnos.getValueAt(p, 4).toString());
                 estado.setForeground(Color.WHITE);
             }
-            //estado.setText(alumnos.getValueAt(p, 6).toString());
+            idalumno=(alumnos.getValueAt(p, 5).toString());
             this.dispose();
         }
     }//GEN-LAST:event_alumnosKeyPressed
