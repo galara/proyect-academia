@@ -5,6 +5,7 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
@@ -12,6 +13,7 @@ import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
+import static Capa_Presentacion.Principal.dp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -426,6 +428,15 @@ public class Alumno extends javax.swing.JInternalFrame {
             this.bntNuevo.setEnabled(false);
             codigo.setEditable(false);
             //beca.setEditable(false);
+            profesor.setEditable(false);
+            horade.setEditable(false);
+            horaa.setEditable(false);
+            carrera.setEditable(false);
+            fechaini.setEditable(false);
+            fechafin.setEditable(false);
+            inscripcion.setEditable(false);
+            colegiatura.setEditable(false);
+            buttonAction1.setEnabled(true);
 
         }
     }
@@ -443,7 +454,10 @@ public class Alumno extends javax.swing.JInternalFrame {
                         while (rs.next()) {//mientras tenga registros que haga lo siguiente
                             nidalumno = (rs.getInt(1) + 1);
                         }
+                    } else {
+                        nidalumno = nidalumno + 1;
                     }
+
                 } catch (SQLException e) {
                     JOptionPane.showInternalMessageDialog(this, e);
                 }
@@ -524,6 +538,9 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        popupgrupo = new javax.swing.JPopupMenu();
+        Nuevo_Grupo = new javax.swing.JMenuItem();
+        Actualizar_Grupo = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntNuevo = new elaprendiz.gui.button.ButtonRect();
@@ -598,6 +615,24 @@ public class Alumno extends javax.swing.JInternalFrame {
         rbApellido = new javax.swing.JRadioButton();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+
+        Nuevo_Grupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
+        Nuevo_Grupo.setText("Nuevo Grupo");
+        Nuevo_Grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Nuevo_GrupoActionPerformed(evt);
+            }
+        });
+        popupgrupo.add(Nuevo_Grupo);
+
+        Actualizar_Grupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
+        Actualizar_Grupo.setText("Actualizar Combo");
+        Actualizar_Grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Actualizar_GrupoActionPerformed(evt);
+            }
+        });
+        popupgrupo.add(Actualizar_Grupo);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -1004,6 +1039,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
             cGrupo.setEditable(true);
             cGrupo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+            cGrupo.setComponentPopupMenu(popupgrupo);
             cGrupo.setName("cgrupo"); // NOI18N
             jPanel4.add(cGrupo);
             cGrupo.setBounds(90, 70, 150, 21);
@@ -1087,6 +1123,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             fechafin.setBounds(710, 80, 110, 21);
 
             buttonAction1.setText("Guardar Matricula");
+            buttonAction1.setEnabled(false);
             buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
             buttonAction1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1123,6 +1160,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             becagrupo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
             becagrupo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
             becagrupo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            becagrupo.setName("becaalumno"); // NOI18N
             becagrupo.setPreferredSize(new java.awt.Dimension(80, 23));
             jPanel4.add(becagrupo);
             becagrupo.setBounds(440, 130, 110, 23);
@@ -1266,6 +1304,16 @@ public class Alumno extends javax.swing.JInternalFrame {
         //colegiatura.setEditable(false);
         //beca.setEditable(false);
         codigo.setEditable(false);
+        profesor.setEditable(false);
+        horade.setEditable(false);
+        horaa.setEditable(false);
+        carrera.setEditable(false);
+        fechaini.setEditable(false);
+        fechafin.setEditable(false);
+        inscripcion.setEditable(false);
+        colegiatura.setEditable(false);
+        buttonAction1.setEnabled(false);
+
         nombres.requestFocus();
         nidalumno = 0;
         matricula = true;
@@ -1276,6 +1324,19 @@ public class Alumno extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true)) || (Utilidades.esObligatorio(this.jPanel4, true))) {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText()) || Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText())) {
+            JOptionPane.showInternalMessageDialog(this, "La beca debe ser menor al monto de Inscripcion y Colegiatura", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fechainicioalumno.getCalendar().getTime().after(FormatoFecha.StringToDate(fechafin.getText()))) {
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fechainicioalumno.getCalendar().getTime().before(FormatoFecha.StringToDate(fechaini.getText())) /*|| fechainicioalumno.getCalendar().getTime().equals(FormatoFecha.StringToDate(fechaini.getText()))*/) {
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser mayor o igual a la fecha inicio ", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.print(fechainicioalumno.getCalendar().getTime().toString() + "--" + FormatoFecha.StringToDate(fechaini.getText()));
             return;
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
@@ -1445,7 +1506,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         busqueda.requestFocus();
         nidalumno = 0;
         matricula = false;
-
+        buttonAction1.setEnabled(false);
     }//GEN-LAST:event_bntCancelarActionPerformed
 
     private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
@@ -1578,11 +1639,27 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_buttonAction1ActionPerformed
 
+    private void Nuevo_GrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_GrupoActionPerformed
+        // TODO add your handling code here:
+        Horario frmHorario = new Horario();
+        if (frmHorario == null) {
+            frmHorario = new Horario();
+        }
+        adminInternalFrame(dp, frmHorario);
+    }//GEN-LAST:event_Nuevo_GrupoActionPerformed
+
+    private void Actualizar_GrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_GrupoActionPerformed
+        // TODO add your handling code here:
+        selecciondia();
+    }//GEN-LAST:event_Actualizar_GrupoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Actualizar_Grupo;
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelTable;
+    private javax.swing.JMenuItem Nuevo_Grupo;
     private javax.swing.JTable alumnos;
     private elaprendiz.gui.textField.TextField apellidos;
     private javax.swing.JFormattedTextField becagrupo;
@@ -1646,6 +1723,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
+    private javax.swing.JPopupMenu popupgrupo;
     private elaprendiz.gui.textField.TextField profesor;
     private javax.swing.JRadioButton rbApellido;
     private javax.swing.JRadioButton rbCodigo;
