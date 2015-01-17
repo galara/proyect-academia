@@ -38,17 +38,16 @@ import modelos.mGrupo;
 public class Pagos extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
-    DefaultTableModel model;
+    DefaultTableModel model, model2;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Codigo", "Descripción", "Monto", "Cantidad", "Subtotal", "Estado","Check"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "estado", "Asignado", "Check"};//Titulos para Jtabla
+    String[] titulos2 = {"Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Check"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
+    AccesoDatos acceso = new AccesoDatos();
+    static String idalumno = "", iddetallegrupo = "";
 
-    //private static Profesor frmProfesor = new Profesor();
-    //private static Carrera frmCarrera = new Carrera();
-    /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
-    //public static JOptionMessage msg = new JOptionMessage();
     /**
      * Creates new form Cliente
      */
@@ -57,23 +56,24 @@ public class Pagos extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
 
-//        cDia.addItemListener(
-//                (ItemEvent e) -> {
-//                    if (e.getStateChange() == ItemEvent.SELECTED) {
-//                        selecciondia();
-//                    }
-//                });
         cGrupo.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
                         selecciongrupo();
                     }
                 });
-        colegiaturas.getColumnModel().getColumn(2).setCellEditor(new Editor_CheckBox());
+        colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
+        colegiaturas.getColumnModel().getColumn(7).setCellEditor(new Editor_CheckBox());
+        colegiaturas.getColumnModel().getColumn(6).setCellEditor(new Editor_CheckBox());
+
+        otrosproductos.getColumnModel().getColumn(5).setCellEditor(new Editor_CheckBox());
+
         //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
-        colegiaturas.getColumnModel().getColumn(2).setCellRenderer(new Renderer_CheckBox());
-        //llenarcomboprofesor();
-        //llenarcombogrupo();
+        colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
+        colegiaturas.getColumnModel().getColumn(7).setCellRenderer(new Renderer_CheckBox());
+        colegiaturas.getColumnModel().getColumn(6).setCellRenderer(new Renderer_CheckBox());
+
+        otrosproductos.getColumnModel().getColumn(5).setCellRenderer(new Renderer_CheckBox());
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -102,21 +102,13 @@ public class Pagos extends javax.swing.JInternalFrame {
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(false);
             this.bntEliminar.setEnabled(false);
-            this.bntNuevo.setEnabled(true);
+            //this.bntNuevo.setEnabled(true);
             removejtable();
             codigoa.setText("");
             codigoa.requestFocus();
             this.dispose();
         }
     }
-
-//    /* La funcion de este metodo es limpiar y desabilitar campos que se encuentren en un contenedor
-//     * ejem: los JTextFiel de un panel, se envian a la capa de negocio "Utilidades.setEditableTexto()" 
-//     * para que este los limpie,habilite o desabilite dichos componentes */
-//    public void limpiar() {
-//        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-//        Utilidades.setEditableTexto(this.JPanelRecibo, false, null, true, "");
-//    }
 
     /* Para no sobrecargar la memoria y hacer una instancia cada vez que actualizamos la JTable se hace una
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
@@ -127,14 +119,11 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
-//    private void selecciondia() {
-//        if (cDia.getSelectedIndex() == 0) {
-//            cGrupo.removeAllItems();
-//        } else if (cDia.getSelectedIndex() > 0) {
-//            String sdia = (String) cDia.getSelectedItem();
-//            llenarcombogrupo(sdia);
-//        }
-//    }
+    public void removejtable2() {
+        while (otrosproductos.getRowCount() != 0) {
+            model2.removeRow(0);
+        }
+    }
 
     /*
      *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
@@ -148,8 +137,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         String[] Id = {Dato, idalumn};
         cGrupo.removeAllItems();
         String inner = " INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
-
-        //Component cmps = profesor;
         getRegistroCombo("grupo", campos, condiciones, Id, inner);
 
     }
@@ -195,6 +182,9 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
+    /* Metodo que llena los campos con la información de grupo
+     * Tambien llena en la pestaña de coelgiatura lo que el alumno tiene pendiente de pago
+     */
     public void selecciongrupo() {
         if (cGrupo.getSelectedIndex() == 0) {
             profesor.setText("");
@@ -205,6 +195,9 @@ public class Pagos extends javax.swing.JInternalFrame {
             fechafin.setText("");
             inscripcion.setValue(null);
             colegiatura.setValue(null);
+            removejtable();
+            removejtable2();
+
         } else if (cGrupo.getSelectedIndex() != -1) {
 
             mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
@@ -235,12 +228,12 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 inscripcion.setValue(rs.getFloat(7));
                                 colegiatura.setValue(rs.getFloat(8));
                                 dia.setText(rs.getString(9));
-
                             }
+                            idalumnosengrupo(idalumno, "" + grup.getID());
+                            MostrarPagos();
+                            MostrarProductos();
                         }
-                        //profesor.setEditable(false);
                     } catch (SQLException e) {
-                        //profesor.setEditable(false);
                         JOptionPane.showInternalMessageDialog(this, e);
                     }
                 }
@@ -250,36 +243,28 @@ public class Pagos extends javax.swing.JInternalFrame {
     }
 
     /*
-     * Metodo para buscar un alumno por su codigo
+     * Metodo para buscar un alumno por su codigo devuelde el id
      */
     public void balumnocodigo(String codigo) {
         if (codigo.isEmpty()) {
-            //codigoa.setText(rs.getString(1));
-            //filaseleccionada(alumnos.getValueAt(p, 0).toString());
-            //llenarcombogrupo(rs.getString(1));
             nombrealumno.setText("");
             beca.setText("");
-            //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
-            inicioalumno.setDate(null);
+            //inicioalumno.setDate(null);
             estado.setText("");
             cGrupo.removeAllItems();
+            idalumno = "";
 
         } else if (!codigo.isEmpty()) {
 
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
 
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.cantidadbeca", "DATE_FORMAT(alumno.fechadeinicio,'%d-%m-%Y')", "alumno.estado"};
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.estado", "alumno.idalumno"};
             String[] cond = {"alumno.codigo"};
             String[] id = {codigo};
-            //String[] Id = {Dato};
 
-            //String[] cond = {"alumno.idgrupo"};
-            //String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
             if (!id.equals(0)) {
 
-                //String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-                //String[] campos = {conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.inscripcion", "grupo.colegiatura","grupo.dia"};
                 rs = ac.getRegistros("alumno", campos, cond, id, "");
 
                 if (rs != null) {
@@ -287,59 +272,222 @@ public class Pagos extends javax.swing.JInternalFrame {
                         if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                             rs.beforeFirst();//regresa el puntero al primer registro
                             while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                                profesor.setText(rs.getString(1));
-//                                carrera.setText(rs.getString(2));
-//                                horade.setText(rs.getString(3));
-//                                horaa.setText(rs.getString(4));
-//                                fechainicio.setText((rs.getString(5)));
-//                                fechafin.setText((rs.getString(6)));
-//                                inscripcion.setValue(rs.getFloat(7));
-//                                colegiatura.setValue(rs.getFloat(8));
-//                                dia.setText(rs.getString(9));
-
                                 codigoa.setText(rs.getString(1));
-                                //filaseleccionada(alumnos.getValueAt(p, 0).toString());
                                 llenarcombogrupo(rs.getString(1));
                                 nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
-                                beca.setText(rs.getString(5));
-                                Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
-                                inicioalumno.setDate(fechaini);
-                                
-                                if (rs.getString(7).equals("0")) {
+                                //float becac=Float.parseFloat(rs.getString(5));
+                                //beca.setText(""+becac);
+                                //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
+                                //inicioalumno.setDate(fechaini);
+
+                                if (rs.getString(5).equals("0")) {
                                     estado.setText("Inactivo");
                                     estado.setForeground(Color.red);
-                                } else if (rs.getString(7).equals("1")) {
+                                } else if (rs.getString(5).equals("1")) {
                                     estado.setText("Activo");
                                     estado.setForeground(Color.WHITE/*new java.awt.Color(102, 204, 0)*/);
                                 }
-                                //estado.setText(rs.getString(7));
+
+                                idalumno = (rs.getString(6));
 
                             }
                         } else {
                             JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
                             nombrealumno.setText("");
                             beca.setText("");
-                            //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
-                            inicioalumno.setDate(null);
+                            inicioalumno.setText("");
                             estado.setText("");
                             cGrupo.removeAllItems();
+                            idalumno = "";
+
+                            removejtable();
+                            profesor.setText("");
+                            carrera.setText("");
+                            horade.setText("");
+                            horaa.setText("");
+                            fechainicio.setText("");
+                            fechafin.setText("");
+                            inscripcion.setValue(null);
+                            colegiatura.setValue(null);
+                            dia.setText("");
+                            codigoa.requestFocus();
                         }
-                        //profesor.setEditable(false);
                     } catch (SQLException e) {
-                        //profesor.setEditable(false);
                         JOptionPane.showInternalMessageDialog(this, e);
                     }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
                     nombrealumno.setText("");
                     beca.setText("");
-                    //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
-                    inicioalumno.setDate(null);
+                    inicioalumno.setText("");
                     estado.setText("");
                     cGrupo.removeAllItems();
+                    idalumno = "";
+
+                    removejtable();
+                    profesor.setText("");
+                    carrera.setText("");
+                    horade.setText("");
+                    horaa.setText("");
+                    fechainicio.setText("");
+                    fechafin.setText("");
+                    inscripcion.setValue(null);
+                    colegiatura.setValue(null);
+                    dia.setText("");
+                    codigoa.requestFocus();
                 }
 
             }
+        }
+    }
+
+    /* Este metodo recibe de el campo busqueda un parametro que es el que servirá para realizar la cunsulta
+     * de los datos, este envia a la capa de negocio "peticiones.getRegistroPorPks( el modelo de la JTable,
+     * el nombre de la tabla, los campos de la tabla a consultar, los campos de condiciones, y el dato a comparar
+     * en la(s) condicion(es) de la busqueda) .
+     *   
+     * Nota: si el campo busqueda no contiene ningun dato devolvera todos los datos de la tabla o un mensage
+     * indicando que no hay datos para la busqueda  
+     *
+     * @param Dato , dato a buscar
+     * @return 
+     */
+    private void MostrarPagos() {
+
+        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
+                + "     proyeccionpagos.fechavencimiento,proyeccionpagos.estado,proyeccionpagos.asignado,proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
+                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
+
+        removejtable();
+        model = getRegistroPorLikel(model, sql);
+        Utilidades.ajustarAnchoColumnas(colegiaturas);
+    }
+
+    /**
+     * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
+     * modelo ,modelo de la JTable
+     *
+     * @param tabla , el nombre de la tabla a consultar en la BD
+     * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
+     * ,dirección etc
+     * @param campocondicion , los campos de la tabla para las condiciones ejem:
+     * id,estado etc
+     * @param condicionid , los valores que se compararan con campocondicion
+     * ejem: campocondicion = condicionid
+     * @return
+     */
+    public DefaultTableModel getRegistroPorLikel(DefaultTableModel modelo, String tabla) {
+        try {
+
+            ResultSet rs;
+
+            rs = acceso.getRegistroProc(tabla);
+            int cantcampos = 8;
+            //if (rs != null) {
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                //int count = 0;
+                rs.beforeFirst();//regresa el puntero al primer registro
+                Object[] fila = new Object[cantcampos + 1];
+
+                while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                    for (int i = 0; i < cantcampos; i++) {
+
+                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        if (i == 4) {
+                            float monto = (float) rs.getObject(i + 1);
+                            float cbeca = Float.parseFloat(beca.getText());
+                            float resultado = (float) (Math.round((monto - cbeca) * 100.0) / 100.0);
+
+                            fila[i] = resultado;
+                        }
+                        if (fila[i] == null) {
+                            fila[i] = "";
+                        } else {
+                        }
+                    }
+                    fila[8] = false;
+                    modelo.addRow(fila);
+                }
+
+            } //} 
+            else {
+                // JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            }
+            rs.close();
+            return modelo;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private void MostrarProductos() {
+
+        String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
+
+        removejtable2();
+        model2 = getRegistroPorLikell(model2, sql);
+        Utilidades.ajustarAnchoColumnas(otrosproductos);
+    }
+
+    /**
+     * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
+     * modelo ,modelo de la JTable
+     *
+     * @param tabla , el nombre de la tabla a consultar en la BD
+     * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
+     * ,dirección etc
+     * @param campocondicion , los campos de la tabla para las condiciones ejem:
+     * id,estado etc
+     * @param condicionid , los valores que se compararan con campocondicion
+     * ejem: campocondicion = condicionid
+     * @return
+     */
+    public DefaultTableModel getRegistroPorLikell(DefaultTableModel modelo, String tabla) {
+        try {
+
+            ResultSet rs;
+
+            rs = acceso.getRegistroProc(tabla);
+            int cantcampos = 6;
+            //if (rs != null) {
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                //int count = 0;
+                rs.beforeFirst();//regresa el puntero al primer registro
+                Object[] fila = new Object[cantcampos ];
+
+                while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+//                    for (int i = 0; i < cantcampos-1; i++) {
+//                            fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+//                        if (fila[i] == null) {
+//                            fila[i] = "";
+//                        } else {
+//                        }
+//                    }
+//                    fila[3] = "";
+//                    fila[4] = "";
+//                    fila[5] = false;
+
+                    fila[0] = rs.getString(1);
+                    fila[1] = rs.getString(2);
+                    fila[2] = Float.parseFloat(rs.getString(3));
+                    fila[3] = "";
+                    fila[4] = "";
+                    fila[5] = false;
+                    modelo.addRow(fila);
+                }
+
+            } //} 
+            else {
+                // JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            }
+            rs.close();
+            return modelo;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
     }
 
@@ -356,6 +504,36 @@ public class Pagos extends javax.swing.JInternalFrame {
         //TipoFiltro.setFiltraEntrada(cantalumnos.getDocument(), FiltroCampos.SOLO_NUMEROS, 5, true);
 //        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
         //TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
+    }
+
+    public void idalumnosengrupo(String idalumno, String idgrupo) {
+
+        String[] id = {idalumno, idgrupo};
+        ResultSet rs;
+        AccesoDatos ac = new AccesoDatos();
+        String[] cond = {"alumnosengrupo.alumno_idalumno", "alumnosengrupo.grupo_idgrupo"};
+        String[] campos = {"alumnosengrupo.iddetallegrupo", "alumnosengrupo.fechainicio", "alumnosengrupo.beca"};
+        rs = ac.getRegistros("alumnosengrupo", campos, cond, id, "");
+
+        if (rs != null) {
+            try {
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        iddetallegrupo = (rs.getString(1));
+                        String fechainicio = FormatoFecha.getFormato(rs.getDate(2), FormatoFecha.D_M_A);
+                        inicioalumno.setText(fechainicio);
+                        //System.out.print(fechainicio + "\n");
+                        float becac = Float.parseFloat(rs.getString(3));
+                        beca.setText("" + becac);
+                        //System.out.print(becac + "\n");
+                    }
+                }
+            } catch (SQLException e) {
+                iddetallegrupo = "";
+                JOptionPane.showInternalMessageDialog(this, e);
+            }
+        }
     }
 
     /**
@@ -379,7 +557,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         Actualiza = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
-        bntNuevo = new elaprendiz.gui.button.ButtonRect();
         bntModificar = new elaprendiz.gui.button.ButtonRect();
         bntGuardar = new elaprendiz.gui.button.ButtonRect();
         bntEliminar = new elaprendiz.gui.button.ButtonRect();
@@ -413,7 +590,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         colegiaturas = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblMarca = new javax.swing.JTable();
+        otrosproductos = new javax.swing.JTable();
         JPanelBusqueda = new javax.swing.JPanel();
         codigoa = new elaprendiz.gui.textField.TextField();
         jLabel16 = new javax.swing.JLabel();
@@ -424,9 +601,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel25 = new javax.swing.JLabel();
         beca = new elaprendiz.gui.textField.TextField();
         estado = new javax.swing.JLabel();
-        inicioalumno = new com.toedter.calendar.JDateChooser();
-        pnlPaginador = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
+        inicioalumno = new elaprendiz.gui.textField.TextField();
         jPanel1 = new javax.swing.JPanel();
         buttonAction1 = new elaprendiz.gui.button.ButtonAction();
         buttonAction2 = new elaprendiz.gui.button.ButtonAction();
@@ -528,24 +703,14 @@ public class Pagos extends javax.swing.JInternalFrame {
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
-        bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
-        bntNuevo.setMnemonic(KeyEvent.VK_N);
-        bntNuevo.setText("Nuevo");
-        bntNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bntNuevoActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 84, 12, 0);
-        pnlActionButtons.add(bntNuevo, gridBagConstraints);
-
         bntModificar.setBackground(new java.awt.Color(51, 153, 255));
         bntModificar.setMnemonic(KeyEvent.VK_M);
         bntModificar.setText("Modificar");
+        bntModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntModificarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -556,6 +721,11 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
+        bntGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntGuardarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -589,7 +759,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         pnlActionButtons.add(bntCancelar, gridBagConstraints);
 
         bntSalir.setBackground(new java.awt.Color(51, 153, 255));
-        bntSalir.setText("Salir");
+        bntSalir.setText("Salir    ");
         bntSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntSalirActionPerformed(evt);
@@ -648,13 +818,13 @@ public class Pagos extends javax.swing.JInternalFrame {
         cGrupo.setEditable(true);
         cGrupo.setName("Dia"); // NOI18N
         JPanelCampos.add(cGrupo);
-        cGrupo.setBounds(110, 70, 150, 24);
+        cGrupo.setBounds(80, 80, 210, 24);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Grupo:");
         JPanelCampos.add(jLabel7);
-        jLabel7.setBounds(40, 70, 60, 27);
+        jLabel7.setBounds(10, 80, 60, 27);
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -670,24 +840,22 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         carrera.setEditable(false);
         carrera.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        carrera.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         carrera.setName("codigo"); // NOI18N
         carrera.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(carrera);
-        carrera.setBounds(320, 80, 250, 24);
+        carrera.setBounds(320, 80, 260, 24);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        profesor.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         profesor.setName("codigo"); // NOI18N
         profesor.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(profesor);
-        profesor.setBounds(320, 30, 250, 24);
+        profesor.setBounds(320, 30, 260, 24);
 
         inscripcion.setEditable(false);
         inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         inscripcion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        inscripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        inscripcion.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         inscripcion.setName("inscripcion"); // NOI18N
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(inscripcion);
@@ -696,7 +864,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         colegiatura.setEditable(false);
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         colegiatura.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        colegiatura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        colegiatura.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         colegiatura.setName("colegiatura"); // NOI18N
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelCampos.add(colegiatura);
@@ -704,7 +872,6 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         horaa.setEditable(false);
         horaa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        horaa.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         horaa.setName("codigo"); // NOI18N
         horaa.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(horaa);
@@ -712,7 +879,6 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         horade.setEditable(false);
         horade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        horade.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         horade.setName("codigo"); // NOI18N
         horade.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(horade);
@@ -720,7 +886,6 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         fechainicio.setEditable(false);
         fechainicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechainicio.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         fechainicio.setName("codigo"); // NOI18N
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(fechainicio);
@@ -728,7 +893,6 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         fechafin.setEditable(false);
         fechafin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechafin.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         fechafin.setName("codigo"); // NOI18N
         fechafin.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(fechafin);
@@ -741,11 +905,10 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         dia.setEditable(false);
         dia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        dia.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         dia.setName("codigo"); // NOI18N
         dia.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelCampos.add(dia);
-        dia.setBounds(320, 130, 250, 24);
+        dia.setBounds(320, 130, 260, 24);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 190, 880, 170);
@@ -766,7 +929,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    if(column==2){
+                    if(column==8){
                         return true;
                     }else{
                         return false;}
@@ -793,7 +956,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             });
             jScrollPane4.setViewportView(colegiaturas);
 
-            jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 150));
+            jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 180));
 
             tbPane.addTab("Colegiatura", jPanel3);
 
@@ -802,216 +965,190 @@ public class Pagos extends javax.swing.JInternalFrame {
 
             jScrollPane2.setOpaque(false);
 
-            tblMarca.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null}
-                },
-                new String [] {
-                    "Title 1", "Title 2", "Title 3", "Title 4"
-                }
-            ));
-            tblMarca.setName("tblMarca"); // NOI18N
-            tblMarca.setOpaque(false);
-            jScrollPane2.setViewportView(tblMarca);
+            otrosproductos.setModel(model2 = new DefaultTableModel(null, titulos2)
+                {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        if(column==5){
+                            return true;
+                        }else{
+                            return false;}
+                    }
+                });
+                otrosproductos.setName("otrosproductos"); // NOI18N
+                otrosproductos.setOpaque(false);
+                jScrollPane2.setViewportView(otrosproductos);
 
-            jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 150));
+                jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 180));
 
-            tbPane.addTab("Otros Pagos", jPanel4);
+                tbPane.addTab("Otros Pagos", jPanel4);
 
-            JPanelTable.add(tbPane, java.awt.BorderLayout.CENTER);
+                JPanelTable.add(tbPane, java.awt.BorderLayout.CENTER);
 
-            panelImage.add(JPanelTable);
-            JPanelTable.setBounds(0, 390, 760, 190);
+                panelImage.add(JPanelTable);
+                JPanelTable.setBounds(0, 360, 760, 220);
 
-            JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
-            JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-            JPanelBusqueda.setLayout(null);
+                JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
+                JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                JPanelBusqueda.setLayout(null);
 
-            codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
-            codigoa.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    codigoaActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(codigoa);
-            codigoa.setBounds(120, 10, 97, 24);
+                codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
+                codigoa.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        codigoaActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(codigoa);
+                codigoa.setBounds(120, 10, 97, 24);
 
-            jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-            jLabel16.setText("Codigo:");
-            JPanelBusqueda.add(jLabel16);
-            jLabel16.setBounds(10, 10, 100, 24);
+                jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+                jLabel16.setText("Codigo:");
+                JPanelBusqueda.add(jLabel16);
+                jLabel16.setBounds(10, 10, 100, 24);
 
-            jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
-            jButton1.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton1ActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(jButton1);
-            jButton1.setBounds(220, 10, 20, 27);
+                jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+                jButton1.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        jButton1ActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(jButton1);
+                jButton1.setBounds(220, 10, 20, 27);
 
-            nombrealumno.setEditable(false);
-            nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
-            JPanelBusqueda.add(nombrealumno);
-            nombrealumno.setBounds(440, 10, 370, 24);
+                nombrealumno.setEditable(false);
+                nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
+                JPanelBusqueda.add(nombrealumno);
+                nombrealumno.setBounds(440, 10, 360, 24);
 
-            jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-            jLabel19.setText("Alumno:");
-            JPanelBusqueda.add(jLabel19);
-            jLabel19.setBounds(310, 10, 120, 24);
+                jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+                jLabel19.setText("Alumno:");
+                JPanelBusqueda.add(jLabel19);
+                jLabel19.setBounds(310, 10, 120, 24);
 
-            jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-            jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel26.setText("Fecha Inicio:");
-            JPanelBusqueda.add(jLabel26);
-            jLabel26.setBounds(10, 50, 100, 24);
+                jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+                jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel26.setText("Fecha Inicio:");
+                JPanelBusqueda.add(jLabel26);
+                jLabel26.setBounds(10, 50, 100, 24);
 
-            jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-            jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel25.setText("Becado: Q.");
-            JPanelBusqueda.add(jLabel25);
-            jLabel25.setBounds(340, 50, 90, 27);
+                jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+                jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel25.setText("Becado: Q.");
+                JPanelBusqueda.add(jLabel25);
+                jLabel25.setBounds(340, 50, 90, 27);
 
-            beca.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-            beca.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-            beca.setName("codigo"); // NOI18N
-            beca.setPreferredSize(new java.awt.Dimension(120, 21));
-            JPanelBusqueda.add(beca);
-            beca.setBounds(440, 50, 130, 24);
+                beca.setEditable(false);
+                beca.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+                beca.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+                beca.setName("codigo"); // NOI18N
+                beca.setPreferredSize(new java.awt.Dimension(120, 21));
+                JPanelBusqueda.add(beca);
+                beca.setBounds(440, 50, 130, 24);
 
-            estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-            estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            JPanelBusqueda.add(estado);
-            estado.setBounds(700, 50, 110, 27);
+                estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+                estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                JPanelBusqueda.add(estado);
+                estado.setBounds(700, 50, 110, 27);
 
-            inicioalumno.setDate(null);
-            inicioalumno.setDateFormatString("dd/MM/yyyy");
-            inicioalumno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-            inicioalumno.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-            inicioalumno.setMinSelectableDate(new java.util.Date(-62135744300000L));
-            inicioalumno.setPreferredSize(new java.awt.Dimension(120, 22));
-            JPanelBusqueda.add(inicioalumno);
-            inicioalumno.setBounds(120, 50, 120, 24);
+                inicioalumno.setEditable(false);
+                inicioalumno.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+                inicioalumno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+                inicioalumno.setName("codigo"); // NOI18N
+                inicioalumno.setPreferredSize(new java.awt.Dimension(120, 21));
+                JPanelBusqueda.add(inicioalumno);
+                inicioalumno.setBounds(120, 50, 120, 24);
 
-            panelImage.add(JPanelBusqueda);
-            JPanelBusqueda.setBounds(0, 110, 880, 80);
+                panelImage.add(JPanelBusqueda);
+                JPanelBusqueda.setBounds(0, 110, 880, 80);
 
-            pnlPaginador.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-            pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
-            pnlPaginador.setLayout(new java.awt.GridBagLayout());
+                jPanel1.setLayout(null);
 
-            jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 26)); // NOI18N
-            jLabel8.setForeground(new java.awt.Color(0, 102, 102));
-            jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel8.setText("  Detalle de pagos  ");
-            jLabel8.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-            pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
+                buttonAction1.setText("Colegiatura");
+                buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+                jPanel1.add(buttonAction1);
+                buttonAction1.setBounds(10, 50, 90, 35);
 
-            panelImage.add(pnlPaginador);
-            pnlPaginador.setBounds(0, 360, 880, 30);
+                buttonAction2.setText("Otros Pagos");
+                buttonAction2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+                buttonAction2.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        buttonAction2ActionPerformed(evt);
+                    }
+                });
+                jPanel1.add(buttonAction2);
+                buttonAction2.setBounds(10, 120, 90, 35);
 
-            jPanel1.setLayout(null);
+                panelImage.add(jPanel1);
+                jPanel1.setBounds(760, 360, 120, 220);
 
-            buttonAction1.setText("Colegiatura");
-            buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-            jPanel1.add(buttonAction1);
-            buttonAction1.setBounds(10, 50, 90, 35);
+                JPanelRecibo.setBackground(java.awt.SystemColor.activeCaption);
+                JPanelRecibo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                JPanelRecibo.setLayout(null);
 
-            buttonAction2.setText("Otros Pagos");
-            buttonAction2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-            jPanel1.add(buttonAction2);
-            buttonAction2.setBounds(10, 120, 90, 35);
+                jLabel21.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+                jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel21.setText("Hora");
+                JPanelRecibo.add(jLabel21);
+                jLabel21.setBounds(270, 10, 100, 19);
 
-            panelImage.add(jPanel1);
-            jPanel1.setBounds(760, 390, 120, 190);
+                codigo3.setEditable(false);
+                codigo3.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+                codigo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+                codigo3.setName("codigo"); // NOI18N
+                codigo3.setPreferredSize(new java.awt.Dimension(120, 21));
+                JPanelRecibo.add(codigo3);
+                codigo3.setBounds(690, 30, 110, 27);
 
-            JPanelRecibo.setBackground(java.awt.SystemColor.activeCaption);
-            JPanelRecibo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-            JPanelRecibo.setLayout(null);
+                jLabel22.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+                jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel22.setText("No. Recibo");
+                JPanelRecibo.add(jLabel22);
+                jLabel22.setBounds(690, 10, 110, 19);
 
-            jLabel21.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-            jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel21.setText("Hora");
-            JPanelRecibo.add(jLabel21);
-            jLabel21.setBounds(270, 10, 100, 19);
+                clockDigital2.setForeground(java.awt.Color.blue);
+                clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
+                JPanelRecibo.add(clockDigital2);
+                clockDigital2.setBounds(270, 30, 100, 27);
 
-            codigo3.setEditable(false);
-            codigo3.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-            codigo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-            codigo3.setName("codigo"); // NOI18N
-            codigo3.setPreferredSize(new java.awt.Dimension(120, 21));
-            JPanelRecibo.add(codigo3);
-            codigo3.setBounds(700, 30, 110, 27);
+                jLabel23.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+                jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel23.setText("Fecha");
+                JPanelRecibo.add(jLabel23);
+                jLabel23.setBounds(120, 10, 120, 19);
 
-            jLabel22.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-            jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel22.setText("No. Recibo");
-            JPanelRecibo.add(jLabel22);
-            jLabel22.setBounds(700, 10, 110, 19);
+                fechapago.setDate(Calendar.getInstance().getTime());
+                fechapago.setDateFormatString("dd/MM/yyyy");
+                fechapago.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+                fechapago.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+                fechapago.setMinSelectableDate(new java.util.Date(-62135744300000L));
+                fechapago.setPreferredSize(new java.awt.Dimension(120, 22));
+                JPanelRecibo.add(fechapago);
+                fechapago.setBounds(120, 30, 120, 27);
 
-            clockDigital2.setForeground(java.awt.Color.blue);
-            clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 15)); // NOI18N
-            JPanelRecibo.add(clockDigital2);
-            clockDigital2.setBounds(270, 30, 100, 27);
+                panelImage.add(JPanelRecibo);
+                JPanelRecibo.setBounds(0, 40, 880, 70);
 
-            jLabel23.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-            jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel23.setText("Fecha");
-            JPanelRecibo.add(jLabel23);
-            jLabel23.setBounds(120, 10, 120, 19);
+                pnlPaginador1.setBackground(new java.awt.Color(57, 104, 163));
+                pnlPaginador1.setPreferredSize(new java.awt.Dimension(786, 40));
+                pnlPaginador1.setLayout(new java.awt.GridBagLayout());
 
-            fechapago.setDate(Calendar.getInstance().getTime());
-            fechapago.setDateFormatString("dd/MM/yyyy");
-            fechapago.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-            fechapago.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-            fechapago.setMinSelectableDate(new java.util.Date(-62135744300000L));
-            fechapago.setPreferredSize(new java.awt.Dimension(120, 22));
-            JPanelRecibo.add(fechapago);
-            fechapago.setBounds(120, 30, 120, 27);
+                jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
+                jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+                jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/money.png"))); // NOI18N
+                jLabel11.setText("<--Registro de pagos-->");
+                pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
 
-            panelImage.add(JPanelRecibo);
-            JPanelRecibo.setBounds(0, 40, 880, 70);
+                panelImage.add(pnlPaginador1);
+                pnlPaginador1.setBounds(0, 0, 880, 40);
 
-            pnlPaginador1.setBackground(new java.awt.Color(57, 104, 163));
-            pnlPaginador1.setPreferredSize(new java.awt.Dimension(786, 40));
-            pnlPaginador1.setLayout(new java.awt.GridBagLayout());
+                getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
-            jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
-            jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/money.png"))); // NOI18N
-            jLabel11.setText("<--Registro de pagos-->");
-            pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
+                getAccessibleContext().setAccessibleName("Profesores");
 
-            panelImage.add(pnlPaginador1);
-            pnlPaginador1.setBounds(0, 0, 880, 40);
-
-            getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
-
-            getAccessibleContext().setAccessibleName("Profesores");
-
-            setBounds(0, 0, 890, 662);
-        }// </editor-fold>//GEN-END:initComponents
-
-    private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
-        // TODO add your handling code here:
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        //codigo.requestFocus();
-
-    }//GEN-LAST:event_bntNuevoActionPerformed
+                setBounds(0, 0, 890, 662);
+            }// </editor-fold>//GEN-END:initComponents
 
     private void bntSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalirActionPerformed
         cerrarVentana();
@@ -1032,7 +1169,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         colegiatura.setValue(null);
         nombrealumno.setText("");
         beca.setText("");
-        inicioalumno.setDate(null);
+        inicioalumno.setText("");
         dia.setText("");
         cGrupo.setSelectedIndex(-1);
         codigoa.requestFocus();
@@ -1067,8 +1204,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Nueva_CarreraActionPerformed
 
     private void Actualizar_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_CarreraActionPerformed
-        // TODO add your handling code here:
-        //llenarcombogrupo();
+        // TODO add your handling code here  
     }//GEN-LAST:event_Actualizar_CarreraActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1114,6 +1250,18 @@ public class Pagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_colegiaturasMouseClicked
 
+    private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bntModificarActionPerformed
+
+    private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bntGuardarActionPerformed
+
+    private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAction2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualiza;
@@ -1131,7 +1279,6 @@ public class Pagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntModificar;
-    private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.button.ButtonAction buttonAction1;
     private elaprendiz.gui.button.ButtonAction buttonAction2;
@@ -1149,7 +1296,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     public static com.toedter.calendar.JDateChooser fechapago;
     private elaprendiz.gui.textField.TextField horaa;
     private elaprendiz.gui.textField.TextField horade;
-    public static com.toedter.calendar.JDateChooser inicioalumno;
+    public static elaprendiz.gui.textField.TextField inicioalumno;
     private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
@@ -1169,7 +1316,6 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
@@ -1177,15 +1323,14 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     public static elaprendiz.gui.textField.TextField nombrealumno;
+    private javax.swing.JTable otrosproductos;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
-    private javax.swing.JPanel pnlPaginador;
     private javax.swing.JPanel pnlPaginador1;
     private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
     private javax.swing.JPopupMenu popuppromatricula;
     private elaprendiz.gui.textField.TextField profesor;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
-    private javax.swing.JTable tblMarca;
     // End of variables declaration//GEN-END:variables
 }

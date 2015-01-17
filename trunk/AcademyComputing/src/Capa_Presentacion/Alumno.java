@@ -10,7 +10,6 @@ import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
-import Capa_Negocio.ProyeccionPagos;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import java.awt.Color;
@@ -21,7 +20,6 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -42,8 +40,8 @@ public class Alumno extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model, modelgrupo;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"codigo", "Nombres", "Apellidos", "Fecha Nec", "Beca", "Fecha Inicio", "Estado"};//Titulos para Jtabla
-    String[] titulosgrupo = {"Codigo", "Dia", "Profesor", "Carrera", "De", "A", "Inscr.", "Coleg.", "fecha Inicio", "Fecha Fin",};//Titulos para Jtabla
+    String[] titulos = {"codigo", "Nombres", "Apellidos", "Fecha Nec", "Estado"};//Titulos para Jtabla
+    String[] titulosgrupo = {"Codigo", "Dia", "Profesor", "Carrera", "De", "A", "Fech Ini", "Fech Fin",};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
@@ -284,7 +282,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void MostrarDatosGrupos(String Dato) {
         String conct = "concat(profesor.nombre,' ',profesor.apellido)";
         String conct2 = "concat(grupo.codigo,' ',grupo.descripcion)";
-        String[] campos = {conct2, "grupo.dia", conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "grupo.inscripcion", "grupo.colegiatura", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')"};
+        String[] campos = {"grupo.codigo", "grupo.dia", conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')"};
         String[] condiciones = {"alumno.codigo"};
         String[] Id = {Dato};
         String inner = " INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
@@ -310,7 +308,7 @@ public class Alumno extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.cantidadbeca", "DATE_FORMAT(alumno.fechadeinicio,'%d-%m-%Y')", "alumno.estado"};
+        String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.estado"};
         String[] condiciones = {"alumno.codigo"};
         String[] Id = {Dato};
 
@@ -339,33 +337,33 @@ public class Alumno extends javax.swing.JInternalFrame {
         Utilidades.ajustarAnchoColumnas(alumnos);
     }
 
-    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
-     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
-     * 
-     * @return 
-     */
-    private void filaseleccionada2() {
-
-        int fila = alumnos.getSelectedRow();
-        String[] cond = {"alumno.codigo"};
-        String[] id = {"" + alumnos.getValueAt(fila, 0)};
-
-        if (alumnos.getValueAt(fila, 0) != null) {
-
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
-            Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, beca, fechainicio, titularnombre, dpi, dpi, estado
-            };
-
-            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-
-            peticiones.getRegistroSeleccionado(cmps, "alumno", campos, cond, id, "", null);
-
-            this.bntGuardar.setEnabled(false);
-            this.bntModificar.setEnabled(true);
-            this.bntEliminar.setEnabled(true);
-            this.bntNuevo.setEnabled(false);
-        }
-    }
+//    /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
+//     * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
+//     * 
+//     * @return 
+//     */
+//    private void filaseleccionada2() {
+//
+//        int fila = alumnos.getSelectedRow();
+//        String[] cond = {"alumno.codigo"};
+//        String[] id = {"" + alumnos.getValueAt(fila, 0)};
+//
+//        if (alumnos.getValueAt(fila, 0) != null) {
+//
+//            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado"};
+//            Component[] cmps = {codigo, nombres, apellidos, fechanacimiento, direccion, sexo, telefono, titularnombre, dpi, dpi, estado
+//            };
+//
+//            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+//
+//            peticiones.getRegistroSeleccionado(cmps, "alumno", campos, cond, id, "", null);
+//
+//            this.bntGuardar.setEnabled(false);
+//            this.bntModificar.setEnabled(true);
+//            this.bntEliminar.setEnabled(true);
+//            this.bntNuevo.setEnabled(false);
+//        }
+//    }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
      * de la parte superior del formulario con los datos obtenidos en la capa de Negocio getRegistroSeleccionado().
@@ -379,7 +377,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         String[] id = {(String) alumnos.getValueAt(fila, 0)};
         if (alumnos.getValueAt(fila, 0) != null) {
             matricula = false;
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.cantidadbeca", "alumno.fechadeinicio", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno"};
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno"};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             ResultSet rs;
@@ -400,12 +398,12 @@ public class Alumno extends javax.swing.JInternalFrame {
                             sexo.setSelectedItem(rs.getString(6));
                             telefono.setText(rs.getString(7));
                             //colegiatura.setText(rs.getString(8));
-                            beca.setText(rs.getString(8));
-                            fechainicio.setDate((rs.getDate(9)));
-                            titularnombre.setText(rs.getString(10));
-                            titularapellido.setText(rs.getString(11));
-                            dpi.setText(rs.getString(12));
-                            if (rs.getObject(13).equals(true)) {
+                            //beca.setText(rs.getString(8));
+                            //fechainicio.setDate((rs.getDate(9)));
+                            titularnombre.setText(rs.getString(8));
+                            titularapellido.setText(rs.getString(9));
+                            dpi.setText(rs.getString(10));
+                            if (rs.getObject(11).equals(true)) {
                                 estado.setText("Activo");
                                 estado.setSelected(true);
                                 estado.setBackground(new java.awt.Color(102, 204, 0));
@@ -414,7 +412,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                                 estado.setSelected(false);
                                 estado.setBackground(Color.red);
                             }
-                            nidalumno = rs.getInt(14);
+                            nidalumno = rs.getInt(12);
                             MostrarDatosGrupos(alumnos.getValueAt(fila, 0).toString());
                         }
                     }
@@ -552,10 +550,6 @@ public class Alumno extends javax.swing.JInternalFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         estado = new javax.swing.JRadioButton();
-        jLabel16 = new javax.swing.JLabel();
-        beca = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
-        fechainicio = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         titularnombre = new elaprendiz.gui.textField.TextField();
@@ -590,6 +584,10 @@ public class Alumno extends javax.swing.JInternalFrame {
         fechaini = new elaprendiz.gui.textField.TextField();
         fechafin = new elaprendiz.gui.textField.TextField();
         buttonAction1 = new elaprendiz.gui.button.ButtonAction();
+        jLabel26 = new javax.swing.JLabel();
+        fechainicioalumno = new com.toedter.calendar.JDateChooser();
+        jLabel27 = new javax.swing.JLabel();
+        becagrupo = new javax.swing.JFormattedTextField();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         alumnos = new javax.swing.JTable();
@@ -747,20 +745,20 @@ public class Alumno extends javax.swing.JInternalFrame {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel10.setText("Código:");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(10, 30, 80, 20);
+        jLabel10.setBounds(110, 30, 80, 20);
 
         codigo.setEditable(false);
         codigo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         codigo.setName("codigo"); // NOI18N
         codigo.setNextFocusableComponent(nombres);
         jPanel1.add(codigo);
-        codigo.setBounds(100, 30, 130, 21);
+        codigo.setBounds(200, 30, 130, 21);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Nombres:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 60, 80, 20);
+        jLabel1.setBounds(110, 60, 80, 20);
 
         nombres.setEditable(false);
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -780,13 +778,13 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(nombres);
-        nombres.setBounds(100, 60, 250, 21);
+        nombres.setBounds(200, 60, 250, 21);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel11.setText("Apellidos:");
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(10, 90, 80, 20);
+        jLabel11.setBounds(110, 90, 80, 20);
 
         apellidos.setEditable(false);
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -806,25 +804,25 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(apellidos);
-        apellidos.setBounds(100, 90, 250, 21);
+        apellidos.setBounds(200, 90, 250, 21);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel14.setText("Dirección:");
         jPanel1.add(jLabel14);
-        jLabel14.setBounds(10, 120, 80, 20);
+        jLabel14.setBounds(110, 120, 80, 20);
 
         direccion.setEditable(false);
         direccion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         direccion.setNextFocusableComponent(sexo);
         jPanel1.add(direccion);
-        direccion.setBounds(100, 120, 250, 21);
+        direccion.setBounds(200, 120, 250, 21);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Fecha Nacimiento:");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(360, 90, 150, 21);
+        jLabel12.setBounds(460, 90, 150, 21);
 
         fechanacimiento.setDate(Calendar.getInstance().getTime());
         fechanacimiento.setDateFormatString("dd/MM/yyyy");
@@ -835,7 +833,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         fechanacimiento.setNextFocusableComponent(fechanacimiento);
         fechanacimiento.setPreferredSize(new java.awt.Dimension(120, 22));
         jPanel1.add(fechanacimiento);
-        fechanacimiento.setBounds(520, 90, 130, 21);
+        fechanacimiento.setBounds(620, 90, 130, 21);
 
         sexo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         sexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "F", "M" }));
@@ -847,19 +845,19 @@ public class Alumno extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(sexo);
-        sexo.setBounds(520, 30, 130, 21);
+        sexo.setBounds(620, 30, 130, 21);
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel18.setText("Sexo:");
         jPanel1.add(jLabel18);
-        jLabel18.setBounds(430, 30, 80, 20);
+        jLabel18.setBounds(530, 30, 80, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Estado:");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(400, 60, 110, 20);
+        jLabel4.setBounds(500, 60, 110, 20);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -869,37 +867,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechanacimiento);
         jPanel1.add(estado);
-        estado.setBounds(520, 60, 130, 21);
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel16.setText("Beca:");
-        jPanel1.add(jLabel16);
-        jLabel16.setBounds(650, 30, 110, 20);
-
-        beca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-        beca.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        beca.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        beca.setPreferredSize(new java.awt.Dimension(80, 23));
-        jPanel1.add(beca);
-        beca.setBounds(780, 30, 80, 23);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Fecha Inicio:");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(390, 120, 110, 17);
-
-        fechainicio.setDate(Calendar.getInstance().getTime());
-        fechainicio.setDateFormatString("dd/MM/yyyy");
-        fechainicio.setEnabled(false);
-        fechainicio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        fechainicio.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-        fechainicio.setMinSelectableDate(new java.util.Date(-62135744300000L));
-        fechainicio.setNextFocusableComponent(titularnombre);
-        fechainicio.setPreferredSize(new java.awt.Dimension(120, 22));
-        jPanel1.add(fechainicio);
-        fechainicio.setBounds(520, 120, 130, 21);
+        estado.setBounds(620, 60, 130, 21);
 
         jTabbedPane1.addTab("Datos Alumno", jPanel1);
 
@@ -1119,7 +1087,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jPanel4.add(fechafin);
             fechafin.setBounds(710, 80, 110, 21);
 
-            buttonAction1.setText("Nueva Matricula");
+            buttonAction1.setText("Guardar Matricula");
             buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
             buttonAction1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1128,6 +1096,37 @@ public class Alumno extends javax.swing.JInternalFrame {
             });
             jPanel4.add(buttonAction1);
             buttonAction1.setBounds(90, 110, 150, 35);
+
+            jLabel26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel26.setForeground(new java.awt.Color(0, 0, 255));
+            jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel26.setText("Inicio Alumno:");
+            jPanel4.add(jLabel26);
+            jLabel26.setBounds(300, 110, 110, 17);
+
+            fechainicioalumno.setDate(Calendar.getInstance().getTime());
+            fechainicioalumno.setDateFormatString("dd/MM/yyyy");
+            fechainicioalumno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+            fechainicioalumno.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+            fechainicioalumno.setMinSelectableDate(new java.util.Date(-62135744300000L));
+            fechainicioalumno.setNextFocusableComponent(titularnombre);
+            fechainicioalumno.setPreferredSize(new java.awt.Dimension(120, 22));
+            jPanel4.add(fechainicioalumno);
+            fechainicioalumno.setBounds(300, 130, 110, 21);
+
+            jLabel27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel27.setForeground(new java.awt.Color(0, 0, 255));
+            jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel27.setText("Beca Alumno:");
+            jPanel4.add(jLabel27);
+            jLabel27.setBounds(440, 110, 110, 20);
+
+            becagrupo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+            becagrupo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+            becagrupo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            becagrupo.setPreferredSize(new java.awt.Dimension(80, 23));
+            jPanel4.add(becagrupo);
+            becagrupo.setBounds(440, 130, 110, 23);
 
             jTabbedPane1.addTab("Matricular Alumno", jPanel4);
 
@@ -1287,20 +1286,20 @@ public class Alumno extends javax.swing.JInternalFrame {
             boolean seguardo = false;
             String nombreTabla = "alumno";
             String nombreTabla2 = "alumnosengrupo";
-            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, titulardpi, estado";
-            String campos2 = "alumno_idalumno, grupo_idgrupo";
+            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, estado";
+            String campos2 = "alumno_idalumno, grupo_idgrupo,fechainicio,beca";
 
-            String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
-
+            String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            if (beca.getText().isEmpty()) {
-                beca.setValue(0);
+            if (becagrupo.getText().isEmpty()) {
+                becagrupo.setValue(0);
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -1313,7 +1312,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                     String idg = grup.getID();
                     idalumnog(codigo.getText());
                     String alumnoid = "" + idalumno;
-                    Object[] valores2 = {alumnoid, idg};
+                    Object[] valores2 = {alumnoid, idg,fechainicioalum,becagrupo.getText()};
 
                     seguardo = peticiones.guardarRegistros(nombreTabla2, campos2, valores2);
                     if (seguardo) {
@@ -1392,15 +1391,15 @@ public class Alumno extends javax.swing.JInternalFrame {
             String columnaId = "codigo";
 
             String nombreTabla = "alumno";
-            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, cantidadbeca, fechadeinicio, titularnombres, titularapellidos, titulardpi, estado";
-            String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, estado";
+            //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
 
             int estad = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), beca.getText(), fechainici, titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad, id
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), estad, id
             };
 
             seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
@@ -1507,7 +1506,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (resp == 0) {
                 boolean seguardo = false;
                 String nombreTabla2 = "alumnosengrupo";
-                String campos2 = "alumno_idalumno, grupo_idgrupo";
+                String campos2 = "alumno_idalumno, grupo_idgrupo,fechainicio,beca";
 
                 if (cGrupo.getSelectedIndex() != -1) {
 
@@ -1524,8 +1523,10 @@ public class Alumno extends javax.swing.JInternalFrame {
                         mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
                         String idg = grup.getID();
                         idalumnog(codigo.getText());
+                        String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
+                        
                         String alumnoid = "" + idalumno;
-                        Object[] valores2 = {alumnoid, idg};
+                        Object[] valores2 = {alumnoid, idg,fechainicioalum,becagrupo.getText()};
 
                         seguardo = peticiones.guardarRegistros(nombreTabla2, campos2, valores2);
                         if (seguardo) {
@@ -1570,7 +1571,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JTable alumnos;
     private elaprendiz.gui.textField.TextField apellidos;
-    private javax.swing.JFormattedTextField beca;
+    private javax.swing.JFormattedTextField becagrupo;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
@@ -1589,7 +1590,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton estado;
     private elaprendiz.gui.textField.TextField fechafin;
     private elaprendiz.gui.textField.TextField fechaini;
-    private com.toedter.calendar.JDateChooser fechainicio;
+    private com.toedter.calendar.JDateChooser fechainicioalumno;
     private com.toedter.calendar.JDateChooser fechanacimiento;
     private elaprendiz.gui.textField.TextField horaa;
     private elaprendiz.gui.textField.TextField horade;
@@ -1602,7 +1603,6 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1613,13 +1613,14 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
