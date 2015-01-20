@@ -399,7 +399,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void MostrarPagos() {
 
         String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-                + "     proyeccionpagos.fechavencimiento,proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
+                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
                 + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
 
         removejtable();
@@ -438,6 +438,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                     for (int i = 0; i < cantcampos - 2; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        System.out.print("\n"+fila[i]+"--"+i);
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
                             float cbeca = Float.parseFloat(beca.getText());
@@ -445,14 +446,25 @@ public class Pagos extends javax.swing.JInternalFrame {
 
                             fila[i] = resultado;
                         }
+                        if (i == 6) {
+                            if (fila[i] == "0.0") {
+                                fila[i] = "0.0";
+                            } else {
+                                float mora = (float) rs.getFloat(i + 1);
+                                //float cbeca = Float.parseFloat(beca.getText());
+                                float resultado = (float) (Math.round(mora * 100.0) / 100.0);
+                                fila[i] = resultado;
+                            }
+
+                        }
                         if (fila[i] == null) {
                             fila[i] = "";
                         } else {
                         }
                     }
-                    int mor = 5;
-                    fila[6] = mor;
-                    fila[7] = (float) (Math.round((mor + ((float) fila[4])) * 100.0) / 100.0);
+                    //int mor = 5;
+                    //fila[6] = mor;
+                    fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
                     fila[8] = false;
                     fila[9] = false;
                     modelo.addRow(fila);
@@ -1348,7 +1360,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
             if (resp == 0) {
-                
+
                 //GUARDAR MESES DE PAGO
                 String nomTabla = "proyeccionpagos";
                 String columnaId = "idproyeccionpagos";
