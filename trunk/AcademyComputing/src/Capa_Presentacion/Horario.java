@@ -10,6 +10,7 @@ import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import static Capa_Negocio.FormatoFecha.D_M_A;
+import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.ProyeccionPagos;
 import Capa_Negocio.TipoFiltro;
@@ -50,7 +51,7 @@ public class Horario extends javax.swing.JInternalFrame {
     Peticiones peticiones = new Peticiones();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
     public Hashtable<String, String> hashCarrera = new Hashtable<>();
-    int idgrupo;
+    int newcodgrupo, idgrupo;
     //private static Profesor frmProfesor = new Profesor();
     //private static Carrera frmCarrera = new Carrera();
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
@@ -333,7 +334,7 @@ public class Horario extends javax.swing.JInternalFrame {
         if (horarios.getValueAt(fila, 0) != null) {
 
             String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.inscripcion", "grupo.colegiatura"};
+            String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.dia", conct, "carrera.descripcion", "grupo.horariode", "grupo.horarioa", "grupo.fechainicio", "grupo.fechafin", "grupo.cantalumnos", "grupo.estado", "grupo.inscripcion", "grupo.colegiatura", "grupo.idgrupo"};
             llenarcomboprofesor();
             llenarcombocarrera();
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
@@ -373,6 +374,7 @@ public class Horario extends javax.swing.JInternalFrame {
                             }
                             inscripcion.setValue(rs.getFloat(12));
                             colegiatura.setValue(rs.getFloat(13));
+                            newcodgrupo = rs.getInt(14);
                         }
                     }
                 } catch (SQLException e) {
@@ -410,6 +412,41 @@ public class Horario extends javax.swing.JInternalFrame {
             } catch (SQLException e) {
                 JOptionPane.showInternalMessageDialog(this, e);
             }
+        }
+    }
+    
+     private int ultimogrupo() {
+        if (newcodgrupo == 0) {
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            rs = ac.getUltimoRegistro("grupo", "idgrupo");
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            newcodgrupo = (rs.getInt(1) + 1);
+                        }
+                    } else {
+                        newcodgrupo = newcodgrupo + 1;
+                    }
+
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
+        }
+        return newcodgrupo;
+
+    }
+     
+     private void generacodigogrupo() {
+        String tx = dia.getSelectedItem().toString() + " " + descripcion.getText();
+        if (tx.isEmpty()) {
+        } else {
+            String cod = GeneraCodigo.actualizarRegistro(dia.getSelectedItem().toString() + " " + descripcion.getText());
+            codigo.setText(cod + "-" + ultimogrupo());
         }
     }
 
@@ -705,6 +742,16 @@ public class Horario extends javax.swing.JInternalFrame {
         descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         descripcion.setName("descripcion"); // NOI18N
         descripcion.setNextFocusableComponent(profesor);
+        descripcion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                descripcionFocusLost(evt);
+            }
+        });
+        descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                diaKeyPressed(evt);
+            }
+        });
         JPanelCampos.add(descripcion);
         descripcion.setBounds(120, 60, 250, 21);
 
@@ -769,6 +816,16 @@ public class Horario extends javax.swing.JInternalFrame {
         dia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Mixto" }));
         dia.setName("Dia"); // NOI18N
         dia.setNextFocusableComponent(estado);
+        dia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                diaFocusLost(evt);
+            }
+        });
+        dia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                diaKeyPressed(evt);
+            }
+        });
         JPanelCampos.add(dia);
         dia.setBounds(530, 60, 110, 21);
 
@@ -982,7 +1039,8 @@ public class Horario extends javax.swing.JInternalFrame {
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        codigo.requestFocus();
+        cantalumnos.requestFocus();
+        newcodgrupo = 0;
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -998,7 +1056,7 @@ public class Horario extends javax.swing.JInternalFrame {
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
-
+            generacodigogrupo();
             boolean seguardo = false;
             String nombreTabla = "grupo";
             String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
@@ -1100,7 +1158,7 @@ public class Horario extends javax.swing.JInternalFrame {
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
-
+            generacodigogrupo();
             String nomTabla = "grupo";
             String columnaId = "codigo";
             int seguardo = 0;
@@ -1147,6 +1205,7 @@ public class Horario extends javax.swing.JInternalFrame {
         removejtable();
         busqueda.setText("");
         busqueda.requestFocus();
+        newcodgrupo = 0;
 
     }//GEN-LAST:event_bntCancelarActionPerformed
 
@@ -1219,6 +1278,19 @@ public class Horario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         llenarcombocarrera();
     }//GEN-LAST:event_Actualizar_CarreraActionPerformed
+
+    private void diaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_diaKeyPressed
+        // TODO add your handling code here:
+        generacodigogrupo();
+    }//GEN-LAST:event_diaKeyPressed
+
+    private void descripcionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_descripcionFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_descripcionFocusLost
+
+    private void diaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_diaFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_diaFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
