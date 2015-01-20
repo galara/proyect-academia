@@ -11,7 +11,7 @@ public class Editor_CheckBox extends DefaultCellEditor implements TableCellRende
     
     private final JComponent component = new JCheckBox();    
     private boolean value = false; // valor de la celda
-    
+   
     /** Constructor de clase */
     public Editor_CheckBox() {
         super( new JCheckBox() );

@@ -28,6 +28,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import modelos.mGrupo;
 
@@ -40,7 +42,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model, model2;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "estado", "Asignado", "Check"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Pagar Mora", "Pagar"};//Titulos para Jtabla
     String[] titulos2 = {"Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Check"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
@@ -62,18 +64,27 @@ public class Pagos extends javax.swing.JInternalFrame {
                         selecciongrupo();
                     }
                 });
+
+        colegiaturas.getModel().addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+                sumartotal();
+                //formatotabla();
+            }
+        });
+        //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
         colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
-        colegiaturas.getColumnModel().getColumn(7).setCellEditor(new Editor_CheckBox());
-        colegiaturas.getColumnModel().getColumn(6).setCellEditor(new Editor_CheckBox());
+        colegiaturas.getColumnModel().getColumn(9).setCellEditor(new Editor_CheckBox());
 
         otrosproductos.getColumnModel().getColumn(5).setCellEditor(new Editor_CheckBox());
 
         //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
+        //colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
+        //colegiaturas.getColumnModel().getColumn(7).setCellRenderer(new Renderer_CheckBox());
         colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
-        colegiaturas.getColumnModel().getColumn(7).setCellRenderer(new Renderer_CheckBox());
-        colegiaturas.getColumnModel().getColumn(6).setCellRenderer(new Renderer_CheckBox());
+        colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
 
         otrosproductos.getColumnModel().getColumn(5).setCellRenderer(new Renderer_CheckBox());
+
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -125,6 +136,33 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
+    public void sumartotal() {
+        //System.out.print("sumar total");
+        //corregir cuando hay solo unalinea da error
+        if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
+            //JOptionPane.showMessageDialog(null, "La tabla no contiene datos que modificar");
+            totalapagar.setValue(0.0);
+        } else {
+            float Actual, Resultado = 0;
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+
+                if (colegiaturas.getValueAt(i, 9).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                    //0     1        2            3        4          5        6      7         8          9
+                    //"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora","Subtotal","Exonerar","Pagar"
+                    if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
+                        Actual = Float.parseFloat(colegiaturas.getValueAt(i, 7).toString());
+                        Resultado = Resultado + Actual;
+                    } else if (colegiaturas.getValueAt(i, 8).toString().equals("false")) {
+                        Actual = Float.parseFloat(colegiaturas.getValueAt(i, 4).toString());
+                        Resultado = Resultado + Actual;
+                    }
+                }
+                totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
+            }
+        }
+    }
+
     /*
      *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
      *y se los envia a un metodo interno getRegistroCombo() 
@@ -160,7 +198,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 modeloComboBox = new DefaultComboBoxModel();
                 cGrupo.setModel(modeloComboBox);
 
-                modeloComboBox.addElement(new mGrupo("", "0"));
+                modeloComboBox.addElement(new mGrupo("SELECCIONE GRUPO", "0"));
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     int count = 0;
                     rs.beforeFirst();//regresa el puntero al primer registro
@@ -361,7 +399,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void MostrarPagos() {
 
         String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-                + "     proyeccionpagos.fechavencimiento,proyeccionpagos.estado,proyeccionpagos.asignado,proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
+                + "     proyeccionpagos.fechavencimiento,proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
                 + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
 
         removejtable();
@@ -388,7 +426,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             ResultSet rs;
 
             rs = acceso.getRegistroProc(tabla);
-            int cantcampos = 8;
+            int cantcampos = 9;
             //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 //int count = 0;
@@ -397,7 +435,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
                     // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                    for (int i = 0; i < cantcampos; i++) {
+                    for (int i = 0; i < cantcampos - 2; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
                         if (i == 4) {
@@ -412,7 +450,11 @@ public class Pagos extends javax.swing.JInternalFrame {
                         } else {
                         }
                     }
+                    int mor = 5;
+                    fila[6] = mor;
+                    fila[7] = (float) (Math.round((mor + ((float) fila[4])) * 100.0) / 100.0);
                     fila[8] = false;
+                    fila[9] = false;
                     modelo.addRow(fila);
                 }
 
@@ -461,7 +503,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
-                Object[] fila = new Object[cantcampos ];
+                Object[] fila = new Object[cantcampos];
 
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
                     // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
@@ -609,8 +651,12 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel19 = new javax.swing.JLabel();
         estado = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        tbPane1 = new elaprendiz.gui.panel.TabbedPaneHeader();
+        jPanel5 = new javax.swing.JPanel();
         buttonAction1 = new elaprendiz.gui.button.ButtonAction();
         buttonAction2 = new elaprendiz.gui.button.ButtonAction();
+        totalapagar = new javax.swing.JFormattedTextField();
+        jLabel27 = new javax.swing.JLabel();
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         codigo3 = new elaprendiz.gui.textField.TextField();
@@ -945,7 +991,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         beca.setBounds(170, 130, 120, 24);
 
         panelImage.add(JPanelCampos);
-        JPanelCampos.setBounds(0, 190, 880, 170);
+        JPanelCampos.setBounds(0, 160, 880, 170);
 
         JPanelTable.setOpaque(false);
         JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
@@ -963,7 +1009,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    if(column==8){
+                    if(column==8 || column==9){
                         return true;
                     }else{
                         return false;}
@@ -990,13 +1036,14 @@ public class Pagos extends javax.swing.JInternalFrame {
             });
             jScrollPane4.setViewportView(colegiaturas);
 
-            jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 180));
+            jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 210));
 
             tbPane.addTab("Colegiatura", jPanel3);
 
             jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
             jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+            jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             jScrollPane2.setOpaque(false);
 
             otrosproductos.setModel(model2 = new DefaultTableModel(null, titulos2)
@@ -1013,14 +1060,14 @@ public class Pagos extends javax.swing.JInternalFrame {
                 otrosproductos.setOpaque(false);
                 jScrollPane2.setViewportView(otrosproductos);
 
-                jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 180));
+                jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 210));
 
                 tbPane.addTab("Otros Pagos", jPanel4);
 
                 JPanelTable.add(tbPane, java.awt.BorderLayout.CENTER);
 
                 panelImage.add(JPanelTable);
-                JPanelTable.setBounds(0, 360, 760, 220);
+                JPanelTable.setBounds(0, 330, 760, 250);
 
                 JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
                 JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1067,14 +1114,25 @@ public class Pagos extends javax.swing.JInternalFrame {
                 estado.setBounds(700, 50, 110, 27);
 
                 panelImage.add(JPanelBusqueda);
-                JPanelBusqueda.setBounds(0, 110, 880, 80);
+                JPanelBusqueda.setBounds(0, 110, 880, 50);
 
-                jPanel1.setLayout(null);
+                jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+                jPanel1.setLayout(new java.awt.BorderLayout());
 
-                buttonAction1.setText("Colegiatura");
+                tbPane1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+                tbPane1.setOpaque(true);
+
+                jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                buttonAction1.setText("Calcular");
                 buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-                jPanel1.add(buttonAction1);
-                buttonAction1.setBounds(10, 50, 90, 35);
+                buttonAction1.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        buttonAction1ActionPerformed(evt);
+                    }
+                });
+                jPanel5.add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 130, 100, -1));
 
                 buttonAction2.setText("Otros Pagos");
                 buttonAction2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
@@ -1083,11 +1141,32 @@ public class Pagos extends javax.swing.JInternalFrame {
                         buttonAction2ActionPerformed(evt);
                     }
                 });
-                jPanel1.add(buttonAction2);
-                buttonAction2.setBounds(10, 120, 90, 35);
+                jPanel5.add(buttonAction2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 170, 100, -1));
+
+                totalapagar.setEditable(false);
+                totalapagar.setBackground(new java.awt.Color(204, 255, 102));
+                totalapagar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+                totalapagar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                totalapagar.setToolTipText("");
+                totalapagar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+                totalapagar.setName("inscripcion"); // NOI18N
+                totalapagar.setPreferredSize(new java.awt.Dimension(80, 23));
+                jPanel5.add(totalapagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
+
+                jLabel27.setBackground(new java.awt.Color(255, 204, 0));
+                jLabel27.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+                jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel27.setText("Total Q.");
+                jLabel27.setOpaque(true);
+                jPanel5.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 20, 105, 30));
+
+                tbPane1.addTab("============", jPanel5);
+
+                jPanel1.add(tbPane1, java.awt.BorderLayout.CENTER);
+                tbPane1.getAccessibleContext().setAccessibleName("TOTAL");
 
                 panelImage.add(jPanel1);
-                jPanel1.setBounds(760, 360, 120, 220);
+                jPanel1.setBounds(760, 330, 120, 250);
 
                 JPanelRecibo.setBackground(java.awt.SystemColor.activeCaption);
                 JPanelRecibo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1262,11 +1341,93 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
+        if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
+            //totalapagar.setValue(0.0);
+        } else {
+            //if (pensum.getSelectedIndex() > 0) {
+            //if (pensum.getSelectedIndex() > 0) {
+
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+
+//                boolean seguardo = false;
+//                String nombreTabla = "proyeccionpagos";
+//                String campos = "estado";
+                String nomTabla = "proyeccionpagos";
+                String columnaId = "idproyeccionpagos";
+                int seguardo = 0;
+                //int fila = colegiaturas.getSelectedRow();
+                //String id = (String) "" + colegiaturas.getValueAt(fila, 0);
+                String campos = "estado";
+                //mPensum pem = (mPensum) pensum.getSelectedItem();
+                //String idpensum = pem.getID();
+
+                //Object[] fila = new Object[1];
+                boolean camprec = false;
+                int cant = model.getRowCount();
+
+                try {
+                    colegiaturas.getCellEditor().stopCellEditing();
+                } catch (Exception e) {
+                }
+
+                for (int i = 0; i < cant; i++) {
+                    if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
+                        camprec = true;
+                        String valor = colegiaturas.getValueAt(i, 9).toString();
+                        Object[] fila=new Object[0];//{valor};
+                        fila[0]=valor;
+                        //seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
+                        int filat = colegiaturas.getSelectedRow();
+                        String id = (String) "" + colegiaturas.getValueAt(filat, 0);
+                        seguardo = peticiones.actualizarRegistro(nomTabla, campos, fila, columnaId, id);
+                    }
+                }
+                if (!camprec) {
+                    JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                }
+                if (seguardo > 1) {
+                    removejtable();
+                    codigoa.setText("");
+                    codigoa.requestFocus();
+                    profesor.setText("");
+                    carrera.setText("");
+                    horade.setText("");
+                    horaa.setText("");
+                    fechainicio.setText("");
+                    fechafin.setText("");
+                    inscripcion.setValue(null);
+                    colegiatura.setValue(null);
+                    nombrealumno.setText("");
+                    beca.setText("");
+                    inicioalumno.setText("");
+                    dia.setText("");
+                    cGrupo.setSelectedIndex(-1);
+                    codigoa.requestFocus();
+                    //MostrarDatos(idpensum);
+                    //MostrarDatosDetalle(idpensum);
+                    //JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+        //else {
+        //    JOptionPane.showInternalMessageDialog(this, "No se ha seleccionado ningun Pensum", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+        // }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonAction2ActionPerformed
+
+    private void buttonAction1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            colegiaturas.getCellEditor().stopCellEditing();
+        } catch (Exception e) {
+        }
+        sumartotal();
+    }//GEN-LAST:event_buttonAction1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1318,6 +1479,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1326,6 +1488,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     public static elaprendiz.gui.textField.TextField nombrealumno;
@@ -1338,5 +1501,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu popuppromatricula;
     private elaprendiz.gui.textField.TextField profesor;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
+    private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
+    private javax.swing.JFormattedTextField totalapagar;
     // End of variables declaration//GEN-END:variables
 }
