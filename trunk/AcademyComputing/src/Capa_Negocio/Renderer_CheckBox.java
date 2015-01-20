@@ -23,7 +23,6 @@ public class Renderer_CheckBox extends JCheckBox implements TableCellRenderer {
       boolean b = ((Boolean) value);
       //boolean b = (boolean) value;
       ( (JCheckBox) component).setSelected( b );
-      
       return ( (JCheckBox) component);
   }
 
