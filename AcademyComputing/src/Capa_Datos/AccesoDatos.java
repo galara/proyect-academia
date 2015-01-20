@@ -50,6 +50,8 @@ public class AccesoDatos {
         String sql = "UPDATE " + nombreTabla + " SET " + nomColumnaCambiar + " = " + (nv == null ? nuevoValor : nv) + " where " + nomColumnaId + "=" + (vl == null ? id : vl) + "";
         try {
             resultado = BdConexion.getStatement().executeUpdate(sql);
+        System.out.print(resultado);
+        
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }

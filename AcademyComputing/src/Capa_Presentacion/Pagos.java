@@ -400,7 +400,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
         String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
                 + "     proyeccionpagos.fechavencimiento,proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
-                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
+                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
 
         removejtable();
         model = getRegistroPorLikel(model, sql);
@@ -1345,25 +1345,16 @@ public class Pagos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
             //totalapagar.setValue(0.0);
         } else {
-            //if (pensum.getSelectedIndex() > 0) {
-            //if (pensum.getSelectedIndex() > 0) {
 
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
             if (resp == 0) {
-
-//                boolean seguardo = false;
-//                String nombreTabla = "proyeccionpagos";
-//                String campos = "estado";
+                
+                //GUARDAR MESES DE PAGO
                 String nomTabla = "proyeccionpagos";
                 String columnaId = "idproyeccionpagos";
                 int seguardo = 0;
-                //int fila = colegiaturas.getSelectedRow();
-                //String id = (String) "" + colegiaturas.getValueAt(fila, 0);
+                AccesoDatos ac = new AccesoDatos();
                 String campos = "estado";
-                //mPensum pem = (mPensum) pensum.getSelectedItem();
-                //String idpensum = pem.getID();
-
-                //Object[] fila = new Object[1];
                 boolean camprec = false;
                 int cant = model.getRowCount();
 
@@ -1375,45 +1366,44 @@ public class Pagos extends javax.swing.JInternalFrame {
                 for (int i = 0; i < cant; i++) {
                     if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
                         camprec = true;
-                        String valor = colegiaturas.getValueAt(i, 9).toString();
-                        Object[] fila=new Object[0];//{valor};
-                        fila[0]=valor;
-                        //seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
-                        int filat = colegiaturas.getSelectedRow();
-                        String id = (String) "" + colegiaturas.getValueAt(filat, 0);
-                        seguardo = peticiones.actualizarRegistro(nomTabla, campos, fila, columnaId, id);
+                        String id = (String) "" + colegiaturas.getValueAt(i, 0);
+                        seguardo = ac.eliminacionTemporal(nomTabla, campos, columnaId, id, 1);
                     }
                 }
                 if (!camprec) {
                     JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
                 }
-                if (seguardo > 1) {
-                    removejtable();
-                    codigoa.setText("");
-                    codigoa.requestFocus();
-                    profesor.setText("");
-                    carrera.setText("");
-                    horade.setText("");
-                    horaa.setText("");
-                    fechainicio.setText("");
-                    fechafin.setText("");
-                    inscripcion.setValue(null);
-                    colegiatura.setValue(null);
-                    nombrealumno.setText("");
-                    beca.setText("");
-                    inicioalumno.setText("");
-                    dia.setText("");
-                    cGrupo.setSelectedIndex(-1);
-                    codigoa.requestFocus();
-                    //MostrarDatos(idpensum);
-                    //MostrarDatosDetalle(idpensum);
+                if (seguardo >= 1) {
                     //JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                    int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
+                    if (resp2 == 0) {
+                        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                        String[] id = {grup.getID()};
+                        idalumnosengrupo(idalumno, "" + grup.getID());
+                        MostrarPagos();
+                        MostrarProductos();
+                    } else {
+                        removejtable();
+                        codigoa.setText("");
+                        codigoa.requestFocus();
+                        profesor.setText("");
+                        carrera.setText("");
+                        horade.setText("");
+                        horaa.setText("");
+                        fechainicio.setText("");
+                        fechafin.setText("");
+                        inscripcion.setValue(null);
+                        colegiatura.setValue(null);
+                        nombrealumno.setText("");
+                        beca.setText("");
+                        inicioalumno.setText("");
+                        dia.setText("");
+                        cGrupo.setSelectedIndex(-1);
+                        codigoa.requestFocus();
+                    }
                 }
             }
         }
-        //else {
-        //    JOptionPane.showInternalMessageDialog(this, "No se ha seleccionado ningun Pensum", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-        // }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
