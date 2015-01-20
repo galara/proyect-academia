@@ -50,7 +50,7 @@ public class AccesoDatos {
         String sql = "UPDATE " + nombreTabla + " SET " + nomColumnaCambiar + " = " + (nv == null ? nuevoValor : nv) + " where " + nomColumnaId + "=" + (vl == null ? id : vl) + "";
         try {
             resultado = BdConexion.getStatement().executeUpdate(sql);
-        System.out.print(resultado);
+        //System.out.print(resultado);
         
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -370,7 +370,7 @@ public class AccesoDatos {
 
         int op = 0;
         try {
-            op = BdConexion.getStatement().executeUpdate(sql);
+            op = BdConexion.getStatement().executeUpdate(sql,PreparedStatement.RETURN_GENERATED_KEYS);
             BdConexion.cerrarEnlacesConexion(BdConexion.SOLO_STATEMENT);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
