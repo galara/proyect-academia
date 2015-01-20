@@ -438,7 +438,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                     for (int i = 0; i < cantcampos - 2; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                        System.out.print("\n"+fila[i]+"--"+i);
+                        System.out.print("\n" + fila[i] + "--" + i);
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
                             float cbeca = Float.parseFloat(beca.getText());
@@ -465,7 +465,12 @@ public class Pagos extends javax.swing.JInternalFrame {
                     //int mor = 5;
                     //fila[6] = mor;
                     fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
-                    fila[8] = false;
+
+                    if (((float) fila[6] == 0.0)) {
+                        fila[8] = false;
+                    } else {
+                        fila[8] = true;
+                    }
                     fila[9] = false;
                     modelo.addRow(fila);
                 }
