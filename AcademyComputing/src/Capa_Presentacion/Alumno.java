@@ -379,7 +379,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         String[] id = {(String) alumnos.getValueAt(fila, 0)};
         if (alumnos.getValueAt(fila, 0) != null) {
             matricula = false;
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno", "alumno.establecimiento" };
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno", "alumno.establecimiento", "alumno.direstablecimiento", "alumno.gradoestablecimiento" };
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
 
             ResultSet rs;
@@ -417,6 +417,8 @@ public class Alumno extends javax.swing.JInternalFrame {
                             nidalumno = rs.getInt(12);
                             MostrarDatosGrupos(alumnos.getValueAt(fila, 0).toString());
                             establecimiento.setText(rs.getString(13));
+                            direccion_establecimiento.setText(rs.getString(14));
+                            grado_establecimiento.setText(rs.getString(15));
                         }
                     }
                 } catch (SQLException e) {
@@ -931,9 +933,9 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("Grado:");
+        jLabel2.setText("Nivel Academico:");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(450, 90, 90, 20);
+        jLabel2.setBounds(450, 90, 120, 20);
 
         dpi.setEditable(false);
         dpi.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -1398,7 +1400,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             boolean seguardo = false;
             String nombreTabla = "alumno";
             String nombreTabla2 = "alumnosengrupo";
-            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, estado";
+            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direstablecimiento, gradoestablecimiento, estado";
             String campos2 = "alumno_idalumno, grupo_idgrupo,fechainicio,beca";
 
             //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
@@ -1411,7 +1413,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (becagrupo.getText().isEmpty()) {
                 becagrupo.setValue(0);
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), estad
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad
             };
 
             seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
@@ -1518,7 +1520,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             String columnaId = "codigo";
 
             String nombreTabla = "alumno";
-            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, estado";
+            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direstablecimiento, gradoestablecimiento, estado";
             //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
 
@@ -1526,7 +1528,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), estad, id
+            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, id
             };
 
             seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
