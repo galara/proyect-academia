@@ -5,6 +5,7 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Datos.BdConexion;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.Editor_CheckBox;
 import Capa_Negocio.FormatoDecimal;
@@ -17,14 +18,19 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -32,6 +38,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import modelos.mGrupo;
+import modelos.mTipopago;
 
 /**
  *
@@ -47,8 +54,10 @@ public class Pagos extends javax.swing.JInternalFrame {
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
+    public static Hashtable<String, String> hashTipopago = new Hashtable<>();
     AccesoDatos acceso = new AccesoDatos();
     static String idalumno = "", iddetallegrupo = "";
+    java.sql.Connection conn;//getConnection intentara establecer una conexión.
 
     /**
      * Creates new form Cliente
@@ -57,6 +66,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
+        llenarcombotipopago();
 
         cGrupo.addItemListener(
                 (ItemEvent e) -> {
@@ -72,17 +82,16 @@ public class Pagos extends javax.swing.JInternalFrame {
             }
         });
         //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
-        colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
-        colegiaturas.getColumnModel().getColumn(9).setCellEditor(new Editor_CheckBox());
-
-        otrosproductos.getColumnModel().getColumn(5).setCellEditor(new Editor_CheckBox());
+        JCheckBox check = new JCheckBox();
+        colegiaturas.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(check));
+        colegiaturas.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(check));
+        otrosproductos.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(check));
+        //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox()); *
+        //colegiaturas.getColumnModel().getColumn(9).setCellEditor(new Editor_CheckBox()); *
 
         //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
-        //colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
-        //colegiaturas.getColumnModel().getColumn(7).setCellRenderer(new Renderer_CheckBox());
         colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
         colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
-
         otrosproductos.getColumnModel().getColumn(5).setCellRenderer(new Renderer_CheckBox());
 
     }
@@ -108,8 +117,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
-            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
+            Utilidades.setEditableTexto(this.JPanelGrupo, false, null, true, "");
+            Utilidades.esObligatorio(this.JPanelGrupo, false);
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(false);
             this.bntEliminar.setEnabled(false);
@@ -198,7 +207,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 modeloComboBox = new DefaultComboBoxModel();
                 cGrupo.setModel(modeloComboBox);
 
-                modeloComboBox.addElement(new mGrupo("SELECCIONE GRUPO", "0"));
+                modeloComboBox.addElement(new mGrupo("", "0"));
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     int count = 0;
                     rs.beforeFirst();//regresa el puntero al primer registro
@@ -208,6 +217,62 @@ public class Pagos extends javax.swing.JInternalFrame {
                         modeloComboBox.addElement(new mGrupo(rs.getString(1) + " " + rs.getString(2), "" + rs.getInt(3)));
                         hashGrupo.put(rs.getString(1) + " " + rs.getString(2), "" + count);
                         //System.out.print(rs.getString(1) + " " + rs.getString(2)+ "" + count+"\n");
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+            //rs.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /*
+     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
+     *y se los envia a un metodo interno getRegistroCombo() 
+     *
+     */
+    public void llenarcombotipopago() {
+        String Dato = "1";
+        String[] campos = {"tipopago", "idtipopago"};
+        String[] condiciones = {"estado"};
+        String[] Id = {Dato};
+        cTipopago.removeAllItems();
+        //Component cmps = profesor;
+        getRegistroCombotipopago("tipopago", campos, condiciones, Id);
+
+    }
+
+    /*El metodo llenarcombo() envia los parametros para la consulta a la BD y el medoto
+     *getRegistroCombo() se encarga de enviarlos a la capa de AccesoDatos.getRegistros()
+     *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
+     *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
+     */
+    public void getRegistroCombotipopago(String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
+        try {
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
+
+            int cantcampos = campos.length;
+            if (rs != null) {
+
+                DefaultComboBoxModel modeloComboBox;
+                modeloComboBox = new DefaultComboBoxModel();
+                cTipopago.setModel(modeloComboBox);
+
+                modeloComboBox.addElement(new mTipopago("", "0"));
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    int count = 0;
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    Object[] fila = new Object[cantcampos];
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        count++;
+                        modeloComboBox.addElement(new mTipopago(rs.getString(1), "" + rs.getInt(2)));
+                        hashTipopago.put(rs.getString(1), "" + count);
                     }
                 }
             } else {
@@ -235,9 +300,14 @@ public class Pagos extends javax.swing.JInternalFrame {
             colegiatura.setValue(null);
             removejtable();
             removejtable2();
+            sumartotal();
             inicioalumno.setText("");
             beca.setText("");
             dia.setText("");
+            Utilidades.esObligatorio(this.JPanelRecibo, false);
+            //Utilidades.esObligatorio(this.JPanelBusqueda, false);
+            Utilidades.esObligatorio(this.JPanelGrupo, false);
+            Utilidades.esObligatorio(this.JPanelPago, false);
 
         } else if (cGrupo.getSelectedIndex() != -1) {
 
@@ -273,6 +343,11 @@ public class Pagos extends javax.swing.JInternalFrame {
                             idalumnosengrupo(idalumno, "" + grup.getID());
                             MostrarPagos();
                             MostrarProductos();
+                            sumartotal();
+                            Utilidades.esObligatorio(this.JPanelRecibo, false);
+                            //Utilidades.esObligatorio(this.JPanelBusqueda, false);
+                            Utilidades.esObligatorio(this.JPanelGrupo, false);
+                            Utilidades.esObligatorio(this.JPanelPago, false);
                         }
                     } catch (SQLException e) {
                         JOptionPane.showInternalMessageDialog(this, e);
@@ -438,7 +513,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                     for (int i = 0; i < cantcampos - 2; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                        System.out.print("\n" + fila[i] + "--" + i);
+                        //System.out.print("\n" + fila[i] + "--" + i);
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
                             float cbeca = Float.parseFloat(beca.getText());
@@ -617,9 +692,9 @@ public class Pagos extends javax.swing.JInternalFrame {
         popupcarrera = new javax.swing.JPopupMenu();
         Nueva_Carrera = new javax.swing.JMenuItem();
         Actualizar_Carrera = new javax.swing.JMenuItem();
-        popuppromatricula = new javax.swing.JPopupMenu();
-        Nueva_Matricula = new javax.swing.JMenuItem();
-        Actualiza = new javax.swing.JMenuItem();
+        popupprotipopago = new javax.swing.JPopupMenu();
+        Nuevo_Tipopago = new javax.swing.JMenuItem();
+        Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntModificar = new elaprendiz.gui.button.ButtonRect();
@@ -627,7 +702,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntEliminar = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
-        JPanelCampos = new javax.swing.JPanel();
+        JPanelGrupo = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -669,11 +744,11 @@ public class Pagos extends javax.swing.JInternalFrame {
         estado = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         tbPane1 = new elaprendiz.gui.panel.TabbedPaneHeader();
-        jPanel5 = new javax.swing.JPanel();
-        buttonAction1 = new elaprendiz.gui.button.ButtonAction();
-        buttonAction2 = new elaprendiz.gui.button.ButtonAction();
+        JPanelPago = new javax.swing.JPanel();
         totalapagar = new javax.swing.JFormattedTextField();
         jLabel27 = new javax.swing.JLabel();
+        cTipopago = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         codigo3 = new elaprendiz.gui.textField.TextField();
@@ -720,23 +795,23 @@ public class Pagos extends javax.swing.JInternalFrame {
         });
         popupcarrera.add(Actualizar_Carrera);
 
-        Nueva_Matricula.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
-        Nueva_Matricula.setText("Nuevo Profesor");
-        Nueva_Matricula.addActionListener(new java.awt.event.ActionListener() {
+        Nuevo_Tipopago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
+        Nuevo_Tipopago.setText("Nuevo Tipo Pago");
+        Nuevo_Tipopago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Nueva_MatriculaActionPerformed(evt);
+                Nuevo_TipopagoActionPerformed(evt);
             }
         });
-        popuppromatricula.add(Nueva_Matricula);
+        popupprotipopago.add(Nuevo_Tipopago);
 
-        Actualiza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
-        Actualiza.setText("Actualizar Combo");
-        Actualiza.addActionListener(new java.awt.event.ActionListener() {
+        Actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
+        Actualizar.setText("Actualizar Combo");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActualizaActionPerformed(evt);
+                ActualizarActionPerformed(evt);
             }
         });
-        popuppromatricula.add(Actualiza);
+        popupprotipopago.add(Actualizar);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -844,171 +919,160 @@ public class Pagos extends javax.swing.JInternalFrame {
         panelImage.add(pnlActionButtons);
         pnlActionButtons.setBounds(0, 580, 880, 50);
 
-        JPanelCampos.setBackground(java.awt.SystemColor.activeCaption);
-        JPanelCampos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        JPanelCampos.setForeground(new java.awt.Color(204, 204, 204));
-        JPanelCampos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        JPanelCampos.setLayout(null);
+        JPanelGrupo.setBackground(java.awt.SystemColor.activeCaption);
+        JPanelGrupo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        JPanelGrupo.setForeground(new java.awt.Color(204, 204, 204));
+        JPanelGrupo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        JPanelGrupo.setLayout(null);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Horario A:");
-        JPanelCampos.add(jLabel10);
+        JPanelGrupo.add(jLabel10);
         jLabel10.setBounds(730, 10, 110, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Profesor:");
-        JPanelCampos.add(jLabel3);
+        JPanelGrupo.add(jLabel3);
         jLabel3.setBounds(320, 10, 250, 20);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Fecha Fin:");
-        JPanelCampos.add(jLabel6);
+        JPanelGrupo.add(jLabel6);
         jLabel6.setBounds(730, 60, 110, 20);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Horario De:");
-        JPanelCampos.add(jLabel13);
+        JPanelGrupo.add(jLabel13);
         jLabel13.setBounds(600, 10, 100, 20);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Fecha Inicio:");
-        JPanelCampos.add(jLabel9);
+        JPanelGrupo.add(jLabel9);
         jLabel9.setBounds(600, 60, 110, 20);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Carrera:");
-        JPanelCampos.add(jLabel5);
+        JPanelGrupo.add(jLabel5);
         jLabel5.setBounds(320, 60, 250, 20);
 
         cGrupo.setEditable(true);
-        cGrupo.setName("Dia"); // NOI18N
-        JPanelCampos.add(cGrupo);
+        cGrupo.setName("grupo"); // NOI18N
+        JPanelGrupo.add(cGrupo);
         cGrupo.setBounds(80, 30, 210, 24);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Grupo:");
-        JPanelCampos.add(jLabel7);
+        JPanelGrupo.add(jLabel7);
         jLabel7.setBounds(10, 30, 60, 27);
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Inscripción Q.");
-        JPanelCampos.add(jLabel24);
+        JPanelGrupo.add(jLabel24);
         jLabel24.setBounds(600, 110, 110, 20);
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Colegiatura Q.");
-        JPanelCampos.add(jLabel18);
+        JPanelGrupo.add(jLabel18);
         jLabel18.setBounds(730, 110, 110, 20);
 
         carrera.setEditable(false);
         carrera.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        carrera.setName("codigo"); // NOI18N
         carrera.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(carrera);
+        JPanelGrupo.add(carrera);
         carrera.setBounds(320, 80, 260, 24);
 
         profesor.setEditable(false);
         profesor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        profesor.setName("codigo"); // NOI18N
         profesor.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(profesor);
+        JPanelGrupo.add(profesor);
         profesor.setBounds(320, 30, 260, 24);
 
         inscripcion.setEditable(false);
         inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         inscripcion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         inscripcion.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inscripcion.setName("inscripcion"); // NOI18N
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(inscripcion);
+        JPanelGrupo.add(inscripcion);
         inscripcion.setBounds(600, 130, 110, 24);
 
         colegiatura.setEditable(false);
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
         colegiatura.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         colegiatura.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        colegiatura.setName("colegiatura"); // NOI18N
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
-        JPanelCampos.add(colegiatura);
+        JPanelGrupo.add(colegiatura);
         colegiatura.setBounds(730, 130, 110, 24);
 
         horaa.setEditable(false);
         horaa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        horaa.setName("codigo"); // NOI18N
         horaa.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(horaa);
+        JPanelGrupo.add(horaa);
         horaa.setBounds(730, 30, 110, 24);
 
         horade.setEditable(false);
         horade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        horade.setName("codigo"); // NOI18N
         horade.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(horade);
+        JPanelGrupo.add(horade);
         horade.setBounds(600, 30, 110, 24);
 
         fechainicio.setEditable(false);
         fechainicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechainicio.setName("codigo"); // NOI18N
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(fechainicio);
+        JPanelGrupo.add(fechainicio);
         fechainicio.setBounds(600, 80, 110, 24);
 
         fechafin.setEditable(false);
         fechafin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechafin.setName("codigo"); // NOI18N
         fechafin.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(fechafin);
+        JPanelGrupo.add(fechafin);
         fechafin.setBounds(730, 80, 110, 24);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("Día:");
-        JPanelCampos.add(jLabel12);
+        JPanelGrupo.add(jLabel12);
         jLabel12.setBounds(320, 110, 250, 20);
 
         dia.setEditable(false);
         dia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        dia.setName("codigo"); // NOI18N
         dia.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(dia);
+        JPanelGrupo.add(dia);
         dia.setBounds(320, 130, 260, 24);
 
         jLabel26.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("Fecha Inicio Alumno:");
-        JPanelCampos.add(jLabel26);
+        JPanelGrupo.add(jLabel26);
         jLabel26.setBounds(10, 80, 160, 24);
 
         inicioalumno.setEditable(false);
         inicioalumno.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         inicioalumno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        inicioalumno.setName("codigo"); // NOI18N
         inicioalumno.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(inicioalumno);
+        JPanelGrupo.add(inicioalumno);
         inicioalumno.setBounds(170, 80, 120, 24);
 
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel25.setText("Beca Alumno: Q.");
-        JPanelCampos.add(jLabel25);
+        JPanelGrupo.add(jLabel25);
         jLabel25.setBounds(40, 130, 130, 27);
 
         beca.setEditable(false);
         beca.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         beca.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        beca.setName("codigo"); // NOI18N
         beca.setPreferredSize(new java.awt.Dimension(120, 21));
-        JPanelCampos.add(beca);
+        JPanelGrupo.add(beca);
         beca.setBounds(170, 130, 120, 24);
 
-        panelImage.add(JPanelCampos);
-        JPanelCampos.setBounds(0, 160, 880, 170);
+        panelImage.add(JPanelGrupo);
+        JPanelGrupo.setBounds(0, 160, 880, 170);
 
         JPanelTable.setOpaque(false);
         JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
@@ -1139,26 +1203,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                 tbPane1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
                 tbPane1.setOpaque(true);
 
-                jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-                jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-                buttonAction1.setText("Calcular");
-                buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-                buttonAction1.addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        buttonAction1ActionPerformed(evt);
-                    }
-                });
-                jPanel5.add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 130, 100, -1));
-
-                buttonAction2.setText("Otros Pagos");
-                buttonAction2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-                buttonAction2.addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        buttonAction2ActionPerformed(evt);
-                    }
-                });
-                jPanel5.add(buttonAction2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 170, 100, -1));
+                JPanelPago.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                JPanelPago.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
                 totalapagar.setEditable(false);
                 totalapagar.setBackground(new java.awt.Color(204, 255, 102));
@@ -1166,18 +1212,27 @@ public class Pagos extends javax.swing.JInternalFrame {
                 totalapagar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
                 totalapagar.setToolTipText("");
                 totalapagar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-                totalapagar.setName("inscripcion"); // NOI18N
                 totalapagar.setPreferredSize(new java.awt.Dimension(80, 23));
-                jPanel5.add(totalapagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
+                JPanelPago.add(totalapagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
 
                 jLabel27.setBackground(new java.awt.Color(255, 204, 0));
                 jLabel27.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 jLabel27.setText("Total Q.");
                 jLabel27.setOpaque(true);
-                jPanel5.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 20, 105, 30));
+                JPanelPago.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 20, 105, 30));
 
-                tbPane1.addTab("============", jPanel5);
+                cTipopago.setEditable(true);
+                cTipopago.setComponentPopupMenu(popupprotipopago);
+                cTipopago.setName("tipopago"); // NOI18N
+                JPanelPago.add(cTipopago, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 180, 105, 25));
+
+                jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel8.setText("Tipo Pago:");
+                JPanelPago.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 157, 105, 20));
+
+                tbPane1.addTab("============", JPanelPago);
 
                 jPanel1.add(tbPane1, java.awt.BorderLayout.CENTER);
                 tbPane1.getAccessibleContext().setAccessibleName("TOTAL");
@@ -1198,7 +1253,6 @@ public class Pagos extends javax.swing.JInternalFrame {
                 codigo3.setEditable(false);
                 codigo3.setHorizontalAlignment(javax.swing.JTextField.LEFT);
                 codigo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-                codigo3.setName("codigo"); // NOI18N
                 codigo3.setPreferredSize(new java.awt.Dimension(120, 21));
                 JPanelRecibo.add(codigo3);
                 codigo3.setBounds(690, 30, 110, 27);
@@ -1209,7 +1263,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 JPanelRecibo.add(jLabel22);
                 jLabel22.setBounds(690, 10, 110, 19);
 
-                clockDigital2.setForeground(java.awt.Color.blue);
+                clockDigital2.setForeground(new java.awt.Color(255, 255, 255));
                 clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
                 JPanelRecibo.add(clockDigital2);
                 clockDigital2.setBounds(270, 30, 100, 27);
@@ -1259,6 +1313,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
         removejtable();
+        llenarcombotipopago();
         codigoa.setText("");
         codigoa.requestFocus();
         profesor.setText("");
@@ -1275,6 +1330,10 @@ public class Pagos extends javax.swing.JInternalFrame {
         dia.setText("");
         cGrupo.setSelectedIndex(-1);
         codigoa.requestFocus();
+        Utilidades.esObligatorio(this.JPanelRecibo, false);
+        //Utilidades.esObligatorio(this.JPanelBusqueda, false);
+        Utilidades.esObligatorio(this.JPanelGrupo, false);
+        Utilidades.esObligatorio(this.JPanelPago, false);
     }//GEN-LAST:event_bntCancelarActionPerformed
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
@@ -1325,20 +1384,20 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_codigoaActionPerformed
 
-    private void Nueva_MatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_MatriculaActionPerformed
+    private void Nuevo_TipopagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_TipopagoActionPerformed
         // TODO add your handling code here:
-        Alumno frmAlumno = new Alumno();
-        if (frmAlumno == null) {
-            frmAlumno = new Alumno();
+        TipoPago frmTipoPago = new TipoPago();
+        if (frmTipoPago == null) {
+            frmTipoPago = new TipoPago();
         }
-        adminInternalFrame(dp, frmAlumno);
+        adminInternalFrame(dp, frmTipoPago);
 
-    }//GEN-LAST:event_Nueva_MatriculaActionPerformed
+    }//GEN-LAST:event_Nuevo_TipopagoActionPerformed
 
-    private void ActualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizaActionPerformed
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
         // TODO add your handling code here:
-        balumnocodigo(codigoa.getText());
-    }//GEN-LAST:event_ActualizaActionPerformed
+        llenarcombotipopago();
+    }//GEN-LAST:event_ActualizarActionPerformed
 
     private void colegiaturasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_colegiaturasKeyPressed
         // TODO add your handling code here:
@@ -1358,105 +1417,160 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
+        if (Utilidades.esObligatorio(this.JPanelRecibo, true)
+                || Utilidades.esObligatorio(this.JPanelGrupo, true)
+                || Utilidades.esObligatorio(this.JPanelPago, true)) {
+            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
-            //totalapagar.setValue(0.0);
-        } else {
 
+        } else { //Inicio de Guardar datos
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
             if (resp == 0) {
 
-                //GUARDAR MESES DE PAGO
-                String nomTabla = "proyeccionpagos";
-                String columnaId = "idproyeccionpagos";
-                int seguardo = 0;
-                AccesoDatos ac = new AccesoDatos();
-                String campos = "estado";
-                boolean camprec = false;
-                int cant = model.getRowCount();
+                //GUARDAR DATOS DE RECIBO***************************************
+                //**************************************************************
+                int idrecibo = 0, n = 0;
+                String sql = "";
+                String fechapag = FormatoFecha.getFormato(fechapago.getCalendar().getTime(), FormatoFecha.A_M_D);
+                mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
+                String idtipop = tipop.getID();
+                float total = Float.parseFloat(totalapagar.getText());
+
+                sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
+                int op = 0;
+                PreparedStatement ps;
+                conn = BdConexion.getConexion();
 
                 try {
-                    colegiaturas.getCellEditor().stopCellEditing();
-                } catch (Exception e) {
-                }
 
-                for (int i = 0; i < cant; i++) {
-                    if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
-                        camprec = true;
-                        String id = (String) "" + colegiaturas.getValueAt(i, 0);
-                        seguardo = ac.eliminacionTemporal(nomTabla, campos, columnaId, id, 1);
+                    conn.setAutoCommit(false);
+                    ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, fechapag);
+                    ps.setInt(2, Integer.parseInt(idalumno));
+                    ps.setInt(3, Integer.parseInt(idtipop));
+                    ps.setFloat(4, total);
+                    ps.setInt(5, Integer.parseInt("" + 1));
+
+                    n = ps.executeUpdate();
+                    if (n > 0) {
+                        ResultSet rs = ps.getGeneratedKeys();
+                        while (rs.next()) {
+                            idrecibo = rs.getInt(1);
+                        }
+
+                        //GUARDAR MESES PAGADOS*****************************************
+                        //**************************************************************
+                        boolean camprec = false;
+                        int cant = model.getRowCount();
+
+                        try {
+                            colegiaturas.getCellEditor().stopCellEditing();
+                        } catch (Exception e) {
+                            //System.out.print(e);
+                            //JOptionPane.showInternalMessageDialog(this, e);
+                        }
+
+                        for (int i = 0; i < cant; i++) {
+                            if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
+
+                                String id = (String) "" + colegiaturas.getValueAt(i, 0);
+                                String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + id + "')";
+                                String proypago = "update proyeccionpagos set  estado=true where idproyeccionpagos=" + id;
+                                camprec = true;
+                                //seguardo2 = ac.eliminacionTemporal(nomTabla, campos, columnaId, id, 1);
+                                n = ps.executeUpdate(detrecibo);
+                                n = ps.executeUpdate(proypago);
+
+                                if (colegiaturas.getValueAt(i, 8).toString().equals("true") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                    String pmora = "update mora set  estado=true where proyeccionpagos_idproyeccionpagos=" + id;
+                                    n = ps.executeUpdate(pmora);
+                                } else if (colegiaturas.getValueAt(i, 8).toString().equals("false") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                    float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
+                                    String pmora = "update mora set  exoneracion=" + exoneracion + " where proyeccionpagos_idproyeccionpagos=" + id;
+                                    n = ps.executeUpdate(pmora);
+                                }
+                            }
+                        }
+                        if (!camprec) {
+                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        if (n > 0) {
+                            //JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                            int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
+                            if (resp2 == 0) {
+                                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                                String[] id = {grup.getID()};
+                                idalumnosengrupo(idalumno, "" + grup.getID());
+                                MostrarPagos();
+                                MostrarProductos();
+                            } else {
+                                removejtable();
+                                llenarcombotipopago();
+                                codigoa.setText("");
+                                codigoa.requestFocus();
+                                profesor.setText("");
+                                carrera.setText("");
+                                horade.setText("");
+                                horaa.setText("");
+                                fechainicio.setText("");
+                                fechafin.setText("");
+                                inscripcion.setValue(null);
+                                colegiatura.setValue(null);
+                                nombrealumno.setText("");
+                                beca.setText("");
+                                inicioalumno.setText("");
+                                dia.setText("");
+                                cGrupo.setSelectedIndex(-1);
+                                Utilidades.esObligatorio(this.JPanelRecibo, false);
+                                //Utilidades.esObligatorio(this.JPanelBusqueda, false);
+                                Utilidades.esObligatorio(this.JPanelGrupo, false);
+                                Utilidades.esObligatorio(this.JPanelPago, false);
+                                codigoa.requestFocus();
+                            }
+                        }
+                        // }
+                        //FIN GUARDAR MESES PAGADOS*************************************
+                        //**************************************************************
+
                     }
-                }
-                if (!camprec) {
-                    JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                }
-                if (seguardo >= 1) {
-                    //JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                    int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
-                    if (resp2 == 0) {
-                        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                        String[] id = {grup.getID()};
-                        idalumnosengrupo(idalumno, "" + grup.getID());
-                        MostrarPagos();
-                        MostrarProductos();
-                    } else {
-                        removejtable();
-                        codigoa.setText("");
-                        codigoa.requestFocus();
-                        profesor.setText("");
-                        carrera.setText("");
-                        horade.setText("");
-                        horaa.setText("");
-                        fechainicio.setText("");
-                        fechafin.setText("");
-                        inscripcion.setValue(null);
-                        colegiatura.setValue(null);
-                        nombrealumno.setText("");
-                        beca.setText("");
-                        inicioalumno.setText("");
-                        dia.setText("");
-                        cGrupo.setSelectedIndex(-1);
-                        codigoa.requestFocus();
+                    conn.commit();
+                } catch (SQLException ex) {
+                    try {
+                        conn.rollback();
+                    } catch (SQLException ex1) {
+                        Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
                     }
+                    JOptionPane.showMessageDialog(null, ex);
                 }
             }
-        }
+        }//Fin Guardar datos
     }//GEN-LAST:event_bntGuardarActionPerformed
-
-    private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonAction2ActionPerformed
-
-    private void buttonAction1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction1ActionPerformed
-        // TODO add your handling code here:
-        try {
-            colegiaturas.getCellEditor().stopCellEditing();
-        } catch (Exception e) {
-        }
-        sumartotal();
-    }//GEN-LAST:event_buttonAction1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Actualiza;
+    private javax.swing.JMenuItem Actualizar;
     private javax.swing.JMenuItem Actualizar_Carrera;
     private javax.swing.JMenuItem Actualizar_Profesor;
     private javax.swing.JPanel JPanelBusqueda;
-    private javax.swing.JPanel JPanelCampos;
+    private javax.swing.JPanel JPanelGrupo;
+    private javax.swing.JPanel JPanelPago;
     private javax.swing.JPanel JPanelRecibo;
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JMenuItem Nueva_Carrera;
-    private javax.swing.JMenuItem Nueva_Matricula;
     private javax.swing.JMenuItem Nuevo_Profesor;
+    private javax.swing.JMenuItem Nuevo_Tipopago;
     public static elaprendiz.gui.textField.TextField beca;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntModificar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
-    private elaprendiz.gui.button.ButtonAction buttonAction1;
-    private elaprendiz.gui.button.ButtonAction buttonAction2;
     public static javax.swing.JComboBox cGrupo;
+    public static javax.swing.JComboBox cTipopago;
     private elaprendiz.gui.textField.TextField carrera;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
     private elaprendiz.gui.textField.TextField codigo3;
@@ -1491,11 +1605,11 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     public static elaprendiz.gui.textField.TextField nombrealumno;
@@ -1505,7 +1619,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlPaginador1;
     private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
-    private javax.swing.JPopupMenu popuppromatricula;
+    private javax.swing.JPopupMenu popupprotipopago;
     private elaprendiz.gui.textField.TextField profesor;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
