@@ -90,7 +90,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 //formatotabla();
             }
         });
-        
+
         otrosproductos.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                 sumartotal();
@@ -192,14 +192,11 @@ public class Pagos extends javax.swing.JInternalFrame {
     }
 
     public void sumartotal() {
-        if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
+        if (colegiaturas.getRowCount() == 0 && /*colegiaturas.getSelectedRow() == -1*/ otrosproductos.getRowCount() == 0) {
             totalapagar.setValue(0.0);
         } else {
-            
             float Actual, Resultado = 0;
-            
             for (int i = 0; i < model.getRowCount(); i++) {//sumar total tabla meses
-
                 if (colegiaturas.getValueAt(i, 9).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
                     if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
                         Actual = Float.parseFloat(colegiaturas.getValueAt(i, 7).toString());
@@ -211,18 +208,18 @@ public class Pagos extends javax.swing.JInternalFrame {
                 }
                 //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
             }// fin sumar total meses
-            
+
             for (int i = 0; i < model2.getRowCount(); i++) {//sumar total tabla otrospagos
                 if (otrosproductos.getValueAt(i, 5).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
                     float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
-                    if (canti>0) {
+                    if (canti > 0) {
                         Actual = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
                         Resultado = Resultado + Actual;
-                    } 
+                    }
                 }
                 //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
             }// fin sumar total otrospagos
-            
+
             totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
         }
     }
@@ -601,7 +598,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                     fila[1] = rs.getString(2);
                     fila[2] = Float.parseFloat(rs.getString(3));
                     fila[3] = 1.0;
-                    fila[4] = (Math.round((1.0*Float.parseFloat(rs.getString(3))) * 100.0) / 100.0);
+                    fila[4] = (Math.round((1.0 * Float.parseFloat(rs.getString(3))) * 100.0) / 100.0);
                     fila[5] = false;
                     modelo.addRow(fila);
                 }
@@ -1357,7 +1354,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             return;
         }
 
-        if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
+        if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
 
         } else { //Inicio de Guardar datos
@@ -1423,7 +1420,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
                         for (int i = 0; i < cant2; i++) {//for pago otros productos
                             if (otrosproductos.getValueAt(i, 5).toString().equals("true")) {
-                                camprec = true;
+
                                 String id = (String) "" + otrosproductos.getValueAt(i, 0);
                                 float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
                                 float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
@@ -1431,6 +1428,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
                                         + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + id + "')";
                                 if (canti > 0) {
+                                    camprec = true;
                                     n = ps.executeUpdate(descriprecibo);
                                 } else if (canti == 0) {
                                 }
@@ -1439,6 +1437,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
                         if (!camprec) {
                             JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                            System.out.print(n);
                         }
                         if (n > 0) {
                             int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
