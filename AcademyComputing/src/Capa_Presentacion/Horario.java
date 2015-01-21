@@ -414,8 +414,8 @@ public class Horario extends javax.swing.JInternalFrame {
             }
         }
     }
-    
-     private int ultimogrupo() {
+
+    private int ultimogrupo() {
         if (newcodgrupo == 0) {
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
@@ -440,12 +440,17 @@ public class Horario extends javax.swing.JInternalFrame {
         return newcodgrupo;
 
     }
-     
-     private void generacodigogrupo() {
-        String tx = dia.getSelectedItem().toString() + " " + descripcion.getText();
+
+    private void generacodigogrupo() {
+        String txtdia = "";
+        if (dia.getSelectedIndex() == 0) {
+        } else if (dia.getSelectedIndex() != -1) {
+            txtdia = dia.getSelectedItem().toString();
+        }
+        String tx = txtdia + " " + descripcion.getText();
         if (tx.isEmpty()) {
         } else {
-            String cod = GeneraCodigo.actualizarRegistro(dia.getSelectedItem().toString() + " " + descripcion.getText());
+            String cod = GeneraCodigo.actualizarRegistro(txtdia + " " + descripcion.getText());
             codigo.setText(cod + "-" + ultimogrupo());
         }
     }
@@ -751,6 +756,9 @@ public class Horario extends javax.swing.JInternalFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 diaKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                diaKeyPressed(evt);
+            }
         });
         JPanelCampos.add(descripcion);
         descripcion.setBounds(120, 60, 250, 21);
@@ -823,6 +831,9 @@ public class Horario extends javax.swing.JInternalFrame {
         });
         dia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
+                diaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 diaKeyPressed(evt);
             }
         });
@@ -1039,7 +1050,7 @@ public class Horario extends javax.swing.JInternalFrame {
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        cantalumnos.requestFocus();
+        descripcion.requestFocus();
         newcodgrupo = 0;
 
     }//GEN-LAST:event_bntNuevoActionPerformed
@@ -1088,7 +1099,7 @@ public class Horario extends javax.swing.JInternalFrame {
                 float cole = Float.parseFloat(colegiatura.getText());
                 Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
                 idagrupo(codigo.getText());
-                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo,inscripcion.getText());
+                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo, inscripcion.getText());
 
                 int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
                 System.out.print(pagos);
@@ -1286,6 +1297,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void descripcionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_descripcionFocusLost
         // TODO add your handling code here:
+        descripcion.setText(descripcion.getText().toUpperCase());
     }//GEN-LAST:event_descripcionFocusLost
 
     private void diaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_diaFocusLost
