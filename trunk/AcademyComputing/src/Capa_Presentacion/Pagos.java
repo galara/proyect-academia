@@ -7,20 +7,25 @@ package Capa_Presentacion;
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
 import static Capa_Negocio.AddForms.adminInternalFrame;
+import Capa_Negocio.CellEditorSpinnerPago;
 import Capa_Negocio.Editor_CheckBox;
+import Capa_Negocio.TableCellFormatter;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.Renderer_CheckBox;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import Reportes.Recibodepago;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
@@ -33,9 +38,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelos.mGrupo;
 import modelos.mTipopago;
@@ -49,8 +58,8 @@ public class Pagos extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model, model2;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Pagar Mora", "Pagar"};//Titulos para Jtabla
-    String[] titulos2 = {"Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Check"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Pagar Mora", "Pagar Mes"};//Titulos para Jtabla
+    String[] titulos2 = {"Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Agregar"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
@@ -81,7 +90,19 @@ public class Pagos extends javax.swing.JInternalFrame {
                 //formatotabla();
             }
         });
+        
+        otrosproductos.getModel().addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+                sumartotal();
+                //formatotabla();
+            }
+        });
         //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
+        //colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
+        colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
+        colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
+        colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
+        colegiaturas.doLayout();
         JCheckBox check = new JCheckBox();
         colegiaturas.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(check));
         colegiaturas.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(check));
@@ -93,6 +114,10 @@ public class Pagos extends javax.swing.JInternalFrame {
         colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
         colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
         otrosproductos.getColumnModel().getColumn(5).setCellRenderer(new Renderer_CheckBox());
+
+        CellEditorSpinnerPago cnt = new CellEditorSpinnerPago(1, this);
+        otrosproductos.getColumnModel().getColumn(3).setCellEditor(cnt);
+        otrosproductos.getColumnModel().getColumn(3).setCellRenderer(new TableCellFormatter(null));
 
     }
 
@@ -170,8 +195,10 @@ public class Pagos extends javax.swing.JInternalFrame {
         if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
             totalapagar.setValue(0.0);
         } else {
+            
             float Actual, Resultado = 0;
-            for (int i = 0; i < model.getRowCount(); i++) {
+            
+            for (int i = 0; i < model.getRowCount(); i++) {//sumar total tabla meses
 
                 if (colegiaturas.getValueAt(i, 9).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
                     if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
@@ -182,8 +209,21 @@ public class Pagos extends javax.swing.JInternalFrame {
                         Resultado = Resultado + Actual;
                     }
                 }
-                totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
-            }
+                //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
+            }// fin sumar total meses
+            
+            for (int i = 0; i < model2.getRowCount(); i++) {//sumar total tabla otrospagos
+                if (otrosproductos.getValueAt(i, 5).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                    float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
+                    if (canti>0) {
+                        Actual = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
+                        Resultado = Resultado + Actual;
+                    } 
+                }
+                //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
+            }// fin sumar total otrospagos
+            
+            totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
         }
     }
 
@@ -445,6 +485,11 @@ public class Pagos extends javax.swing.JInternalFrame {
         removejtable();
         model = getRegistroPorLikel(model, sql);
         Utilidades.ajustarAnchoColumnas(colegiaturas);
+
+        colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
+        colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
+        colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
+        colegiaturas.doLayout();
     }
 
     /**
@@ -492,7 +537,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 float resultado = (float) (Math.round(mora * 100.0) / 100.0);
                                 fila[i] = resultado;
                             }
-                            }
+                        }
                         if (fila[i] == null) {
                             fila[i] = "";
                         } else {
@@ -534,12 +579,8 @@ public class Pagos extends javax.swing.JInternalFrame {
      * modelo ,modelo de la JTable
      *
      * @param tabla , el nombre de la tabla a consultar en la BD
-     * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
-     * ,dirección etc
      * @param campocondicion , los campos de la tabla para las condiciones ejem:
      * id,estado etc
-     * @param condicionid , los valores que se compararan con campocondicion
-     * ejem: campocondicion = condicionid
      * @return
      */
     public DefaultTableModel getRegistroPorLikell(DefaultTableModel modelo, String tabla) {
@@ -559,8 +600,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                     fila[0] = rs.getString(1);
                     fila[1] = rs.getString(2);
                     fila[2] = Float.parseFloat(rs.getString(3));
-                    fila[3] = "";
-                    fila[4] = "";
+                    fila[3] = 1.0;
+                    fila[4] = (Math.round((1.0*Float.parseFloat(rs.getString(3))) * 100.0) / 100.0);
                     fila[5] = false;
                     modelo.addRow(fila);
                 }
@@ -1015,7 +1056,7 @@ public class Pagos extends javax.swing.JInternalFrame {
             colegiaturas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
             colegiaturas.setFocusCycleRoot(true);
             colegiaturas.setGridColor(new java.awt.Color(51, 51, 255));
-            colegiaturas.setRowHeight(22);
+            colegiaturas.setRowHeight(20);
             colegiaturas.setSelectionBackground(java.awt.SystemColor.activeCaption);
             colegiaturas.setSurrendersFocusOnKeystroke(true);
             colegiaturas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1047,7 +1088,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 {
                     @Override
                     public boolean isCellEditable(int row, int column) {
-                        if(column==5){
+                        if(column==3 || column==5){
                             return true;
                         }else{
                             return false;}
@@ -1055,6 +1096,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 });
                 otrosproductos.setName("otrosproductos"); // NOI18N
                 otrosproductos.setOpaque(false);
+                otrosproductos.setRowHeight(20);
                 jScrollPane2.setViewportView(otrosproductos);
 
                 jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 210));
@@ -1333,7 +1375,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
                 sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
                 //int op = 0;
-                PreparedStatement ps;
+                PreparedStatement ps = null;
                 conn = BdConexion.getConexion();
 
                 try {
@@ -1352,12 +1394,13 @@ public class Pagos extends javax.swing.JInternalFrame {
                             idrecibo = rs.getInt(1);//retorna el idrecibo guardado
                         }
 
-                        //GUARDAR MESES PAGADOS*****************************************
-                        //**************************************************************
+                        //GUARDAR MESES PAGADOS y OTROS PRODUCTOS***************
+                        //******************************************************
                         boolean camprec = false;
                         int cant = model.getRowCount();
+                        int cant2 = model2.getRowCount();
 
-                        for (int i = 0; i < cant; i++) {
+                        for (int i = 0; i < cant; i++) { //for pago de meses
                             if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
                                 camprec = true;
                                 String id = (String) "" + colegiaturas.getValueAt(i, 0);
@@ -1376,7 +1419,24 @@ public class Pagos extends javax.swing.JInternalFrame {
                                     n = ps.executeUpdate(pmora);
                                 }
                             }
-                        }
+                        }//fin for pago de meses
+
+                        for (int i = 0; i < cant2; i++) {//for pago otros productos
+                            if (otrosproductos.getValueAt(i, 5).toString().equals("true")) {
+                                camprec = true;
+                                String id = (String) "" + otrosproductos.getValueAt(i, 0);
+                                float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
+                                float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
+
+                                String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
+                                        + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + id + "')";
+                                if (canti > 0) {
+                                    n = ps.executeUpdate(descriprecibo);
+                                } else if (canti == 0) {
+                                }
+                            }
+                        }//fin for otros productos
+
                         if (!camprec) {
                             JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -1388,19 +1448,28 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 idalumnosengrupo(idalumno, "" + grup.getID());
                                 MostrarPagos();
                                 MostrarProductos();
+
                             } else {
                                 limpiartodo();
                             }
                         }
-                        // }
                         //FIN GUARDAR MESES PAGADOS*************************************
                         //**************************************************************
-
                     }
+
                     conn.commit();// guarda todas las consultas si no ubo error
+                    ps.close();
+                    if (!conn.getAutoCommit()) {
+                        conn.setAutoCommit(true);
+                    }
+                    Recibodepago.comprobante(idrecibo);
                 } catch (SQLException ex) {
                     try {
                         conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        ps.close();
+                        if (!conn.getAutoCommit()) {
+                            conn.setAutoCommit(true);
+                        }
                     } catch (SQLException ex1) {
                         Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
                     }
