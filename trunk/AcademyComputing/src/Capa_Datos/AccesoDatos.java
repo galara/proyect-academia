@@ -454,7 +454,7 @@ public class AccesoDatos {
             JOptionPane.showMessageDialog(null, "Problema con" + ex);
         }
 
-        System.out.println("n"+sql);
+        //System.out.println("n"+sql);
         return op;
     }
 
