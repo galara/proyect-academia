@@ -120,9 +120,6 @@ public class Pagos extends javax.swing.JInternalFrame {
             Utilidades.setEditableTexto(this.JPanelGrupo, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelGrupo, false);
             this.bntGuardar.setEnabled(false);
-            this.bntModificar.setEnabled(false);
-            this.bntEliminar.setEnabled(false);
-            //this.bntNuevo.setEnabled(true);
             removejtable();
             codigoa.setText("");
             codigoa.requestFocus();
@@ -145,20 +142,38 @@ public class Pagos extends javax.swing.JInternalFrame {
         }
     }
 
+    private void limpiartodo() {
+        removejtable();
+        llenarcombotipopago();
+        codigoa.setText("");
+        codigoa.requestFocus();
+        profesor.setText("");
+        carrera.setText("");
+        horade.setText("");
+        horaa.setText("");
+        fechainicio.setText("");
+        fechafin.setText("");
+        inscripcion.setValue(null);
+        colegiatura.setValue(null);
+        nombrealumno.setText("");
+        beca.setText("");
+        inicioalumno.setText("");
+        dia.setText("");
+        cGrupo.setSelectedIndex(-1);
+        Utilidades.esObligatorio(this.JPanelRecibo, false);
+        Utilidades.esObligatorio(this.JPanelGrupo, false);
+        Utilidades.esObligatorio(this.JPanelPago, false);
+        codigoa.requestFocus();
+    }
+
     public void sumartotal() {
-        //System.out.print("sumar total");
-        //corregir cuando hay solo unalinea da error
         if (colegiaturas.getRowCount() == 0 && colegiaturas.getSelectedRow() == -1) {
-            //JOptionPane.showMessageDialog(null, "La tabla no contiene datos que modificar");
             totalapagar.setValue(0.0);
         } else {
             float Actual, Resultado = 0;
-
             for (int i = 0; i < model.getRowCount(); i++) {
 
                 if (colegiaturas.getValueAt(i, 9).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
-                    //0     1        2            3        4          5        6      7         8          9
-                    //"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora","Subtotal","Exonerar","Pagar"
                     if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
                         Actual = Float.parseFloat(colegiaturas.getValueAt(i, 7).toString());
                         Resultado = Resultado + Actual;
@@ -211,19 +226,15 @@ public class Pagos extends javax.swing.JInternalFrame {
                 if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                     int count = 0;
                     rs.beforeFirst();//regresa el puntero al primer registro
-                    //Object[] fila = new Object[cantcampos];
                     while (rs.next()) {//mientras tenga registros que haga lo siguiente
                         count++;
                         modeloComboBox.addElement(new mGrupo(rs.getString(1) + " " + rs.getString(2), "" + rs.getInt(3)));
                         hashGrupo.put(rs.getString(1) + " " + rs.getString(2), "" + count);
-                        //System.out.print(rs.getString(1) + " " + rs.getString(2)+ "" + count+"\n");
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            //rs.close();
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -240,7 +251,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         String[] condiciones = {"estado"};
         String[] Id = {Dato};
         cTipopago.removeAllItems();
-        //Component cmps = profesor;
         getRegistroCombotipopago("tipopago", campos, condiciones, Id);
 
     }
@@ -256,7 +266,6 @@ public class Pagos extends javax.swing.JInternalFrame {
             AccesoDatos ac = new AccesoDatos();
 
             rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
-
             int cantcampos = campos.length;
             if (rs != null) {
 
@@ -278,8 +287,6 @@ public class Pagos extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            //rs.close();
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -345,7 +352,6 @@ public class Pagos extends javax.swing.JInternalFrame {
                             MostrarProductos();
                             sumartotal();
                             Utilidades.esObligatorio(this.JPanelRecibo, false);
-                            //Utilidades.esObligatorio(this.JPanelBusqueda, false);
                             Utilidades.esObligatorio(this.JPanelGrupo, false);
                             Utilidades.esObligatorio(this.JPanelPago, false);
                         }
@@ -394,11 +400,6 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 codigoa.setText(rs.getString(1));
                                 llenarcombogrupo(rs.getString(1));
                                 nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
-                                //float becac=Float.parseFloat(rs.getString(5));
-                                //beca.setText(""+becac);
-                                //Date fechaini = FormatoFecha.StringToDate(rs.getString(6));
-                                //inicioalumno.setDate(fechaini);
-
                                 if (rs.getString(5).equals("0")) {
                                     estado.setText("Inactivo");
                                     estado.setForeground(Color.red);
@@ -406,54 +407,18 @@ public class Pagos extends javax.swing.JInternalFrame {
                                     estado.setText("Activo");
                                     estado.setForeground(Color.WHITE/*new java.awt.Color(102, 204, 0)*/);
                                 }
-
                                 idalumno = (rs.getString(6));
-
                             }
                         } else {
                             JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
-                            nombrealumno.setText("");
-                            beca.setText("");
-                            inicioalumno.setText("");
-                            estado.setText("");
-                            cGrupo.removeAllItems();
-                            idalumno = "";
-
-                            removejtable();
-                            profesor.setText("");
-                            carrera.setText("");
-                            horade.setText("");
-                            horaa.setText("");
-                            fechainicio.setText("");
-                            fechafin.setText("");
-                            inscripcion.setValue(null);
-                            colegiatura.setValue(null);
-                            dia.setText("");
-                            codigoa.requestFocus();
+                            limpiartodo();
                         }
                     } catch (SQLException e) {
                         JOptionPane.showInternalMessageDialog(this, e);
                     }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
-                    nombrealumno.setText("");
-                    beca.setText("");
-                    inicioalumno.setText("");
-                    estado.setText("");
-                    cGrupo.removeAllItems();
-                    idalumno = "";
-
-                    removejtable();
-                    profesor.setText("");
-                    carrera.setText("");
-                    horade.setText("");
-                    horaa.setText("");
-                    fechainicio.setText("");
-                    fechafin.setText("");
-                    inscripcion.setValue(null);
-                    colegiatura.setValue(null);
-                    dia.setText("");
-                    codigoa.requestFocus();
+                    limpiartodo();
                 }
 
             }
@@ -513,12 +478,10 @@ public class Pagos extends javax.swing.JInternalFrame {
                     for (int i = 0; i < cantcampos - 2; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                        //System.out.print("\n" + fila[i] + "--" + i);
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
                             float cbeca = Float.parseFloat(beca.getText());
                             float resultado = (float) (Math.round((monto - cbeca) * 100.0) / 100.0);
-
                             fila[i] = resultado;
                         }
                         if (i == 6) {
@@ -526,21 +489,16 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 fila[i] = "0.0";
                             } else {
                                 float mora = (float) rs.getFloat(i + 1);
-                                //float cbeca = Float.parseFloat(beca.getText());
                                 float resultado = (float) (Math.round(mora * 100.0) / 100.0);
                                 fila[i] = resultado;
                             }
-
-                        }
+                            }
                         if (fila[i] == null) {
                             fila[i] = "";
                         } else {
                         }
                     }
-                    //int mor = 5;
-                    //fila[6] = mor;
                     fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
-
                     if (((float) fila[6] == 0.0)) {
                         fila[8] = false;
                     } else {
@@ -598,18 +556,6 @@ public class Pagos extends javax.swing.JInternalFrame {
                 Object[] fila = new Object[cantcampos];
 
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-//                    for (int i = 0; i < cantcampos-1; i++) {
-//                            fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-//                        if (fila[i] == null) {
-//                            fila[i] = "";
-//                        } else {
-//                        }
-//                    }
-//                    fila[3] = "";
-//                    fila[4] = "";
-//                    fila[5] = false;
-
                     fila[0] = rs.getString(1);
                     fila[1] = rs.getString(2);
                     fila[2] = Float.parseFloat(rs.getString(3));
@@ -636,7 +582,6 @@ public class Pagos extends javax.swing.JInternalFrame {
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
-
         //TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
         //TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 60, true);
         //TipoFiltro.setFiltraEntrada(dia.getDocument(), FiltroCampos.SOLO_LETRAS, 45, false);
@@ -663,10 +608,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                         iddetallegrupo = (rs.getString(1));
                         String fechainicio = FormatoFecha.getFormato(rs.getDate(2), FormatoFecha.D_M_A);
                         inicioalumno.setText(fechainicio);
-                        //System.out.print(fechainicio + "\n");
                         float becac = Float.parseFloat(rs.getString(3));
                         beca.setText("" + becac);
-                        //System.out.print(becac + "\n");
                     }
                 }
             } catch (SQLException e) {
@@ -697,9 +640,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
-        bntModificar = new elaprendiz.gui.button.ButtonRect();
         bntGuardar = new elaprendiz.gui.button.ButtonRect();
-        bntEliminar = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelGrupo = new javax.swing.JPanel();
@@ -847,21 +788,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
-        bntModificar.setBackground(new java.awt.Color(51, 153, 255));
-        bntModificar.setMnemonic(KeyEvent.VK_M);
-        bntModificar.setText("Modificar");
-        bntModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bntModificarActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntModificar, gridBagConstraints);
-
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
@@ -876,16 +802,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
         pnlActionButtons.add(bntGuardar, gridBagConstraints);
-
-        bntEliminar.setBackground(new java.awt.Color(51, 153, 255));
-        bntEliminar.setMnemonic(KeyEvent.VK_E);
-        bntEliminar.setText("Eliminar");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntEliminar, gridBagConstraints);
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -1312,28 +1228,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
-        removejtable();
-        llenarcombotipopago();
-        codigoa.setText("");
-        codigoa.requestFocus();
-        profesor.setText("");
-        carrera.setText("");
-        horade.setText("");
-        horaa.setText("");
-        fechainicio.setText("");
-        fechafin.setText("");
-        inscripcion.setValue(null);
-        colegiatura.setValue(null);
-        nombrealumno.setText("");
-        beca.setText("");
-        inicioalumno.setText("");
-        dia.setText("");
-        cGrupo.setSelectedIndex(-1);
-        codigoa.requestFocus();
-        Utilidades.esObligatorio(this.JPanelRecibo, false);
-        //Utilidades.esObligatorio(this.JPanelBusqueda, false);
-        Utilidades.esObligatorio(this.JPanelGrupo, false);
-        Utilidades.esObligatorio(this.JPanelPago, false);
+        limpiartodo();
     }//GEN-LAST:event_bntCancelarActionPerformed
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
@@ -1411,10 +1306,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_colegiaturasMouseClicked
 
-    private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bntModificarActionPerformed
-
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
         if (Utilidades.esObligatorio(this.JPanelRecibo, true)
@@ -1441,25 +1332,24 @@ public class Pagos extends javax.swing.JInternalFrame {
                 float total = Float.parseFloat(totalapagar.getText());
 
                 sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
-                int op = 0;
+                //int op = 0;
                 PreparedStatement ps;
                 conn = BdConexion.getConexion();
 
                 try {
-
                     conn.setAutoCommit(false);
                     ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                     ps.setString(1, fechapag);
                     ps.setInt(2, Integer.parseInt(idalumno));
                     ps.setInt(3, Integer.parseInt(idtipop));
                     ps.setFloat(4, total);
-                    ps.setInt(5, Integer.parseInt("" + 1));
+                    ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
 
                     n = ps.executeUpdate();
                     if (n > 0) {
                         ResultSet rs = ps.getGeneratedKeys();
                         while (rs.next()) {
-                            idrecibo = rs.getInt(1);
+                            idrecibo = rs.getInt(1);//retorna el idrecibo guardado
                         }
 
                         //GUARDAR MESES PAGADOS*****************************************
@@ -1467,21 +1357,13 @@ public class Pagos extends javax.swing.JInternalFrame {
                         boolean camprec = false;
                         int cant = model.getRowCount();
 
-                        try {
-                            colegiaturas.getCellEditor().stopCellEditing();
-                        } catch (Exception e) {
-                            //System.out.print(e);
-                            //JOptionPane.showInternalMessageDialog(this, e);
-                        }
-
                         for (int i = 0; i < cant; i++) {
                             if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
-
+                                camprec = true;
                                 String id = (String) "" + colegiaturas.getValueAt(i, 0);
                                 String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + id + "')";
                                 String proypago = "update proyeccionpagos set  estado=true where idproyeccionpagos=" + id;
-                                camprec = true;
-                                //seguardo2 = ac.eliminacionTemporal(nomTabla, campos, columnaId, id, 1);
+
                                 n = ps.executeUpdate(detrecibo);
                                 n = ps.executeUpdate(proypago);
 
@@ -1499,7 +1381,6 @@ public class Pagos extends javax.swing.JInternalFrame {
                             JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
                         }
                         if (n > 0) {
-                            //JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                             int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
                             if (resp2 == 0) {
                                 mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
@@ -1508,28 +1389,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                                 MostrarPagos();
                                 MostrarProductos();
                             } else {
-                                removejtable();
-                                llenarcombotipopago();
-                                codigoa.setText("");
-                                codigoa.requestFocus();
-                                profesor.setText("");
-                                carrera.setText("");
-                                horade.setText("");
-                                horaa.setText("");
-                                fechainicio.setText("");
-                                fechafin.setText("");
-                                inscripcion.setValue(null);
-                                colegiatura.setValue(null);
-                                nombrealumno.setText("");
-                                beca.setText("");
-                                inicioalumno.setText("");
-                                dia.setText("");
-                                cGrupo.setSelectedIndex(-1);
-                                Utilidades.esObligatorio(this.JPanelRecibo, false);
-                                //Utilidades.esObligatorio(this.JPanelBusqueda, false);
-                                Utilidades.esObligatorio(this.JPanelGrupo, false);
-                                Utilidades.esObligatorio(this.JPanelPago, false);
-                                codigoa.requestFocus();
+                                limpiartodo();
                             }
                         }
                         // }
@@ -1537,10 +1397,10 @@ public class Pagos extends javax.swing.JInternalFrame {
                         //**************************************************************
 
                     }
-                    conn.commit();
+                    conn.commit();// guarda todas las consultas si no ubo error
                 } catch (SQLException ex) {
                     try {
-                        conn.rollback();
+                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
                     } catch (SQLException ex1) {
                         Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
                     }
@@ -1565,9 +1425,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem Nuevo_Tipopago;
     public static elaprendiz.gui.textField.TextField beca;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
-    private elaprendiz.gui.button.ButtonRect bntEliminar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
-    private elaprendiz.gui.button.ButtonRect bntModificar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     public static javax.swing.JComboBox cGrupo;
     public static javax.swing.JComboBox cTipopago;
