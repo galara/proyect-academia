@@ -4,14 +4,18 @@
  */
 package Capa_Presentacion;
 
+import Capa_Datos.AccesoDatos;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
+import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,6 +35,7 @@ public class Profesor extends javax.swing.JInternalFrame {
     String[] titulos = {"Codigo", "Nombres", "Apellidos", "Telefono", "Estado", "Fecha Inicio"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
+    int newcodprofe;
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -175,6 +180,44 @@ public class Profesor extends javax.swing.JInternalFrame {
         }
     }
 
+      private int ultimoprofe() {
+        if (newcodprofe == 0) {
+            ResultSet rs;
+            AccesoDatos ac = new AccesoDatos();
+
+            rs = ac.getUltimoRegistro("profesor", "idcatedratico");
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            newcodprofe = (rs.getInt(1) + 1);
+                        }
+                    } else {
+                        newcodprofe = newcodprofe + 1;
+                    }
+
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
+        }
+        return newcodprofe;
+
+    }
+
+    private void generacodigoprofe() {
+        String tx = nombres.getText() + " " + apellidos.getText();
+        if (tx.isEmpty()) {
+        } else {
+            String cod = GeneraCodigo.actualizarRegistro(nombres.getText() + " " + apellidos.getText());
+            codigo.setText(cod + "-" + ultimoprofe());
+        }
+    }
+
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -411,6 +454,19 @@ public class Profesor extends javax.swing.JInternalFrame {
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(apellidos);
+        nombres.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nombresFocusLost(evt);
+            }
+        });
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
         JPanelCampos.add(nombres);
         nombres.setBounds(180, 60, 250, 21);
 
@@ -418,6 +474,19 @@ public class Profesor extends javax.swing.JInternalFrame {
         apellidos.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         apellidos.setName("apellidos"); // NOI18N
         apellidos.setNextFocusableComponent(direccion);
+        apellidos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                apellidosFocusLost(evt);
+            }
+        });
+        apellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
         JPanelCampos.add(apellidos);
         apellidos.setBounds(180, 90, 250, 21);
 
@@ -596,7 +665,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
-        codigo.requestFocus();
+        nombres.requestFocus();
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -608,7 +677,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
-
+            generacodigoprofe();
             boolean seguardo = false;
             String nombreTabla = "profesor";
             String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
@@ -689,7 +758,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
-
+            generacodigoprofe();
             String nomTabla = "profesor";
             String columnaId = "codigo";
             int seguardo = 0;
@@ -776,6 +845,19 @@ public class Profesor extends javax.swing.JInternalFrame {
         rbCodigo.setSelected(false);
         busqueda.requestFocus();
     }//GEN-LAST:event_rbApellidosActionPerformed
+
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+        // TODO add your handling code here:
+        generacodigoprofe();
+    }//GEN-LAST:event_nombresKeyPressed
+
+    private void apellidosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_apellidosFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_apellidosFocusLost
+
+    private void nombresFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombresFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombresFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
