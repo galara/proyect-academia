@@ -576,7 +576,6 @@
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
-                        <Property name="name" type="java.lang.String" value="descripcion" noResource="true"/>
                         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                           <ComponentRef name="titularapellido"/>
                         </Property>
@@ -728,7 +727,6 @@
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
-                        <Property name="name" type="java.lang.String" value="descripcion" noResource="true"/>
                         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                           <ComponentRef name="direccion_establecimiento"/>
                         </Property>
@@ -757,7 +755,6 @@
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
-                        <Property name="name" type="java.lang.String" value="descripcion" noResource="true"/>
                         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                           <ComponentRef name="grado_establecimiento"/>
                         </Property>
