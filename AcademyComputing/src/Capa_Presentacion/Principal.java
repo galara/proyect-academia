@@ -1,6 +1,7 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AddForms;
+import Capa_Negocio.CalcularMoras;
 import inicio.start;
 import java.awt.Component;
 import javax.swing.ImageIcon;
@@ -82,6 +83,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
@@ -265,7 +267,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu8.setText("Pagos");
-        jMenu8.setActionCommand("Pagos");
         jMenu8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         jMenuItem10.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -315,6 +316,14 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem16.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem16.setText("Restaurar");
         jMenu7.add(jMenuItem16);
+
+        jMenuItem13.setText("Calcular Mora");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem13);
 
         jMenu2.add(jMenu7);
 
@@ -518,6 +527,11 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmPagos);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        CalcularMoras.moras();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -551,6 +565,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;

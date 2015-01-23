@@ -730,8 +730,6 @@ public class Pagos extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        codigo3 = new elaprendiz.gui.textField.TextField();
-        jLabel22 = new javax.swing.JLabel();
         clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
         jLabel23 = new javax.swing.JLabel();
         fechapago = new com.toedter.calendar.JDateChooser();
@@ -1203,25 +1201,12 @@ public class Pagos extends javax.swing.JInternalFrame {
                 jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 jLabel21.setText("Hora");
                 JPanelRecibo.add(jLabel21);
-                jLabel21.setBounds(270, 10, 100, 19);
-
-                codigo3.setEditable(false);
-                codigo3.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-                codigo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-                codigo3.setPreferredSize(new java.awt.Dimension(120, 21));
-                JPanelRecibo.add(codigo3);
-                codigo3.setBounds(690, 30, 110, 27);
-
-                jLabel22.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel22.setText("No. Recibo");
-                JPanelRecibo.add(jLabel22);
-                jLabel22.setBounds(690, 10, 110, 19);
+                jLabel21.setBounds(690, 10, 100, 19);
 
                 clockDigital2.setForeground(new java.awt.Color(255, 255, 255));
                 clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
                 JPanelRecibo.add(clockDigital2);
-                clockDigital2.setBounds(270, 30, 100, 27);
+                clockDigital2.setBounds(690, 30, 100, 27);
 
                 jLabel23.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
                 jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1347,6 +1332,7 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
+
         if (Utilidades.esObligatorio(this.JPanelRecibo, true)
                 || Utilidades.esObligatorio(this.JPanelGrupo, true)
                 || Utilidades.esObligatorio(this.JPanelPago, true)) {
@@ -1361,6 +1347,10 @@ public class Pagos extends javax.swing.JInternalFrame {
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
             if (resp == 0) {
 
+                String printHorario = "";
+                horade.getText();
+                horaa.getText();
+                printHorario = horade.getText() + " a " + horaa.getText() + " " + dia.getText();
                 //GUARDAR DATOS DE RECIBO***************************************
                 //**************************************************************
                 int idrecibo = 0, n = 0;
@@ -1461,7 +1451,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                     if (!conn.getAutoCommit()) {
                         conn.setAutoCommit(true);
                     }
-                    Recibodepago.comprobante(idrecibo);
+
+                    Recibodepago.comprobante(idrecibo, printHorario);
                 } catch (SQLException ex) {
                     try {
                         conn.rollback();// no guarda ninguna de las consultas ya que ubo error
@@ -1499,7 +1490,6 @@ public class Pagos extends javax.swing.JInternalFrame {
     public static javax.swing.JComboBox cTipopago;
     private elaprendiz.gui.textField.TextField carrera;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
-    private elaprendiz.gui.textField.TextField codigo3;
     public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JFormattedTextField colegiatura;
     private javax.swing.JTable colegiaturas;
@@ -1521,7 +1511,6 @@ public class Pagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
