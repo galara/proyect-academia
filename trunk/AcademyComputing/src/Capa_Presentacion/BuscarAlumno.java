@@ -77,7 +77,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
-            this.bntGuardar.setEnabled(false);
+            //this.bntGuardar.setEnabled(false);
             removejtable();
             busqueda.setText("");
             rbNombre.setSelected(true);
@@ -199,7 +199,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
 
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
-        bntGuardar = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelTable = new javax.swing.JPanel();
@@ -247,16 +246,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         pnlActionButtons.setForeground(new java.awt.Color(204, 204, 204));
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
-
-        bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
-        bntGuardar.setMnemonic(KeyEvent.VK_G);
-        bntGuardar.setText("Seleccionar");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntGuardar, gridBagConstraints);
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -478,7 +467,6 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JTable alumnos;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
-    private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
     private javax.swing.JLabel jLabel7;

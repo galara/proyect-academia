@@ -24,7 +24,7 @@ public class Recibodepago {
 
     static Connection conn;
 
-    public static void comprobante(int parameter) {
+    public static void comprobante(int parameter, String horario) {
         try {
             String theReport = "Recibo3.jasper";
             if (theReport == null) {
@@ -43,6 +43,7 @@ public class Recibodepago {
             Map parametro = new HashMap();
             int idrecibo = (parameter);
             parametro.put("idrecibo", idrecibo);
+            parametro.put("horario", horario);
 
             JasperPrint impresor = JasperFillManager.fillReport(masterReport, parametro, conn);
             //JasperPrintManager.printReport(impresor, false);

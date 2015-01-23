@@ -1062,7 +1062,7 @@ public class Horario extends javax.swing.JInternalFrame {
             return;
         }
         if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
@@ -1164,7 +1164,7 @@ public class Horario extends javax.swing.JInternalFrame {
             return;
         }
         if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);

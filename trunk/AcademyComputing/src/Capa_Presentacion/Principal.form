@@ -200,7 +200,6 @@
               </Border>
             </Property>
             <Property name="text" type="java.lang.String" value="Pagos"/>
-            <Property name="actionCommand" type="java.lang.String" value="Pagos"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="0"/>
             </Property>
@@ -289,6 +288,14 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Restaurar"/>
                   </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Calcular Mora"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem13ActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>

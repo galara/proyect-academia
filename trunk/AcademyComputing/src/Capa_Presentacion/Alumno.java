@@ -1385,11 +1385,11 @@ public class Alumno extends javax.swing.JInternalFrame {
             return;
         }
         if (fechainicioalumno.getCalendar().getTime().after(FormatoFecha.StringToDate(fechafin.getText()))) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin ", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (fechainicioalumno.getCalendar().getTime().before(FormatoFecha.StringToDate(fechaini.getText())) /*|| fechainicioalumno.getCalendar().getTime().equals(FormatoFecha.StringToDate(fechaini.getText()))*/) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser mayor o igual a la fecha inicio ", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser mayor o igual a la fecha inicio del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
             System.out.print(fechainicioalumno.getCalendar().getTime().toString() + "--" + FormatoFecha.StringToDate(fechaini.getText()));
             return;
         }
