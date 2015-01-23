@@ -926,7 +926,6 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         grado_establecimiento.setEditable(false);
         grado_establecimiento.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        grado_establecimiento.setName("descripcion"); // NOI18N
         grado_establecimiento.setNextFocusableComponent(titularapellido);
         jPanel2.add(grado_establecimiento);
         grado_establecimiento.setBounds(570, 90, 210, 21);
@@ -992,7 +991,6 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         establecimiento.setEditable(false);
         establecimiento.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        establecimiento.setName("descripcion"); // NOI18N
         establecimiento.setNextFocusableComponent(direccion_establecimiento);
         jPanel2.add(establecimiento);
         establecimiento.setBounds(570, 10, 280, 21);
@@ -1005,7 +1003,6 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         direccion_establecimiento.setEditable(false);
         direccion_establecimiento.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        direccion_establecimiento.setName("descripcion"); // NOI18N
         direccion_establecimiento.setNextFocusableComponent(grado_establecimiento);
         jPanel2.add(direccion_establecimiento);
         direccion_establecimiento.setBounds(570, 50, 280, 21);
