@@ -26,7 +26,7 @@ public class Recibodepago {
 
     public static void comprobante(int parameter) {
         try {
-            String theReport = "report3.jasper";
+            String theReport = "Recibo3.jasper";
             if (theReport == null) {
                 System.exit(2);
             }
