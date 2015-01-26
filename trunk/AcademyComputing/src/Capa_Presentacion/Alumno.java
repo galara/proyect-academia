@@ -1432,7 +1432,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                         idalumnosengrupo(alumnoid, idg);
 
                         String sql = "INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n"
-                                + "SELECT mes_idmes, año,monto,fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
+                                + "SELECT mes_idmes, año,(monto-"+becagrupo.getText()+"),fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
                                 + "WHERE pagos.`grupo_idgrupo`='" + idg + "'";
 
                         int pagos = ac.agregarRegistrosql(sql);
