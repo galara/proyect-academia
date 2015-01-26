@@ -19,7 +19,7 @@ public class CalcularMoras {
     static java.sql.Connection conn;
 
     public static void moras() {
-        String sql = "INSERT INTO mora (mora , proyeccionpagos_idproyeccionpagos) SELECT '10', idproyeccionpagos from proyeccionpagos WHERE fechavencimiento < CURRENT_DATE()and estado=false and asignado=true and mes_idmes <> '13' and idproyeccionpagos not in (select proyeccionpagos_idproyeccionpagos from mora)";
+        String sql = "INSERT INTO mora (mora , proyeccionpagos_idproyeccionpagos) SELECT '10', idproyeccionpagos from proyeccionpagos WHERE fechavencimiento < CURRENT_DATE()and estado=false and asignado=true and mes_idmes <> '13' and monto > '0' and idproyeccionpagos not in (select proyeccionpagos_idproyeccionpagos from mora)";
         int n = 0;
 
         conn = BdConexion.getConexion();
@@ -38,6 +38,7 @@ public class CalcularMoras {
             System.out.print("morassssss");
             JOptionPane.showMessageDialog(null, "Se han calculado Moras");
         } else {
+            JOptionPane.showMessageDialog(null, "No Se encontraron moras que calcular");
         }
 
     }
