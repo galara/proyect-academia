@@ -31,7 +31,7 @@ public class TableCellFormatter implements TableCellRenderer{
        ftfcampo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));   
        if(formato == null || formato.isEmpty())
        {
-            formato = "#0";
+            formato = "#####0.00";
        }
        ftfcampo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat(formato))));
        }

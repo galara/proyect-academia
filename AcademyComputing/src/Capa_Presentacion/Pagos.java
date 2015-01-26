@@ -219,8 +219,9 @@ public class Pagos extends javax.swing.JInternalFrame {
                 }
                 //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
             }// fin sumar total otrospagos
-
+            
             totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
+            
         }
     }
 
@@ -522,8 +523,8 @@ public class Pagos extends javax.swing.JInternalFrame {
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
-                            float cbeca = Float.parseFloat(beca.getText());
-                            float resultado = (float) (Math.round((monto - cbeca) * 100.0) / 100.0);
+                            //float cbeca = Float.parseFloat(beca.getText());
+                            float resultado = (float) (Math.round((monto) * 100.0) / 100.0);
                             fila[i] = resultado;
                         }
                         if (i == 6) {

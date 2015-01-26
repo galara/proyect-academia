@@ -31,7 +31,7 @@ public class CellEditorSpinnerPago extends AbstractCellEditor implements TableCe
         spinner = new JSpinner();
         spinner.setFont(new Font("Tahoma", 1, 14));
         spinner.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        spinner.setModel(new SpinnerNumberModel(0, 0, 500, sizeDes));
+        spinner.setModel(new SpinnerNumberModel(0.00, 0.00, 10000.00, sizeDes));
 
         ChangeListener listener = new ChangeListener() {
             @Override
