@@ -254,6 +254,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(malumno);
 
+        jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         jMenuItem3.setText("Pensum");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +363,12 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.add(MenuReportHorario);
 
         jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem11.setText("Por Profesor");
+        jMenuItem11.setText("Listado de Alumnos");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem11);
 
         jMenuItem12.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -531,6 +537,15 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         CalcularMoras.moras();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // TODO add your handling code here:
+        ListadoAlumnos frmListadoAlumnos = new ListadoAlumnos();
+        if (frmListadoAlumnos == null) {
+            frmListadoAlumnos = new ListadoAlumnos();
+        }
+        AddForms.adminInternalFrame(dp, frmListadoAlumnos);        
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
