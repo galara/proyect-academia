@@ -9,13 +9,12 @@ import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
-//import static Capa_Presentacion.ListadoAlumnos.beca;
 import static Capa_Presentacion.ListadoAlumnos.cGrupo;
+import static Capa_Presentacion.ListadoAlumnos.cProfesor;
 import static Capa_Presentacion.ListadoAlumnos.codigoa;
 import static Capa_Presentacion.ListadoAlumnos.estado;
-//import static Capa_Presentacion.ListadoAlumnos.inicioalumno;
-import static Capa_Presentacion.ListadoAlumnos.nombrealumno;
 import static Capa_Presentacion.ListadoAlumnos.idalumno;
+import static Capa_Presentacion.ListadoAlumnos.nombrealumno;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -441,6 +440,7 @@ public class BuscarAlumnoLista extends javax.swing.JInternalFrame {
 
             codigoa.setText(alumnos.getValueAt(p, 0).toString());
             //filaseleccionada(alumnos.getValueAt(p, 0).toString());
+            cProfesor.setSelectedIndex(0);
             cGrupo.removeAllItems();
             ListadoAlumnos.llenarcombogrupo(alumnos.getValueAt(p, 0).toString(),"a");
             nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
