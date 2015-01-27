@@ -11,6 +11,7 @@ import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import Reportes.ListadoAlumnosGrupo;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -39,14 +40,14 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     DefaultTableModel model, model2;
     DefaultComboBoxModel modelCombo;
     // alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca 
-    String[] titulos = {"Id", "Codigo", "Nombres", "Apellidos", "Beca"};//Titulos para Jtabla
-    String[] titulos2 = {"Id", "Codigo", "Nombres", "Apellidos", "Beca"};//Titulos para Jtabla
+    String[] titulos = {"Id", "No.", "Codigo", "Nombres", "Apellidos", "Beca"};//Titulos para Jtabla
+    String[] titulos2 = {"Id", "No.", "Codigo", "Nombres", "Apellidos", "Beca"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
     public static Hashtable<String, String> hashTipopago = new Hashtable<>();
     public Hashtable<String, String> hashProfesor = new Hashtable<>();
-    String condicion="";
+    String condicion = "";
     AccesoDatos acceso = new AccesoDatos();
     static String idalumno = "", iddetallegrupo = "";
     java.sql.Connection conn;//getConnection intentara establecer una conexión.
@@ -109,7 +110,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
             Utilidades.setEditableTexto(this.JPanelGrupo, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelGrupo, false);
-            this.bntGuardar.setEnabled(false);
+            this.Reporte.setEnabled(false);
             removejtable();
 //            codigoa.setText("");
 //            codigoa.requestFocus();
@@ -195,7 +196,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         if (cProfesor.getSelectedIndex() != -1) {
             mProfesor prof = (mProfesor) cProfesor.getSelectedItem();
             String idprof = prof.getID();
-            condicion="p";
+            condicion = "p";
             llenarcombogrupo(idprof, "p");
         }
     }
@@ -211,12 +212,12 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             String[] campos = {"grupo.dia", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "grupo.idgrupo"};
             String[] condiciones = {"grupo.estado", "grupo.profesor_idcatedratico"};
             String[] Id = {Dato, idalumn};
+            nombrealumno.setText("");
+            estado.setText("");
             cGrupo.removeAllItems();
             //String inner = " INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
             getRegistroCombo("grupo", campos, condiciones, Id, "");
-        }
-        
-        else if (prof.equals("a")) {
+        } else if (prof.equals("a")) {
             String Dato = "1";
             String[] campos = {"grupo.dia", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "grupo.idgrupo"};
             String[] condiciones = {"grupo.estado", "alumno.codigo"};
@@ -480,8 +481,8 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                             while (rs.next()) {//mientras tenga registros que haga lo siguiente
                                 //codigoa.setText(rs.getString(1));
                                 cProfesor.setSelectedIndex(0);
-                                condicion="a";
-                                llenarcombogrupo(rs.getString(1),condicion);
+                                condicion = "a";
+                                llenarcombogrupo(rs.getString(1), condicion);
                                 nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
                                 if (rs.getString(5).equals("0")) {
                                     estado.setText("Inactivo");
@@ -520,34 +521,32 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarPagos(String condicion) {
-        
-        if(condicion.equals("p")){
-        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-        String id = grup.getID();
 
-        String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumnosengrupo.grupo_idgrupo=" + id;
+        if (condicion.equals("p")) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
+
+            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumnosengrupo.grupo_idgrupo=" + id;
 
 //        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
 //                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
 //                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
-        removejtable();
-        model = getRegistroPorLikel(model, sql);
-        }
-        
-        else if(condicion.equals("a")){
-        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-        String id = grup.getID();
+            removejtable();
+            model = getRegistroPorLikel(model, sql);
+        } else if (condicion.equals("a")) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
 
-        String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumno.codigo=" + id;
+            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumno.codigo=" + id;
 //        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
 //                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
 //                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
-        removejtable();
-        model = getRegistroPorLikel(model, sql);
+            removejtable();
+            model = getRegistroPorLikel(model, sql);
         }
-        
+
         Utilidades.ajustarAnchoColumnas(colegiaturas);
-        
+
         colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -573,24 +572,35 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             ResultSet rs;
 
             rs = acceso.getRegistroProc(tabla);
-            int cantcampos = 5;
+            int cantcampos = 6;
             //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos];
-
+                int count = 1;
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
                     // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
                     for (int i = 0; i < cantcampos; i++) {
 
-                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                        if (fila[i] == null) {
-                            fila[i] = "";
-                        } else {
-                        }
+                        //if (i == 1) {
+                        fila[0] = rs.getObject(1);
+                        fila[1] = count;
+                        fila[2] = rs.getObject(2);
+                        fila[3] = rs.getObject(3);
+                        fila[4] = rs.getObject(4);
+                        fila[5] = rs.getObject(5);
+
+                        //} else {
+                        //fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        //}
+//                        if (fila[i] == null) {
+//                            fila[i] = "";
+//                        } else {
+//                        }
                     }
                     modelo.addRow(fila);
+                    count++;
                 }
 
             } //} 
@@ -606,28 +616,27 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     }
 
     private void MostrarProductos(String condicion) {
-        
-        if(condicion.equals("p")){
-        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-        String id = grup.getID();
 
-        String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='0' and alumnosengrupo.grupo_idgrupo=" + id;
-        //String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
+        if (condicion.equals("p")) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
 
-        removejtable2();
-        model2 = getRegistroPorLikell(model2, sql);
+            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='0' and alumnosengrupo.grupo_idgrupo=" + id;
+            //String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
+
+            removejtable2();
+            model2 = getRegistroPorLikell(model2, sql);
+        } else if (condicion.equals("a")) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
+
+            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='0' and alumno.codigo=" + id;
+            //String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
+
+            removejtable2();
+            model2 = getRegistroPorLikell(model2, sql);
         }
-        else if(condicion.equals("a")){
-        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-        String id = grup.getID();
 
-        String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='0' and alumno.codigo=" + id;
-        //String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
-
-        removejtable2();
-        model2 = getRegistroPorLikell(model2, sql);
-        }
-        
         Utilidades.ajustarAnchoColumnas(otrosproductos);
 
         otrosproductos.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -651,29 +660,24 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             ResultSet rs;
 
             rs = acceso.getRegistroProc(tabla);
-            int cantcampos = 5;
+            int cantcampos = 6;
             //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos];
-
+                int count = 1;
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
                     for (int i = 0; i < cantcampos; i++) {
-
-                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-                        if (fila[i] == null) {
-                            fila[i] = "";
-                        } else {
-                        }
+                        fila[0] = rs.getObject(1);
+                        fila[1] = count;
+                        fila[2] = rs.getObject(2);
+                        fila[3] = rs.getObject(3);
+                        fila[4] = rs.getObject(4);
+                        fila[5] = rs.getObject(5);
                     }
-//                    fila[0] = rs.getString(1);
-//                    fila[1] = rs.getString(2);
-//                    fila[2] = Float.parseFloat(rs.getString(3));
-//                    fila[3] = 1.0;
-//                    fila[4] = (Math.round((1.0 * Float.parseFloat(rs.getString(3))) * 100.0) / 100.0);
-//                    fila[5] = false;
                     modelo.addRow(fila);
+                    count++;
                 }
 
             } //} 
@@ -751,7 +755,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
-        bntGuardar = new elaprendiz.gui.button.ButtonRect();
+        Reporte = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelGrupo = new javax.swing.JPanel();
@@ -769,6 +773,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         fechafin = new elaprendiz.gui.textField.TextField();
         jLabel4 = new javax.swing.JLabel();
         cProfesor = new javax.swing.JComboBox();
+        rbNombre = new javax.swing.JRadioButton();
         JPanelTable = new javax.swing.JPanel();
         tbPane = new elaprendiz.gui.panel.TabbedPaneHeader();
         jPanel3 = new javax.swing.JPanel();
@@ -784,6 +789,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         nombrealumno = new elaprendiz.gui.textField.TextField();
         jLabel19 = new javax.swing.JLabel();
         estado = new javax.swing.JLabel();
+        rbCodigo = new javax.swing.JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         tbPane1 = new elaprendiz.gui.panel.TabbedPaneHeader();
         JPanelPago = new javax.swing.JPanel();
@@ -792,8 +798,6 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
-        jLabel23 = new javax.swing.JLabel();
-        fechapago = new com.toedter.calendar.JDateChooser();
         pnlPaginador1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
 
@@ -885,15 +889,20 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
-        bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
-        bntGuardar.setMnemonic(KeyEvent.VK_G);
-        bntGuardar.setText("Guardar");
+        Reporte.setBackground(new java.awt.Color(51, 153, 255));
+        Reporte.setMnemonic(KeyEvent.VK_G);
+        Reporte.setText("Reporte");
+        Reporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReporteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntGuardar, gridBagConstraints);
+        pnlActionButtons.add(Reporte, gridBagConstraints);
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -937,47 +946,47 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Fecha Fin:");
         JPanelGrupo.add(jLabel6);
-        jLabel6.setBounds(730, 40, 110, 20);
+        jLabel6.setBounds(730, 60, 110, 20);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Fecha Inicio:");
         JPanelGrupo.add(jLabel9);
-        jLabel9.setBounds(600, 40, 110, 20);
+        jLabel9.setBounds(600, 60, 110, 20);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Carrera:");
         JPanelGrupo.add(jLabel5);
-        jLabel5.setBounds(320, 40, 250, 20);
+        jLabel5.setBounds(320, 60, 250, 20);
 
         cGrupo.setEditable(true);
         cGrupo.setName("grupo"); // NOI18N
         JPanelGrupo.add(cGrupo);
-        cGrupo.setBounds(90, 60, 210, 24);
+        cGrupo.setBounds(90, 80, 210, 24);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Grupo:");
         JPanelGrupo.add(jLabel7);
-        jLabel7.setBounds(20, 60, 60, 27);
+        jLabel7.setBounds(20, 80, 60, 27);
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Inscripción Q.");
         JPanelGrupo.add(jLabel24);
-        jLabel24.setBounds(600, 90, 110, 20);
+        jLabel24.setBounds(600, 110, 110, 20);
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Colegiatura Q.");
         JPanelGrupo.add(jLabel18);
-        jLabel18.setBounds(730, 90, 110, 20);
+        jLabel18.setBounds(730, 110, 110, 20);
 
         carrera.setEditable(false);
         carrera.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         carrera.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelGrupo.add(carrera);
-        carrera.setBounds(320, 60, 260, 24);
+        carrera.setBounds(320, 80, 260, 24);
 
         inscripcion.setEditable(false);
         inscripcion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
@@ -985,7 +994,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         inscripcion.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         inscripcion.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelGrupo.add(inscripcion);
-        inscripcion.setBounds(600, 110, 110, 24);
+        inscripcion.setBounds(600, 130, 110, 24);
 
         colegiatura.setEditable(false);
         colegiatura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
@@ -993,31 +1002,44 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         colegiatura.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
         JPanelGrupo.add(colegiatura);
-        colegiatura.setBounds(730, 110, 110, 24);
+        colegiatura.setBounds(730, 130, 110, 24);
 
         fechainicio.setEditable(false);
         fechainicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fechainicio.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelGrupo.add(fechainicio);
-        fechainicio.setBounds(600, 60, 110, 24);
+        fechainicio.setBounds(600, 80, 110, 24);
 
         fechafin.setEditable(false);
         fechafin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fechafin.setPreferredSize(new java.awt.Dimension(120, 21));
         JPanelGrupo.add(fechafin);
-        fechafin.setBounds(730, 60, 110, 24);
+        fechafin.setBounds(730, 80, 110, 24);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Profesor:");
         JPanelGrupo.add(jLabel4);
-        jLabel4.setBounds(10, 20, 80, 24);
+        jLabel4.setBounds(10, 40, 70, 24);
 
         cProfesor.setEditable(true);
         cProfesor.setModel(modelCombo = new DefaultComboBoxModel());
         cProfesor.setName("Profesor"); // NOI18N
         JPanelGrupo.add(cProfesor);
-        cProfesor.setBounds(90, 20, 210, 24);
+        cProfesor.setBounds(90, 40, 210, 24);
+
+        rbNombre.setBackground(java.awt.SystemColor.activeCaption);
+        rbNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rbNombre.setForeground(new java.awt.Color(0, 102, 102));
+        rbNombre.setSelected(true);
+        rbNombre.setText("Buscar por Profesor");
+        rbNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNombreActionPerformed(evt);
+            }
+        });
+        JPanelGrupo.add(rbNombre);
+        rbNombre.setBounds(2, 2, 240, 25);
 
         panelImage.add(JPanelGrupo);
         JPanelGrupo.setBounds(0, 160, 880, 170);
@@ -1103,6 +1125,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
                 JPanelBusqueda.setLayout(null);
 
+                codigoa.setEditable(false);
                 codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
                 codigoa.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1110,13 +1133,13 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                     }
                 });
                 JPanelBusqueda.add(codigoa);
-                codigoa.setBounds(120, 10, 97, 24);
+                codigoa.setBounds(120, 30, 97, 24);
 
                 jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
                 jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
                 jLabel16.setText("Codigo:");
                 JPanelBusqueda.add(jLabel16);
-                jLabel16.setBounds(10, 10, 100, 24);
+                jLabel16.setBounds(10, 30, 100, 24);
 
                 jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
                 jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1125,26 +1148,38 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                     }
                 });
                 JPanelBusqueda.add(jButton1);
-                jButton1.setBounds(220, 10, 20, 27);
+                jButton1.setBounds(220, 30, 20, 27);
 
                 nombrealumno.setEditable(false);
                 nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
                 JPanelBusqueda.add(nombrealumno);
-                nombrealumno.setBounds(440, 10, 360, 24);
+                nombrealumno.setBounds(440, 30, 360, 24);
 
                 jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
                 jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
                 jLabel19.setText("Alumno:");
                 JPanelBusqueda.add(jLabel19);
-                jLabel19.setBounds(310, 10, 120, 24);
+                jLabel19.setBounds(310, 30, 120, 24);
 
                 estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 JPanelBusqueda.add(estado);
-                estado.setBounds(700, 50, 110, 27);
+                estado.setBounds(260, 30, 110, 27);
+
+                rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
+                rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
+                rbCodigo.setText("Buscar por Alumno");
+                rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        rbCodigoActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(rbCodigo);
+                rbCodigo.setBounds(2, 2, 240, 25);
 
                 panelImage.add(JPanelBusqueda);
-                JPanelBusqueda.setBounds(0, 110, 880, 50);
+                JPanelBusqueda.setBounds(0, 90, 880, 70);
 
                 jPanel1.setBackground(new java.awt.Color(51, 51, 51));
                 jPanel1.setLayout(new java.awt.BorderLayout());
@@ -1187,30 +1222,15 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 jLabel21.setText("Hora");
                 JPanelRecibo.add(jLabel21);
-                jLabel21.setBounds(690, 10, 100, 19);
+                jLabel21.setBounds(690, 0, 100, 19);
 
                 clockDigital2.setForeground(new java.awt.Color(255, 255, 255));
                 clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
                 JPanelRecibo.add(clockDigital2);
-                clockDigital2.setBounds(690, 30, 100, 27);
-
-                jLabel23.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel23.setText("Fecha");
-                JPanelRecibo.add(jLabel23);
-                jLabel23.setBounds(120, 10, 120, 19);
-
-                fechapago.setDate(Calendar.getInstance().getTime());
-                fechapago.setDateFormatString("dd/MM/yyyy");
-                fechapago.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-                fechapago.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-                fechapago.setMinSelectableDate(new java.util.Date(-62135744300000L));
-                fechapago.setPreferredSize(new java.awt.Dimension(120, 22));
-                JPanelRecibo.add(fechapago);
-                fechapago.setBounds(120, 30, 120, 27);
+                clockDigital2.setBounds(690, 20, 100, 27);
 
                 panelImage.add(JPanelRecibo);
-                JPanelRecibo.setBounds(0, 40, 880, 70);
+                JPanelRecibo.setBounds(0, 40, 880, 50);
 
                 pnlPaginador1.setBackground(new java.awt.Color(57, 104, 163));
                 pnlPaginador1.setPreferredSize(new java.awt.Dimension(786, 40));
@@ -1314,6 +1334,42 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         balumnocodigo(codigoa.getText());
     }//GEN-LAST:event_codigoaActionPerformed
 
+    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
+        // TODO add your handling code here:
+        rbNombre.setSelected(false);
+//        rbApellido.setSelected(false);
+//        busqueda.requestFocus();
+        cProfesor.setEnabled(false);
+        codigoa.setEditable(true);
+        jButton1.setEnabled(true);
+        //cProfesor.setSelectedIndex(-1);
+        //cGrupo.removeAllItems();
+        limpiartodo();
+    }//GEN-LAST:event_rbCodigoActionPerformed
+
+    private void rbNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombreActionPerformed
+        // TODO add your handling code here:
+        rbCodigo.setSelected(false);
+//        rbApellido.setSelected(false);
+//        busqueda.requestFocus();
+        cProfesor.setEnabled(true);
+        codigoa.setEditable(false);
+        codigoa.setText("");
+        estado.setText("");
+        jButton1.setEnabled(false);
+    }//GEN-LAST:event_rbNombreActionPerformed
+
+    private void ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteActionPerformed
+        // TODO add your handling code here:
+        if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
+        } else if (cGrupo.getSelectedIndex() != -1) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
+            ListadoAlumnosGrupo.ReporteGrupo(id);
+        }
+    }//GEN-LAST:event_ReporteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar;
@@ -1327,11 +1383,11 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem Nueva_Carrera;
     private javax.swing.JMenuItem Nuevo_Profesor;
     private javax.swing.JMenuItem Nuevo_Tipopago;
+    private elaprendiz.gui.button.ButtonRect Reporte;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
-    private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     public static javax.swing.JComboBox cGrupo;
-    private javax.swing.JComboBox cProfesor;
+    public static javax.swing.JComboBox cProfesor;
     private elaprendiz.gui.textField.TextField carrera;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
     public static elaprendiz.gui.textField.TextField codigoa;
@@ -1340,7 +1396,6 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel estado;
     private elaprendiz.gui.textField.TextField fechafin;
     private elaprendiz.gui.textField.TextField fechainicio;
-    public static com.toedter.calendar.JDateChooser fechapago;
     private javax.swing.JFormattedTextField inscripcion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
@@ -1348,7 +1403,6 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel4;
@@ -1369,6 +1423,8 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
     private javax.swing.JPopupMenu popupprotipopago;
+    private javax.swing.JRadioButton rbCodigo;
+    private javax.swing.JRadioButton rbNombre;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
     private javax.swing.JFormattedTextField totalapagar;
