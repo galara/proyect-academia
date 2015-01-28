@@ -111,6 +111,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             Utilidades.esObligatorio(this.JPanelGrupo, false);
             this.Reporte.setEnabled(false);
             removejtable();
+            removejtable2();
 //            codigoa.setText("");
 //            codigoa.requestFocus();
             this.dispose();
@@ -121,19 +122,25 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
+            inscritos.setText("");
         while (colegiaturas.getRowCount() != 0) {
             model.removeRow(0);
+        
+            
         }
     }
 
     public void removejtable2() {
+        retirado.setText("");
         while (otrosproductos.getRowCount() != 0) {
             model2.removeRow(0);
+            
         }
     }
 
     private void limpiartodo() {
         removejtable();
+        removejtable2();
         //llenarcombotipopago();
         llenarcomboprofesor();
 //        codigoa.setText("");
@@ -150,7 +157,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         //beca.setText("");
         //inicioalumno.setText("");
         //dia.setText("");
-        cGrupo.setSelectedIndex(-1);
+        cGrupo.setSelectedIndex(0);
         Utilidades.esObligatorio(this.JPanelRecibo, false);
         Utilidades.esObligatorio(this.JPanelGrupo, false);
         Utilidades.esObligatorio(this.JPanelPago, false);
@@ -386,8 +393,9 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             fechafin.setText("");
             inscripcion.setValue(null);
             colegiatura.setValue(null);
-            removejtable();
             removejtable2();
+            removejtable();
+            
             //sumartotal();
             //inicioalumno.setText("");
             //beca.setText("");
@@ -538,7 +546,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         }
 
         Utilidades.ajustarAnchoColumnas(colegiaturas);
-
+        inscritos.setText(""+colegiaturas.getRowCount());
         colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -630,7 +638,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         }
 
         Utilidades.ajustarAnchoColumnas(otrosproductos);
-
+        retirado.setText(""+otrosproductos.getRowCount());
         otrosproductos.getColumnModel().getColumn(0).setMaxWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setMinWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -785,8 +793,10 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         tbPane1 = new elaprendiz.gui.panel.TabbedPaneHeader();
         JPanelPago = new javax.swing.JPanel();
-        totalapagar = new javax.swing.JFormattedTextField();
+        retirado = new javax.swing.JFormattedTextField();
         jLabel27 = new javax.swing.JLabel();
+        inscritos = new javax.swing.JFormattedTextField();
+        jLabel28 = new javax.swing.JLabel();
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
@@ -852,9 +862,9 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Registro de Pagos");
+        setTitle("Reporte");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setName("pagos"); // NOI18N
+        setName("ReporteGrupos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -883,7 +893,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
 
         Reporte.setBackground(new java.awt.Color(51, 153, 255));
         Reporte.setMnemonic(KeyEvent.VK_G);
-        Reporte.setText("Reporte");
+        Reporte.setText("Generar Reporte");
         Reporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReporteActionPerformed(evt);
@@ -1118,6 +1128,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelBusqueda.setLayout(null);
 
                 codigoa.setEditable(false);
+                codigoa.setEnabled(false);
                 codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
                 codigoa.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1134,6 +1145,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 jLabel16.setBounds(10, 30, 100, 24);
 
                 jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+                jButton1.setEnabled(false);
                 jButton1.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         jButton1ActionPerformed(evt);
@@ -1182,21 +1194,37 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelPago.setBorder(javax.swing.BorderFactory.createEtchedBorder());
                 JPanelPago.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                totalapagar.setEditable(false);
-                totalapagar.setBackground(new java.awt.Color(204, 255, 102));
-                totalapagar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-                totalapagar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-                totalapagar.setToolTipText("");
-                totalapagar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-                totalapagar.setPreferredSize(new java.awt.Dimension(80, 23));
-                JPanelPago.add(totalapagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
+                retirado.setEditable(false);
+                retirado.setBackground(new java.awt.Color(204, 255, 102));
+                retirado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+                retirado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                retirado.setToolTipText("");
+                retirado.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+                retirado.setPreferredSize(new java.awt.Dimension(80, 23));
+                JPanelPago.add(retirado, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 130, 105, 40));
 
                 jLabel27.setBackground(new java.awt.Color(255, 204, 0));
                 jLabel27.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel27.setText("Total Q.");
+                jLabel27.setText("Retirados");
                 jLabel27.setOpaque(true);
-                JPanelPago.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 20, 105, 30));
+                JPanelPago.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 110, 105, 20));
+
+                inscritos.setEditable(false);
+                inscritos.setBackground(new java.awt.Color(204, 255, 102));
+                inscritos.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
+                inscritos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                inscritos.setToolTipText("");
+                inscritos.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+                inscritos.setPreferredSize(new java.awt.Dimension(80, 23));
+                JPanelPago.add(inscritos, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
+
+                jLabel28.setBackground(new java.awt.Color(255, 204, 0));
+                jLabel28.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+                jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel28.setText("Inscritos");
+                jLabel28.setOpaque(true);
+                JPanelPago.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 40, 105, 20));
 
                 tbPane1.addTab("============", JPanelPago);
 
@@ -1231,7 +1259,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
                 jLabel11.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
-                jLabel11.setText("<--Listado de Alumnos-->");
+                jLabel11.setText("<--Reporte de Alumnos-->");
                 pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
 
                 panelImage.add(pnlPaginador1);
@@ -1333,6 +1361,8 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
 //        busqueda.requestFocus();
         cProfesor.setEnabled(false);
         codigoa.setEditable(true);
+        codigoa.setEnabled(true);
+        
         jButton1.setEnabled(true);
         //cProfesor.setSelectedIndex(-1);
         //cGrupo.removeAllItems();
@@ -1342,6 +1372,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private void rbNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombreActionPerformed
         // TODO add your handling code here:
         rbCodigo.setSelected(false);
+        codigoa.setEnabled(false);
 //        rbApellido.setSelected(false);
 //        busqueda.requestFocus();
         cProfesor.setEnabled(true);
@@ -1389,6 +1420,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField fechafin;
     private elaprendiz.gui.textField.TextField fechainicio;
     private javax.swing.JFormattedTextField inscripcion;
+    private javax.swing.JFormattedTextField inscritos;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
@@ -1397,6 +1429,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1417,8 +1450,8 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu popupprotipopago;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombre;
+    private javax.swing.JFormattedTextField retirado;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
-    private javax.swing.JFormattedTextField totalapagar;
     // End of variables declaration//GEN-END:variables
 }

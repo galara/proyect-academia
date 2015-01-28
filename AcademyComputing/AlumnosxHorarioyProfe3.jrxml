@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AlumnosxHorarioyProfe3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fc40772a-3d46-4c37-86c6-afba7f3dd94c">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="859"/>
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="grupo" class="java.lang.String"/>
 	<queryString>
@@ -38,7 +38,7 @@ where grupo.idgrupo = alumnosengrupo.grupo_idgrupo and grupo.idgrupo= $P{grupo} 
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Academia de Computación -COMPUVISION-]]></text>
+				<text><![CDATA[Academia de Computación "COMPUVISION"]]></text>
 			</staticText>
 		</band>
 	</title>
