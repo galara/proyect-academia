@@ -85,10 +85,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
-        MenuReportHorario = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -334,36 +331,12 @@ public class Principal extends javax.swing.JFrame {
         jMenu5.setText("Informes");
         jMenu5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
-        jMenuItem8.setText("Cobros del dia");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItem8);
-
-        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cobros.jpg"))); // NOI18N
-        jMenuItem9.setText("Cobros Pendientes");
-        jMenu5.add(jMenuItem9);
-
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/checklist-icon-2.jpg"))); // NOI18N
         jMenu6.setText("Reporte de Alumnos");
         jMenu6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        MenuReportHorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        MenuReportHorario.setText("Por Horario");
-        MenuReportHorario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuReportHorarioActionPerformed(evt);
-            }
-        });
-        jMenu6.add(MenuReportHorario);
-
         jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem11.setText("Listado de Alumnos");
+        jMenuItem11.setText("Listado de Alumnos Grupo");
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -516,19 +489,6 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
-    private void MenuReportHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuReportHorarioActionPerformed
-        // TODO add your handling code here:
-        ReportXHorario frmrepxhorario = new ReportXHorario();
-        if (frmrepxhorario == null) {
-            frmrepxhorario = new ReportXHorario();
-        }
-        AddForms.adminInternalFrame(dp, frmrepxhorario);
-    }//GEN-LAST:event_MenuReportHorarioActionPerformed
-
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
         Pagos frmPagos = new Pagos();
@@ -554,11 +514,11 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-        Pagos_Diarios frmPagos_Diarios = new Pagos_Diarios();
-        if (frmPagos_Diarios == null) {
-            frmPagos_Diarios = new Pagos_Diarios();
+        PagosDiarios frmPagosDiarios = new PagosDiarios();
+        if (frmPagosDiarios == null) {
+            frmPagosDiarios = new PagosDiarios();
         }
-        AddForms.adminInternalFrame(dp, frmPagos_Diarios); 
+        AddForms.adminInternalFrame(dp, frmPagosDiarios); 
         
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
@@ -580,7 +540,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem MenuReportHorario;
     public static javax.swing.JDesktopPane dp;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -605,8 +564,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;
