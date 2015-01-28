@@ -18,7 +18,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -525,22 +524,15 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         if (condicion.equals("p")) {
             mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
             String id = grup.getID();
-
             String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumnosengrupo.grupo_idgrupo=" + id;
 
-//        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-//                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
-//                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
             removejtable();
             model = getRegistroPorLikel(model, sql);
-        } else if (condicion.equals("a")) {
-            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-            String id = grup.getID();
 
-            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumno.codigo=" + id;
-//        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-//                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
-//                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
+        } else if (condicion.equals("a")) {
+
+            //String id = codigoa.getText();
+            String sql = "SELECT alumno.idalumno,alumno.codigo,alumno.nombres,alumno.apellidos,alumnosengrupo.beca FROM alumno INNER JOIN alumnosengrupo ON alumno.idalumno = alumnosengrupo.alumno_idalumno where alumno.estado='1' and alumno.idalumno='" + idalumno + "'";
             removejtable();
             model = getRegistroPorLikel(model, sql);
         }
