@@ -372,7 +372,12 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem11);
 
         jMenuItem12.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem12.setText("Por monto Colegiatura");
+        jMenuItem12.setText("Pagos Diarios");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem12);
 
         jMenu5.add(jMenu6);
@@ -546,6 +551,16 @@ public class Principal extends javax.swing.JFrame {
         }
         AddForms.adminInternalFrame(dp, frmListadoAlumnos);        
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+        Pagos_Diarios frmPagos_Diarios = new Pagos_Diarios();
+        if (frmPagos_Diarios == null) {
+            frmPagos_Diarios = new Pagos_Diarios();
+        }
+        AddForms.adminInternalFrame(dp, frmPagos_Diarios); 
+        
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * @param args the command line arguments
