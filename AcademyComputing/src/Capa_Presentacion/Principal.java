@@ -77,6 +77,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
@@ -276,6 +277,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu8.add(jMenuItem10);
+
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
+        jMenuItem8.setText("Anulacion de Pagos");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem8);
 
         jMenuBar1.add(jMenu8);
 
@@ -486,7 +496,7 @@ public class Principal extends javax.swing.JFrame {
             frmPensum = new PensumDetalle();
         }
         AddForms.adminInternalFrame(dp, frmPensum);
-        
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -509,7 +519,7 @@ public class Principal extends javax.swing.JFrame {
         if (frmListadoAlumnos == null) {
             frmListadoAlumnos = new ListadoAlumnos();
         }
-        AddForms.adminInternalFrame(dp, frmListadoAlumnos);        
+        AddForms.adminInternalFrame(dp, frmListadoAlumnos);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
@@ -518,9 +528,19 @@ public class Principal extends javax.swing.JFrame {
         if (frmPagosDiarios == null) {
             frmPagosDiarios = new PagosDiarios();
         }
-        AddForms.adminInternalFrame(dp, frmPagosDiarios); 
-        
+        AddForms.adminInternalFrame(dp, frmPagosDiarios);
+
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+
+        AnulacionPagos frmAnulacionPagos = new AnulacionPagos();
+        if (frmAnulacionPagos == null) {
+            frmAnulacionPagos = new AnulacionPagos();
+        }
+        AddForms.adminInternalFrame(dp, frmAnulacionPagos);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -535,7 +555,7 @@ public class Principal extends javax.swing.JFrame {
          */
         //java.awt.EventQueue.invokeLater(() -> {
         new Principal().setVisible(true);
-        
+
         //});
     }
 
@@ -564,6 +584,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;

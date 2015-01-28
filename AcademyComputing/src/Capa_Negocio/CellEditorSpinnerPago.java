@@ -27,7 +27,7 @@ public class CellEditorSpinnerPago extends AbstractCellEditor implements TableCe
     private int fila;
     private int columna;
 
-    public CellEditorSpinnerPago(int sizeDes, Pagos compra) {
+    public CellEditorSpinnerPago(int sizeDes) {
         spinner = new JSpinner();
         spinner.setFont(new Font("Tahoma", 1, 14));
         spinner.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
