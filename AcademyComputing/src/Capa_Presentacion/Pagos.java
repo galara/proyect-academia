@@ -477,7 +477,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     private void MostrarPagos() {
 
         String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
+                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos and mora.exoneracion=0),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
                 + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
 
         removejtable();
@@ -1090,9 +1090,11 @@ public class Pagos extends javax.swing.JInternalFrame {
                             return false;}
                     }
                 });
+                otrosproductos.setFocusCycleRoot(true);
+                otrosproductos.setGridColor(new java.awt.Color(51, 51, 255));
                 otrosproductos.setName("otrosproductos"); // NOI18N
-                otrosproductos.setOpaque(false);
                 otrosproductos.setRowHeight(20);
+                otrosproductos.setSelectionBackground(java.awt.SystemColor.activeCaption);
                 jScrollPane2.setViewportView(otrosproductos);
 
                 jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 210));
@@ -1123,14 +1125,14 @@ public class Pagos extends javax.swing.JInternalFrame {
                 JPanelBusqueda.add(jLabel16);
                 jLabel16.setBounds(10, 10, 100, 24);
 
-                jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+                jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar 2.png"))); // NOI18N
                 jButton1.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         jButton1ActionPerformed(evt);
                     }
                 });
                 JPanelBusqueda.add(jButton1);
-                jButton1.setBounds(220, 10, 20, 27);
+                jButton1.setBounds(220, 10, 20, 24);
 
                 nombrealumno.setEditable(false);
                 nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
@@ -1403,7 +1405,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                                     n = ps.executeUpdate(pmora);
                                 } else if (colegiaturas.getValueAt(i, 8).toString().equals("false") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
                                     float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
-                                    String pmora = "update mora set  exoneracion=" + exoneracion + " where proyeccionpagos_idproyeccionpagos=" + id;
+                                    String pmora = "update mora set  exoneracion=" + exoneracion + ", estado=true where proyeccionpagos_idproyeccionpagos=" + id;
                                     n = ps.executeUpdate(pmora);
                                 }
                             }
