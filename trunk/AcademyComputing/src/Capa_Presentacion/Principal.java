@@ -278,6 +278,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu8.add(jMenuItem10);
 
+        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
         jMenuItem8.setText("Anulacion de Pagos");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -342,7 +343,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/checklist-icon-2.jpg"))); // NOI18N
-        jMenu6.setText("Reporte de Alumnos");
+        jMenu6.setText("Reporte de Pagos");
         jMenu6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N

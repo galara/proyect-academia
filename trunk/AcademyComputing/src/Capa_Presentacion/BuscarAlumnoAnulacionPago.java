@@ -12,9 +12,9 @@ import Capa_Negocio.Utilidades;
 //import static Capa_Presentacion.AnulacionPagos.cGrupo;
 //import static Capa_Presentacion.AnulacionPagos.cProfesor;
 import static Capa_Presentacion.AnulacionPagos.codigoa;
-import static Capa_Presentacion.AnulacionPagos.estado;
+//import static Capa_Presentacion.AnulacionPagos.estado;
 import static Capa_Presentacion.AnulacionPagos.idalumno;
-import static Capa_Presentacion.AnulacionPagos.nombrealumno;
+//import static Capa_Presentacion.AnulacionPagos.nombrealumno;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -443,20 +443,21 @@ public class BuscarAlumnoAnulacionPago extends javax.swing.JInternalFrame {
             //cProfesor.setSelectedIndex(0);
             //cGrupo.removeAllItems();
             //ListadoAlumnos.llenarcombogrupo(alumnos.getValueAt(p, 0).toString(),"a");
-            nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
+            //nombrealumno.setText(alumnos.getValueAt(p, 1).toString() + " " + alumnos.getValueAt(p, 2).toString());
             //beca.setText(alumnos.getValueAt(p, 4).toString());
             //Date fechaini = FormatoFecha.StringToDate(alumnos.getValueAt(p, 5).toString());
             //inicioalumno.setDate(fechaini);
 
             if (alumnos.getValueAt(p, 4).toString().equals("Inactivo")) {
-                estado.setText(alumnos.getValueAt(p, 4).toString());
+                //estado.setText(alumnos.getValueAt(p, 4).toString());
                 //estado.setText("Inactivo");
-                estado.setForeground(Color.red);
+                //estado.setForeground(Color.red);
             } else if (alumnos.getValueAt(p, 4).toString().equals("Activo")) {
-                estado.setText(alumnos.getValueAt(p, 4).toString());
-                estado.setForeground(Color.WHITE);
+                //estado.setText(alumnos.getValueAt(p, 4).toString());
+                //estado.setForeground(Color.WHITE);
             }
             idalumno=(alumnos.getValueAt(p, 5).toString());
+            codigoa.requestFocus();
             this.dispose();
         }
     }//GEN-LAST:event_alumnosKeyPressed

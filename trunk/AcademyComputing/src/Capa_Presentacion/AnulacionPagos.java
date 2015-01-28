@@ -7,27 +7,22 @@ package Capa_Presentacion;
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
 import static Capa_Negocio.AddForms.adminInternalFrame;
-import Capa_Negocio.CellEditorSpinnerPago;
-import Capa_Negocio.Editor_CheckBox;
-import Capa_Negocio.TableCellFormatter;
+import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.Renderer_CheckBox;
+import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
 import Reportes.Recibodepago;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,16 +33,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import modelos.mGrupo;
-import modelos.mTipopago;
 
 /**
  *
@@ -56,11 +45,11 @@ import modelos.mTipopago;
 public class AnulacionPagos extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
-    DefaultTableModel model, model2,model3;
+    DefaultTableModel model, model2, model3;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Pagar Mora", "Pagar Mes"};//Titulos para Jtabla
-    String[] titulos2 = {"Id","Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Agregar"};//Titulos para Jtabla
-    String[] titulos3 = {"Codigo Alumno","Nombre","Recibo No.", "Fecha", "Total"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Anular Mora", "Anular Mes"};//Titulos para Jtabla
+    String[] titulos2 = {"Id", "Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Anular"};//Titulos para Jtabla
+    String[] titulos3 = {"Codigo Alumno", "Nombre", "Recibo No.", "Fecha", "Total"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
     public static Hashtable<String, String> hashGrupo = new Hashtable<>();
@@ -76,38 +65,19 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
-        //llenarcombotipopago();
-
-//        cGrupo.addItemListener(
-//                (ItemEvent e) -> {
-//                    if (e.getStateChange() == ItemEvent.SELECTED) {
-//                        selecciongrupo();
-//                    }
-//                });
 
         colegiaturas.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                 sumartotal();
-                //formatotabla();
             }
         });
 
         otrosproductos.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                 sumartotal();
-                //formatotabla();
             }
         });
-        
-//        recibos.getModel().addTableModelListener(new TableModelListener() {
-//            public void tableChanged(TableModelEvent e) {
-//                reciboseleccion();
-//                //formatotabla();
-//            }
-//        });
-                
-        //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox());
-        //colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
+
         colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -116,22 +86,14 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         otrosproductos.getColumnModel().getColumn(0).setMinWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setPreferredWidth(0);
         otrosproductos.doLayout();
-        
+
         JCheckBox check = new JCheckBox();
         colegiaturas.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(check));
         colegiaturas.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(check));
         otrosproductos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(check));
-        //colegiaturas.getColumnModel().getColumn(8).setCellEditor(new Editor_CheckBox()); *
-        //colegiaturas.getColumnModel().getColumn(9).setCellEditor(new Editor_CheckBox()); *
-
-        //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
         colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
         colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
         otrosproductos.getColumnModel().getColumn(6).setCellRenderer(new Renderer_CheckBox());
-
-        //CellEditorSpinnerPago cnt = new CellEditorSpinnerPago(1);
-        //otrosproductos.getColumnModel().getColumn(4).setCellEditor(cnt);
-        //otrosproductos.getColumnModel().getColumn(4).setCellRenderer(new TableCellFormatter(null));
 
     }
 
@@ -160,6 +122,8 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             Utilidades.esObligatorio(this.JPanelGrupo, false);
             this.bntGuardar.setEnabled(false);
             removejtable();
+            removejtable2();
+            removejtable3();
             codigoa.setText("");
             codigoa.requestFocus();
             this.dispose();
@@ -180,34 +144,21 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             model2.removeRow(0);
         }
     }
-    
+
     public void removejtable3() {
         while (recibos.getRowCount() != 0) {
             model3.removeRow(0);
         }
     }
-    
+
     private void limpiartodo() {
         removejtable();
         removejtable2();
         removejtable3();
-       // llenarcombotipopago();
         codigoa.setText("");
         codigoa.requestFocus();
-//        profesor.setText("");
-//        carrera.setText("");
-//        horade.setText("");
-//        horaa.setText("");
-//        fechainicio.setText("");
-//        fechafin.setText("");
-//        inscripcion.setValue(null);
-//        colegiatura.setValue(null);
-        nombrealumno.setText("");
-//        beca.setText("");
-//        inicioalumno.setText("");
-//        dia.setText("");
-//        cGrupo.setSelectedIndex(-1);
-        Utilidades.esObligatorio(this.JPanelRecibo, false);
+        //nombrealumno.setText("");
+        //Utilidades.esObligatorio(this.JPanelRecibo, false);
         Utilidades.esObligatorio(this.JPanelGrupo, false);
         Utilidades.esObligatorio(this.JPanelPago, false);
         codigoa.requestFocus();
@@ -219,229 +170,39 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         } else {
             float Actual, Resultado = 0;
             for (int i = 0; i < model.getRowCount(); i++) {//sumar total tabla meses
-                if (colegiaturas.getValueAt(i, 9).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
-                    if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
-                        Actual = Float.parseFloat(colegiaturas.getValueAt(i, 7).toString());
-                        Resultado = Resultado + Actual;
-                    } else if (colegiaturas.getValueAt(i, 8).toString().equals("false")) {
-                        Actual = Float.parseFloat(colegiaturas.getValueAt(i, 4).toString());
-                        Resultado = Resultado + Actual;
-                    }
+                if (colegiaturas.getValueAt(i, 9).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                    Actual = Float.parseFloat(colegiaturas.getValueAt(i, 4).toString());
+                    Resultado = Resultado + Actual;
                 }
-                //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
+                if (colegiaturas.getValueAt(i, 8).toString().equals("false")) {
+                    Actual = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
+                    Resultado = Resultado + Actual;
+                }
             }// fin sumar total meses
 
             for (int i = 0; i < model2.getRowCount(); i++) {//sumar total tabla otrospagos
-                if (otrosproductos.getValueAt(i, 5).toString().equals("true") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
-                    float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
+                if (otrosproductos.getValueAt(i, 6).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                    float canti = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
                     if (canti > 0) {
-                        Actual = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
+                        Actual = Float.parseFloat(otrosproductos.getValueAt(i, 5).toString());
                         Resultado = Resultado + Actual;
                     }
                 }
-                //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
             }// fin sumar total otrospagos
-            
+
             totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
-            
+
         }
     }
 
-//    /*o
-//     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
-//     *y se los envia a un metodo interno getRegistroCombo() 
-//     *
-//     */
-//    public static void llenarcombogrupo(String idalumn) {
-//        String Dato = "1";
-//        String[] campos = {"grupo.codigo", "grupo.descripcion", "grupo.idgrupo"};
-//        String[] condiciones = {"grupo.estado", "alumno.codigo"};
-//        String[] Id = {Dato, idalumn};
-//        //cGrupo.removeAllItems();
-//        String inner = " INNER JOIN alumnosengrupo ON grupo.idgrupo = alumnosengrupo.grupo_idgrupo INNER JOIN alumno ON alumnosengrupo.alumno_idalumno = alumno.idalumno ";
-//        getRegistroCombo("grupo", campos, condiciones, Id, inner);
-//
-//    }
-
-    /*El metodo llenarcombo() envia los parametros para la consulta a la BD y el medoto
-     *getRegistroCombo() se encarga de enviarlos a la capa de AccesoDatos.getRegistros()
-     *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
-     *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
-     */
-//    public static void getRegistroCombo(String tabla, String[] campos, String[] campocondicion, String[] condicionid, String inner) {
-//        try {
-//            ResultSet rs;
-//            AccesoDatos ac = new AccesoDatos();
-//
-//            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, inner);
-//
-//            int cantcampos = campos.length;
-//            if (rs != null) {
-//
-//                DefaultComboBoxModel modeloComboBox;
-//                modeloComboBox = new DefaultComboBoxModel();
-//                cGrupo.setModel(modeloComboBox);
-//
-//                modeloComboBox.addElement(new mGrupo("", "0"));
-//                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                    int count = 0;
-//                    rs.beforeFirst();//regresa el puntero al primer registro
-//                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                        count++;
-//                        modeloComboBox.addElement(new mGrupo(rs.getString(1) + " " + rs.getString(2), "" + rs.getInt(3)));
-//                        hashGrupo.put(rs.getString(1) + " " + rs.getString(2), "" + count);
-//                    }
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-//
-//    /*
-//     *Prepara los parametros para la consulta de datos que deseamos agregar al model del ComboBox
-//     *y se los envia a un metodo interno getRegistroCombo() 
-//     *
-//     */
-//    public void llenarcombotipopago() {
-//        String Dato = "1";
-//        String[] campos = {"tipopago", "idtipopago"};
-//        String[] condiciones = {"estado"};
-//        String[] Id = {Dato};
-//        cTipopago.removeAllItems();
-//        getRegistroCombotipopago("tipopago", campos, condiciones, Id);
-//
-//    }
-//
-//    /*El metodo llenarcombo() envia los parametros para la consulta a la BD y el medoto
-//     *getRegistroCombo() se encarga de enviarlos a la capa de AccesoDatos.getRegistros()
-//     *quiern devolcera un ResultSet para luego obtener los valores y agregarlos al JConboBox
-//     *y a una Hashtable que nos servira para obtener el id y seleccionar valores.
-//     */
-//    public void getRegistroCombotipopago(String tabla, String[] campos, String[] campocondicion, String[] condicionid) {
-//        try {
-//            ResultSet rs;
-//            AccesoDatos ac = new AccesoDatos();
-//
-//            rs = ac.getRegistros(tabla, campos, campocondicion, condicionid, "");
-//            int cantcampos = campos.length;
-//            if (rs != null) {
-//
-//                DefaultComboBoxModel modeloComboBox;
-//                modeloComboBox = new DefaultComboBoxModel();
-//                cTipopago.setModel(modeloComboBox);
-//
-//                modeloComboBox.addElement(new mTipopago("", "0"));
-//                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                    int count = 0;
-//                    rs.beforeFirst();//regresa el puntero al primer registro
-//                    Object[] fila = new Object[cantcampos];
-//                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                        count++;
-//                        modeloComboBox.addElement(new mTipopago(rs.getString(1), "" + rs.getInt(2)));
-//                        hashTipopago.put(rs.getString(1), "" + count);
-//                    }
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Error", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-
-//    /* Metodo que llena los campos con la información de grupo
-//     * Tambien llena en la pestaña de coelgiatura lo que el alumno tiene pendiente de pago
-//     */
-//    public void selecciongrupo() {
-//        if (cGrupo.getSelectedIndex() == 0) {
-//            profesor.setText("");
-//            carrera.setText("");
-//            horade.setText("");
-//            horaa.setText("");
-//            fechainicio.setText("");
-//            fechafin.setText("");
-//            inscripcion.setValue(null);
-//            colegiatura.setValue(null);
-//            removejtable();
-//            removejtable2();
-//            sumartotal();
-//            inicioalumno.setText("");
-//            beca.setText("");
-//            dia.setText("");
-//            Utilidades.esObligatorio(this.JPanelRecibo, false);
-//            //Utilidades.esObligatorio(this.JPanelBusqueda, false);
-//            Utilidades.esObligatorio(this.JPanelGrupo, false);
-//            Utilidades.esObligatorio(this.JPanelPago, false);
-//
-//        } else if (cGrupo.getSelectedIndex() != -1) {
-//
-//            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-//            String[] id = {grup.getID()};
-//
-//            ResultSet rs;
-//            AccesoDatos ac = new AccesoDatos();
-//            String[] cond = {"grupo.idgrupo"};
-//            String inner = " INNER JOIN profesor on grupo.profesor_idcatedratico=profesor.idcatedratico INNER JOIN carrera on grupo.carrera_idcarrera=carrera.idcarrera ";
-//            if (!id.equals(0)) {
-//
-//                String conct = "concat(profesor.nombre,' ',profesor.apellido)";
-//                String[] campos = {conct, "carrera.descripcion", "DATE_FORMAT(grupo.horariode,'%h:%i %p')", "DATE_FORMAT(grupo.horarioa,'%h:%i %p')", "DATE_FORMAT(grupo.fechainicio,'%d-%m-%Y')", "DATE_FORMAT(grupo.fechafin,'%d-%m-%Y')", "grupo.inscripcion", "grupo.colegiatura", "grupo.dia"};
-//
-//                rs = ac.getRegistros("grupo", campos, cond, id, inner);
-//
-//                if (rs != null) {
-//                    try {
-//                        if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                            rs.beforeFirst();//regresa el puntero al primer registro
-//                            while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                                profesor.setText(rs.getString(1));
-//                                carrera.setText(rs.getString(2));
-//                                horade.setText(rs.getString(3));
-//                                horaa.setText(rs.getString(4));
-//                                fechainicio.setText((rs.getString(5)));
-//                                fechafin.setText((rs.getString(6)));
-//                                inscripcion.setValue(rs.getFloat(7));
-//                                colegiatura.setValue(rs.getFloat(8));
-//                                dia.setText(rs.getString(9));
-//                            }
-//                            idalumnosengrupo(idalumno, "" + grup.getID());
-//                            MostrarPagos();
-//                            MostrarProductos();
-//                            sumartotal();
-//                            Utilidades.esObligatorio(this.JPanelRecibo, false);
-//                            Utilidades.esObligatorio(this.JPanelGrupo, false);
-//                            Utilidades.esObligatorio(this.JPanelPago, false);
-//                        }
-//                    } catch (SQLException e) {
-//                        JOptionPane.showInternalMessageDialog(this, e);
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
-    
-    
-    
     /*
      * Metodo para buscar un alumno por su codigo devuelde el id
      */
     public void balumnocodigo(String codigo) {
         if (codigo.isEmpty()) {
-            nombrealumno.setText("");
-            //beca.setText("");
-            //inicioalumno.setDate(null);
-            estado.setText("");
-            //cGrupo.removeAllItems();
+            //nombrealumno.setText("");
+            //estado.setText("");
             idalumno = "";
-            //inicioalumno.setText("");
-            //beca.setText("");
-            //dia.setText("");
-
         } else if (!codigo.isEmpty()) {
 
             ResultSet rs;
@@ -461,17 +222,16 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                             rs.beforeFirst();//regresa el puntero al primer registro
                             while (rs.next()) {//mientras tenga registros que haga lo siguiente
                                 codigoa.setText(rs.getString(1));
-                                //llenarcombogrupo(rs.getString(1));
-                                nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
+                                //nombrealumno.setText(rs.getString(2) + " " + rs.getString(3));
                                 if (rs.getString(5).equals("0")) {
-                                    estado.setText("Inactivo");
-                                    estado.setForeground(Color.red);
+                                    //  estado.setText("Inactivo");
+                                    //  estado.setForeground(Color.red);
                                 } else if (rs.getString(5).equals("1")) {
-                                    estado.setText("Activo");
-                                    estado.setForeground(Color.WHITE/*new java.awt.Color(102, 204, 0)*/);
+                                    // estado.setText("Activo");
+                                    // estado.setForeground(Color.WHITE/*new java.awt.Color(102, 204, 0)*/);
                                 }
                                 idalumno = (rs.getString(6));
-                                MostrarRecibos();
+                                MostrarRecibos("alumno");
                             }
                         } else {
                             JOptionPane.showInternalMessageDialog(this, " El codigo no fue encontrado ");
@@ -488,19 +248,20 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             }
         }
     }
-    
-    private void reciboseleccion(){
-        
+
+    private void reciboseleccion() {
+
         int fila = recibos.getSelectedRow();
         String id = "" + recibos.getValueAt(fila, 2);
         if (recibos.getValueAt(fila, 0) != null) {
             MostrarPagos(id);
             MostrarProductos(id);
+            sumartotal();
+
         }
-        
+
     }
-            
-            
+
     /* Este metodo recibe de el campo busqueda un parametro que es el que servirá para realizar la cunsulta
      * de los datos, este envia a la capa de negocio "peticiones.getRegistroPorPks( el modelo de la JTable,
      * el nombre de la tabla, los campos de la tabla a consultar, los campos de condiciones, y el dato a comparar
@@ -514,10 +275,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
      */
     private void MostrarPagos(String idrecibo) {
 
-//        String sql = "SELECT proyeccionpagos.idproyeccionpagos,proyeccionpagos.mes_idmes,mes.mes,proyeccionpagos.año,proyeccionpagos.monto,\n"
-//                + "     proyeccionpagos.fechavencimiento,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora',proyeccionpagos.alumnosengrupo_iddetallegrupo FROM\n"
-//                + "     mes INNER JOIN proyeccionpagos ON mes.idmes = proyeccionpagos.mes_idmes  where alumnosengrupo_iddetallegrupo='" + iddetallegrupo + "' and proyeccionpagos.estado='0' order by proyeccionpagos.idproyeccionpagos asc ";
-        String sql="SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0.0) AS 'Mora' FROM proyeccionpagos INNER JOIN detrecibo ON proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes where detrecibo.recibodepago_idrecibo="+idrecibo;
+        String sql = "SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos and mora.exoneracion=0 ),0.0) AS 'Mora' FROM proyeccionpagos INNER JOIN detrecibo ON proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes where detrecibo.recibodepago_idrecibo=" + idrecibo;
         removejtable();
         model = getRegistroPorLikel(model, sql);
         Utilidades.ajustarAnchoColumnas(colegiaturas);
@@ -533,12 +291,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
      * modelo ,modelo de la JTable
      *
      * @param tabla , el nombre de la tabla a consultar en la BD
-     * @param campos , los campos de la tabla a consultar ejem: nombre, codigo
-     * ,dirección etc
-     * @param campocondicion , los campos de la tabla para las condiciones ejem:
-     * id,estado etc
-     * @param condicionid , los valores que se compararan con campocondicion
-     * ejem: campocondicion = condicionid
      * @return
      */
     public DefaultTableModel getRegistroPorLikel(DefaultTableModel modelo, String tabla) {
@@ -548,9 +300,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
             rs = acceso.getRegistroProc(tabla);
             int cantcampos = 9;
-            //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos + 1];
 
@@ -561,7 +311,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
                         if (i == 4) {
                             float monto = (float) rs.getObject(i + 1);
-                            //float cbeca = Float.parseFloat(beca.getText());
                             float resultado = (float) (Math.round((monto) * 100.0) / 100.0);
                             fila[i] = resultado;
                         }
@@ -580,11 +329,8 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                         }
                     }
                     fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
-                    if (((float) fila[6] == 0.0)) {
-                        fila[8] = false;
-                    } else {
-                        fila[8] = true;
-                    }
+
+                    fila[8] = false;
                     fila[9] = false;
                     modelo.addRow(fila);
                 }
@@ -603,12 +349,11 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
     private void MostrarProductos(String idrecibo) {
 
-        //String sql = "SELECT otrospagos.idpago,otrospagos.descripcion,otrospagos.costo FROM otrospagos order by otrospagos.descripcion";
-        String sql="SELECT descripcionrecibo.iddescripcionrecibo, otrospagos.idpago , otrospagos.descripcion, descripcionrecibo.precio ,descripcionrecibo.cantidad FROM otrospagos INNER JOIN descripcionrecibo ON otrospagos.idpago = descripcionrecibo.pago_idpago where descripcionrecibo.recibo_idrecibo="+idrecibo;
+        String sql = "SELECT descripcionrecibo.iddescripcionrecibo, otrospagos.idpago , otrospagos.descripcion, descripcionrecibo.precio ,descripcionrecibo.cantidad FROM otrospagos INNER JOIN descripcionrecibo ON otrospagos.idpago = descripcionrecibo.pago_idpago where descripcionrecibo.recibo_idrecibo=" + idrecibo;
         removejtable2();
         model2 = getRegistroPorLikell(model2, sql);
         Utilidades.ajustarAnchoColumnas(otrosproductos);
-        
+
         otrosproductos.getColumnModel().getColumn(0).setMaxWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setMinWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -619,9 +364,8 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
      * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
      * modelo ,modelo de la JTable
      *
+     * @param modelo
      * @param tabla , el nombre de la tabla a consultar en la BD
-     * @param campocondicion , los campos de la tabla para las condiciones ejem:
-     * id,estado etc
      * @return
      */
     public DefaultTableModel getRegistroPorLikell(DefaultTableModel modelo, String tabla) {
@@ -631,9 +375,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
             rs = acceso.getRegistroProc(tabla);
             int cantcampos = 7;
-            //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos];
 
@@ -647,7 +389,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     fila[6] = false;
                     modelo.addRow(fila);
                 }
-
             } //} 
             else {
                 // JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
@@ -659,11 +400,19 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             return null;
         }
     }
-    
-    private void MostrarRecibos() {
 
-        String sql="SELECT alumno.codigo, concat(alumno.nombres,' ',alumno.apellidos),recibodepago.idrecibo ,   DATE_FORMAT(recibodepago.fecha,'%d-%m-%Y'),recibodepago.total FROM alumno INNER JOIN recibodepago ON alumno.idalumno =recibodepago.alumno_idalumno where alumno.idalumno="+idalumno;
-        
+    private void MostrarRecibos(String condicion) {
+        String sql = "";
+
+        if (condicion.equals("alumno")) {
+            sql = "SELECT alumno.codigo, concat(alumno.nombres,' ',alumno.apellidos),recibodepago.idrecibo ,   DATE_FORMAT(recibodepago.fecha,'%d-%m-%Y'),recibodepago.total FROM alumno INNER JOIN recibodepago ON alumno.idalumno =recibodepago.alumno_idalumno where alumno.idalumno=" + idalumno;
+        } else if (condicion.equals("fecha")) {
+            String fechaini = FormatoFecha.getFormato(inicioreporte.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String fechafn = FormatoFecha.getFormato(fechapago1.getCalendar().getTime(), FormatoFecha.A_M_D);
+            sql = "SELECT alumno.codigo, concat(alumno.nombres,' ',alumno.apellidos),recibodepago.idrecibo ,   DATE_FORMAT(recibodepago.fecha,'%d-%m-%Y'),recibodepago.total FROM alumno INNER JOIN recibodepago ON alumno.idalumno =recibodepago.alumno_idalumno where recibodepago.fecha >= '" + fechaini + "' and recibodepago.fecha <= '" + fechafn + "' ";
+        } else if (condicion.equals("recibo")) {
+            sql = "SELECT alumno.codigo, concat(alumno.nombres,' ',alumno.apellidos),recibodepago.idrecibo ,   DATE_FORMAT(recibodepago.fecha,'%d-%m-%Y'),recibodepago.total FROM alumno INNER JOIN recibodepago ON alumno.idalumno =recibodepago.alumno_idalumno where recibodepago.idrecibo=" + reciboa.getText();
+        }
         removejtable3();
         model3 = getRegistroRecibos(model3, sql);
         Utilidades.ajustarAnchoColumnas(recibos);
@@ -673,9 +422,8 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
      * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
      * modelo ,modelo de la JTable
      *
+     * @param modelo
      * @param tabla , el nombre de la tabla a consultar en la BD
-     * @param campocondicion , los campos de la tabla para las condiciones ejem:
-     * id,estado etc
      * @return
      */
     public DefaultTableModel getRegistroRecibos(DefaultTableModel modelo, String tabla) {
@@ -685,9 +433,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
             rs = acceso.getRegistroProc(tabla);
             int cantcampos = 5;
-            //if (rs != null) {
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                //int count = 0;
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos];
 
@@ -711,102 +457,14 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             return null;
         }
     }
-    
-//    private void MostrarReciboselecionado() {
-//
-//        String sql="SELECT alumno.codigo, concat(alumno.nombres,' ',alumno.apellidos),recibodepago.idrecibo ,   DATE_FORMAT(recibodepago.fecha,'%d-%m-%Y'),recibodepago.total FROM alumno INNER JOIN recibodepago ON alumno.idalumno =recibodepago.alumno_idalumno where alumno.idalumno="+idalumno;
-//        
-//        removejtable3();
-//        model3 = getRegistroReciboseleccionado(model3, sql);
-//        Utilidades.ajustarAnchoColumnas(recibos);
-//    }
-//
-//    /**
-//     * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
-//     * modelo ,modelo de la JTable
-//     *
-//     * @param tabla , el nombre de la tabla a consultar en la BD
-//     * @param campocondicion , los campos de la tabla para las condiciones ejem:
-//     * id,estado etc
-//     * @return
-//     */
-//    public DefaultTableModel getRegistroReciboseleccionado(DefaultTableModel modelo, String tabla) {
-//        try {
-//
-//            ResultSet rs;
-//
-//            rs = acceso.getRegistroProc(tabla);
-//            int cantcampos = 5;
-//            //if (rs != null) {
-//            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                //int count = 0;
-//                rs.beforeFirst();//regresa el puntero al primer registro
-//                Object[] fila = new Object[cantcampos];
-//
-//                while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                    fila[0] = rs.getString(1);
-//                    fila[1] = rs.getString(2);
-//                    fila[2] = rs.getString(3);
-//                    fila[3] = rs.getString(4);
-//                    fila[4] = rs.getObject(5);
-//                    modelo.addRow(fila);
-//                }
-//
-//            } //} 
-//            else {
-//                // JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//            rs.close();
-//            return modelo;
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
-//            return null;
-//        }
-//    }
-    
-    
 
     /* Este metodo se encarga de filtrar los datos que se deben ingresar en cada uno de los campos del formulario
      * podemos indicar que el usuario ingrese solo numeros , solo letras, numeros y letras, o cualquier caracter
      * tambien podemos validar si se aseptaran espacios en blanco en la cadena ingresada , para mas detalle visualizar
      * la clase TipoFiltro()  */
     private void setFiltroTexto() {
-        //TipoFiltro.setFiltraEntrada(codigo.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
-        //TipoFiltro.setFiltraEntrada(descripcion.getDocument(), FiltroCampos.NUM_LETRAS, 60, true);
-        //TipoFiltro.setFiltraEntrada(dia.getDocument(), FiltroCampos.SOLO_LETRAS, 45, false);
-        //TipoFiltro.setFiltraEntrada(profesor.getDocument(), FiltroCampos.NUM_LETRAS, 200, true);
-        //TipoFiltro.setFiltraEntrada(cantalumnos.getDocument(), FiltroCampos.SOLO_NUMEROS, 5, true);
-//        TipoFiltro.setFiltraEntrada(colegiatura.getDocument(), FiltroCampos.SOLO_NUMEROS, 12, false);
-        //TipoFiltro.setFiltraEntrada(busqueda.getDocument(), FiltroCampos.NUM_LETRAS, 100, true);
+        TipoFiltro.setFiltraEntrada(codigoa.getDocument(), FiltroCampos.NUM_LETRAS, 45, false);
     }
-
-//    public void idalumnosengrupo(String idalumno, String idgrupo) {
-//
-//        String[] id = {idalumno, idgrupo};
-//        ResultSet rs;
-//        AccesoDatos ac = new AccesoDatos();
-//        String[] cond = {"alumnosengrupo.alumno_idalumno", "alumnosengrupo.grupo_idgrupo"};
-//        String[] campos = {"alumnosengrupo.iddetallegrupo", "alumnosengrupo.fechainicio", "alumnosengrupo.beca"};
-//        rs = ac.getRegistros("alumnosengrupo", campos, cond, id, "");
-//
-//        if (rs != null) {
-//            try {
-//                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-//                    rs.beforeFirst();//regresa el puntero al primer registro
-//                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-//                        iddetallegrupo = (rs.getString(1));
-//                        String fechainicio = FormatoFecha.getFormato(rs.getDate(2), FormatoFecha.D_M_A);
-//                        inicioalumno.setText(fechainicio);
-//                        float becac = Float.parseFloat(rs.getString(3));
-//                        beca.setText("" + becac);
-//                    }
-//                }
-//            } catch (SQLException e) {
-//                iddetallegrupo = "";
-//                JOptionPane.showInternalMessageDialog(this, e);
-//            }
-//        }
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -849,19 +507,23 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         codigoa = new elaprendiz.gui.textField.TextField();
         jLabel16 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        nombrealumno = new elaprendiz.gui.textField.TextField();
-        jLabel19 = new javax.swing.JLabel();
-        estado = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        inicioreporte = new com.toedter.calendar.JDateChooser();
+        jLabel24 = new javax.swing.JLabel();
+        fechapago1 = new com.toedter.calendar.JDateChooser();
+        clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
+        rbFecha = new javax.swing.JRadioButton();
+        rbCodigo = new javax.swing.JRadioButton();
+        jLabel17 = new javax.swing.JLabel();
+        reciboa = new elaprendiz.gui.textField.TextField();
+        rbRecibo = new javax.swing.JRadioButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        buttonAction1 = new elaprendiz.gui.button.ButtonAction();
         jPanel1 = new javax.swing.JPanel();
         tbPane1 = new elaprendiz.gui.panel.TabbedPaneHeader();
         JPanelPago = new javax.swing.JPanel();
         totalapagar = new javax.swing.JFormattedTextField();
         jLabel27 = new javax.swing.JLabel();
-        JPanelRecibo = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
-        clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
-        jLabel23 = new javax.swing.JLabel();
-        fechapago = new com.toedter.calendar.JDateChooser();
         pnlPaginador1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
 
@@ -924,7 +586,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setForeground(new java.awt.Color(0, 0, 0));
         setIconifiable(true);
-        setTitle("Registro de Pagos");
+        setTitle("Anulación de Pagos");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("anularpagos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -955,7 +617,8 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
-        bntGuardar.setText("Guardar");
+        bntGuardar.setText("Anular");
+        bntGuardar.setEnabled(false);
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -1044,7 +707,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
             jPanel5.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 756, 130));
 
-            tbPane2.addTab("Pagos", jPanel5);
+            tbPane2.addTab("Listado de Pagos", jPanel5);
 
             JPanelGrupo.add(tbPane2);
             tbPane2.setBounds(0, 0, 758, 170);
@@ -1109,7 +772,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     {
                         @Override
                         public boolean isCellEditable(int row, int column) {
-                            if(column==3 || column==5){
+                            if(column==6){
                                 return true;
                             }else{
                                 return false;}
@@ -1133,6 +796,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
                     JPanelBusqueda.setLayout(null);
 
+                    codigoa.setEnabled(false);
                     codigoa.setPreferredSize(new java.awt.Dimension(250, 27));
                     codigoa.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1140,41 +804,136 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                         }
                     });
                     JPanelBusqueda.add(codigoa);
-                    codigoa.setBounds(120, 10, 97, 24);
+                    codigoa.setBounds(280, 35, 97, 21);
 
-                    jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                    jLabel16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
                     jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-                    jLabel16.setText("Codigo:");
+                    jLabel16.setText("Codigo Alumno: ");
                     JPanelBusqueda.add(jLabel16);
-                    jLabel16.setBounds(10, 10, 100, 24);
+                    jLabel16.setBounds(170, 35, 110, 21);
 
-                    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+                    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar 2.png"))); // NOI18N
+                    jButton1.setEnabled(false);
                     jButton1.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                             jButton1ActionPerformed(evt);
                         }
                     });
                     JPanelBusqueda.add(jButton1);
-                    jButton1.setBounds(220, 10, 20, 27);
+                    jButton1.setBounds(380, 35, 20, 21);
 
-                    nombrealumno.setEditable(false);
-                    nombrealumno.setPreferredSize(new java.awt.Dimension(250, 27));
-                    JPanelBusqueda.add(nombrealumno);
-                    nombrealumno.setBounds(440, 10, 360, 24);
+                    jLabel23.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+                    jLabel23.setText("Fecha Inicial: ");
+                    JPanelBusqueda.add(jLabel23);
+                    jLabel23.setBounds(180, 6, 100, 21);
 
-                    jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-                    jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-                    jLabel19.setText("Alumno:");
-                    JPanelBusqueda.add(jLabel19);
-                    jLabel19.setBounds(310, 10, 120, 24);
+                    inicioreporte.setDate(Calendar.getInstance().getTime());
+                    inicioreporte.setDateFormatString("dd/MM/yyyy");
+                    inicioreporte.setEnabled(false);
+                    inicioreporte.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+                    inicioreporte.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+                    inicioreporte.setMinSelectableDate(new java.util.Date(-62135744300000L));
+                    inicioreporte.setPreferredSize(new java.awt.Dimension(120, 22));
+                    JPanelBusqueda.add(inicioreporte);
+                    inicioreporte.setBounds(280, 6, 120, 21);
 
-                    estado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-                    estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                    JPanelBusqueda.add(estado);
-                    estado.setBounds(700, 50, 110, 27);
+                    jLabel24.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                    jLabel24.setText("Fecha Final:");
+                    JPanelBusqueda.add(jLabel24);
+                    jLabel24.setBounds(430, 6, 80, 21);
+
+                    fechapago1.setDate(Calendar.getInstance().getTime());
+                    fechapago1.setDateFormatString("dd/MM/yyyy");
+                    fechapago1.setEnabled(false);
+                    fechapago1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+                    fechapago1.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+                    fechapago1.setMinSelectableDate(new java.util.Date(-62135744300000L));
+                    fechapago1.setPreferredSize(new java.awt.Dimension(120, 22));
+                    fechapago1.addAncestorListener(new javax.swing.event.AncestorListener() {
+                        public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+                        }
+                        public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                            fechapago1AncestorAdded(evt);
+                        }
+                        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                        }
+                    });
+                    JPanelBusqueda.add(fechapago1);
+                    fechapago1.setBounds(510, 6, 120, 21);
+
+                    clockDigital2.setForeground(new java.awt.Color(0, 0, 0));
+                    clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
+                    JPanelBusqueda.add(clockDigital2);
+                    clockDigital2.setBounds(770, 0, 100, 30);
+
+                    rbFecha.setBackground(java.awt.SystemColor.inactiveCaption);
+                    rbFecha.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    rbFecha.setForeground(new java.awt.Color(0, 102, 102));
+                    rbFecha.setText("Buscar por fecha");
+                    rbFecha.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            rbFechaActionPerformed(evt);
+                        }
+                    });
+                    JPanelBusqueda.add(rbFecha);
+                    rbFecha.setBounds(10, 6, 160, 21);
+
+                    rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
+                    rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
+                    rbCodigo.setText("Buscar por alumno");
+                    rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            rbCodigoActionPerformed(evt);
+                        }
+                    });
+                    JPanelBusqueda.add(rbCodigo);
+                    rbCodigo.setBounds(10, 35, 160, 21);
+
+                    jLabel17.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+                    jLabel17.setText("No. Recibo: ");
+                    JPanelBusqueda.add(jLabel17);
+                    jLabel17.setBounds(190, 65, 90, 21);
+
+                    reciboa.setPreferredSize(new java.awt.Dimension(250, 27));
+                    reciboa.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            reciboaActionPerformed(evt);
+                        }
+                    });
+                    JPanelBusqueda.add(reciboa);
+                    reciboa.setBounds(280, 65, 97, 21);
+
+                    rbRecibo.setBackground(java.awt.SystemColor.inactiveCaption);
+                    rbRecibo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+                    rbRecibo.setForeground(new java.awt.Color(0, 102, 102));
+                    rbRecibo.setSelected(true);
+                    rbRecibo.setText("Buscar por No. Recibibo");
+                    rbRecibo.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            rbReciboActionPerformed(evt);
+                        }
+                    });
+                    JPanelBusqueda.add(rbRecibo);
+                    rbRecibo.setBounds(10, 65, 180, 21);
+                    JPanelBusqueda.add(jSeparator1);
+                    jSeparator1.setBounds(10, 91, 850, 10);
+
+                    buttonAction1.setText("Ejecutar Filtro");
+                    buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+                    buttonAction1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            buttonAction1ActionPerformed(evt);
+                        }
+                    });
+                    JPanelBusqueda.add(buttonAction1);
+                    buttonAction1.setBounds(390, 95, 100, 24);
 
                     panelImage.add(JPanelBusqueda);
-                    JPanelBusqueda.setBounds(0, 110, 880, 50);
+                    JPanelBusqueda.setBounds(0, 40, 880, 120);
 
                     jPanel1.setBackground(new java.awt.Color(51, 51, 51));
                     jPanel1.setLayout(new java.awt.BorderLayout());
@@ -1209,39 +968,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     panelImage.add(jPanel1);
                     jPanel1.setBounds(760, 330, 120, 250);
 
-                    JPanelRecibo.setBackground(java.awt.SystemColor.activeCaption);
-                    JPanelRecibo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-                    JPanelRecibo.setLayout(null);
-
-                    jLabel21.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                    jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                    jLabel21.setText("Hora");
-                    JPanelRecibo.add(jLabel21);
-                    jLabel21.setBounds(690, 10, 100, 19);
-
-                    clockDigital2.setForeground(new java.awt.Color(255, 255, 255));
-                    clockDigital2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 16)); // NOI18N
-                    JPanelRecibo.add(clockDigital2);
-                    clockDigital2.setBounds(690, 30, 100, 27);
-
-                    jLabel23.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-                    jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                    jLabel23.setText("Fecha");
-                    JPanelRecibo.add(jLabel23);
-                    jLabel23.setBounds(120, 10, 120, 19);
-
-                    fechapago.setDate(Calendar.getInstance().getTime());
-                    fechapago.setDateFormatString("dd/MM/yyyy");
-                    fechapago.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-                    fechapago.setMaxSelectableDate(new java.util.Date(3093496470100000L));
-                    fechapago.setMinSelectableDate(new java.util.Date(-62135744300000L));
-                    fechapago.setPreferredSize(new java.awt.Dimension(120, 22));
-                    JPanelRecibo.add(fechapago);
-                    fechapago.setBounds(120, 30, 120, 27);
-
-                    panelImage.add(JPanelRecibo);
-                    JPanelRecibo.setBounds(0, 40, 880, 70);
-
                     pnlPaginador1.setBackground(new java.awt.Color(57, 104, 163));
                     pnlPaginador1.setPreferredSize(new java.awt.Dimension(786, 40));
                     pnlPaginador1.setLayout(new java.awt.GridBagLayout());
@@ -1249,7 +975,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
                     jLabel11.setForeground(new java.awt.Color(255, 255, 255));
                     jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/money.png"))); // NOI18N
-                    jLabel11.setText("<--Registro de pagos-->");
+                    jLabel11.setText("<--Anulacion de pagos-->");
                     pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
 
                     panelImage.add(pnlPaginador1);
@@ -1348,7 +1074,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
 
-        if (Utilidades.esObligatorio(this.JPanelRecibo, true)
+        if (Utilidades.esObligatorio(this.JPanelBusqueda, true)
                 || Utilidades.esObligatorio(this.JPanelGrupo, true)
                 || Utilidades.esObligatorio(this.JPanelPago, true)) {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1370,7 +1096,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                 //**************************************************************
                 int idrecibo = 0, n = 0;
                 String sql = "";
-                String fechapag = FormatoFecha.getFormato(fechapago.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String fechapag = FormatoFecha.getFormato(inicioreporte.getCalendar().getTime(), FormatoFecha.A_M_D);
                 //mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
                 //String idtipop = tipop.getID();
                 float total = Float.parseFloat(totalapagar.getText());
@@ -1497,6 +1223,114 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_recibosKeyPressed
 
+    private void buttonAction1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction1ActionPerformed
+        // TODO add your handling code here:
+
+        if (rbCodigo.isSelected()) {
+            if (codigoa.getText().isEmpty()) {
+                JOptionPane.showInternalMessageDialog(this, "Debe Ingresar un No. de Recibo");
+            } else {
+                balumnocodigo(codigoa.getText());
+            }
+        } else if (rbFecha.isSelected()) {
+            if (Utilidades.esObligatorio(this.JPanelBusqueda, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                MostrarRecibos("fecha");
+            }
+        } else if (rbRecibo.isSelected()) {
+            if (reciboa.getText().isEmpty()) {
+                JOptionPane.showInternalMessageDialog(this, "Debe Ingresar un No. de Recibo");
+            } else {
+                MostrarRecibos("recibo");
+            }
+        }
+    }//GEN-LAST:event_buttonAction1ActionPerformed
+
+    private void rbFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbFechaActionPerformed
+        // TODO add your handling code here:
+        rbCodigo.setSelected(false);
+        rbRecibo.setSelected(false);
+
+        codigoa.setEnabled(false);
+        codigoa.setEditable(false);
+        reciboa.setEnabled(false);
+        reciboa.setEditable(false);
+        jButton1.setEnabled(false);
+
+        inicioreporte.setEnabled(true);
+        fechapago1.setEnabled(true);
+
+        codigoa.setText("");
+        reciboa.setText("");
+        limpiartodo();
+
+    }//GEN-LAST:event_rbFechaActionPerformed
+
+    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
+        // TODO add your handling code here:
+        rbFecha.setSelected(false);
+        rbRecibo.setSelected(false);
+        codigoa.setEnabled(false);
+        codigoa.setEditable(false);
+        reciboa.setEnabled(false);
+        
+        inicioreporte.setEnabled(false);
+        fechapago1.setEnabled(false);
+
+        codigoa.setEditable(true);
+        codigoa.setEnabled(true);
+        jButton1.setEnabled(true);
+        reciboa.setText("");
+        //buttonAction1.setEnabled(false);
+        //cProfesor.setSelectedIndex(-1);
+        //cGrupo.removeAllItems();
+        limpiartodo();
+    }//GEN-LAST:event_rbCodigoActionPerformed
+
+    private void rbReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbReciboActionPerformed
+        // TODO add your handling code here:
+        rbFecha.setSelected(false);
+        rbCodigo.setSelected(false);
+        codigoa.setEditable(false);
+        codigoa.setEnabled(false);
+        jButton1.setEnabled(false);
+        inicioreporte.setEnabled(false);
+        fechapago1.setEnabled(false);
+
+        reciboa.setEnabled(true);
+        reciboa.setEditable(true);
+        codigoa.setText("");
+        //buttonAction1.setEnabled(false);
+        //cProfesor.setSelectedIndex(-1);
+        //cGrupo.removeAllItems();
+        limpiartodo();
+    }//GEN-LAST:event_rbReciboActionPerformed
+
+    private void reciboaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reciboaActionPerformed
+        // TODO add your handling code here:
+        if (rbRecibo.isSelected()) {
+            if (reciboa.getText().isEmpty()) {
+                JOptionPane.showInternalMessageDialog(this, "Debe Ingresar un No. de Recibo");
+            } else {
+                MostrarRecibos("recibo");
+            }
+        }
+    }//GEN-LAST:event_reciboaActionPerformed
+
+    private void fechapago1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fechapago1AncestorAdded
+        // TODO add your handling code here:
+        if (rbFecha.isSelected()) {
+            if (Utilidades.esObligatorio(this.JPanelBusqueda, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                MostrarRecibos("fecha");
+            }
+        }
+    }//GEN-LAST:event_fechapago1AncestorAdded
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar;
@@ -1505,7 +1339,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelGrupo;
     private javax.swing.JPanel JPanelPago;
-    private javax.swing.JPanel JPanelRecibo;
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JMenuItem Nueva_Carrera;
     private javax.swing.JMenuItem Nuevo_Profesor;
@@ -1513,17 +1346,18 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
+    private elaprendiz.gui.button.ButtonAction buttonAction1;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
     public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JTable colegiaturas;
-    public static javax.swing.JLabel estado;
-    public static com.toedter.calendar.JDateChooser fechapago;
+    public static com.toedter.calendar.JDateChooser fechapago1;
+    public static com.toedter.calendar.JDateChooser inicioreporte;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
@@ -1532,7 +1366,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    public static elaprendiz.gui.textField.TextField nombrealumno;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable otrosproductos;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
@@ -1540,6 +1374,10 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu popupcarrera;
     private javax.swing.JPopupMenu popupprofesor;
     private javax.swing.JPopupMenu popupprotipopago;
+    private javax.swing.JRadioButton rbCodigo;
+    private javax.swing.JRadioButton rbFecha;
+    private javax.swing.JRadioButton rbRecibo;
+    public static elaprendiz.gui.textField.TextField reciboa;
     private javax.swing.JTable recibos;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
