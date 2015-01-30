@@ -47,7 +47,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model, model2, model3;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Anular Mora", "Anular Mes"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Anular"};//Titulos para Jtabla
     String[] titulos2 = {"Id", "Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Anular"};//Titulos para Jtabla
     String[] titulos3 = {"Codigo Alumno", "Nombre", "Recibo No.", "Fecha", "Total"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
@@ -89,10 +89,10 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
         JCheckBox check = new JCheckBox();
         colegiaturas.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(check));
-        colegiaturas.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(check));
+        //colegiaturas.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(check));
         otrosproductos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(check));
         colegiaturas.getColumnModel().getColumn(8).setCellRenderer(new Renderer_CheckBox());
-        colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
+        //colegiaturas.getColumnModel().getColumn(9).setCellRenderer(new Renderer_CheckBox());
         otrosproductos.getColumnModel().getColumn(6).setCellRenderer(new Renderer_CheckBox());
 
     }
@@ -169,27 +169,31 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             totalapagar.setValue(0.0);
         } else {
             float Actual, Resultado = 0;
-            for (int i = 0; i < model.getRowCount(); i++) {//sumar total tabla meses
-                if (colegiaturas.getValueAt(i, 9).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
-                    Actual = Float.parseFloat(colegiaturas.getValueAt(i, 4).toString());
-                    Resultado = Resultado + Actual;
-                }
-                if (colegiaturas.getValueAt(i, 8).toString().equals("false")) {
-                    Actual = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
-                    Resultado = Resultado + Actual;
-                }
-            }// fin sumar total meses
 
-            for (int i = 0; i < model2.getRowCount(); i++) {//sumar total tabla otrospagos
-                if (otrosproductos.getValueAt(i, 6).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
-                    float canti = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
-                    if (canti > 0) {
-                        Actual = Float.parseFloat(otrosproductos.getValueAt(i, 5).toString());
+            if (colegiaturas.getRowCount() != 0) {
+                for (int i = 0; i < model.getRowCount(); i++) {//sumar total tabla meses
+                    if (colegiaturas.getValueAt(i, 8).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                        Actual = Float.parseFloat(colegiaturas.getValueAt(i, 7).toString());
                         Resultado = Resultado + Actual;
                     }
-                }
-            }// fin sumar total otrospagos
+//                if (colegiaturas.getValueAt(i, 8).toString().equals("false")) {
+//                    Actual = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
+//                    Resultado = Resultado + Actual;
+//                }
+                }// fin sumar total meses
+            }
 
+            if (otrosproductos.getRowCount() != 0) {
+                for (int i = 0; i < model2.getRowCount(); i++) {//sumar total tabla otrospagos
+                    if (otrosproductos.getValueAt(i, 6).toString().equals("false") /*&& colegiaturas.getValueAt(i, 9).toString().equals(true)*/) {
+                        float canti = Float.parseFloat(otrosproductos.getValueAt(i, 4).toString());
+                        if (canti > 0) {
+                            Actual = Float.parseFloat(otrosproductos.getValueAt(i, 5).toString());
+                            Resultado = Resultado + Actual;
+                        }
+                    }
+                }// fin sumar total otrospagos
+            }
             totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
 
         }
@@ -299,14 +303,14 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             ResultSet rs;
 
             rs = acceso.getRegistroProc(tabla);
-            int cantcampos = 9;
+            int cantcampos = 8;
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos + 1];
 
                 while (rs.next()) {//mientras tenga registros que haga lo siguiente
                     // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                    for (int i = 0; i < cantcampos - 2; i++) {
+                    for (int i = 0; i < cantcampos - 1; i++) {
 
                         fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
                         if (i == 4) {
@@ -331,7 +335,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
 
                     fila[8] = false;
-                    fila[9] = false;
+                    //fila[9] = false;
                     modelo.addRow(fila);
                 }
 
@@ -618,7 +622,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Anular");
-        bntGuardar.setEnabled(false);
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -1074,53 +1077,57 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
 
-        if (Utilidades.esObligatorio(this.JPanelBusqueda, true)
-                || Utilidades.esObligatorio(this.JPanelGrupo, true)
-                || Utilidades.esObligatorio(this.JPanelPago, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
+//        if (Utilidades.esObligatorio(this.JPanelBusqueda, true)
+//                || Utilidades.esObligatorio(this.JPanelGrupo, true)
+//                || Utilidades.esObligatorio(this.JPanelPago, true)) {
+//            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
         if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
+            JOptionPane.showMessageDialog(null, "La tabla no contiene datos que anular");
 
         } else { //Inicio de Guardar datos
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
             if (resp == 0) {
 
                 String printHorario = "";
-                //horade.getText();
-                //horaa.getText();
-                //printHorario = horade.getText() + " a " + horaa.getText() + " " + dia.getText();
+
                 //GUARDAR DATOS DE RECIBO***************************************
                 //**************************************************************
                 int idrecibo = 0, n = 0;
                 String sql = "";
-                String fechapag = FormatoFecha.getFormato(inicioreporte.getCalendar().getTime(), FormatoFecha.A_M_D);
+
+                int fila = recibos.getSelectedRow();
+                String idr = "" + recibos.getValueAt(fila, 2);
+                idrecibo = Integer.parseInt(idr);
+
+                //String fechapag = FormatoFecha.getFormato(inicioreporte.getCalendar().getTime(), FormatoFecha.A_M_D);
                 //mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
                 //String idtipop = tipop.getID();
                 float total = Float.parseFloat(totalapagar.getText());
 
-                sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
+                //sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
+                //sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
+                sql = "update recibodepago set  total=" + total + " where idrecibo=" + idr;
                 //int op = 0;
                 PreparedStatement ps = null;
                 conn = BdConexion.getConexion();
 
                 try {
                     conn.setAutoCommit(false);
-                    ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, fechapag);
-                    ps.setInt(2, Integer.parseInt(idalumno));
-                    ps.setInt(3, Integer.parseInt(/*idtipop*/""));
-                    ps.setFloat(4, total);
-                    ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
+                    ps = conn.prepareStatement(sql);
+//                    ps.setString(1, fechapag);
+//                    ps.setInt(2, Integer.parseInt(idalumno));
+//                    ps.setInt(3, Integer.parseInt(/*idtipop*/""));
+//                    ps.setFloat(4, total);
+//                    ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
 
                     n = ps.executeUpdate();
                     if (n > 0) {
-                        ResultSet rs = ps.getGeneratedKeys();
-                        while (rs.next()) {
-                            idrecibo = rs.getInt(1);//retorna el idrecibo guardado
-                        }
+//                        ResultSet rs = ps.getGeneratedKeys();
+//                        while (rs.next()) {
+//                            idrecibo = rs.getInt(1);//retorna el idrecibo guardado
+//                        }
 
                         //GUARDAR MESES PAGADOS y OTROS PRODUCTOS***************
                         //******************************************************
@@ -1129,59 +1136,65 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                         int cant2 = model2.getRowCount();
 
                         for (int i = 0; i < cant; i++) { //for pago de meses
-                            if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
+                            if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
                                 camprec = true;
-                                String id = (String) "" + colegiaturas.getValueAt(i, 0);
-                                String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + id + "')";
-                                String proypago = "update proyeccionpagos set  estado=true where idproyeccionpagos=" + id;
+                                String idc = (String) "" + colegiaturas.getValueAt(i, 0);
+
+                                if (!colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                    String pmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
+                                    n = ps.executeUpdate(pmora);
+                                } else if (colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                    //Pendiente modificar cuando se exonero de moara******************************************************
+//                                    float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
+//                                    String pmora = "update mora set  exoneracion=" + exoneracion + " where proyeccionpagos_idproyeccionpagos=" + idc;
+//                                    n = ps.executeUpdate(pmora);
+                                }
+                                String detrecibo = "delete from detrecibo where proyeccionpagos_idproyeccionpagos=" + idc;
+                                //String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + idc + "')";
+                                String proypago = "update proyeccionpagos set  estado=false where idproyeccionpagos=" + idc;
 
                                 n = ps.executeUpdate(detrecibo);
                                 n = ps.executeUpdate(proypago);
-
-                                if (colegiaturas.getValueAt(i, 8).toString().equals("true") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    String pmora = "update mora set  estado=true where proyeccionpagos_idproyeccionpagos=" + id;
-                                    n = ps.executeUpdate(pmora);
-                                } else if (colegiaturas.getValueAt(i, 8).toString().equals("false") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
-                                    String pmora = "update mora set  exoneracion=" + exoneracion + " where proyeccionpagos_idproyeccionpagos=" + id;
-                                    n = ps.executeUpdate(pmora);
-                                }
                             }
                         }//fin for pago de meses
 
                         for (int i = 0; i < cant2; i++) {//for pago otros productos
-                            if (otrosproductos.getValueAt(i, 5).toString().equals("true")) {
+                            if (otrosproductos.getValueAt(i, 6).toString().equals("true")) {
 
-                                String id = (String) "" + otrosproductos.getValueAt(i, 0);
-                                float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
-                                float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
+                                String idotp = (String) "" + otrosproductos.getValueAt(i, 0);
+                                String descriprecibo = "delete from descripcionrecibo where iddescripcionrecibo=" + idotp;
 
-                                String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
-                                        + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + id + "')";
-                                if (canti > 0) {
-                                    camprec = true;
-                                    n = ps.executeUpdate(descriprecibo);
-                                } else if (canti == 0) {
-                                }
+//                                float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
+//                                float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
+//
+//                                String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
+//                                        + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + idotp + "')";
+//                                if (canti > 0) {
+                                camprec = true;
+                                n = ps.executeUpdate(descriprecibo);
+//                                } else if (canti == 0) {
+//                                }
                             }
                         }//fin for otros productos
 
                         if (!camprec) {
-                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                            System.out.print(n);
+                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ninguna linea para Anular", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                            //System.out.print(n);
                         }
                         if (n > 0) {
-                            int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
-                            if (resp2 == 0) {
-                                //mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                                //String[] id = {grup.getID()};
-                                //idalumnosengrupo(idalumno, "" + grup.getID());
-                                //MostrarPagos();
-                                //MostrarProductos();
+                            //int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Anulado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
+                            //if (resp2 == 0) {
+                            //mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                            //String[] id = {grup.getID()};
+                            //idalumnosengrupo(idalumno, "" + grup.getID());
+                            //MostrarPagos();
+                            //MostrarProductos();
 
-                            } else {
-                                limpiartodo();
-                            }
+                            //} 
+                            //else {
+                            JOptionPane.showInternalMessageDialog(this, "El Pago se ha Anulado Correctamente");
+                            limpiartodo();
+                            //}
                         }
                         //FIN GUARDAR MESES PAGADOS*************************************
                         //**************************************************************
@@ -1275,7 +1288,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         codigoa.setEnabled(false);
         codigoa.setEditable(false);
         reciboa.setEnabled(false);
-        
+
         inicioreporte.setEnabled(false);
         fechapago1.setEnabled(false);
 
