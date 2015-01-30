@@ -1070,7 +1070,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel13.setText("Horario A:");
             jPanel4.add(jLabel13);
-            jLabel13.setBounds(750, 0, 110, 20);
+            jLabel13.setBounds(740, 0, 110, 20);
 
             jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1087,7 +1087,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel6.setText("Fecha Fin:");
             jPanel4.add(jLabel6);
-            jLabel6.setBounds(750, 40, 110, 20);
+            jLabel6.setBounds(740, 40, 110, 20);
 
             jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1136,7 +1136,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel25.setText("Colegiatura Q.");
             jPanel4.add(jLabel25);
-            jLabel25.setBounds(750, 100, 110, 20);
+            jLabel25.setBounds(740, 100, 110, 20);
 
             carrera.setEditable(false);
             carrera.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -1168,14 +1168,14 @@ public class Alumno extends javax.swing.JInternalFrame {
             colegiatura.setName("colegiatura"); // NOI18N
             colegiatura.setPreferredSize(new java.awt.Dimension(80, 23));
             jPanel4.add(colegiatura);
-            colegiatura.setBounds(750, 120, 110, 23);
+            colegiatura.setBounds(740, 120, 110, 23);
 
             horaa.setEditable(false);
             horaa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
             horaa.setName("codigo"); // NOI18N
             horaa.setPreferredSize(new java.awt.Dimension(120, 21));
             jPanel4.add(horaa);
-            horaa.setBounds(750, 20, 110, 21);
+            horaa.setBounds(740, 20, 110, 21);
 
             horade.setEditable(false);
             horade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1196,7 +1196,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             fechafin.setName("codigo"); // NOI18N
             fechafin.setPreferredSize(new java.awt.Dimension(120, 21));
             jPanel4.add(fechafin);
-            fechafin.setBounds(750, 60, 110, 21);
+            fechafin.setBounds(740, 60, 110, 21);
 
             buttonAction1.setText("Nuevo Grupo/Carrera");
             buttonAction1.setEnabled(false);
