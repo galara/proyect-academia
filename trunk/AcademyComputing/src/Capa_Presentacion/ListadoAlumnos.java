@@ -1195,15 +1195,13 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelPago.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
                 retirado.setEditable(false);
-                retirado.setBackground(new java.awt.Color(204, 255, 102));
                 retirado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
                 retirado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
                 retirado.setToolTipText("");
-                retirado.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+                retirado.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
                 retirado.setPreferredSize(new java.awt.Dimension(80, 23));
-                JPanelPago.add(retirado, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 130, 105, 40));
+                JPanelPago.add(retirado, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 130, 105, 30));
 
-                jLabel27.setBackground(new java.awt.Color(255, 204, 0));
                 jLabel27.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 jLabel27.setText("Retirados");
@@ -1211,15 +1209,13 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelPago.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 110, 105, 20));
 
                 inscritos.setEditable(false);
-                inscritos.setBackground(new java.awt.Color(204, 255, 102));
                 inscritos.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
                 inscritos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
                 inscritos.setToolTipText("");
-                inscritos.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+                inscritos.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
                 inscritos.setPreferredSize(new java.awt.Dimension(80, 23));
-                JPanelPago.add(inscritos, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 40));
+                JPanelPago.add(inscritos, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 60, 105, 30));
 
-                jLabel28.setBackground(new java.awt.Color(255, 204, 0));
                 jLabel28.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
                 jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 jLabel28.setText("Inscritos");
