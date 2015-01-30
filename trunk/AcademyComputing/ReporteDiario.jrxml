@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDiario" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1781e5e1-9c48-4cda-9b6a-52e4db4fb0e8">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="56"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
@@ -219,72 +219,72 @@ group by alumno.codigo,recibodepago.idrecibo asc]]>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="3118600b-1276-4913-bacf-a2cde927ef56" style="Detail" x="34" y="0" width="45" height="15"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+				<reportElement uuid="3118600b-1276-4913-bacf-a2cde927ef56" style="Detail" x="34" y="0" width="68" height="15"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="5e5a32e0-121e-41f9-a31f-376a3e736189" style="Detail" x="78" y="0" width="151" height="15"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+				<reportElement uuid="5e5a32e0-121e-41f9-a31f-376a3e736189" style="Detail" x="86" y="0" width="151" height="15"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="120c3283-5b24-421a-841a-7484d05956c1" style="Detail" x="228" y="0" width="150" height="15"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+				<reportElement uuid="120c3283-5b24-421a-841a-7484d05956c1" style="Detail" x="234" y="0" width="156" height="15"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="">
-				<reportElement uuid="35469c33-9e6e-4e0a-bb2e-99eb852e63eb" style="Detail" x="377" y="0" width="53" height="15"/>
+				<reportElement uuid="35469c33-9e6e-4e0a-bb2e-99eb852e63eb" style="Detail" x="384" y="0" width="41" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{idrecibo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
 				<reportElement uuid="2fbe53fe-40c1-495c-8bc0-703c5cde454d" style="Detail" x="429" y="0" width="75" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="fcc20971-7557-4476-a8d8-5c6e65a911ff" style="Detail" x="503" y="0" width="60" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="5bca7f32-38d8-422a-b610-0588ba91a945" style="Detail" x="562" y="0" width="60" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{colegiatura}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="1d2a0f07-0e3b-4cd6-bd12-7bc879e1e32a" style="Detail" x="621" y="0" width="60" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="caadac97-c4cc-4a01-be47-5b766af56e34" style="Detail" x="680" y="0" width="60" height="15"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{otrospagos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement uuid="d859b9ea-bef3-428c-8370-9765ac080d67" x="0" y="0" width="34" height="14" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="10" isBold="false"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
