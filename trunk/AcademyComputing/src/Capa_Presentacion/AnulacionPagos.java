@@ -47,7 +47,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model, model2, model3;
     DefaultComboBoxModel modelCombo;
-    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Anular"};//Titulos para Jtabla
+    String[] titulos = {"Id", "Codigo", "Descripción", "Año", "Monto", "Fecha V", "Mora", "Subtotal", "Anular", "ExMora"};//Titulos para Jtabla
     String[] titulos2 = {"Id", "Código", "Descripción", "Precio", "Cantidad", "SubTotal", "Anular"};//Titulos para Jtabla
     String[] titulos3 = {"Codigo Alumno", "Nombre", "Recibo No.", "Fecha", "Total"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
@@ -82,6 +82,12 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
         colegiaturas.doLayout();
+
+        colegiaturas.getColumnModel().getColumn(9).setMaxWidth(0);
+        colegiaturas.getColumnModel().getColumn(9).setMinWidth(0);
+        colegiaturas.getColumnModel().getColumn(9).setPreferredWidth(0);
+        colegiaturas.doLayout();
+
         otrosproductos.getColumnModel().getColumn(0).setMaxWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setMinWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -279,7 +285,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
      */
     private void MostrarPagos(String idrecibo) {
 
-        String sql = "SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos and mora.exoneracion=0 ),0.0) AS 'Mora' FROM proyeccionpagos INNER JOIN detrecibo ON proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes where detrecibo.recibodepago_idrecibo=" + idrecibo;
+        String sql = "SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos and mora.exoneracion=0 ),0.0) AS 'Mora',IFNULL((SELECT mora.exoneracion FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos and mora.exoneracion>0 ),0.0) AS 'ExMora' FROM proyeccionpagos INNER JOIN detrecibo ON proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes where detrecibo.recibodepago_idrecibo=" + idrecibo;
         removejtable();
         model = getRegistroPorLikel(model, sql);
         Utilidades.ajustarAnchoColumnas(colegiaturas);
@@ -287,6 +293,10 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
+        colegiaturas.doLayout();
+        colegiaturas.getColumnModel().getColumn(9).setMaxWidth(0);
+        colegiaturas.getColumnModel().getColumn(9).setMinWidth(0);
+        colegiaturas.getColumnModel().getColumn(9).setPreferredWidth(0);
         colegiaturas.doLayout();
     }
 
@@ -303,7 +313,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             ResultSet rs;
 
             rs = acceso.getRegistroProc(tabla);
-            int cantcampos = 8;
+            int cantcampos = 9;
             if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
                 rs.beforeFirst();//regresa el puntero al primer registro
                 Object[] fila = new Object[cantcampos + 1];
@@ -335,7 +345,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     fila[7] = (float) (Math.round(((float) fila[4] + ((float) fila[6])) * 100.0) / 100.0);
 
                     fila[8] = false;
-                    //fila[9] = false;
+                    fila[9] = (float) rs.getFloat(8);
                     modelo.addRow(fila);
                 }
 
@@ -1175,11 +1185,9 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                                 if (!colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
                                     String pmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
                                     n = ps.executeUpdate(pmora);
-                                } else if (colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    //Pendiente modificar cuando se exonero de moara******************************************************
-//                                    float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
-//                                    String pmora = "update mora set  exoneracion=" + exoneracion + " where proyeccionpagos_idproyeccionpagos=" + idc;
-//                                    n = ps.executeUpdate(pmora);
+                                } else if (!colegiaturas.getValueAt(i, 9).toString().equals("0.0")) {
+                                    String expmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
+                                    n = ps.executeUpdate(expmora);
                                 }
                                 String detrecibo = "delete from detrecibo where proyeccionpagos_idproyeccionpagos=" + idc;
                                 //String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + idc + "')";

@@ -121,8 +121,8 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement uuid="db3b0b9e-e7e2-40d2-b511-a24c5b2bd5cb" x="2" y="2" width="39" height="28"/>
-				<imageExpression><![CDATA["C:\\Users\\JoseCarlo\\Documents\\NetBeansProjects\\AcademyComputing\\gogoogog.jpg"]]></imageExpression>
+				<reportElement uuid="db3b0b9e-e7e2-40d2-b511-a24c5b2bd5cb" x="2" y="2" width="34" height="28"/>
+				<imageExpression><![CDATA["gogoogog.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
