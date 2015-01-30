@@ -280,7 +280,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
-        jMenuItem8.setText("Anulacion de Pagos");
+        jMenuItem8.setText("Anular o Reimprimir Pagos");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);

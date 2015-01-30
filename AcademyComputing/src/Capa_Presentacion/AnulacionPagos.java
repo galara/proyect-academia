@@ -530,6 +530,11 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         jLabel27 = new javax.swing.JLabel();
         pnlPaginador1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        tbPane3 = new elaprendiz.gui.panel.TabbedPaneHeader();
+        JPanelPago1 = new javax.swing.JPanel();
+        buttonAction4 = new elaprendiz.gui.button.ButtonAction();
 
         Nuevo_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         Nuevo_Profesor.setText("Nuevo Profesor");
@@ -666,7 +671,6 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         panelImage.add(pnlActionButtons);
         pnlActionButtons.setBounds(0, 580, 880, 50);
 
-        JPanelGrupo.setBackground(java.awt.SystemColor.activeCaption);
         JPanelGrupo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         JPanelGrupo.setForeground(new java.awt.Color(204, 204, 204));
         JPanelGrupo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -716,7 +720,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
             tbPane2.setBounds(0, 0, 758, 170);
 
             panelImage.add(JPanelGrupo);
-            JPanelGrupo.setBounds(0, 160, 880, 170);
+            JPanelGrupo.setBounds(0, 160, 760, 170);
 
             JPanelTable.setOpaque(false);
             JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
@@ -978,11 +982,39 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
                     jLabel11.setForeground(new java.awt.Color(255, 255, 255));
                     jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/money.png"))); // NOI18N
-                    jLabel11.setText("<--Anulacion de pagos-->");
+                    jLabel11.setText("<--Anulacion y Reimpresión de pagos-->");
                     pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
+
+                    jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+                    jPanel2.setLayout(new java.awt.BorderLayout());
+                    pnlPaginador1.add(jPanel2, new java.awt.GridBagConstraints());
+
+                    jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+                    jPanel6.setLayout(new java.awt.BorderLayout());
+                    pnlPaginador1.add(jPanel6, new java.awt.GridBagConstraints());
 
                     panelImage.add(pnlPaginador1);
                     pnlPaginador1.setBounds(0, 0, 880, 40);
+
+                    tbPane3.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+                    tbPane3.setOpaque(true);
+
+                    JPanelPago1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                    JPanelPago1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                    buttonAction4.setText("Re-Impresión");
+                    buttonAction4.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+                    buttonAction4.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            buttonAction4ActionPerformed(evt);
+                        }
+                    });
+                    JPanelPago1.add(buttonAction4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
+
+                    tbPane3.addTab("============", JPanelPago1);
+
+                    panelImage.add(tbPane3);
+                    tbPane3.setBounds(760, 160, 178, 170);
 
                     getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
@@ -1344,6 +1376,24 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_fechapago1AncestorAdded
 
+    private void buttonAction4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction4ActionPerformed
+        // TODO add your handling code here:
+        if (recibos.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Reimprimir");
+        } else {
+            if (recibos.getSelectedRow() != -1) {
+                int fila = recibos.getSelectedRow();
+                System.out.print(fila);
+                String idr = "" + recibos.getValueAt(fila, 2);
+                int idrecibo = Integer.parseInt(idr);
+                String printHorario = "";
+                Recibodepago.comprobante(idrecibo, printHorario);
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "No hay ningun recibo seleccionado para Reimprimir");
+            }
+        }
+    }//GEN-LAST:event_buttonAction4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar;
@@ -1352,6 +1402,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelGrupo;
     private javax.swing.JPanel JPanelPago;
+    private javax.swing.JPanel JPanelPago1;
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JMenuItem Nueva_Carrera;
     private javax.swing.JMenuItem Nuevo_Profesor;
@@ -1360,6 +1411,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.button.ButtonAction buttonAction1;
+    private elaprendiz.gui.button.ButtonAction buttonAction4;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
     public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JTable colegiaturas;
@@ -1373,9 +1425,11 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -1395,6 +1449,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane1;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane2;
+    private elaprendiz.gui.panel.TabbedPaneHeader tbPane3;
     private javax.swing.JFormattedTextField totalapagar;
     // End of variables declaration//GEN-END:variables
 }
