@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo3" language="groovy" pageWidth="305" pageHeight="395" columnWidth="265" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb2ac39d-94bc-4ef5-9971-3dd68a029fff">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="151"/>
 	<parameter name="idrecibo" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -12,8 +12,7 @@
 	<queryString>
 		<![CDATA[SELECT
      alumno.`codigo` AS alumno_codigo,
-     alumno.`nombres` AS alumno_nombres,
-     alumno.`apellidos` AS alumno_apellidos,
+     CONCAT(alumno.`nombres`,' ',alumno.`apellidos`) AS nombreapelidos,
      recibodepago.`idrecibo` AS recibodepago_idrecibo,
      recibodepago.`fecha` AS recibodepago_fecha,
      recibodepago.`total` AS recibodepago_total,
@@ -31,8 +30,7 @@ UNION ALL
 
 SELECT
      alumno.`codigo` AS alumno_codigo,
-     alumno.`nombres` AS alumno_nombres,
-     alumno.`apellidos` AS alumno_apellidos,
+     CONCAT(alumno.`nombres`,' ',alumno.`apellidos`) AS nombreapelidos,
      recibodepago.`idrecibo` AS recibodepago_idrecibo,
      recibodepago.`fecha` AS recibodepago_fecha,
      recibodepago.`total` AS recibodepago_total,
@@ -54,8 +52,7 @@ UNION ALL
 
 SELECT
      alumno.`codigo` AS alumno_codigo,
-     alumno.`nombres` AS alumno_nombres,
-     alumno.`apellidos` AS alumno_apellidos,
+     CONCAT(alumno.`nombres`,' ',alumno.`apellidos`) AS nombreapelidos,
      recibodepago.`idrecibo` AS recibodepago_idrecibo,
      recibodepago.`fecha` AS recibodepago_fecha,
      recibodepago.`total` AS recibodepago_total,
@@ -74,8 +71,7 @@ FROM
 WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	</queryString>
 	<field name="alumno_codigo" class="java.lang.String"/>
-	<field name="alumno_nombres" class="java.lang.String"/>
-	<field name="alumno_apellidos" class="java.lang.String"/>
+	<field name="nombreapelidos" class="java.lang.String"/>
 	<field name="recibodepago_idrecibo" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -128,6 +124,12 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	</title>
 	<pageHeader>
 		<band height="53" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="4fb4becc-8576-4994-a24c-c7f5e8bd2f76" x="208" y="2" width="56" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
 			<staticText>
 				<reportElement uuid="03dd7d3f-2d38-49bb-a895-c0f2324e952a" x="10" y="13" width="74" height="10"/>
 				<textElement verticalAlignment="Middle">
@@ -150,7 +152,7 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<text><![CDATA[Horario:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="eb8de44b-d5fc-4f10-b569-92121bc5e445" x="220" y="2" width="44" height="12"/>
+				<reportElement uuid="eb8de44b-d5fc-4f10-b569-92121bc5e445" x="215" y="1" width="44" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -163,7 +165,7 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				</textElement>
 				<text><![CDATA[Fecha Recibo:]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="dd/MM/yyyy">
 				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="85" y="2" width="74" height="10"/>
 				<textElement>
 					<font size="7"/>
@@ -178,13 +180,6 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<textFieldExpression><![CDATA[$F{alumno_codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="85" y="26" width="106" height="10"/>
-				<textElement>
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{alumno_nombres}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="85" y="39" width="145" height="10"/>
 				<textElement>
 					<font size="7"/>
@@ -192,18 +187,19 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<textFieldExpression><![CDATA[$P{horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="220" y="13" width="44" height="10"/>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="215" y="12" width="44" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{recibodepago_idrecibo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="57409340-65bc-47e3-b18d-cd26223c9b40" x="156" y="26" width="74" height="10"/>
-				<textElement>
-					<font size="7"/>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement uuid="d7ba216c-aeaf-49ea-a99d-128328e6b89f" mode="Transparent" x="85" y="26" width="145" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{alumno_apellidos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreapelidos}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -217,7 +213,7 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="71737071-68ae-43a2-8512-3728defb0724" x="36" y="0" width="96" height="10"/>
+				<reportElement uuid="71737071-68ae-43a2-8512-3728defb0724" x="2" y="0" width="130" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -255,8 +251,8 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	<detail>
 		<band height="11" splitType="Stretch">
 			<textField>
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="36" y="0" width="96" height="10"/>
-				<textElement>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="2" y="0" width="130" height="10"/>
+				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{otrospagos_descripcion}]]></textFieldExpression>
@@ -283,7 +279,7 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="8df583f8-a29a-4e29-9aed-1107d52fb1d5" x="0" y="10" width="265" height="1"/>
+				<reportElement uuid="8df583f8-a29a-4e29-9aed-1107d52fb1d5" x="2" y="10" width="257" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineStyle="Dashed"/>
 				</graphicElement>
@@ -291,28 +287,31 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="16">
+		<band height="13">
 			<staticText>
 				<reportElement uuid="baa77b40-a270-4221-96da-51f58a67a359" x="164" y="0" width="32" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7" isBold="true"/>
+					<font fontName="Verdana" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Q.:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
 				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="196" y="0" width="32" height="12"/>
-				<textElement textAlignment="Center">
-					<font size="7" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{recibodepago_total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="1387ec03-ae9b-4fe1-b0d3-ee74c228aa6e" x="36" y="4" width="96" height="12"/>
+				<reportElement uuid="1387ec03-ae9b-4fe1-b0d3-ee74c228aa6e" x="1" y="1" width="96" height="12"/>
 				<textElement>
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement uuid="49e47ad1-03c3-44b3-8ca9-8365b22b7d62" x="163" y="12" width="68" height="1"/>
+			</line>
 		</band>
 	</columnFooter>
 	<summary>
