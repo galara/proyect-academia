@@ -9,13 +9,14 @@ import Capa_Datos.BdConexion;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.CellEditorSpinnerPago;
 import Capa_Negocio.Editor_CheckBox;
-import Capa_Negocio.TableCellFormatter;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.Renderer_CheckBox;
+import Capa_Negocio.TableCellFormatter;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import Reportes.EstadoCuenta;
 import Reportes.Recibodepago;
 import java.awt.Color;
 import java.awt.Component;
@@ -219,9 +220,9 @@ public class Pagos extends javax.swing.JInternalFrame {
                 }
                 //totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
             }// fin sumar total otrospagos
-            
+
             totalapagar.setValue(Math.round(Resultado * 100.0) / 100.0);
-            
+
         }
     }
 
@@ -682,6 +683,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntGuardar = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
+        bntGuardar1 = new elaprendiz.gui.button.ButtonRect();
         JPanelGrupo = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -833,12 +835,7 @@ public class Pagos extends javax.swing.JInternalFrame {
                 bntGuardarActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntGuardar, gridBagConstraints);
+        pnlActionButtons.add(bntGuardar, new java.awt.GridBagConstraints());
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -868,6 +865,21 @@ public class Pagos extends javax.swing.JInternalFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 93);
         pnlActionButtons.add(bntSalir, gridBagConstraints);
+
+        bntGuardar1.setBackground(new java.awt.Color(51, 153, 255));
+        bntGuardar1.setMnemonic(KeyEvent.VK_G);
+        bntGuardar1.setText("Estado de Cuenta");
+        bntGuardar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntGuardar1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
+        pnlActionButtons.add(bntGuardar1, gridBagConstraints);
 
         panelImage.add(pnlActionButtons);
         pnlActionButtons.setBounds(0, 580, 880, 50);
@@ -1472,6 +1484,18 @@ public class Pagos extends javax.swing.JInternalFrame {
         }//Fin Guardar datos
     }//GEN-LAST:event_bntGuardarActionPerformed
 
+    private void bntGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardar1ActionPerformed
+        // TODO add your handling code here:
+        if (Utilidades.esObligatorio(this.JPanelGrupo, true)) {
+            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
+            EstadoCuenta.comprobante(idalumno, grup.getID());
+        }
+    }//GEN-LAST:event_bntGuardar1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar;
@@ -1488,6 +1512,7 @@ public class Pagos extends javax.swing.JInternalFrame {
     public static elaprendiz.gui.textField.TextField beca;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
+    private elaprendiz.gui.button.ButtonRect bntGuardar1;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     public static javax.swing.JComboBox cGrupo;
     public static javax.swing.JComboBox cTipopago;

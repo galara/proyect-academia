@@ -123,6 +123,7 @@
                   <Connection code="KeyEvent.VK_N" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nuevo"/>
+                <Property name="name" type="java.lang.String" value="nuevoalumno" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntNuevoActionPerformed"/>
