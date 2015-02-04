@@ -4,17 +4,27 @@
  */
 package Capa_Presentacion;
 
+import Capa_Datos.AccesoDatos;
+import Capa_Datos.BdConexion;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
+import Capa_Negocio.Renderer_CheckBox;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -27,10 +37,13 @@ import javax.swing.table.DefaultTableModel;
 public class Usuario extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
-    DefaultTableModel model;
-    String[] titulos = {"Código", "Nombre", "Usuario", "Password", "Estado", "Fecha Alta"};//Titulos para Jtabla
+    DefaultTableModel model, modelperfil;
+    String[] titulos = {"Código", "Nombre", "Usuario", "Estado", "Fecha Alta"};//Titulos para Jtabla
+    String[] titulosperfil = {"id", "No.", "Menu", "Principal", "Permitir"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
+    AccesoDatos acceso = new AccesoDatos();
+    java.sql.Connection conn;//getConnection intentara establecer una conexión.
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -41,6 +54,14 @@ public class Usuario extends javax.swing.JInternalFrame {
         initComponents();
         setFiltroTexto();
         addEscapeKey();
+
+        perfilusuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+        perfilusuarios.getColumnModel().getColumn(0).setMinWidth(0);
+        perfilusuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
+        perfilusuarios.doLayout();
+        JCheckBox check = new JCheckBox();
+        perfilusuarios.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(check));
+        perfilusuarios.getColumnModel().getColumn(4).setCellRenderer(new Renderer_CheckBox());
     }
 
     /*addEscapeKey agrega a este JInternalFrame un evento de cerrarVentana() al presionar la tecla "ESC" */
@@ -54,6 +75,12 @@ public class Usuario extends javax.swing.JInternalFrame {
         };
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "ESCAPE");
         getRootPane().getActionMap().put("ESCAPE", escapeAction);
+    }
+
+    public void removejtable2() {
+        while (perfilusuarios.getRowCount() != 0) {
+            modelperfil.removeRow(0);
+        }
     }
 
     /*Este metodo visualiza una mensage de cinfirmación al usuario antes de Cerrar la ventana,
@@ -71,6 +98,7 @@ public class Usuario extends javax.swing.JInternalFrame {
             this.bntEliminar.setEnabled(false);
             this.bntNuevo.setEnabled(true);
             removejtable();
+            removejtable2();
             busqueda.setText("");
             rbNombres.setSelected(true);
             rbCodigo.setSelected(false);
@@ -121,7 +149,7 @@ public class Usuario extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"usuario.idusuario", "usuario.nombre", "usuario.usuario", "usuario.password", "usuario.estado", "DATE_FORMAT(usuario.fechacreacion,'%d-%m-%Y')"};
+        String[] campos = {"usuario.idusuario", "usuario.nombre", "usuario.usuario", "usuario.estado", "DATE_FORMAT(usuario.fechacreacion,'%d-%m-%Y')"};
         String[] condiciones = {"usuario.idusuario"};
         String[] Id = {Dato};
 
@@ -137,6 +165,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         }
         if (this.rbNombres.isSelected()) {
             removejtable();
+            removejtable2();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
             Utilidades.esObligatorio(this.JPanelCampos, false);
             model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario.nombre", Dato, "");
@@ -148,6 +177,7 @@ public class Usuario extends javax.swing.JInternalFrame {
             model = peticiones.getRegistroPorLike(model, "usuario", campos, "usuario.usuario", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(usuarios);
+        tbPane2.setSelectedIndex(0);
     }
 
     /* Este metodo  consulta en la BD el codigo de la fila seleccionada y llena los componentes
@@ -165,11 +195,77 @@ public class Usuario extends javax.swing.JInternalFrame {
             Component[] cmps = {nombres, usuario, password, estado, fecharegistro};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
             peticiones.getRegistroSeleccionado(cmps, "usuario", campos, cond, id, "", null);
-
+            MostrarProductos(2);
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(true);
             this.bntEliminar.setEnabled(true);
             this.bntNuevo.setEnabled(false);
+        }
+    }
+
+    private void MostrarProductos(int opcion) {
+        String sql = "";
+        if (opcion == 1) {
+            sql = "SELECT idmenu, nombre, principal FROM menu where estado=true order by idmenu";
+        } else if (opcion == 2) {
+            int fila = usuarios.getSelectedRow();
+            String id = (String) "" + usuarios.getValueAt(fila, 0);
+            sql = "SELECT perfilusuario.idperfilusuario,menu.nombre,menu.principal,perfilusuario.estado FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu WHERE perfilusuario.usuario_idusuario=" + id;
+        }
+        removejtable2();
+        modelperfil = getRegistroPorLikell(modelperfil, sql, opcion);
+        Utilidades.ajustarAnchoColumnas(perfilusuarios);
+        perfilusuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+        perfilusuarios.getColumnModel().getColumn(0).setMinWidth(0);
+        perfilusuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
+        perfilusuarios.doLayout();
+    }
+
+    /**
+     * Para una condicion WHERE condicionid LIKE '% campocondicion' * @param
+     * modelo ,modelo de la JTable
+     *
+     * @param tabla , el nombre de la tabla a consultar en la BD
+     * @param campocondicion , los campos de la tabla para las condiciones ejem:
+     * id,estado etc
+     * @return
+     */
+    public DefaultTableModel getRegistroPorLikell(DefaultTableModel modelo, String tabla, int opcion) {
+        try {
+
+            ResultSet rs;
+
+            rs = acceso.getRegistroProc(tabla);
+            int cantcampos = 5;
+            int cant = 0;
+            //if (rs != null) {
+            if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                //int count = 0;
+                rs.beforeFirst();//regresa el puntero al primer registro
+                Object[] fila = new Object[cantcampos];
+
+                while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                    fila[0] = rs.getString(1);
+                    fila[1] = cant = cant + 1;
+                    fila[2] = rs.getString(2);
+                    fila[3] = rs.getString(3);
+                    if (opcion == 1) {
+                        fila[4] = false;
+                    } else {
+                        fila[4] = rs.getBoolean(4);
+                    }
+                    modelo.addRow(fila);
+                }
+
+            } //} 
+            else {
+                // JOptionPane.showMessageDialog(null, "No se encontraron datos para la busqueda", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            }
+            rs.close();
+            return modelo;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un Error :" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
     }
 
@@ -192,16 +288,21 @@ public class Usuario extends javax.swing.JInternalFrame {
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         JPanelCampos = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        tbPane2 = new elaprendiz.gui.panel.TabbedPaneHeader();
+        JPanelCampos1 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         nombres = new elaprendiz.gui.textField.TextField();
         usuario = new elaprendiz.gui.textField.TextField();
-        password = new elaprendiz.gui.textField.TextField();
         fecharegistro = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
+        password = new elaprendiz.gui.passwordField.PasswordFieldRectIcon();
+        JPanelPago1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        perfilusuarios = new javax.swing.JTable();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         usuarios = new javax.swing.JTable();
@@ -211,6 +312,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         rbCodigo = new javax.swing.JRadioButton();
         rbNombres = new javax.swing.JRadioButton();
         rbApellidos = new javax.swing.JRadioButton();
+        buttonMostrar1 = new elaprendiz.gui.button.ButtonRect();
         pnlPaginador = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
@@ -347,58 +449,60 @@ public class Usuario extends javax.swing.JInternalFrame {
         JPanelCampos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         JPanelCampos.setForeground(new java.awt.Color(204, 204, 204));
         JPanelCampos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        JPanelCampos.setLayout(null);
+        JPanelCampos.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Nombre:");
-        JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(90, 60, 80, 20);
+        tbPane2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        tbPane2.setOpaque(true);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Usuario:");
-        JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(90, 90, 80, 20);
+        JPanelCampos1.setBackground(java.awt.SystemColor.activeCaption);
+        JPanelCampos1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        JPanelCampos1.setForeground(new java.awt.Color(204, 204, 204));
+        JPanelCampos1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        JPanelCampos1.setLayout(null);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText("Contraseña:");
-        JPanelCampos.add(jLabel3);
-        jLabel3.setBounds(80, 120, 90, 20);
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("Nombre:");
+        JPanelCampos1.add(jLabel5);
+        jLabel5.setBounds(90, 40, 80, 20);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Fecha Alta:");
-        JPanelCampos.add(jLabel6);
-        jLabel6.setBounds(450, 120, 150, 21);
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setText("Usuario:");
+        JPanelCampos1.add(jLabel9);
+        jLabel9.setBounds(90, 70, 80, 20);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText("Estado:");
-        JPanelCampos.add(jLabel4);
-        jLabel4.setBounds(490, 60, 110, 20);
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel10.setText("Contraseña:");
+        JPanelCampos1.add(jLabel10);
+        jLabel10.setBounds(80, 100, 90, 20);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel11.setText("Fecha Alta:");
+        JPanelCampos1.add(jLabel11);
+        jLabel11.setBounds(450, 100, 150, 21);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel12.setText("Estado:");
+        JPanelCampos1.add(jLabel12);
+        jLabel12.setBounds(490, 40, 110, 20);
 
         nombres.setEditable(false);
         nombres.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         nombres.setName("nombres"); // NOI18N
         nombres.setNextFocusableComponent(usuario);
-        JPanelCampos.add(nombres);
-        nombres.setBounds(180, 60, 250, 21);
+        JPanelCampos1.add(nombres);
+        nombres.setBounds(180, 40, 250, 21);
 
         usuario.setEditable(false);
         usuario.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         usuario.setName("usuario"); // NOI18N
         usuario.setNextFocusableComponent(password);
-        JPanelCampos.add(usuario);
-        usuario.setBounds(180, 90, 250, 21);
-
-        password.setEditable(false);
-        password.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        password.setName("password"); // NOI18N
-        password.setNextFocusableComponent(estado);
-        JPanelCampos.add(password);
-        password.setBounds(180, 120, 250, 21);
+        JPanelCampos1.add(usuario);
+        usuario.setBounds(180, 70, 250, 21);
 
         fecharegistro.setDate(Calendar.getInstance().getTime());
         fecharegistro.setDateFormatString("dd/MM/yyyy");
@@ -407,8 +511,8 @@ public class Usuario extends javax.swing.JInternalFrame {
         fecharegistro.setMaxSelectableDate(new java.util.Date(3093496470100000L));
         fecharegistro.setMinSelectableDate(new java.util.Date(-62135744300000L));
         fecharegistro.setPreferredSize(new java.awt.Dimension(120, 22));
-        JPanelCampos.add(fecharegistro);
-        fecharegistro.setBounds(610, 120, 160, 21);
+        JPanelCampos1.add(fecharegistro);
+        fecharegistro.setBounds(610, 100, 160, 21);
 
         estado.setBackground(new java.awt.Color(51, 153, 255));
         estado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -417,129 +521,174 @@ public class Usuario extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
-        JPanelCampos.add(estado);
-        estado.setBounds(610, 60, 160, 21);
+        JPanelCampos1.add(estado);
+        estado.setBounds(610, 40, 160, 21);
 
-        panelImage.add(JPanelCampos);
-        JPanelCampos.setBounds(0, 40, 880, 190);
+        password.setPreferredSize(new java.awt.Dimension(150, 24));
+        JPanelCampos1.add(password);
+        password.setBounds(180, 100, 250, 24);
 
-        JPanelTable.setOpaque(false);
-        JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
-        JPanelTable.setLayout(new java.awt.BorderLayout());
+        tbPane2.addTab("Datos Usuario", JPanelCampos1);
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JPanelPago1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        JPanelPago1.setLayout(new java.awt.BorderLayout());
 
-        usuarios.setForeground(new java.awt.Color(51, 51, 51));
-        usuarios.setModel(model = new DefaultTableModel(null, titulos)
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.setOpaque(false);
+
+        perfilusuarios.setModel(modelperfil = new DefaultTableModel(null, titulosperfil)
             {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return false;
+                    if(column==4 ){
+                        return true;
+                    }else{
+                        return false;}
                 }
             });
-            usuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            usuarios.setFocusCycleRoot(true);
-            usuarios.setGridColor(new java.awt.Color(51, 51, 255));
-            usuarios.setRowHeight(22);
-            usuarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
-            usuarios.setSurrendersFocusOnKeystroke(true);
-            usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    usuariosMouseClicked(evt);
-                }
-                public void mousePressed(java.awt.event.MouseEvent evt) {
-                    usuariosMouseClicked(evt);
-                }
-            });
-            usuarios.addKeyListener(new java.awt.event.KeyAdapter() {
-                public void keyPressed(java.awt.event.KeyEvent evt) {
-                    usuariosKeyPressed(evt);
-                }
-            });
-            jScrollPane1.setViewportView(usuarios);
-            usuarios.getAccessibleContext().setAccessibleName("");
+            perfilusuarios.setFocusCycleRoot(true);
+            perfilusuarios.setGridColor(new java.awt.Color(51, 51, 255));
+            perfilusuarios.setName("perfilusuarios"); // NOI18N
+            perfilusuarios.setRowHeight(20);
+            perfilusuarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
+            jScrollPane3.setViewportView(perfilusuarios);
 
-            JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+            JPanelPago1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-            panelImage.add(JPanelTable);
-            JPanelTable.setBounds(0, 300, 880, 130);
+            tbPane2.addTab("Perfil de Usuario", JPanelPago1);
 
-            JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
-            JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-            JPanelBusqueda.setLayout(null);
+            JPanelCampos.add(tbPane2, java.awt.BorderLayout.CENTER);
 
-            jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
-            jLabel7.setText("Buscar Por:");
-            JPanelBusqueda.add(jLabel7);
-            jLabel7.setBounds(174, 2, 116, 40);
+            panelImage.add(JPanelCampos);
+            JPanelCampos.setBounds(0, 40, 880, 190);
 
-            busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
-            busqueda.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    busquedaActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(busqueda);
-            busqueda.setBounds(300, 10, 250, 27);
+            JPanelTable.setOpaque(false);
+            JPanelTable.setPreferredSize(new java.awt.Dimension(786, 402));
+            JPanelTable.setLayout(new java.awt.BorderLayout());
 
-            rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
-            rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
-            rbCodigo.setText("Codigo");
-            rbCodigo.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbCodigoActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(rbCodigo);
-            rbCodigo.setBounds(270, 40, 80, 25);
+            jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-            rbNombres.setBackground(java.awt.SystemColor.inactiveCaption);
-            rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbNombres.setForeground(new java.awt.Color(0, 102, 102));
-            rbNombres.setSelected(true);
-            rbNombres.setText("Nombre");
-            rbNombres.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbNombresActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(rbNombres);
-            rbNombres.setBounds(380, 40, 90, 25);
+            usuarios.setForeground(new java.awt.Color(51, 51, 51));
+            usuarios.setModel(model = new DefaultTableModel(null, titulos)
+                {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                });
+                usuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+                usuarios.setFocusCycleRoot(true);
+                usuarios.setGridColor(new java.awt.Color(51, 51, 255));
+                usuarios.setRowHeight(22);
+                usuarios.setSelectionBackground(java.awt.SystemColor.activeCaption);
+                usuarios.setSurrendersFocusOnKeystroke(true);
+                usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        usuariosMouseClicked(evt);
+                    }
+                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        usuariosMouseClicked(evt);
+                    }
+                });
+                usuarios.addKeyListener(new java.awt.event.KeyAdapter() {
+                    public void keyPressed(java.awt.event.KeyEvent evt) {
+                        usuariosKeyPressed(evt);
+                    }
+                });
+                jScrollPane1.setViewportView(usuarios);
+                usuarios.getAccessibleContext().setAccessibleName("");
 
-            rbApellidos.setBackground(java.awt.SystemColor.inactiveCaption);
-            rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-            rbApellidos.setForeground(new java.awt.Color(0, 102, 102));
-            rbApellidos.setText("Usuario");
-            rbApellidos.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    rbApellidosActionPerformed(evt);
-                }
-            });
-            JPanelBusqueda.add(rbApellidos);
-            rbApellidos.setBounds(500, 40, 90, 25);
+                JPanelTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-            panelImage.add(JPanelBusqueda);
-            JPanelBusqueda.setBounds(0, 230, 880, 70);
+                panelImage.add(JPanelTable);
+                JPanelTable.setBounds(0, 300, 880, 130);
 
-            pnlPaginador.setBackground(new java.awt.Color(57, 104, 163));
-            pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
-            pnlPaginador.setLayout(new java.awt.GridBagLayout());
+                JPanelBusqueda.setBackground(java.awt.SystemColor.inactiveCaption);
+                JPanelBusqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                JPanelBusqueda.setLayout(null);
 
-            jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
-            jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-            jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
-            jLabel8.setText("<--Usuarios-->");
-            pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
+                jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscar.png"))); // NOI18N
+                jLabel7.setText("Buscar Por:");
+                JPanelBusqueda.add(jLabel7);
+                jLabel7.setBounds(174, 2, 116, 40);
 
-            panelImage.add(pnlPaginador);
-            pnlPaginador.setBounds(0, 0, 880, 40);
+                busqueda.setPreferredSize(new java.awt.Dimension(250, 27));
+                busqueda.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        busquedaActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(busqueda);
+                busqueda.setBounds(300, 10, 250, 27);
 
-            getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
+                rbCodigo.setBackground(java.awt.SystemColor.inactiveCaption);
+                rbCodigo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                rbCodigo.setForeground(new java.awt.Color(0, 102, 102));
+                rbCodigo.setText("Codigo");
+                rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        rbCodigoActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(rbCodigo);
+                rbCodigo.setBounds(270, 40, 80, 25);
 
-            setBounds(0, 0, 890, 512);
-        }// </editor-fold>//GEN-END:initComponents
+                rbNombres.setBackground(java.awt.SystemColor.inactiveCaption);
+                rbNombres.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                rbNombres.setForeground(new java.awt.Color(0, 102, 102));
+                rbNombres.setSelected(true);
+                rbNombres.setText("Nombre");
+                rbNombres.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        rbNombresActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(rbNombres);
+                rbNombres.setBounds(380, 40, 90, 25);
+
+                rbApellidos.setBackground(java.awt.SystemColor.inactiveCaption);
+                rbApellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                rbApellidos.setForeground(new java.awt.Color(0, 102, 102));
+                rbApellidos.setText("Usuario");
+                rbApellidos.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        rbApellidosActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(rbApellidos);
+                rbApellidos.setBounds(500, 40, 90, 25);
+
+                buttonMostrar1.setBackground(new java.awt.Color(102, 204, 0));
+                buttonMostrar1.setText("Perfil usuario");
+                buttonMostrar1.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        buttonMostrar1ActionPerformed(evt);
+                    }
+                });
+                JPanelBusqueda.add(buttonMostrar1);
+                buttonMostrar1.setBounds(620, 20, 120, 25);
+
+                panelImage.add(JPanelBusqueda);
+                JPanelBusqueda.setBounds(0, 230, 880, 70);
+
+                pnlPaginador.setBackground(new java.awt.Color(57, 104, 163));
+                pnlPaginador.setPreferredSize(new java.awt.Dimension(786, 40));
+                pnlPaginador.setLayout(new java.awt.GridBagLayout());
+
+                jLabel8.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
+                jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+                jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
+                jLabel8.setText("<--Usuarios-->");
+                pnlPaginador.add(jLabel8, new java.awt.GridBagConstraints());
+
+                panelImage.add(pnlPaginador);
+                pnlPaginador.setBounds(0, 0, 880, 40);
+
+                getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
+
+                setBounds(0, 0, 890, 512);
+            }// </editor-fold>//GEN-END:initComponents
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
@@ -550,6 +699,8 @@ public class Usuario extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(false);
         nombres.requestFocus();
+        MostrarProductos(1);
+        tbPane2.setSelectedIndex(0);
 
     }//GEN-LAST:event_bntNuevoActionPerformed
 
@@ -561,29 +712,87 @@ public class Usuario extends javax.swing.JInternalFrame {
         }
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
         if (resp == 0) {
+            PreparedStatement ps = null;
+            conn = BdConexion.getConexion();
 
-            boolean seguardo = false;
-            String nombreTabla = "usuario";
-            String campos = "nombre, usuario, password, estado, fechacreacion";
-            int estad = 0;
+            //Variables usuario*************************************************
+            int estad = 0, idusuario = 0;
+            int n1 = 0;
             if (this.estado.isSelected()) {
                 estad = 1;
             }
-            Object[] valores = {nombres.getText(), usuario.getText(), password.getText(), estad,
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
-            };
+            String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
+            String sqlusuario = "insert into usuario (nombre, usuario, password, estado, fechacreacion)"
+                    + " values ('" + nombres.getText() + "','" + usuario.getText() + "','" + password.getText() + "','" + estad + "','" + fecha + "')";
+            //******************************************************************
 
-            seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-            if (seguardo) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                conn.setAutoCommit(false);
+                System.out.print(sqlusuario + "\n");
+
+                ps = conn.prepareStatement(sqlusuario, PreparedStatement.RETURN_GENERATED_KEYS);
+                n1 = ps.executeUpdate();
+                if (n1 > 0) {
+                    ResultSet rs = ps.getGeneratedKeys();
+                    while (rs.next()) {
+                        idusuario = rs.getInt(1);//retorna el idrecibo guardado
+                    }
+
+                    //Variables perfil usuario**********************************
+                    boolean camprec = false;
+                    int n = 0;
+                    int cant2 = modelperfil.getRowCount();
+                    int estadomenu = 0;
+                    //**********************************************************
+
+                    for (int i = 0; i < cant2; i++) {//for perfil usuarios
+                        String id = (String) "" + perfilusuarios.getValueAt(i, 0);
+                        if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
+                            estadomenu = 1;
+                            camprec = true;
+                        } else {
+                            estadomenu = 0;
+                        }
+                        String descriprecibo = "insert into perfilusuario (menu_idmenu,usuario_idusuario,estado) "
+                                + "values ('" + id + "','" + idusuario + "','" + estadomenu + "')";
+                        n = ps.executeUpdate(descriprecibo);
+                    }//fin for perfil usuario
+
+                    if (!camprec) {
+                        JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Acceso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                    if (n > 0) {
+                        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                        MostrarDatos(busqueda.getText());
+                        this.bntGuardar.setEnabled(false);
+                        this.bntModificar.setEnabled(false);
+                        this.bntEliminar.setEnabled(false);
+                        this.bntNuevo.setEnabled(true);
+                        busqueda.requestFocus();
+                        JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                }
+                conn.commit();// guarda todas las consultas si no ubo error
+                ps.close();
+                if (!conn.getAutoCommit()) {
+                    conn.setAutoCommit(true);
+                }
+            } catch (SQLException ex) {
+                try {
+                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                    ps.close();
+                    if (!conn.getAutoCommit()) {
+                        conn.setAutoCommit(true);
+                    }
+                } catch (SQLException ex1) {
+                    Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                JOptionPane.showMessageDialog(null, ex);
             }
+
+            //seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -634,28 +843,78 @@ public class Usuario extends javax.swing.JInternalFrame {
         int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
         if (resp == 0) {
 
-            String nomTabla = "usuario";
-            String columnaId = "idusuario";
-            int seguardo = 0;
-            int fila = usuarios.getSelectedRow();
-            String id = (String) "" + usuarios.getValueAt(fila, 0);
-            String campos = "nombre, usuario, password, estado, fechacreacion";
+            PreparedStatement ps = null;
+            conn = BdConexion.getConexion();
 
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
-            }
-            Object[] valores = {nombres.getText(), usuario.getText(), password.getText(), estad,
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
-            };
+            try {
 
-            seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                conn.setAutoCommit(false);
+                //Variables modificar usuaio***********************************
+                int n1 = 0;
+                int fila = usuarios.getSelectedRow();
+                String id = (String) "" + usuarios.getValueAt(fila, 0);
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String sql = "update usuario set nombre='" + nombres.getText() + "', " + " usuario='" + usuario.getText() + "', " + " password='" + password.getText() + "', " + " estado='" + estad + "', " + " fechacreacion='" + fecha + "'  where idusuario=" + id;
+                //**************************************************************
+
+                ps = conn.prepareStatement(sql);
+                n1 = ps.executeUpdate();
+
+                if (n1 > 0) {
+                    //Variables perfil usuario**********************************
+                    int n = 0;
+                    int cant2 = modelperfil.getRowCount();
+                    int estadomenu = 0;
+                    //**********************************************************
+
+                    for (int i = 0; i < cant2; i++) {//for perfil usuarios
+                        String idmenu = (String) "" + perfilusuarios.getValueAt(i, 0);
+                        if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
+                            estadomenu = 1;
+                        } else {
+                            estadomenu = 0;
+                        }
+                        String descriprecibo = "update perfilusuario set estado=" + estadomenu + " where idperfilusuario=" + idmenu;
+                        n = ps.executeUpdate(descriprecibo);
+
+                    }//fin for perfil usuario
+                    if (n > 0) {
+                        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                        MostrarDatos(busqueda.getText());
+                        busqueda.requestFocus();
+                        tbPane2.setSelectedIndex(0);
+                        JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "ERROR El dato no se ha Modificado Correctamente", "Modificar", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "ERROR El dato no se ha Modificado Correctamente", "Modificar", JOptionPane.ERROR_MESSAGE);
+                }
+                conn.commit();// guarda todas las consultas si no ubo error
+                ps.close();
+                if (!conn.getAutoCommit()) {
+                    conn.setAutoCommit(true);
+                }
+
+            } catch (Exception e) {
+                try {
+                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                    ps.close();
+                    if (!conn.getAutoCommit()) {
+                        conn.setAutoCommit(true);
+                    }
+                } catch (SQLException ex1) {
+                    JOptionPane.showMessageDialog(null, ex1);
+                }
+                JOptionPane.showMessageDialog(null, e);
+
             }
+
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 
@@ -669,8 +928,10 @@ public class Usuario extends javax.swing.JInternalFrame {
         this.bntEliminar.setEnabled(false);
         this.bntNuevo.setEnabled(true);
         removejtable();
+        removejtable2();
         busqueda.setText("");
         busqueda.requestFocus();
+        tbPane2.setSelectedIndex(0);
 
     }//GEN-LAST:event_bntCancelarActionPerformed
 
@@ -716,10 +977,17 @@ public class Usuario extends javax.swing.JInternalFrame {
         busqueda.requestFocus();
     }//GEN-LAST:event_rbApellidosActionPerformed
 
+    private void buttonMostrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMostrar1ActionPerformed
+        // TODO add your handling code here:
+        tbPane2.setSelectedIndex(1);
+    }//GEN-LAST:event_buttonMostrar1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
+    private javax.swing.JPanel JPanelCampos1;
+    private javax.swing.JPanel JPanelPago1;
     private javax.swing.JPanel JPanelTable;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntEliminar;
@@ -728,24 +996,28 @@ public class Usuario extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntNuevo;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
+    private elaprendiz.gui.button.ButtonRect buttonMostrar1;
     private javax.swing.JRadioButton estado;
     private com.toedter.calendar.JDateChooser fecharegistro;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private elaprendiz.gui.textField.TextField nombres;
     private elaprendiz.gui.panel.PanelImage panelImage;
-    private elaprendiz.gui.textField.TextField password;
+    private elaprendiz.gui.passwordField.PasswordFieldRectIcon password;
+    private javax.swing.JTable perfilusuarios;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
     private javax.swing.JRadioButton rbApellidos;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
+    private elaprendiz.gui.panel.TabbedPaneHeader tbPane2;
     private elaprendiz.gui.textField.TextField usuario;
     private javax.swing.JTable usuarios;
     // End of variables declaration//GEN-END:variables

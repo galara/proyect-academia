@@ -6,6 +6,7 @@ package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
+import Capa_Negocio.AccesoUsuario;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
@@ -1389,6 +1390,9 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
+        
+        //if(AccesoUsuario.AccesosUsuario(bntNuevo.getName())==true ){
+            
         Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
         estado.setSelected(true);
         this.bntGuardar.setEnabled(true);
@@ -1411,7 +1415,10 @@ public class Alumno extends javax.swing.JInternalFrame {
         nombres.requestFocus();
         nidalumno = 0;
         matricula = true;
-
+//        }else{
+//            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+//            
+//        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed

@@ -77,6 +77,7 @@ public class Principal extends javax.swing.JFrame {
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -265,6 +266,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem3);
+
+        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem9.setText("Menus");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
 
         jMenuBar1.add(jMenu3);
 
@@ -547,6 +557,15 @@ public class Principal extends javax.swing.JFrame {
         AddForms.adminInternalFrame(dp, frmAnulacionPagos);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        Menu frmMenu = new Menu();
+        if (frmMenu == null) {
+            frmMenu = new Menu();
+        }
+        AddForms.adminInternalFrame(dp, frmMenu);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -590,6 +609,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;

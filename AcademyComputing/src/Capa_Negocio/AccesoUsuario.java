@@ -21,13 +21,41 @@ public class AccesoUsuario  {
         ERROR, NO_EXISTE, ERROR_CLAVE, ACCESO_OK, USR_INACTICVO
     };
 
-//    public AccesoUsuario() //throws ParserConfigurationException
-//    {
-////        DocumentBuilderFactory dbc = DocumentBuilderFactory.newInstance();
-////        DocumentBuilder db = dbc.newDocumentBuilder();
-////        Document doc = db.newDocument();
-//
-//    }
+    public static boolean AccesosUsuario(String menuacceso) //throws ParserConfigurationException
+    {
+        //conn = BdConexion.getConexion();
+        ResultSet rs;
+        boolean acceso=false;
+        
+        String sql = "SELECT perfilusuario.estado , menu.nombre FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu INNER JOIN usuario ON perfilusuario.usuario_idusuario = usuario.idusuario where usuario.usuario="+usuario+" and menu.nombre="+menuacceso;
+        //System.out.print(sql+"\n");
+        
+        rs = BdConexion.getResultSet(sql);
+        
+        //Busca el usuario y llena las variables usuario y password
+        if (rs != null) {
+            try {
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        acceso = rs.getBoolean(1);
+                        System.out.print(acceso+" cnsulta");
+                    }
+                } else {
+                    acceso = false;
+                }
+                //rs.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+        //*********************************************************************
+        System.out.print(acceso);
+        return acceso;
+
+    }
+    
+    
     public static Estado configUsuario(String login, String clave) {
 
         usuario = null;
@@ -65,7 +93,7 @@ public class AccesoUsuario  {
                     password = null;
                     activo = false;
                 }
-                rs.close();
+                //rs.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
