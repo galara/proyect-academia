@@ -1,5 +1,6 @@
 package Capa_Presentacion;
 
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.AddForms;
 import Capa_Negocio.CalcularMoras;
 import inicio.start;
@@ -20,6 +21,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setIconImage(new ImageIcon(getClass().getResource("/Recursos/milogo.png")).getImage());
+        usuario.setText(AccesoUsuario.getUsuario());
     }
 
     private void cerrarVentana() {
@@ -123,39 +125,41 @@ public class Principal extends javax.swing.JFrame {
         );
         dpLayout.setVerticalGroup(
             dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
+            .addGap(0, 543, Short.MAX_VALUE)
         );
 
         getContentPane().add(dp);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(549, 30));
 
-        sistema.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        sistema.setFont(new java.awt.Font("Script MT Bold", 1, 21)); // NOI18N
         sistema.setForeground(new java.awt.Color(51, 51, 255));
         sistema.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sistema.setText("\"BIENVENIDOS AL SISTEMA\" Usuario :");
+        sistema.setText("Usuario :");
+        sistema.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        usuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        usuario.setFont(new java.awt.Font("Script MT Bold", 1, 21)); // NOI18N
         usuario.setForeground(new java.awt.Color(51, 51, 255));
+        usuario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        usuario.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(sistema, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(602, Short.MAX_VALUE))
+                .addComponent(sistema, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 703, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 5, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sistema, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 5, Short.MAX_VALUE))
+                    .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         getContentPane().add(jPanel1);

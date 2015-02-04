@@ -52,7 +52,7 @@ public class start extends javax.swing.JFrame implements Runnable {
         try {
 
             this.setVisible(true);
-            Thread.sleep(3000);
+            Thread.sleep(1500);
             this.dispose();
             Login1 j = new Login1();
             j.setLocationRelativeTo(null);
