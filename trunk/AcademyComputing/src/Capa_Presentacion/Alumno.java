@@ -695,6 +695,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
         bntNuevo.setMnemonic(KeyEvent.VK_N);
         bntNuevo.setText("Nuevo");
+        bntNuevo.setName("nuevoalumno"); // NOI18N
         bntNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntNuevoActionPerformed(evt);

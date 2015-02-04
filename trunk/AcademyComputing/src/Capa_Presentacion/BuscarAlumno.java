@@ -220,7 +220,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Alumnos");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setName("alumnos"); // NOI18N
+        setName("buscaralumnos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
