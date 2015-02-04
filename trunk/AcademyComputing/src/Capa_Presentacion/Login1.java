@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Capa_Presentacion;
 
+import Capa_Negocio.AccesoUsuario;
 import inicio.start;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,11 +15,47 @@ import inicio.start;
  */
 public class Login1 extends javax.swing.JFrame {
 
+    private boolean accesoConcedido = false;
+    private JOptionPane op;
+
     /**
      * Creates new form Login
      */
     public Login1() {
         initComponents();
+    }
+
+    private void login() {
+
+        if (!this.usuario.getText().isEmpty() && !this.password.getText().isEmpty()) {
+
+            String msg = "";
+            AccesoUsuario.Estado configUsuario = AccesoUsuario.configUsuario(usuario.getText(), password.getText());
+
+            System.out.print(configUsuario + "\n");
+
+            if (configUsuario == AccesoUsuario.Estado.NO_EXISTE) {
+                msg = "El usuario: " + this.usuario.getText() + " no existe.";
+            } else if (configUsuario == AccesoUsuario.Estado.USR_INACTICVO) {
+                msg = "El usuario: " + this.usuario.getText() + " no esta Activo.";
+            } else if (configUsuario == AccesoUsuario.Estado.ERROR_CLAVE) {
+                msg = "Contraseña Incorrecta!";
+            } else if (configUsuario == AccesoUsuario.Estado.ACCESO_OK) {
+                Principal j = new Principal();
+                j.setVisible(true);
+                this.dispose();
+                accesoConcedido = true;
+                return;
+            }
+            JOptionPane.showMessageDialog(this, msg, "Error: no se pudo conectar.", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese un nombre de usuario y su contraseña", "Error: Datos vacios.", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    public boolean isAccesoConcedido() {
+        return accesoConcedido;
     }
 
     /**
@@ -46,48 +83,40 @@ public class Login1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Acceso al Sistema");
+        setName("login"); // NOI18N
+        setType(java.awt.Window.Type.UTILITY);
 
         panelImage1.setBackground(java.awt.SystemColor.activeCaption);
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/font.png"))); // NOI18N
+        panelImage1.setLayout(null);
 
         panelCurves1.setToolTipText("");
         panelCurves1.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
+        panelCurves1.setLayout(null);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 38)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("COMPUVISIÓN");
-
-        javax.swing.GroupLayout panelCurves1Layout = new javax.swing.GroupLayout(panelCurves1);
-        panelCurves1.setLayout(panelCurves1Layout);
-        panelCurves1Layout.setHorizontalGroup(
-            panelCurves1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCurves1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
-        );
-        panelCurves1Layout.setVerticalGroup(
-            panelCurves1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCurves1Layout.createSequentialGroup()
-                .addContainerGap(392, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addContainerGap())
-        );
+        jLabel5.setText("\"COMPUVISIÓN\"");
+        panelCurves1.add(jLabel5);
+        jLabel5.setBounds(-3, 408, 330, 30);
 
         panelImage2.setBackground(java.awt.SystemColor.activeCaption);
         panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/foil-154927_640.png"))); // NOI18N
 
-        password.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                passwordKeyPressed(evt);
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Usuario");
+        jLabel1.setText("Usuario:");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Contraseña");
+        jLabel3.setText("Contraseña:");
 
         iniciar.setText("Iniciar seción");
         iniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -103,11 +132,11 @@ public class Login1 extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage2Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1)
                     .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
             .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelImage2Layout.createSequentialGroup()
@@ -126,16 +155,24 @@ public class Login1 extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(2, 2, 2)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
             .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelImage2Layout.createSequentialGroup()
                     .addGap(129, 129, 129)
                     .addComponent(iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(95, Short.MAX_VALUE)))
+                    .addContainerGap(96, Short.MAX_VALUE)))
         );
+
+        panelCurves1.add(panelImage2);
+        panelImage2.setBounds(10, 140, 296, 260);
+
+        panelImage1.add(panelCurves1);
+        panelCurves1.setBounds(0, 40, 320, 450);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login_1.png"))); // NOI18N
+        panelImage1.add(jLabel2);
+        jLabel2.setBounds(-1, 45, 320, 128);
 
         pnlPaginador2.setBackground(new java.awt.Color(0, 0, 0));
         pnlPaginador2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
@@ -154,66 +191,33 @@ public class Login1 extends javax.swing.JFrame {
         jLabel6.setText("Acceso al sistema");
         pnlPaginador2.add(jLabel6, new java.awt.GridBagConstraints());
 
-        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
-        panelImage1.setLayout(panelImage1Layout);
-        panelImage1Layout.setHorizontalGroup(
-            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelImage1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 29, Short.MAX_VALUE))
-            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(pnlPaginador2, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))
-        );
-        panelImage1Layout.setVerticalGroup(
-            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(54, 54, 54))
-            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
-                    .addGap(0, 38, Short.MAX_VALUE)
-                    .addComponent(panelCurves1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelImage1Layout.createSequentialGroup()
-                    .addComponent(pnlPaginador2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 452, Short.MAX_VALUE)))
-        );
+        panelImage1.add(pnlPaginador2);
+        pnlPaginador2.setBounds(0, 0, 320, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
         // TODO add your handling code here:
-        Principal j = new Principal();
-        j.setVisible(true);
-        this.dispose();
+        login();
     }//GEN-LAST:event_iniciarActionPerformed
 
-    private void passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyPressed
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
         // TODO add your handling code here:
-        Principal j = new Principal();
-        j.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_passwordKeyPressed
+        login();
+    }//GEN-LAST:event_passwordActionPerformed
 
     /**
      * @param args the command line arguments
