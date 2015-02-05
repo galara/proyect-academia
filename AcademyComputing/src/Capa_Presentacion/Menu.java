@@ -215,6 +215,8 @@ public class Menu extends javax.swing.JInternalFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("Accesos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
@@ -227,8 +229,6 @@ public class Menu extends javax.swing.JInternalFrame {
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -343,15 +343,15 @@ public class Menu extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Descripción:");
+        jLabel1.setText("Nombre de Acceso:");
         JPanelCampos.add(jLabel1);
-        jLabel1.setBounds(90, 60, 90, 20);
+        jLabel1.setBounds(40, 60, 140, 20);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Observación:");
+        jLabel2.setText("Formulario Padre:");
         JPanelCampos.add(jLabel2);
-        jLabel2.setBounds(80, 110, 100, 20);
+        jLabel2.setBounds(50, 110, 130, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);

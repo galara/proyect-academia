@@ -90,7 +90,7 @@
                   <Image iconType="3" name="/Recursos/profesor.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Profesor"/>
-                <Property name="name" type="java.lang.String" value="ProfesorPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Profesor Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mprofesorActionPerformed"/>
@@ -105,7 +105,7 @@
                   <Image iconType="3" name="/Recursos/carrera.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Carrera"/>
-                <Property name="name" type="java.lang.String" value="CarreraPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Carrera Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mcarreraActionPerformed"/>
@@ -120,7 +120,7 @@
                   <Image iconType="3" name="/Recursos/grupos.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Grupo/Horario"/>
-                <Property name="name" type="java.lang.String" value="Grupo/HorarioPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Grupo/Horario Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mhorarioActionPerformed"/>
@@ -135,7 +135,7 @@
                   <Image iconType="3" name="/Recursos/ciclo.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Curso"/>
-                <Property name="name" type="java.lang.String" value="CursoPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Curso Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mcursoActionPerformed"/>
@@ -150,7 +150,7 @@
                   <Image iconType="3" name="/Recursos/productos.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Otros Pagos"/>
-                <Property name="name" type="java.lang.String" value="OtrosPagosPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Otros Pagos Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="motrospagosActionPerformed"/>
@@ -165,7 +165,7 @@
                   <Image iconType="3" name="/Recursos/tipopago.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tipo de Pago"/>
-                <Property name="name" type="java.lang.String" value="TipodePagoPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Tipo de Pago Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mgrupoActionPerformed"/>
@@ -180,7 +180,7 @@
                   <Image iconType="3" name="/Recursos/alumno.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumno"/>
-                <Property name="name" type="java.lang.String" value="AlumnoPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Alumno Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="malumnoActionPerformed"/>
@@ -195,7 +195,7 @@
                   <Image iconType="3" name="/Recursos/horario3.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pensum"/>
-                <Property name="name" type="java.lang.String" value="PensumPrincipal" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="Pensum Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>

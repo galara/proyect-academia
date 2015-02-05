@@ -186,7 +186,7 @@ public class Principal extends javax.swing.JFrame {
         mprofesor.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mprofesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         mprofesor.setText("Profesor");
-        mprofesor.setName("ProfesorPrincipal"); // NOI18N
+        mprofesor.setName("Profesor Principal"); // NOI18N
         mprofesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mprofesorActionPerformed(evt);
@@ -197,7 +197,7 @@ public class Principal extends javax.swing.JFrame {
         mcarrera.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mcarrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         mcarrera.setText("Carrera");
-        mcarrera.setName("CarreraPrincipal"); // NOI18N
+        mcarrera.setName("Carrera Principal"); // NOI18N
         mcarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mcarreraActionPerformed(evt);
@@ -208,7 +208,7 @@ public class Principal extends javax.swing.JFrame {
         mhorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         mhorario.setText("Grupo/Horario");
-        mhorario.setName("Grupo/HorarioPrincipal"); // NOI18N
+        mhorario.setName("Grupo/Horario Principal"); // NOI18N
         mhorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mhorarioActionPerformed(evt);
@@ -219,7 +219,7 @@ public class Principal extends javax.swing.JFrame {
         mcurso.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ciclo.png"))); // NOI18N
         mcurso.setText("Curso");
-        mcurso.setName("CursoPrincipal"); // NOI18N
+        mcurso.setName("Curso Principal"); // NOI18N
         mcurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mcursoActionPerformed(evt);
@@ -230,7 +230,7 @@ public class Principal extends javax.swing.JFrame {
         motrospagos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         motrospagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/productos.png"))); // NOI18N
         motrospagos.setText("Otros Pagos");
-        motrospagos.setName("OtrosPagosPrincipal"); // NOI18N
+        motrospagos.setName("Otros Pagos Principal"); // NOI18N
         motrospagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 motrospagosActionPerformed(evt);
@@ -241,7 +241,7 @@ public class Principal extends javax.swing.JFrame {
         mgrupo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mgrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/tipopago.png"))); // NOI18N
         mgrupo.setText("Tipo de Pago");
-        mgrupo.setName("TipodePagoPrincipal"); // NOI18N
+        mgrupo.setName("Tipo de Pago Principal"); // NOI18N
         mgrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mgrupoActionPerformed(evt);
@@ -252,7 +252,7 @@ public class Principal extends javax.swing.JFrame {
         malumno.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         malumno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
         malumno.setText("Alumno");
-        malumno.setName("AlumnoPrincipal"); // NOI18N
+        malumno.setName("Alumno Principal"); // NOI18N
         malumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 malumnoActionPerformed(evt);
@@ -263,7 +263,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         jMenuItem3.setText("Pensum");
-        jMenuItem3.setName("PensumPrincipal"); // NOI18N
+        jMenuItem3.setName("Pensum Principal"); // NOI18N
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
