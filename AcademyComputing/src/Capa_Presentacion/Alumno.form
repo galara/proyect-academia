@@ -123,7 +123,7 @@
                   <Connection code="KeyEvent.VK_N" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nuevo"/>
-                <Property name="name" type="java.lang.String" value="nuevoalumno" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="NuevoAlumnos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntNuevoActionPerformed"/>
@@ -144,6 +144,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Modificar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="ModificarAlumnos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntModificarActionPerformed"/>
@@ -164,6 +165,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="GuardarAlumnos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntGuardarActionPerformed"/>
@@ -184,6 +186,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="EliminarAlumnos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntEliminarActionPerformed"/>
@@ -634,7 +637,7 @@
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="140" y="115" width="210" height="-1"/>
+                          <AbsoluteConstraints x="140" y="115" width="250" height="-1"/>
                         </Constraint>
                       </Constraints>
                     </Component>
@@ -662,7 +665,7 @@
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="140" y="80" width="210" height="-1"/>
+                          <AbsoluteConstraints x="140" y="80" width="250" height="-1"/>
                         </Constraint>
                       </Constraints>
                     </Component>
@@ -1206,11 +1209,12 @@
                     </Component>
                     <Component class="elaprendiz.gui.button.ButtonAction" name="buttonAction1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Nuevo Grupo/Carrera"/>
+                        <Property name="text" type="java.lang.String" value="NuevoGrupo/Carrera"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Arial" size="13" style="1"/>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="NuevoGrupo/CarreraAlumnos" noResource="true"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAction1ActionPerformed"/>

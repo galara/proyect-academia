@@ -3,13 +3,9 @@ package Capa_Presentacion;
 import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.AddForms;
 import Capa_Negocio.CalcularMoras;
-import inicio.start;
-import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  * @author Glara
@@ -77,7 +73,6 @@ public class Principal extends javax.swing.JFrame {
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -88,6 +83,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
@@ -108,7 +104,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem15.setText("jMenuItem15");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("SYSTEMA DE GESTIÓN COMPUVISIÓN");
+        setTitle("Principal SYSTEMA DE GESTIÓN \"COMPUVISIÓN\"");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -190,6 +186,7 @@ public class Principal extends javax.swing.JFrame {
         mprofesor.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mprofesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         mprofesor.setText("Profesor");
+        mprofesor.setName("ProfesorPrincipal"); // NOI18N
         mprofesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mprofesorActionPerformed(evt);
@@ -200,6 +197,7 @@ public class Principal extends javax.swing.JFrame {
         mcarrera.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mcarrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         mcarrera.setText("Carrera");
+        mcarrera.setName("CarreraPrincipal"); // NOI18N
         mcarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mcarreraActionPerformed(evt);
@@ -210,6 +208,7 @@ public class Principal extends javax.swing.JFrame {
         mhorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         mhorario.setText("Grupo/Horario");
+        mhorario.setName("Grupo/HorarioPrincipal"); // NOI18N
         mhorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mhorarioActionPerformed(evt);
@@ -220,6 +219,7 @@ public class Principal extends javax.swing.JFrame {
         mcurso.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ciclo.png"))); // NOI18N
         mcurso.setText("Curso");
+        mcurso.setName("CursoPrincipal"); // NOI18N
         mcurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mcursoActionPerformed(evt);
@@ -230,6 +230,7 @@ public class Principal extends javax.swing.JFrame {
         motrospagos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         motrospagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/productos.png"))); // NOI18N
         motrospagos.setText("Otros Pagos");
+        motrospagos.setName("OtrosPagosPrincipal"); // NOI18N
         motrospagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 motrospagosActionPerformed(evt);
@@ -240,6 +241,7 @@ public class Principal extends javax.swing.JFrame {
         mgrupo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mgrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/tipopago.png"))); // NOI18N
         mgrupo.setText("Tipo de Pago");
+        mgrupo.setName("TipodePagoPrincipal"); // NOI18N
         mgrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mgrupoActionPerformed(evt);
@@ -250,6 +252,7 @@ public class Principal extends javax.swing.JFrame {
         malumno.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         malumno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
         malumno.setText("Alumno");
+        malumno.setName("AlumnoPrincipal"); // NOI18N
         malumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 malumnoActionPerformed(evt);
@@ -260,21 +263,13 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         jMenuItem3.setText("Pensum");
+        jMenuItem3.setName("PensumPrincipal"); // NOI18N
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
         jMenu3.add(jMenuItem3);
-
-        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem9.setText("Menus");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem9);
 
         jMenuBar1.add(jMenu3);
 
@@ -285,6 +280,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem10.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
         jMenuItem10.setText("Registro de Pagos");
+        jMenuItem10.setName("Registrode Pagos Principal"); // NOI18N
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -295,6 +291,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
         jMenuItem8.setText("Anular o Reimprimir Pagos");
+        jMenuItem8.setName("Anular o Reimprimir Pagos Principal"); // NOI18N
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
@@ -311,6 +308,7 @@ public class Principal extends javax.swing.JFrame {
         musuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         musuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
         musuario.setText("Usuario");
+        musuario.setName("Usuario Principal"); // NOI18N
         musuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 musuarioActionPerformed(evt);
@@ -321,6 +319,7 @@ public class Principal extends javax.swing.JFrame {
         mciclo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mciclo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario.png"))); // NOI18N
         mciclo.setText("Ciclo Escolar");
+        mciclo.setName("Ciclo Escolar Principal"); // NOI18N
         mciclo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mcicloActionPerformed(evt);
@@ -331,6 +330,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/iconobackup.jpg"))); // NOI18N
         jMenu7.setText("Gestionar BD");
         jMenu7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenu7.setName("Gestionar BD Principal"); // NOI18N
 
         jMenuItem14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem14.setText("Backup");
@@ -350,6 +350,16 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.add(jMenu7);
 
+        jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Menu.png"))); // NOI18N
+        jMenuItem17.setText("Menu");
+        jMenuItem17.setName("Menu Principal"); // NOI18N
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem17);
+
         jMenuBar1.add(jMenu2);
 
         jMenu5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -359,9 +369,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/checklist-icon-2.jpg"))); // NOI18N
         jMenu6.setText("Reporte de Pagos");
         jMenu6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenu6.setName("Reporte de Pagos Principal"); // NOI18N
 
         jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem11.setText("Listado de Alumnos Grupo");
+        jMenuItem11.setName("Listado de Alumnos Grupo Principal"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -371,6 +383,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem12.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem12.setText("Pagos Diarios");
+        jMenuItem12.setName("Pagos Diarios Principal"); // NOI18N
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem12ActionPerformed(evt);
@@ -389,6 +402,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Help.png"))); // NOI18N
         jMenuItem1.setText("Acerca de");
+        jMenuItem1.setName("Acerca de Principal"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -416,111 +430,170 @@ public class Principal extends javax.swing.JFrame {
 
     private void mprofesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mprofesorActionPerformed
         // TODO add your handling code here:
-        Profesor frmProfesor = new Profesor();
-        if (frmProfesor == null) {
-            frmProfesor = new Profesor();
+        if (AccesoUsuario.AccesosUsuario(mprofesor.getName()) == true) {
+            Profesor frmProfesor = new Profesor();
+            if (frmProfesor == null) {
+                frmProfesor = new Profesor();
+            }
+            AddForms.adminInternalFrame(dp, frmProfesor);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmProfesor);
     }//GEN-LAST:event_mprofesorActionPerformed
 
     private void mhorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mhorarioActionPerformed
         // TODO add your handling code here:
-        Horario frmHorario = new Horario();
-        if (frmHorario == null) {
-            frmHorario = new Horario();
+        if (AccesoUsuario.AccesosUsuario(mhorario.getName()) == true) {
+            Horario frmHorario = new Horario();
+            if (frmHorario == null) {
+                frmHorario = new Horario();
+            }
+            AddForms.adminInternalFrame(dp, frmHorario);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmHorario);
     }//GEN-LAST:event_mhorarioActionPerformed
 
     private void mcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcursoActionPerformed
         // TODO add your handling code here:
-        Curso frmCurso = new Curso();
-        if (frmCurso == null) {
-            frmCurso = new Curso();
+        if (AccesoUsuario.AccesosUsuario(mcurso.getName()) == true) {
+            Curso frmCurso = new Curso();
+            if (frmCurso == null) {
+                frmCurso = new Curso();
+            }
+            AddForms.adminInternalFrame(dp, frmCurso);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmCurso);
     }//GEN-LAST:event_mcursoActionPerformed
 
     private void musuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_musuarioActionPerformed
         // TODO add your handling code here:
-        Usuario frmUsuario = new Usuario();
-        if (frmUsuario == null) {
-            frmUsuario = new Usuario();
+        if (AccesoUsuario.AccesosUsuario(musuario.getName()) == true) {
+            Usuario frmUsuario = new Usuario();
+            if (frmUsuario == null) {
+                frmUsuario = new Usuario();
+            }
+            AddForms.adminInternalFrame(dp, frmUsuario);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmUsuario);
     }//GEN-LAST:event_musuarioActionPerformed
 
     private void mgrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mgrupoActionPerformed
         // TODO add your handling code here:
-        TipoPago frmTipoPago = new TipoPago();
-        if (frmTipoPago == null) {
-            frmTipoPago = new TipoPago();
+        if (AccesoUsuario.AccesosUsuario(mgrupo.getName()) == true) {
+            TipoPago frmTipoPago = new TipoPago();
+            if (frmTipoPago == null) {
+                frmTipoPago = new TipoPago();
+            }
+            AddForms.adminInternalFrame(dp, frmTipoPago);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmTipoPago);
     }//GEN-LAST:event_mgrupoActionPerformed
 
     private void malumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_malumnoActionPerformed
         // TODO add your handling code here:
-        Alumno frmAlumno = new Alumno();
-        if (frmAlumno == null) {
-            frmAlumno = new Alumno();
+        if (AccesoUsuario.AccesosUsuario(malumno.getName()) == true) {
+            Alumno frmAlumno = new Alumno();
+            if (frmAlumno == null) {
+                frmAlumno = new Alumno();
+            }
+            AddForms.adminInternalFrame(dp, frmAlumno);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmAlumno);
     }//GEN-LAST:event_malumnoActionPerformed
 
     private void mcicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcicloActionPerformed
         // TODO add your handling code here:
-        Ciclo frmCiclo = new Ciclo();
-        if (frmCiclo == null) {
-            frmCiclo = new Ciclo();
+        if (AccesoUsuario.AccesosUsuario(mciclo.getName()) == true) {
+            Ciclo frmCiclo = new Ciclo();
+            if (frmCiclo == null) {
+                frmCiclo = new Ciclo();
+            }
+            AddForms.adminInternalFrame(dp, frmCiclo);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmCiclo);
     }//GEN-LAST:event_mcicloActionPerformed
 
     private void motrospagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motrospagosActionPerformed
         // TODO add your handling code here:
-        OtrosPagos frmOtrosPagos = new OtrosPagos();
-        if (frmOtrosPagos == null) {
-            frmOtrosPagos = new OtrosPagos();
+        if (AccesoUsuario.AccesosUsuario(motrospagos.getName()) == true) {
+            OtrosPagos frmOtrosPagos = new OtrosPagos();
+            if (frmOtrosPagos == null) {
+                frmOtrosPagos = new OtrosPagos();
+            }
+            AddForms.adminInternalFrame(dp, frmOtrosPagos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmOtrosPagos);
     }//GEN-LAST:event_motrospagosActionPerformed
 
     private void mcarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcarreraActionPerformed
         // TODO add your handling code here:
-        Carrera frmCarrera = new Carrera();
-        if (frmCarrera == null) {
-            frmCarrera = new Carrera();
+        if (AccesoUsuario.AccesosUsuario(mcarrera.getName()) == true) {
+            Carrera frmCarrera = new Carrera();
+            if (frmCarrera == null) {
+                frmCarrera = new Carrera();
+            }
+            AddForms.adminInternalFrame(dp, frmCarrera);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmCarrera);
     }//GEN-LAST:event_mcarreraActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        Ayuda frmAyuda = new Ayuda();
-        if (frmAyuda == null) {
-            frmAyuda = new Ayuda();
+        if (AccesoUsuario.AccesosUsuario(jMenuItem1.getName()) == true) {
+            Ayuda frmAyuda = new Ayuda();
+            if (frmAyuda == null) {
+                frmAyuda = new Ayuda();
+            }
+            AddForms.adminInternalFrame(dp, frmAyuda);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmAyuda);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        PensumDetalle frmPensum = new PensumDetalle();
-        if (frmPensum == null) {
-            frmPensum = new PensumDetalle();
-        }
-        AddForms.adminInternalFrame(dp, frmPensum);
+        if (AccesoUsuario.AccesosUsuario(jMenuItem3.getName()) == true) {
+            PensumDetalle frmPensum = new PensumDetalle();
+            if (frmPensum == null) {
+                frmPensum = new PensumDetalle();
+            }
+            AddForms.adminInternalFrame(dp, frmPensum);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
 
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
-        Pagos frmPagos = new Pagos();
-        if (frmPagos == null) {
-            frmPagos = new Pagos();
+        if (AccesoUsuario.AccesosUsuario(jMenuItem10.getName()) == true) {
+            Pagos frmPagos = new Pagos();
+            if (frmPagos == null) {
+                frmPagos = new Pagos();
+            }
+            AddForms.adminInternalFrame(dp, frmPagos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmPagos);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
@@ -530,41 +603,59 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
-        ListadoAlumnos frmListadoAlumnos = new ListadoAlumnos();
-        if (frmListadoAlumnos == null) {
-            frmListadoAlumnos = new ListadoAlumnos();
+        if (AccesoUsuario.AccesosUsuario(jMenuItem11.getName()) == true) {
+            ListadoAlumnos frmListadoAlumnos = new ListadoAlumnos();
+            if (frmListadoAlumnos == null) {
+                frmListadoAlumnos = new ListadoAlumnos();
+            }
+            AddForms.adminInternalFrame(dp, frmListadoAlumnos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmListadoAlumnos);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-        PagosDiarios frmPagosDiarios = new PagosDiarios();
-        if (frmPagosDiarios == null) {
-            frmPagosDiarios = new PagosDiarios();
-        }
-        AddForms.adminInternalFrame(dp, frmPagosDiarios);
+        if (AccesoUsuario.AccesosUsuario(jMenuItem12.getName()) == true) {
+            PagosDiarios frmPagosDiarios = new PagosDiarios();
+            if (frmPagosDiarios == null) {
+                frmPagosDiarios = new PagosDiarios();
+            }
+            AddForms.adminInternalFrame(dp, frmPagosDiarios);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
 
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(jMenuItem8.getName()) == true) {
+            AnulacionPagos frmAnulacionPagos = new AnulacionPagos();
+            if (frmAnulacionPagos == null) {
+                frmAnulacionPagos = new AnulacionPagos();
+            }
+            AddForms.adminInternalFrame(dp, frmAnulacionPagos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
 
-        AnulacionPagos frmAnulacionPagos = new AnulacionPagos();
-        if (frmAnulacionPagos == null) {
-            frmAnulacionPagos = new AnulacionPagos();
         }
-        AddForms.adminInternalFrame(dp, frmAnulacionPagos);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         // TODO add your handling code here:
-        Menu frmMenu = new Menu();
-        if (frmMenu == null) {
-            frmMenu = new Menu();
+        if (AccesoUsuario.AccesosUsuario(jMenuItem17.getName()) == true) {
+            Menu frmMenu = new Menu();
+            if (frmMenu == null) {
+                frmMenu = new Menu();
+            }
+            AddForms.adminInternalFrame(dp, frmMenu);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
-        AddForms.adminInternalFrame(dp, frmMenu);
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -602,6 +693,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -609,7 +701,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;

@@ -4,13 +4,14 @@ import Capa_Datos.BdConexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author GLARA
  */
-public class AccesoUsuario  {
+public class AccesoUsuario {
 
     private static String usuario = null;
     PreparedStatement ps = null;
@@ -18,44 +19,41 @@ public class AccesoUsuario  {
     static boolean activo = false;
 
     public static enum Estado {
+
         ERROR, NO_EXISTE, ERROR_CLAVE, ACCESO_OK, USR_INACTICVO
     };
 
     public static boolean AccesosUsuario(String menuacceso) //throws ParserConfigurationException
     {
-        //conn = BdConexion.getConexion();
-        ResultSet rs;
-        boolean acceso=false;
-        
-        String sql = "SELECT perfilusuario.estado , menu.nombre FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu INNER JOIN usuario ON perfilusuario.usuario_idusuario = usuario.idusuario where usuario.usuario="+usuario+" and menu.nombre="+menuacceso;
-        //System.out.print(sql+"\n");
-        
-        rs = BdConexion.getResultSet(sql);
-        
-        //Busca el usuario y llena las variables usuario y password
-        if (rs != null) {
-            try {
-                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                    rs.beforeFirst();//regresa el puntero al primer registro
-                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                        acceso = rs.getBoolean(1);
-                        System.out.print(acceso+" cnsulta");
+        boolean acceso = false;
+          try //throws ParserConfigurationException
+            {
+                conn = BdConexion.getConexion();
+                ResultSet rs;
+
+                String sql = "SELECT perfilusuario.estado , menu.nombre FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu INNER JOIN usuario ON perfilusuario.usuario_idusuario = usuario.idusuario where usuario.usuario='" + usuario + "' and menu.nombre='" + menuacceso + "' ";
+                Statement s = conn.createStatement();
+                rs = s.executeQuery(sql);
+
+                if (rs != null) {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            acceso = rs.getBoolean(1);
+                            System.out.print(acceso + " cnsulta");
+                        }
+                    } else {
+                        acceso = true;
                     }
-                } else {
-                    acceso = false;
                 }
-                //rs.close();
+                //*********************************************************************
+                rs.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
-        }
-        //*********************************************************************
-        System.out.print(acceso);
         return acceso;
-
     }
-    
-    
+
     public static Estado configUsuario(String login, String clave) {
 
         usuario = null;

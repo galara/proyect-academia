@@ -696,7 +696,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
         bntNuevo.setMnemonic(KeyEvent.VK_N);
         bntNuevo.setText("Nuevo");
-        bntNuevo.setName("nuevoalumno"); // NOI18N
+        bntNuevo.setName("NuevoAlumnos"); // NOI18N
         bntNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntNuevoActionPerformed(evt);
@@ -713,6 +713,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntModificar.setMnemonic(KeyEvent.VK_M);
         bntModificar.setText("Modificar");
         bntModificar.setEnabled(false);
+        bntModificar.setName("ModificarAlumnos"); // NOI18N
         bntModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntModificarActionPerformed(evt);
@@ -729,6 +730,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
         bntGuardar.setEnabled(false);
+        bntGuardar.setName("GuardarAlumnos"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -745,6 +747,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
         bntEliminar.setEnabled(false);
+        bntEliminar.setName("EliminarAlumnos"); // NOI18N
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -967,7 +970,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         dpi.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         dpi.setNextFocusableComponent(establecimiento);
         jPanel2.add(dpi);
-        dpi.setBounds(140, 115, 210, 21);
+        dpi.setBounds(140, 115, 250, 21);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -979,7 +982,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         telefono.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         telefono.setNextFocusableComponent(dpi);
         jPanel2.add(telefono);
-        telefono.setBounds(140, 80, 210, 21);
+        telefono.setBounds(140, 80, 250, 21);
 
         titularapellido.setEditable(false);
         titularapellido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -1200,9 +1203,10 @@ public class Alumno extends javax.swing.JInternalFrame {
             jPanel4.add(fechafin);
             fechafin.setBounds(740, 60, 110, 21);
 
-            buttonAction1.setText("Nuevo Grupo/Carrera");
+            buttonAction1.setText("NuevoGrupo/Carrera");
             buttonAction1.setEnabled(false);
             buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+            buttonAction1.setName("NuevoGrupo/CarreraAlumnos"); // NOI18N
             buttonAction1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     buttonAction1ActionPerformed(evt);
@@ -1390,163 +1394,167 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-        
-        //if(AccesoUsuario.AccesosUsuario(bntNuevo.getName())==true ){
-            
-        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        estado.setSelected(true);
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        //colegiatura.setEditable(false);
-        //beca.setEditable(false);
-        codigo.setEditable(false);
-        profesor.setEditable(false);
-        horade.setEditable(false);
-        horaa.setEditable(false);
-        carrera.setEditable(false);
-        fechaini.setEditable(false);
-        fechafin.setEditable(false);
-        inscripcion.setEditable(false);
-        colegiatura.setEditable(false);
-        buttonAction1.setEnabled(false);
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            estado.setSelected(true);
+            this.bntGuardar.setEnabled(true);
+            this.bntModificar.setEnabled(false);
+            this.bntEliminar.setEnabled(false);
+            this.bntNuevo.setEnabled(false);
+            //colegiatura.setEditable(false);
+            //beca.setEditable(false);
+            codigo.setEditable(false);
+            profesor.setEditable(false);
+            horade.setEditable(false);
+            horaa.setEditable(false);
+            carrera.setEditable(false);
+            fechaini.setEditable(false);
+            fechafin.setEditable(false);
+            inscripcion.setEditable(false);
+            colegiatura.setEditable(false);
+            buttonAction1.setEnabled(false);
 
-        nombres.requestFocus();
-        nidalumno = 0;
-        matricula = true;
-//        }else{
-//            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-//            
-//        }
+            nombres.requestFocus();
+            nidalumno = 0;
+            matricula = true;
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
+        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true)) || (Utilidades.esObligatorio(this.jPanel4, true))) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText()) || Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText())) {
-            JOptionPane.showInternalMessageDialog(this, "La beca debe ser menor al monto de Inscripcion y Colegiatura", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (fechainicioalumno.getCalendar().getTime().after(FormatoFecha.StringToDate(fechafin.getText()))) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (fechainicioalumno.getCalendar().getTime().before(FormatoFecha.StringToDate(fechaini.getText())) /*|| fechainicioalumno.getCalendar().getTime().equals(FormatoFecha.StringToDate(fechaini.getText()))*/) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser mayor o igual a la fecha inicio del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.print(fechainicioalumno.getCalendar().getTime().toString() + "--" + FormatoFecha.StringToDate(fechaini.getText()));
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-            String mensagecodigo = null;
-            codigoalumno();
-            String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String alumnoid = "";
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true)) || (Utilidades.esObligatorio(this.jPanel4, true))) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            if (becagrupo.getText().isEmpty()) {
-                becagrupo.setValue(0);
+            if (Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText()) || Float.parseFloat(becagrupo.getText()) > Float.parseFloat(colegiatura.getText())) {
+                JOptionPane.showInternalMessageDialog(this, "La beca debe ser menor al monto de Inscripcion y Colegiatura", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            if (fechainicioalumno.getCalendar().getTime().after(FormatoFecha.StringToDate(fechafin.getText()))) {
+                JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (fechainicioalumno.getCalendar().getTime().before(FormatoFecha.StringToDate(fechaini.getText())) /*|| fechainicioalumno.getCalendar().getTime().equals(FormatoFecha.StringToDate(fechaini.getText()))*/) {
+                JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser mayor o igual a la fecha inicio del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.print(fechainicioalumno.getCalendar().getTime().toString() + "--" + FormatoFecha.StringToDate(fechaini.getText()));
+                return;
+            }
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            String sql1 = "insert into alumno (codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            int n = 0;
-            PreparedStatement ps = null;
-            conn = BdConexion.getConexion();
+                String mensagecodigo = null;
+                codigoalumno();
+                String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String alumnoid = "";
 
-            try {
-                // DATOS DEL ALUMNO ********************************************
-                conn.setAutoCommit(false);
-                ps = conn.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, codigo.getText());
-                ps.setString(2, nombres.getText());
-                ps.setString(3, apellidos.getText());
-                ps.setString(4, fechanacimient);
-                ps.setString(5, "" + sexo.getSelectedItem());
-                ps.setString(6, direccion.getText());
-                ps.setString(7, telefono.getText());
-                ps.setString(8, titularnombre.getText());
-                ps.setString(9, titularapellido.getText());
-                ps.setString(10, dpi.getText());
-                ps.setString(11, establecimiento.getText());
-                ps.setString(12, direccion_establecimiento.getText());
-                ps.setString(13, grado_establecimiento.getText());
-                ps.setString(14, "" + estad);
-                ps.setString(15, codigomineduc.getText());
-
-                n = ps.executeUpdate();
-                if (n > 0) {// Si los datos del alumno se guardaron
-                    ResultSet rs = ps.getGeneratedKeys();
-                    while (rs.next()) {
-                        alumnoid = "" + rs.getInt(1);//retorna el idalumno guardado
-                    }
-                    if (cGrupo.getSelectedIndex() != -1) {
-
-                        // DATOS DEL ALUMNOS EN GRUPO **************************
-                        mensagecodigo = codigo.getText();
-                        String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
-                        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                        String idg = grup.getID();
-                        String alumnosengrup = "insert into alumnosengrupo  (alumno_idalumno, grupo_idgrupo,fechainicio,beca) values ('" + alumnoid + "','" + idg + "','" + fechainicioalum + "','" + becagrupo.getText() + "' )";
-                        n = ps.executeUpdate(alumnosengrup);
-
-                        if (n > 0) { // SI los datos del alumnosengrupo se guardaron 
-
-                            // DATOS DEL PROYECCION DE PAGOS *******************
-                            idalumnosengrupo(alumnoid, idg); // Obtiene el idalumnosengrupo
-                            String proyeccionp = "INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n"
-                                    + "SELECT mes_idmes, año,(monto-" + becagrupo.getText() + "),fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
-                                    + "WHERE pagos.grupo_idgrupo='" + idg + "'";
-                            n = ps.executeUpdate(proyeccionp);
-
-                            if (n > 0) {// Si los datos de proyeccionpagos se guardaron
-                                String sqlinscripcion = "update proyeccionpagos set  monto='" + inscripalumno.getText() + "' where mes_idmes='13' and alumnosengrupo_iddetallegrupo=" + iddetallegrupo;
-                                n = ps.executeUpdate(sqlinscripcion);
-
-                            } else {
-                                JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-                            JOptionPane.showInternalMessageDialog(this, "El alumno no se ha Guardado con el código:\n" + mensagecodigo, "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showInternalMessageDialog(this, "El grupo no se Guardo", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                } else {
-                    JOptionPane.showInternalMessageDialog(this, "El alumno no se ha Guardado con el código:\n" + mensagecodigo, "Error", JOptionPane.ERROR_MESSAGE);
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
                 }
-                conn.commit();// guarda todas las consultas si no ubo error
-                ps.close();
-                if (!conn.getAutoCommit()) {
-                    conn.setAutoCommit(true);
+                if (becagrupo.getText().isEmpty()) {
+                    becagrupo.setValue(0);
                 }
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                removejtablegrupo();
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                idalumno = 0;
-            } catch (SQLException ex) {
+
+                String sql1 = "insert into alumno (codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                int n = 0;
+                PreparedStatement ps = null;
+                conn = BdConexion.getConexion();
+
                 try {
-                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                    // DATOS DEL ALUMNO ********************************************
+                    conn.setAutoCommit(false);
+                    ps = conn.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, codigo.getText());
+                    ps.setString(2, nombres.getText());
+                    ps.setString(3, apellidos.getText());
+                    ps.setString(4, fechanacimient);
+                    ps.setString(5, "" + sexo.getSelectedItem());
+                    ps.setString(6, direccion.getText());
+                    ps.setString(7, telefono.getText());
+                    ps.setString(8, titularnombre.getText());
+                    ps.setString(9, titularapellido.getText());
+                    ps.setString(10, dpi.getText());
+                    ps.setString(11, establecimiento.getText());
+                    ps.setString(12, direccion_establecimiento.getText());
+                    ps.setString(13, grado_establecimiento.getText());
+                    ps.setString(14, "" + estad);
+                    ps.setString(15, codigomineduc.getText());
+
+                    n = ps.executeUpdate();
+                    if (n > 0) {// Si los datos del alumno se guardaron
+                        ResultSet rs = ps.getGeneratedKeys();
+                        while (rs.next()) {
+                            alumnoid = "" + rs.getInt(1);//retorna el idalumno guardado
+                        }
+                        if (cGrupo.getSelectedIndex() != -1) {
+
+                            // DATOS DEL ALUMNOS EN GRUPO **************************
+                            mensagecodigo = codigo.getText();
+                            String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
+                            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                            String idg = grup.getID();
+                            String alumnosengrup = "insert into alumnosengrupo  (alumno_idalumno, grupo_idgrupo,fechainicio,beca) values ('" + alumnoid + "','" + idg + "','" + fechainicioalum + "','" + becagrupo.getText() + "' )";
+                            n = ps.executeUpdate(alumnosengrup);
+
+                            if (n > 0) { // SI los datos del alumnosengrupo se guardaron 
+
+                                // DATOS DEL PROYECCION DE PAGOS *******************
+                                idalumnosengrupo(alumnoid, idg); // Obtiene el idalumnosengrupo
+                                String proyeccionp = "INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n"
+                                        + "SELECT mes_idmes, año,(monto-" + becagrupo.getText() + "),fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
+                                        + "WHERE pagos.grupo_idgrupo='" + idg + "'";
+                                n = ps.executeUpdate(proyeccionp);
+
+                                if (n > 0) {// Si los datos de proyeccionpagos se guardaron
+                                    String sqlinscripcion = "update proyeccionpagos set  monto='" + inscripalumno.getText() + "' where mes_idmes='13' and alumnosengrupo_iddetallegrupo=" + iddetallegrupo;
+                                    n = ps.executeUpdate(sqlinscripcion);
+
+                                } else {
+                                    JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                JOptionPane.showInternalMessageDialog(this, "El alumno no se ha Guardado con el código:\n" + mensagecodigo, "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showInternalMessageDialog(this, "El grupo no se Guardo", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "El alumno no se ha Guardado con el código:\n" + mensagecodigo, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    conn.commit();// guarda todas las consultas si no ubo error
                     ps.close();
                     if (!conn.getAutoCommit()) {
                         conn.setAutoCommit(true);
                     }
-                } catch (SQLException ex1) {
-                    Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    removejtablegrupo();
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    idalumno = 0;
+                } catch (SQLException ex) {
+                    try {
+                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        ps.close();
+                        if (!conn.getAutoCommit()) {
+                            conn.setAutoCommit(true);
+                        }
+                    } catch (SQLException ex1) {
+                        Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                    JOptionPane.showMessageDialog(null, ex);
                 }
-                JOptionPane.showMessageDialog(null, ex);
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -1562,72 +1570,83 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntEliminar.getName()) == true) {
 
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            int fila = alumnos.getSelectedRow();
-            String id = (String) "" + alumnos.getValueAt(fila, 0);
-            String nombreTabla = "alumno", nomColumnaCambiar = "estado";
-            String nomColumnaId = "codigo";
-            int seguardo = 0;
+                int fila = alumnos.getSelectedRow();
+                String id = (String) "" + alumnos.getValueAt(fila, 0);
+                String nombreTabla = "alumno", nomColumnaCambiar = "estado";
+                String nomColumnaId = "codigo";
+                int seguardo = 0;
 
-            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                removejtablegrupo();
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    removejtablegrupo();
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true))) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+        if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
 
-            codigoalumno();
-            int seguardo = 0;
-            int fila = alumnos.getSelectedRow();
-            String id = (String) "" + alumnos.getValueAt(fila, 0);
-            String columnaId = "codigo";
-
-            String nombreTabla = "alumno";
-            String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc";
-            //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true))) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), id
-            };
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
+                codigoalumno();
+                int seguardo = 0;
+                int fila = alumnos.getSelectedRow();
+                String id = (String) "" + alumnos.getValueAt(fila, 0);
+                String columnaId = "codigo";
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                removejtablegrupo();
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                String nombreTabla = "alumno";
+                String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc";
+                //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
+
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), id
+                };
+
+                seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
+
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    removejtablegrupo();
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 
@@ -1710,88 +1729,93 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void buttonAction1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction1ActionPerformed
         // TODO add your handling code here:
-        if (matricula == false) {
-            if ((Utilidades.esObligatorio(this.jPanel4, true))) {
-                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-            if (resp == 0) {
-                if (cGrupo.getSelectedIndex() != -1) {
+        if (AccesoUsuario.AccesosUsuario(buttonAction1.getName()) == true) {
+            if (matricula == false) {
+                if ((Utilidades.esObligatorio(this.jPanel4, true))) {
+                    JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+                if (resp == 0) {
+                    if (cGrupo.getSelectedIndex() != -1) {
 
-                    //Para saber si el grupo ya ha sigo asignado y no asiganar el mismo grupo dos veces.
-                    boolean carrera = false;
-                    int cant = modelgrupo.getRowCount();
-                    for (int i = 0; i < cant; i++) {
-                        if (modelgrupo.getValueAt(i, 0).toString().equals(cGrupo.getSelectedItem().toString())) {
-                            carrera = true;
+                        //Para saber si el grupo ya ha sigo asignado y no asiganar el mismo grupo dos veces.
+                        boolean carrera = false;
+                        int cant = modelgrupo.getRowCount();
+                        for (int i = 0; i < cant; i++) {
+                            if (modelgrupo.getValueAt(i, 0).toString().equals(cGrupo.getSelectedItem().toString())) {
+                                carrera = true;
+                            }
                         }
-                    }
 
-                    if (carrera == false) { // si no se ha asignado el grupo 
-                        mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                        String idg = grup.getID();
-                        idalumnog(codigo.getText());
-                        String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
-                        String alumnoid = "" + idalumno;
-                        int n = 0;
-                        String alumnosengrup = "insert into alumnosengrupo  (alumno_idalumno, grupo_idgrupo,fechainicio,beca) values ('" + alumnoid + "','" + idg + "','" + fechainicioalum + "','" + becagrupo.getText() + "' )";
+                        if (carrera == false) { // si no se ha asignado el grupo 
+                            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                            String idg = grup.getID();
+                            idalumnog(codigo.getText());
+                            String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
+                            String alumnoid = "" + idalumno;
+                            int n = 0;
+                            String alumnosengrup = "insert into alumnosengrupo  (alumno_idalumno, grupo_idgrupo,fechainicio,beca) values ('" + alumnoid + "','" + idg + "','" + fechainicioalum + "','" + becagrupo.getText() + "' )";
 
-                        PreparedStatement ps = null;
-                        conn = BdConexion.getConexion();
+                            PreparedStatement ps = null;
+                            conn = BdConexion.getConexion();
 
-                        try {
-                            conn.setAutoCommit(false);
-                            ps = conn.prepareStatement(alumnosengrup);
-                            n = ps.executeUpdate();
-
-                            if (n > 0) {
-                                idalumnosengrupo(alumnoid, idg);
-                                String sql = "INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n"
-                                        + "SELECT mes_idmes, año,monto,fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
-                                        + "WHERE pagos.`grupo_idgrupo`='" + idg + "'";
-                                n = ps.executeUpdate(sql);
+                            try {
+                                conn.setAutoCommit(false);
+                                ps = conn.prepareStatement(alumnosengrup);
+                                n = ps.executeUpdate();
 
                                 if (n > 0) {
-                                    String sqlinscripcion = "update proyeccionpagos set  monto='" + inscripalumno.getText() + "' where mes_idmes='13' and alumnosengrupo_iddetallegrupo=" + iddetallegrupo;
-                                    n = ps.executeUpdate(sqlinscripcion);
-                                } else {
-                                    JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
-                                }
-                                filaseleccionada();
-                                JOptionPane.showInternalMessageDialog(this, "El grupo se ha asignado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                JOptionPane.showInternalMessageDialog(this, "El grupo no se Guardo", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-                            conn.commit();// guarda todas las consultas si no ubo error
-                            ps.close();
-                            if (!conn.getAutoCommit()) {
-                                conn.setAutoCommit(true);
-                            }
+                                    idalumnosengrupo(alumnoid, idg);
+                                    String sql = "INSERT INTO proyeccionpagos (mes_idmes, año, monto, fechavencimiento,alumnosengrupo_iddetallegrupo)\n"
+                                            + "SELECT mes_idmes, año,monto,fechavencimiento," + "'" + iddetallegrupo + "' from pagos \n"
+                                            + "WHERE pagos.`grupo_idgrupo`='" + idg + "'";
+                                    n = ps.executeUpdate(sql);
 
-                        } catch (SQLException ex) {
-                            try {
-                                conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                                    if (n > 0) {
+                                        String sqlinscripcion = "update proyeccionpagos set  monto='" + inscripalumno.getText() + "' where mes_idmes='13' and alumnosengrupo_iddetallegrupo=" + iddetallegrupo;
+                                        n = ps.executeUpdate(sqlinscripcion);
+                                    } else {
+                                        JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                    filaseleccionada();
+                                    JOptionPane.showInternalMessageDialog(this, "El grupo se ha asignado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                                } else {
+                                    JOptionPane.showInternalMessageDialog(this, "El grupo no se Guardo", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                conn.commit();// guarda todas las consultas si no ubo error
                                 ps.close();
                                 if (!conn.getAutoCommit()) {
                                     conn.setAutoCommit(true);
                                 }
-                            } catch (SQLException ex1) {
-                                JOptionPane.showMessageDialog(null, ex);
-                                Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
-                            }
-                            JOptionPane.showMessageDialog(null, ex);
-                            Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, null, ex);
-                        }
 
-                    } else {
-                        JOptionPane.showInternalMessageDialog(this, "El grupo ya fue asiganado al alumno\n"
-                                + " porfavor selecciones uno diferente ", "Error", JOptionPane.ERROR_MESSAGE);
+                            } catch (SQLException ex) {
+                                try {
+                                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                                    ps.close();
+                                    if (!conn.getAutoCommit()) {
+                                        conn.setAutoCommit(true);
+                                    }
+                                } catch (SQLException ex1) {
+                                    JOptionPane.showMessageDialog(null, ex);
+                                    Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
+                                JOptionPane.showMessageDialog(null, ex);
+                                Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        } else {
+                            JOptionPane.showInternalMessageDialog(this, "El grupo ya fue asiganado al alumno\n"
+                                    + " porfavor selecciones uno diferente ", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un alumno antes de asignar Nuevo Grupo", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un alumno antes de asignar Nuevo Grupo", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
         }
 
     }//GEN-LAST:event_buttonAction1ActionPerformed

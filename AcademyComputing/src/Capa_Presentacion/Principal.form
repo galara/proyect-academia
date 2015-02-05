@@ -90,6 +90,7 @@
                   <Image iconType="3" name="/Recursos/profesor.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Profesor"/>
+                <Property name="name" type="java.lang.String" value="ProfesorPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mprofesorActionPerformed"/>
@@ -104,6 +105,7 @@
                   <Image iconType="3" name="/Recursos/carrera.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Carrera"/>
+                <Property name="name" type="java.lang.String" value="CarreraPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mcarreraActionPerformed"/>
@@ -118,6 +120,7 @@
                   <Image iconType="3" name="/Recursos/grupos.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Grupo/Horario"/>
+                <Property name="name" type="java.lang.String" value="Grupo/HorarioPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mhorarioActionPerformed"/>
@@ -132,6 +135,7 @@
                   <Image iconType="3" name="/Recursos/ciclo.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Curso"/>
+                <Property name="name" type="java.lang.String" value="CursoPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mcursoActionPerformed"/>
@@ -146,6 +150,7 @@
                   <Image iconType="3" name="/Recursos/productos.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Otros Pagos"/>
+                <Property name="name" type="java.lang.String" value="OtrosPagosPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="motrospagosActionPerformed"/>
@@ -160,6 +165,7 @@
                   <Image iconType="3" name="/Recursos/tipopago.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tipo de Pago"/>
+                <Property name="name" type="java.lang.String" value="TipodePagoPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mgrupoActionPerformed"/>
@@ -174,6 +180,7 @@
                   <Image iconType="3" name="/Recursos/alumno.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumno"/>
+                <Property name="name" type="java.lang.String" value="AlumnoPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="malumnoActionPerformed"/>
@@ -188,20 +195,10 @@
                   <Image iconType="3" name="/Recursos/horario3.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pensum"/>
+                <Property name="name" type="java.lang.String" value="PensumPrincipal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="13" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Menus"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -228,6 +225,7 @@
                   <Image iconType="3" name="/Recursos/Pago_UR.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registro de Pagos"/>
+                <Property name="name" type="java.lang.String" value="Registrode Pagos Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem10ActionPerformed"/>
@@ -242,6 +240,7 @@
                   <Image iconType="3" name="/Recursos/Pago_UR.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Anular o Reimprimir Pagos"/>
+                <Property name="name" type="java.lang.String" value="Anular o Reimprimir Pagos Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem8ActionPerformed"/>
@@ -271,6 +270,7 @@
                   <Image iconType="3" name="/Recursos/login.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Usuario"/>
+                <Property name="name" type="java.lang.String" value="Usuario Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="musuarioActionPerformed"/>
@@ -285,6 +285,7 @@
                   <Image iconType="3" name="/Recursos/horario.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ciclo Escolar"/>
+                <Property name="name" type="java.lang.String" value="Ciclo Escolar Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mcicloActionPerformed"/>
@@ -299,6 +300,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="13" style="0"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Gestionar BD Principal" noResource="true"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
@@ -327,6 +329,18 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem17">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/Menu.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Menu"/>
+                <Property name="name" type="java.lang.String" value="Menu Principal" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem17ActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu5">
@@ -351,6 +365,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="13" style="0"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Reporte de Pagos Principal" noResource="true"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem11">
@@ -359,6 +374,7 @@
                       <Font name="Segoe UI" size="13" style="0"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Listado de Alumnos Grupo"/>
+                    <Property name="name" type="java.lang.String" value="Listado de Alumnos Grupo Principal" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem11ActionPerformed"/>
@@ -370,6 +386,7 @@
                       <Font name="Segoe UI" size="13" style="0"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Pagos Diarios"/>
+                    <Property name="name" type="java.lang.String" value="Pagos Diarios Principal" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem12ActionPerformed"/>
@@ -401,6 +418,7 @@
                   <Image iconType="3" name="/Recursos/Help.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Acerca de"/>
+                <Property name="name" type="java.lang.String" value="Acerca de Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
@@ -413,7 +431,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
-    <Property name="title" type="java.lang.String" value="SYSTEMA DE GESTI&#xd3;N COMPUVISI&#xd3;N"/>
+    <Property name="title" type="java.lang.String" value="Principal SYSTEMA DE GESTI&#xd3;N &quot;COMPUVISI&#xd3;N&quot;"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
