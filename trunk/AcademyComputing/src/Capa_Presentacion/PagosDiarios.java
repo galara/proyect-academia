@@ -4,17 +4,14 @@
  */
 package Capa_Presentacion;
 
-import Capa_Negocio.FiltroCampos;
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
-import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import Reportes.Pagos_diarios;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Calendar;
-import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
@@ -341,14 +338,8 @@ public class PagosDiarios extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-//        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-//        //llenarcombo();
-//        estado.setSelected(true);
-//        this.bntGuardar.setEnabled(true);
-//        this.bntModificar.setEnabled(false);
-//        this.bntEliminar.setEnabled(false);
-//        this.bntNuevo.setEnabled(false);
-//        año.requestFocus();
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
+        
         if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
             JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -356,6 +347,8 @@ public class PagosDiarios extends javax.swing.JInternalFrame {
             String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
             String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
             Pagos_diarios.Pagos_diario(fechaini, fechafn);
+        }} else {
+           JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntNuevoActionPerformed
 

@@ -5,6 +5,7 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.GeneraCodigo;
@@ -180,7 +181,7 @@ public class Profesor extends javax.swing.JInternalFrame {
         }
     }
 
-      private int ultimoprofe() {
+    private int ultimoprofe() {
         if (newcodprofe == 0) {
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
@@ -215,9 +216,6 @@ public class Profesor extends javax.swing.JInternalFrame {
         }
     }
 
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -663,52 +661,57 @@ public class Profesor extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        estado.setSelected(true);
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        nombres.requestFocus();
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
 
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            estado.setSelected(true);
+            this.bntGuardar.setEnabled(true);
+            this.bntModificar.setEnabled(false);
+            this.bntEliminar.setEnabled(false);
+            this.bntNuevo.setEnabled(false);
+            nombres.requestFocus();
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            generacodigoprofe();
-            boolean seguardo = false;
-            String nombreTabla = "profesor";
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
-            }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
-                estad, direccion.getText(), telefono.getText(),
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
-            };
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-            //try {
-            seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-            if (seguardo) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            //} catch (HeadlessException e) {
-            //  JOptionPane.showInternalMessageDialog(this, "Ocurrio un error: "+e,"Error",JOptionPane.ERROR_MESSAGE);
-            //}
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+                generacodigoprofe();
+                boolean seguardo = false;
+                String nombreTabla = "profesor";
+                String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+                    estad, direccion.getText(), telefono.getText(),
+                    FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D)
+                };
+
+                seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+                if (seguardo) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -724,72 +727,72 @@ public class Profesor extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntEliminar.getName()) == true) {
 
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            int fila = profesores.getSelectedRow();
-            String id = (String) "" + profesores.getValueAt(fila, 0);
-            String nombreTabla = "profesor", nomColumnaCambiar = "estado";
-            String nomColumnaId = "codigo";
-            int seguardo = 0;
+                int fila = profesores.getSelectedRow();
+                String id = (String) "" + profesores.getValueAt(fila, 0);
+                String nombreTabla = "profesor", nomColumnaCambiar = "estado";
+                String nomColumnaId = "codigo";
+                int seguardo = 0;
 
-            //try {
-            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
-            //} catch (Exception e) {
-            //    msg.Error(ErrorEliminar + ": " + e, TituloEliminar);
-            // }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
 
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            generacodigoprofe();
-            String nomTabla = "profesor";
-            String columnaId = "codigo";
-            int seguardo = 0;
-            int fila = profesores.getSelectedRow();
-            String id = (String) "" + profesores.getValueAt(fila, 0);
-            String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
-                estad, direccion.getText(), telefono.getText(),
-                FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
-            };
-            // try {
-            seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
-            }
-            //} catch (Exception e) {
-            //    msg.Error(ErrorModificar + ": " + e, TituloModificar);
-            // }
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+                generacodigoprofe();
+                String nomTabla = "profesor";
+                String columnaId = "codigo";
+                int seguardo = 0;
+                int fila = profesores.getSelectedRow();
+                String id = (String) "" + profesores.getValueAt(fila, 0);
+                String campos = "codigo, identificacion, nombre, apellido, estado, direccion, telefono, fechainicio";
 
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                Object[] valores = {codigo.getText(), identificacion.getText(), nombres.getText(), apellidos.getText(),
+                    estad, direccion.getText(), telefono.getText(),
+                    FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D), id
+                };
+                seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 

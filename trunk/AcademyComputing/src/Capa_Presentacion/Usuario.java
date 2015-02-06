@@ -6,6 +6,7 @@ package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
@@ -696,107 +697,116 @@ public class Usuario extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        estado.setSelected(true);
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        nombres.requestFocus();
-        MostrarProductos(1);
-        tbPane2.setSelectedIndex(0);
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
 
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            estado.setSelected(true);
+            this.bntGuardar.setEnabled(true);
+            this.bntModificar.setEnabled(false);
+            this.bntEliminar.setEnabled(false);
+            this.bntNuevo.setEnabled(false);
+            nombres.requestFocus();
+            MostrarProductos(1);
+            tbPane2.setSelectedIndex(0);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            PreparedStatement ps = null;
-            conn = BdConexion.getConexion();
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-            //Variables usuario*************************************************
-            int estad = 0, idusuario = 0;
-            int n1 = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String sqlusuario = "insert into usuario (nombre, usuario, password, estado, fechacreacion)"
-                    + " values ('" + nombres.getText() + "','" + usuario.getText() + "','" + password.getText() + "','" + estad + "','" + fecha + "')";
-            //******************************************************************
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+                PreparedStatement ps = null;
+                conn = BdConexion.getConexion();
 
-            try {
-                conn.setAutoCommit(false);
-                System.out.print(sqlusuario + "\n");
-
-                ps = conn.prepareStatement(sqlusuario, PreparedStatement.RETURN_GENERATED_KEYS);
-                n1 = ps.executeUpdate();
-                if (n1 > 0) {
-                    ResultSet rs = ps.getGeneratedKeys();
-                    while (rs.next()) {
-                        idusuario = rs.getInt(1);//retorna el idrecibo guardado
-                    }
-
-                    //Variables perfil usuario**********************************
-                    boolean camprec = false;
-                    int n = 0;
-                    int cant2 = modelperfil.getRowCount();
-                    int estadomenu = 0;
-                    //**********************************************************
-
-                    for (int i = 0; i < cant2; i++) {//for perfil usuarios
-                        String id = (String) "" + perfilusuarios.getValueAt(i, 0);
-                        if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
-                            estadomenu = 1;
-                            camprec = true;
-                        } else {
-                            estadomenu = 0;
-                        }
-                        String descriprecibo = "insert into perfilusuario (menu_idmenu,usuario_idusuario,estado) "
-                                + "values ('" + id + "','" + idusuario + "','" + estadomenu + "')";
-                        n = ps.executeUpdate(descriprecibo);
-                    }//fin for perfil usuario
-
-                    if (!camprec) {
-                        JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Acceso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                    }
-
-                    if (n > 0) {
-                        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                        MostrarDatos(busqueda.getText());
-                        this.bntGuardar.setEnabled(false);
-                        this.bntModificar.setEnabled(false);
-                        this.bntEliminar.setEnabled(false);
-                        this.bntNuevo.setEnabled(true);
-                        busqueda.requestFocus();
-                        JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                    }
-
+                //Variables usuario*************************************************
+                int estad = 0, idusuario = 0;
+                int n1 = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
                 }
-                conn.commit();// guarda todas las consultas si no ubo error
-                ps.close();
-                if (!conn.getAutoCommit()) {
-                    conn.setAutoCommit(true);
-                }
-            } catch (SQLException ex) {
+                String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String sqlusuario = "insert into usuario (nombre, usuario, password, estado, fechacreacion)"
+                        + " values ('" + nombres.getText() + "','" + usuario.getText() + "','" + password.getText() + "','" + estad + "','" + fecha + "')";
+                //******************************************************************
+
                 try {
-                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                    conn.setAutoCommit(false);
+                    System.out.print(sqlusuario + "\n");
+
+                    ps = conn.prepareStatement(sqlusuario, PreparedStatement.RETURN_GENERATED_KEYS);
+                    n1 = ps.executeUpdate();
+                    if (n1 > 0) {
+                        ResultSet rs = ps.getGeneratedKeys();
+                        while (rs.next()) {
+                            idusuario = rs.getInt(1);//retorna el idrecibo guardado
+                        }
+
+                        //Variables perfil usuario**********************************
+                        boolean camprec = false;
+                        int n = 0;
+                        int cant2 = modelperfil.getRowCount();
+                        int estadomenu = 0;
+                        //**********************************************************
+
+                        for (int i = 0; i < cant2; i++) {//for perfil usuarios
+                            String id = (String) "" + perfilusuarios.getValueAt(i, 0);
+                            if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
+                                estadomenu = 1;
+                                camprec = true;
+                            } else {
+                                estadomenu = 0;
+                            }
+                            String descriprecibo = "insert into perfilusuario (menu_idmenu,usuario_idusuario,estado) "
+                                    + "values ('" + id + "','" + idusuario + "','" + estadomenu + "')";
+                            n = ps.executeUpdate(descriprecibo);
+                        }//fin for perfil usuario
+
+                        if (!camprec) {
+                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Acceso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                        if (n > 0) {
+                            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                            MostrarDatos(busqueda.getText());
+                            this.bntGuardar.setEnabled(false);
+                            this.bntModificar.setEnabled(false);
+                            this.bntEliminar.setEnabled(false);
+                            this.bntNuevo.setEnabled(true);
+                            busqueda.requestFocus();
+                            JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                    }
+                    conn.commit();// guarda todas las consultas si no ubo error
                     ps.close();
                     if (!conn.getAutoCommit()) {
                         conn.setAutoCommit(true);
                     }
-                } catch (SQLException ex1) {
-                    Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                } catch (SQLException ex) {
+                    try {
+                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        ps.close();
+                        if (!conn.getAutoCommit()) {
+                            conn.setAutoCommit(true);
+                        }
+                    } catch (SQLException ex1) {
+                        Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                    JOptionPane.showMessageDialog(null, ex);
                 }
-                JOptionPane.showMessageDialog(null, ex);
-            }
 
-            //seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+                //seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -812,113 +822,121 @@ public class Usuario extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntEliminar.getName()) == true) {
 
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            int fila = usuarios.getSelectedRow();
-            String id = (String) "" + usuarios.getValueAt(fila, 0);
-            String nombreTabla = "usuario", nomColumnaCambiar = "estado";
-            String nomColumnaId = "idusuario";
-            int seguardo = 0;
+                int fila = usuarios.getSelectedRow();
+                String id = (String) "" + usuarios.getValueAt(fila, 0);
+                String nombreTabla = "usuario", nomColumnaCambiar = "estado";
+                String nomColumnaId = "idusuario";
+                int seguardo = 0;
 
-            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
 
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            PreparedStatement ps = null;
-            conn = BdConexion.getConexion();
+                PreparedStatement ps = null;
+                conn = BdConexion.getConexion();
 
-            try {
+                try {
 
-                conn.setAutoCommit(false);
-                //Variables modificar usuaio***********************************
-                int n1 = 0;
-                int fila = usuarios.getSelectedRow();
-                String id = (String) "" + usuarios.getValueAt(fila, 0);
-                int estad = 0;
-                if (this.estado.isSelected()) {
-                    estad = 1;
-                }
-                String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
-                String sql = "update usuario set nombre='" + nombres.getText() + "', " + " usuario='" + usuario.getText() + "', " + " password='" + password.getText() + "', " + " estado='" + estad + "', " + " fechacreacion='" + fecha + "'  where idusuario=" + id;
-                //**************************************************************
+                    conn.setAutoCommit(false);
+                    //Variables modificar usuaio***********************************
+                    int n1 = 0;
+                    int fila = usuarios.getSelectedRow();
+                    String id = (String) "" + usuarios.getValueAt(fila, 0);
+                    int estad = 0;
+                    if (this.estado.isSelected()) {
+                        estad = 1;
+                    }
+                    String fecha = FormatoFecha.getFormato(fecharegistro.getCalendar().getTime(), FormatoFecha.A_M_D);
+                    String sql = "update usuario set nombre='" + nombres.getText() + "', " + " usuario='" + usuario.getText() + "', " + " password='" + password.getText() + "', " + " estado='" + estad + "', " + " fechacreacion='" + fecha + "'  where idusuario=" + id;
+                    //**************************************************************
 
-                ps = conn.prepareStatement(sql);
-                n1 = ps.executeUpdate();
+                    ps = conn.prepareStatement(sql);
+                    n1 = ps.executeUpdate();
 
-                if (n1 > 0) {
-                    //Variables perfil usuario**********************************
-                    int n = 0;
-                    int cant2 = modelperfil.getRowCount();
-                    int estadomenu = 0;
-                    //**********************************************************
+                    if (n1 > 0) {
+                        //Variables perfil usuario**********************************
+                        int n = 0;
+                        int cant2 = modelperfil.getRowCount();
+                        int estadomenu = 0;
+                        //**********************************************************
 
-                    for (int i = 0; i < cant2; i++) {//for perfil usuarios
-                        String idmenu = (String) "" + perfilusuarios.getValueAt(i, 0);
-                        if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
-                            estadomenu = 1;
+                        for (int i = 0; i < cant2; i++) {//for perfil usuarios
+                            String idmenu = (String) "" + perfilusuarios.getValueAt(i, 0);
+                            if (perfilusuarios.getValueAt(i, 4).toString().equals("true")) {
+                                estadomenu = 1;
+                            } else {
+                                estadomenu = 0;
+                            }
+                            String descriprecibo = "update perfilusuario set estado=" + estadomenu + " where idperfilusuario=" + idmenu;
+                            n = ps.executeUpdate(descriprecibo);
+
+                        }//fin for perfil usuario
+                        if (n > 0) {
+                            Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                            MostrarDatos(busqueda.getText());
+                            busqueda.requestFocus();
+                            tbPane2.setSelectedIndex(0);
+                            JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            estadomenu = 0;
+                            JOptionPane.showInternalMessageDialog(this, "ERROR El dato no se ha Modificado Correctamente", "Modificar", JOptionPane.ERROR_MESSAGE);
                         }
-                        String descriprecibo = "update perfilusuario set estado=" + estadomenu + " where idperfilusuario=" + idmenu;
-                        n = ps.executeUpdate(descriprecibo);
 
-                    }//fin for perfil usuario
-                    if (n > 0) {
-                        Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                        MostrarDatos(busqueda.getText());
-                        busqueda.requestFocus();
-                        tbPane2.setSelectedIndex(0);
-                        JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showInternalMessageDialog(this, "ERROR El dato no se ha Modificado Correctamente", "Modificar", JOptionPane.ERROR_MESSAGE);
                     }
-
-                } else {
-                    JOptionPane.showInternalMessageDialog(this, "ERROR El dato no se ha Modificado Correctamente", "Modificar", JOptionPane.ERROR_MESSAGE);
-                }
-                conn.commit();// guarda todas las consultas si no ubo error
-                ps.close();
-                if (!conn.getAutoCommit()) {
-                    conn.setAutoCommit(true);
-                }
-
-            } catch (Exception e) {
-                try {
-                    conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                    conn.commit();// guarda todas las consultas si no ubo error
                     ps.close();
                     if (!conn.getAutoCommit()) {
                         conn.setAutoCommit(true);
                     }
-                } catch (SQLException ex1) {
-                    JOptionPane.showMessageDialog(null, ex1);
+
+                } catch (Exception e) {
+                    try {
+                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        ps.close();
+                        if (!conn.getAutoCommit()) {
+                            conn.setAutoCommit(true);
+                        }
+                    } catch (SQLException ex1) {
+                        JOptionPane.showMessageDialog(null, ex1);
+                    }
+                    JOptionPane.showMessageDialog(null, e);
+
                 }
-                JOptionPane.showMessageDialog(null, e);
 
             }
-
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 

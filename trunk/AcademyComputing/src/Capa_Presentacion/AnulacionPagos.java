@@ -6,6 +6,7 @@ package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
+import Capa_Negocio.AccesoUsuario;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
@@ -1015,6 +1016,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
                     buttonAction4.setText("Re-Impresión");
                     buttonAction4.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+                    buttonAction4.setName("Re-Impresion Pago"); // NOI18N
                     buttonAction4.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                             buttonAction4ActionPerformed(evt);
@@ -1119,149 +1121,107 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
+            if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "La tabla no contiene datos que anular");
 
-//        if (Utilidades.esObligatorio(this.JPanelBusqueda, true)
-//                || Utilidades.esObligatorio(this.JPanelGrupo, true)
-//                || Utilidades.esObligatorio(this.JPanelPago, true)) {
-//            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-        if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "La tabla no contiene datos que anular");
+            } else { //Inicio de Guardar datos
+                int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+                if (resp == 0) {
 
-        } else { //Inicio de Guardar datos
-            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-            if (resp == 0) {
+                    String printHorario = "";
 
-                String printHorario = "";
+                    //GUARDAR DATOS DE RECIBO***************************************
+                    //**************************************************************
+                    int idrecibo = 0, n = 0;
+                    String sql = "";
 
-                //GUARDAR DATOS DE RECIBO***************************************
-                //**************************************************************
-                int idrecibo = 0, n = 0;
-                String sql = "";
+                    int fila = recibos.getSelectedRow();
+                    String idr = "" + recibos.getValueAt(fila, 2);
+                    idrecibo = Integer.parseInt(idr);
 
-                int fila = recibos.getSelectedRow();
-                String idr = "" + recibos.getValueAt(fila, 2);
-                idrecibo = Integer.parseInt(idr);
+                    float total = Float.parseFloat(totalapagar.getText());
+                    sql = "update recibodepago set  total=" + total + " where idrecibo=" + idr;
+                    PreparedStatement ps = null;
+                    conn = BdConexion.getConexion();
 
-                //String fechapag = FormatoFecha.getFormato(inicioreporte.getCalendar().getTime(), FormatoFecha.A_M_D);
-                //mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
-                //String idtipop = tipop.getID();
-                float total = Float.parseFloat(totalapagar.getText());
-
-                //sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
-                //sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
-                sql = "update recibodepago set  total=" + total + " where idrecibo=" + idr;
-                //int op = 0;
-                PreparedStatement ps = null;
-                conn = BdConexion.getConexion();
-
-                try {
-                    conn.setAutoCommit(false);
-                    ps = conn.prepareStatement(sql);
-//                    ps.setString(1, fechapag);
-//                    ps.setInt(2, Integer.parseInt(idalumno));
-//                    ps.setInt(3, Integer.parseInt(/*idtipop*/""));
-//                    ps.setFloat(4, total);
-//                    ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
-
-                    n = ps.executeUpdate();
-                    if (n > 0) {
-//                        ResultSet rs = ps.getGeneratedKeys();
-//                        while (rs.next()) {
-//                            idrecibo = rs.getInt(1);//retorna el idrecibo guardado
-//                        }
-
-                        //GUARDAR MESES PAGADOS y OTROS PRODUCTOS***************
-                        //******************************************************
-                        boolean camprec = false;
-                        int cant = model.getRowCount();
-                        int cant2 = model2.getRowCount();
-
-                        for (int i = 0; i < cant; i++) { //for pago de meses
-                            if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
-                                camprec = true;
-                                String idc = (String) "" + colegiaturas.getValueAt(i, 0);
-
-                                if (!colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    String pmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
-                                    n = ps.executeUpdate(pmora);
-                                } else if (!colegiaturas.getValueAt(i, 9).toString().equals("0.0")) {
-                                    String expmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
-                                    n = ps.executeUpdate(expmora);
-                                }
-                                String detrecibo = "delete from detrecibo where proyeccionpagos_idproyeccionpagos=" + idc;
-                                //String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + idc + "')";
-                                String proypago = "update proyeccionpagos set  estado=false where idproyeccionpagos=" + idc;
-
-                                n = ps.executeUpdate(detrecibo);
-                                n = ps.executeUpdate(proypago);
-                            }
-                        }//fin for pago de meses
-
-                        for (int i = 0; i < cant2; i++) {//for pago otros productos
-                            if (otrosproductos.getValueAt(i, 6).toString().equals("true")) {
-
-                                String idotp = (String) "" + otrosproductos.getValueAt(i, 0);
-                                String descriprecibo = "delete from descripcionrecibo where iddescripcionrecibo=" + idotp;
-
-//                                float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
-//                                float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
-//
-//                                String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
-//                                        + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + idotp + "')";
-//                                if (canti > 0) {
-                                camprec = true;
-                                n = ps.executeUpdate(descriprecibo);
-//                                } else if (canti == 0) {
-//                                }
-                            }
-                        }//fin for otros productos
-
-                        if (!camprec) {
-                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ninguna linea para Anular", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                            //System.out.print(n);
-                        }
-                        if (n > 0) {
-                            //int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Anulado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
-                            //if (resp2 == 0) {
-                            //mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                            //String[] id = {grup.getID()};
-                            //idalumnosengrupo(idalumno, "" + grup.getID());
-                            //MostrarPagos();
-                            //MostrarProductos();
-
-                            //} 
-                            //else {
-                            JOptionPane.showInternalMessageDialog(this, "El Pago se ha Anulado Correctamente");
-                            limpiartodo();
-                            //}
-                        }
-                        //FIN GUARDAR MESES PAGADOS*************************************
-                        //**************************************************************
-                    }
-
-                    conn.commit();// guarda todas las consultas si no ubo error
-                    ps.close();
-                    if (!conn.getAutoCommit()) {
-                        conn.setAutoCommit(true);
-                    }
-
-                    Recibodepago.comprobante(idrecibo, printHorario);
-                } catch (SQLException ex) {
                     try {
-                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        conn.setAutoCommit(false);
+                        ps = conn.prepareStatement(sql);
+                        n = ps.executeUpdate();
+                        if (n > 0) {
+
+                            //GUARDAR MESES PAGADOS y OTROS PRODUCTOS***************
+                            //******************************************************
+                            boolean camprec = false;
+                            int cant = model.getRowCount();
+                            int cant2 = model2.getRowCount();
+
+                            for (int i = 0; i < cant; i++) { //for pago de meses
+                                if (colegiaturas.getValueAt(i, 8).toString().equals("true")) {
+                                    camprec = true;
+                                    String idc = (String) "" + colegiaturas.getValueAt(i, 0);
+
+                                    if (!colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                        String pmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
+                                        n = ps.executeUpdate(pmora);
+                                    } else if (!colegiaturas.getValueAt(i, 9).toString().equals("0.0")) {
+                                        String expmora = "update mora set  estado=false,exoneracion=0  where proyeccionpagos_idproyeccionpagos=" + idc;
+                                        n = ps.executeUpdate(expmora);
+                                    }
+                                    String detrecibo = "delete from detrecibo where proyeccionpagos_idproyeccionpagos=" + idc;
+                                    String proypago = "update proyeccionpagos set  estado=false where idproyeccionpagos=" + idc;
+
+                                    n = ps.executeUpdate(detrecibo);
+                                    n = ps.executeUpdate(proypago);
+                                }
+                            }//fin for pago de meses
+
+                            for (int i = 0; i < cant2; i++) {//for pago otros productos
+                                if (otrosproductos.getValueAt(i, 6).toString().equals("true")) {
+
+                                    String idotp = (String) "" + otrosproductos.getValueAt(i, 0);
+                                    String descriprecibo = "delete from descripcionrecibo where iddescripcionrecibo=" + idotp;
+                                    camprec = true;
+                                    n = ps.executeUpdate(descriprecibo);
+                                }
+                            }//fin for otros productos
+
+                            if (!camprec) {
+                                JOptionPane.showInternalMessageDialog(this, "No se ha marcado ninguna linea para Anular", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            if (n > 0) {
+                                JOptionPane.showInternalMessageDialog(this, "El Pago se ha Anulado Correctamente");
+                                limpiartodo();
+                            }
+                            //FIN GUARDAR MESES PAGADOS*************************************
+                            //**************************************************************
+                        }
+
+                        conn.commit();// guarda todas las consultas si no ubo error
                         ps.close();
                         if (!conn.getAutoCommit()) {
                             conn.setAutoCommit(true);
                         }
-                    } catch (SQLException ex1) {
-                        Logger.getLogger(AnulacionPagos.class.getName()).log(Level.SEVERE, null, ex1);
+
+                        Recibodepago.comprobante(idrecibo, printHorario);
+                    } catch (SQLException ex) {
+                        try {
+                            conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                            ps.close();
+                            if (!conn.getAutoCommit()) {
+                                conn.setAutoCommit(true);
+                            }
+                        } catch (SQLException ex1) {
+                            Logger.getLogger(AnulacionPagos.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                        JOptionPane.showMessageDialog(null, ex);
                     }
-                    JOptionPane.showMessageDialog(null, ex);
                 }
-            }
-        }//Fin Guardar datos
+            }//Fin Guardar datos
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void recibosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recibosMouseClicked
@@ -1387,19 +1347,23 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
 
     private void buttonAction4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction4ActionPerformed
         // TODO add your handling code here:
-        if (recibos.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Reimprimir");
-        } else {
-            if (recibos.getSelectedRow() != -1) {
-                int fila = recibos.getSelectedRow();
-                System.out.print(fila);
-                String idr = "" + recibos.getValueAt(fila, 2);
-                int idrecibo = Integer.parseInt(idr);
-                String printHorario = "";
-                Recibodepago.comprobante(idrecibo, printHorario);
+        if (AccesoUsuario.AccesosUsuario(buttonAction4.getName()) == true) {
+            if (recibos.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Reimprimir");
             } else {
-                JOptionPane.showInternalMessageDialog(this, "No hay ningun recibo seleccionado para Reimprimir");
+                if (recibos.getSelectedRow() != -1) {
+                    int fila = recibos.getSelectedRow();
+                    System.out.print(fila);
+                    String idr = "" + recibos.getValueAt(fila, 2);
+                    int idrecibo = Integer.parseInt(idr);
+                    String printHorario = "";
+                    Recibodepago.comprobante(idrecibo, printHorario);
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "No hay ningun recibo seleccionado para Reimprimir");
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_buttonAction4ActionPerformed
 

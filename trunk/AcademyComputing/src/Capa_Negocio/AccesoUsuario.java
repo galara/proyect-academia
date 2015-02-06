@@ -40,7 +40,7 @@ public class AccesoUsuario {
                         rs.beforeFirst();//regresa el puntero al primer registro
                         while (rs.next()) {//mientras tenga registros que haga lo siguiente
                             acceso = rs.getBoolean(1);
-                            System.out.print(acceso + " cnsulta");
+                            //System.out.print(acceso + " cnsulta");
                         }
                     } else {
                         acceso = true;

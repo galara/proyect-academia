@@ -5,11 +5,11 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Negocio.AccesoUsuario;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FiltroCampos;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
-import static Capa_Negocio.FormatoFecha.D_M_A;
 import Capa_Negocio.GeneraCodigo;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.ProyeccionPagos;
@@ -1047,80 +1047,89 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        llenarcomboprofesor();
-        llenarcombocarrera();
-        estado.setSelected(true);
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        descripcion.requestFocus();
-        newcodgrupo = 0;
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
 
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            llenarcomboprofesor();
+            llenarcombocarrera();
+            estado.setSelected(true);
+            this.bntGuardar.setEnabled(true);
+            this.bntModificar.setEnabled(false);
+            this.bntEliminar.setEnabled(false);
+            this.bntNuevo.setEnabled(false);
+            descripcion.requestFocus();
+            newcodgrupo = 0;
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            generacodigogrupo();
-            boolean seguardo = false;
-            String nombreTabla = "grupo";
-            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
-            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-            String fechaini2 = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.D_M_A);
-            String fechafn2 = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.D_M_A);
-            mProfesor prof = (mProfesor) profesor.getSelectedItem();
-            String idprof = prof.getID();
-            mCarrera carr = (mCarrera) carrera.getSelectedItem();
-            String idcarrera = carr.getID();
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
+                JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+                generacodigogrupo();
+                boolean seguardo = false;
+                String nombreTabla = "grupo";
+                String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera, horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
+                String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
 
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText()
-            };
+                String fechaini2 = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.D_M_A);
+                String fechafn2 = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.D_M_A);
+                mProfesor prof = (mProfesor) profesor.getSelectedItem();
+                String idprof = prof.getID();
+                mCarrera carr = (mCarrera) carrera.getSelectedItem();
+                String idcarrera = carr.getID();
 
-            seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-
-            if (seguardo) {
-
-                AccesoDatos ac = new AccesoDatos();
-                Calendar a = ProyeccionPagos.convierteacalendar(fechaini2);
-                float cole = Float.parseFloat(colegiatura.getText());
-                Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
-                idagrupo(codigo.getText());
-                String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo, inscripcion.getText());
-
-                int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
-                System.out.print(pagos);
-                if (pagos > 0) {
-                } else {
-                    JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
                 }
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+
+                Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
+                    FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText()
+                };
+
+                seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+
+                if (seguardo) {
+
+                    AccesoDatos ac = new AccesoDatos();
+                    Calendar a = ProyeccionPagos.convierteacalendar(fechaini2);
+                    float cole = Float.parseFloat(colegiatura.getText());
+                    Calendar b = ProyeccionPagos.convierteacalendar(fechafn2);
+                    idagrupo(codigo.getText());
+                    String sql = ProyeccionPagos.calculapagos(a, b, cole, "" + idgrupo, inscripcion.getText());
+
+                    int pagos = ac.agregarRegistrosql("INSERT INTO PAGOS (mes_idmes,año,monto,fechavencimiento,grupo_idgrupo) VALUES " + sql);
+                    System.out.print(pagos);
+                    if (pagos > 0) {
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "Los pagos no se Guardaron", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -1136,76 +1145,84 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntEliminar.getName()) == true) {
 
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            int fila = horarios.getSelectedRow();
-            String id = (String) "" + horarios.getValueAt(fila, 0);
-            String nombreTabla = "grupo", nomColumnaCambiar = "estado";
-            String nomColumnaId = "codigo";
-            int seguardo = 0;
+                int fila = horarios.getSelectedRow();
+                String id = (String) "" + horarios.getValueAt(fila, 0);
+                String nombreTabla = "grupo", nomColumnaCambiar = "estado";
+                String nomColumnaId = "codigo";
+                int seguardo = 0;
 
-            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
 
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
-            JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-            generacodigogrupo();
-            String nomTabla = "grupo";
-            String columnaId = "codigo";
-            int seguardo = 0;
-            int fila = horarios.getSelectedRow();
-            String id = (String) "" + horarios.getValueAt(fila, 0);
-
-            String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera,horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
-            String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
-            String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
-            //Para obtener el id en la base de datos
-            mProfesor prof = (mProfesor) profesor.getSelectedItem();
-            String idprof = prof.getID();
-            mCarrera carr = (mCarrera) carrera.getSelectedItem();
-            String idcarrera = carr.getID();
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-
-            Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
-                FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText(), id
-            };
-
-            seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+            if (fechainicio.getCalendar().after(fechafin.getCalendar())) {
+                JOptionPane.showInternalMessageDialog(this, "Las fecha de inicio debe ser menor a la fecha fin del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
+                generacodigogrupo();
+                String nomTabla = "grupo";
+                String columnaId = "codigo";
+                int seguardo = 0;
+                int fila = horarios.getSelectedRow();
+                String id = (String) "" + horarios.getValueAt(fila, 0);
+
+                String campos = "codigo, descripcion, dia, profesor_idcatedratico, carrera_idcarrera,horariode, horarioa, fechainicio, fechafin, cantalumnos, estado, inscripcion, colegiatura";
+                String fechaini = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String fechafn = FormatoFecha.getFormato(fechafin.getCalendar().getTime(), FormatoFecha.A_M_D);
+                //Para obtener el id en la base de datos
+                mProfesor prof = (mProfesor) profesor.getSelectedItem();
+                String idprof = prof.getID();
+                mCarrera carr = (mCarrera) carrera.getSelectedItem();
+                String idcarrera = carr.getID();
+
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+
+                Object[] valores = {codigo.getText(), descripcion.getText(), dia.getSelectedItem(), idprof, idcarrera,
+                    FormatoFecha.getTime(horade.getValue()), FormatoFecha.getTime(horaa.getValue()), fechaini, fechafn, cantalumnos.getText(), estad, inscripcion.getText(), colegiatura.getText(), id
+                };
+
+                seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 

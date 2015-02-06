@@ -4,17 +4,15 @@
  */
 package Capa_Presentacion;
 
-import Capa_Negocio.Renderer_CheckBox;
-import Capa_Negocio.Editor_CheckBox;
 import Capa_Datos.AccesoDatos;
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.AddForms;
-import Capa_Negocio.FiltroCampos;
+import Capa_Negocio.Editor_CheckBox;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
-import Capa_Negocio.TipoFiltro;
+import Capa_Negocio.Renderer_CheckBox;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
-import modelos.mPensum;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -29,6 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
+import modelos.mPensum;
 
 /**
  *
@@ -666,46 +665,50 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cursosKeyPressed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-        if (pensum.getSelectedIndex() > 0) {
+            if (pensum.getSelectedIndex() > 0) {
 
-            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-            if (resp == 0) {
+                int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+                if (resp == 0) {
 
-                boolean seguardo = false;
-                String nombreTabla = "detallepensun";
-                String campos = "pensun_idpensun, curso_idcurso";
-                mPensum pem = (mPensum) pensum.getSelectedItem();
-                String idpensum = pem.getID();
+                    boolean seguardo = false;
+                    String nombreTabla = "detallepensun";
+                    String campos = "pensun_idpensun, curso_idcurso";
+                    mPensum pem = (mPensum) pensum.getSelectedItem();
+                    String idpensum = pem.getID();
 
-                Object[] fila = new Object[2];
-                boolean camprec = false;
-                int cant = model.getRowCount();
+                    Object[] fila = new Object[2];
+                    boolean camprec = false;
+                    int cant = model.getRowCount();
 
-                try {
-                    cursos.getCellEditor().stopCellEditing();
-                } catch (Exception e) {
-                }
+                    try {
+                        cursos.getCellEditor().stopCellEditing();
+                    } catch (Exception e) {
+                    }
 
-                for (int i = 0; i < cant; i++) {
-                    if (model.getValueAt(i, 2).toString().equals("true")) {
-                        camprec = true;
-                        fila[0] = idpensum;
-                        fila[1] = model.getValueAt(i, 0).toString();
-                        seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
+                    for (int i = 0; i < cant; i++) {
+                        if (model.getValueAt(i, 2).toString().equals("true")) {
+                            camprec = true;
+                            fila[0] = idpensum;
+                            fila[1] = model.getValueAt(i, 0).toString();
+                            seguardo = peticiones.guardarRegistros(nombreTabla, campos, fila);
+                        }
+                    }
+                    if (!camprec) {
+                        JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun curso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    if (seguardo) {
+                        MostrarDatos(idpensum);
+                        MostrarDatosDetalle(idpensum);
+                        JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                if (!camprec) {
-                    JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun curso", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                }
-                if (seguardo) {
-                    MostrarDatos(idpensum);
-                    MostrarDatosDetalle(idpensum);
-                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                }
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "No se ha seleccionado ningun Pensum", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showInternalMessageDialog(this, "No se ha seleccionado ningun Pensum", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
