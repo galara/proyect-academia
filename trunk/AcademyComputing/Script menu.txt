@@ -1,4 +1,28 @@
 INSERT INTO menu (nombre,principal,estado) VALUES
+--
+-- Menus Principales 
+--
+('Profesor Principal','Principal','1'),
+('Carrera Principal','Principal','1'),
+('Grupo/Horario Principal','Principal','1'),
+('Curso Principal','Principal','1'),
+('Otros Pagos Principal','Principal','1'),
+('Tipo de Pago Principal','Principal','1'),
+('Alumno Principal','Principal','1'),
+('Pensum Principal','Principal','1'),
+('Registrode Pagos Principal','Principal','1'),
+('Anular o Reimprimir Pagos Principal','Principal','1'),
+('Usuario Principal','Principal','1'),
+('Ciclo Escolar Principal','Principal','1'),
+('Gestionar BD Principal','Principal','1'),
+('Menu Principal','Principal','1'),
+('Reporte de Pagos Principal','Principal','1'),
+('Listado de Alumnos Grupo Principal','Principal','1'),
+('Pagos Diarios Principal','Principal','1'),
+
+--
+-- Botones 
+--
 ('Nuevo Alumnos','Alumno','1'),
 ('Modificar Alumno','Alumno','1'),
 ('Guardar Alumno','Alumno','1'),
