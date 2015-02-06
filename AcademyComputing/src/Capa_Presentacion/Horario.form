@@ -153,6 +153,7 @@
                   <Connection code="KeyEvent.VK_N" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nuevo"/>
+                <Property name="name" type="java.lang.String" value="Nuevo Horario" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntNuevoActionPerformed"/>
@@ -173,6 +174,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Modificar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Modificar Horario" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntModificarActionPerformed"/>
@@ -193,6 +195,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Guardar Horario" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntGuardarActionPerformed"/>
@@ -212,7 +215,9 @@
                   <Connection code="KeyEvent.VK_E" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
+                <Property name="borderPainted" type="boolean" value="true"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Eliminar Horario" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntEliminarActionPerformed"/>

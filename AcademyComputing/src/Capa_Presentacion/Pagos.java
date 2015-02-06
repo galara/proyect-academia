@@ -139,7 +139,7 @@ public class Pagos extends javax.swing.JInternalFrame {
      * si por eror se intento cerrar el formulario devera indicar que "NO" para no perder los datos
      * que no haya Guardado de lo contrario presiona "SI" y se cerrara la ventana sin Guardar ningun dato. */
     private void cerrarVentana() {
-        int nu = JOptionPane.showInternalConfirmDialog(this, "Todos los datos que no se ha guardadox "
+        int nu = JOptionPane.showInternalConfirmDialog(this, "Todos los datos que no se ha guardado"
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
@@ -830,6 +830,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
+        bntGuardar.setName("Guardar Pagos"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -869,6 +870,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         bntGuardar1.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar1.setMnemonic(KeyEvent.VK_G);
         bntGuardar1.setText("Estado de Cuenta");
+        bntGuardar1.setName("EstadoDeCuenta"); // NOI18N
         bntGuardar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardar1ActionPerformed(evt);

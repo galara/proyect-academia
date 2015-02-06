@@ -637,6 +637,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Anular");
+        bntGuardar.setName("Anular Pago"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -1024,7 +1025,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
                     tbPane3.addTab("============", JPanelPago1);
 
                     panelImage.add(tbPane3);
-                    tbPane3.setBounds(760, 160, 178, 170);
+                    tbPane3.setBounds(760, 160, 115, 170);
 
                     getContentPane().add(panelImage, java.awt.BorderLayout.CENTER);
 
