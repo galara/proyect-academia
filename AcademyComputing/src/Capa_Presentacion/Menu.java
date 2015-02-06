@@ -4,16 +4,14 @@
  */
 package Capa_Presentacion;
 
+import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.FiltroCampos;
-import Capa_Negocio.FormatoDecimal;
-import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -29,7 +27,7 @@ public class Menu extends javax.swing.JInternalFrame {
 
     /*El modelo se define en : Jtable-->propiedades-->model--> <User Code> */
     DefaultTableModel model;
-    String[] titulos = {"Código", "Acceso", "Principal","Estado"};//Titulos para Jtabla
+    String[] titulos = {"Código", "Acceso", "Principal", "Estado"};//Titulos para Jtabla
     /*Se hace una instancia de la clase que recibira las peticiones de esta capa de aplicación*/
     Peticiones peticiones = new Peticiones();
 
@@ -119,7 +117,7 @@ public class Menu extends javax.swing.JInternalFrame {
      * @return 
      */
     private void MostrarDatos(String Dato) {
-        String[] campos = {"menu.idmenu", "menu.nombre", "menu.principal","menu.estado"};
+        String[] campos = {"menu.idmenu", "menu.nombre", "menu.principal", "menu.estado"};
         String[] condiciones = {"menu.nombre"};
         String[] Id = {Dato};
 
@@ -159,8 +157,8 @@ public class Menu extends javax.swing.JInternalFrame {
         String[] id = {"" + usuarios.getValueAt(fila, 0)};
         if (usuarios.getValueAt(fila, 0) != null) {
 
-            String[] campos = {"menu.nombre", "menu.principal","menu.estado"};
-            Component[] cmps = {descripcion, observacion,estado};
+            String[] campos = {"menu.nombre", "menu.principal", "menu.estado"};
+            Component[] cmps = {descripcion, observacion, estado};
             Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
             peticiones.getRegistroSeleccionado(cmps, "menu", campos, cond, id, "", null);
 
@@ -483,46 +481,55 @@ public class Menu extends javax.swing.JInternalFrame {
 
     private void bntNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntNuevoActionPerformed
         // TODO add your handling code here:
-        Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-        estado.setSelected(true);
-        this.bntGuardar.setEnabled(true);
-        this.bntModificar.setEnabled(false);
-        this.bntEliminar.setEnabled(false);
-        this.bntNuevo.setEnabled(false);
-        descripcion.requestFocus();
+        if (AccesoUsuario.AccesosUsuario(bntNuevo.getName()) == true) {
 
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            estado.setSelected(true);
+            this.bntGuardar.setEnabled(true);
+            this.bntModificar.setEnabled(false);
+            this.bntEliminar.setEnabled(false);
+            this.bntNuevo.setEnabled(false);
+            descripcion.requestFocus();
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntNuevoActionPerformed
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-            boolean seguardo = false;
-            String nombreTabla = "menu";
-            String campos = "nombre, principal, estado";
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            Object[] valores = {descripcion.getText(), observacion.getText(),estad                
-            };
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
-            if (seguardo) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                boolean seguardo = false;
+                String nombreTabla = "menu";
+                String campos = "nombre, principal, estado";
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                Object[] valores = {descripcion.getText(), observacion.getText(), estad
+                };
+
+                seguardo = peticiones.guardarRegistros(nombreTabla, campos, valores);
+                if (seguardo) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
@@ -538,62 +545,70 @@ public class Menu extends javax.swing.JInternalFrame {
 
     private void bntEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEliminarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntEliminar.getName()) == true) {
 
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Eliminar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            int fila = usuarios.getSelectedRow();
-            String id = (String) "" + usuarios.getValueAt(fila, 0);
-            String nombreTabla = "menu", nomColumnaCambiar = "estado";
-            String nomColumnaId = "idmenu";
-            int seguardo = 0;
+                int fila = usuarios.getSelectedRow();
+                String id = (String) "" + usuarios.getValueAt(fila, 0);
+                String nombreTabla = "menu", nomColumnaCambiar = "estado";
+                String nomColumnaId = "idmenu";
+                int seguardo = 0;
 
-            seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
+                seguardo = peticiones.eliminarRegistro(nombreTabla, nomColumnaCambiar, nomColumnaId, id);
 
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
-                MostrarDatos(busqueda.getText());
-                this.bntGuardar.setEnabled(false);
-                this.bntModificar.setEnabled(false);
-                this.bntEliminar.setEnabled(false);
-                this.bntNuevo.setEnabled(true);
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    this.bntGuardar.setEnabled(false);
+                    this.bntModificar.setEnabled(false);
+                    this.bntEliminar.setEnabled(false);
+                    this.bntNuevo.setEnabled(true);
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntEliminarActionPerformed
 
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
 
-        if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
-        if (resp == 0) {
-
-            String nomTabla = "menu";
-            String columnaId = "idmenu";
-            int seguardo = 0;
-            int fila = usuarios.getSelectedRow();
-            String id = (String) "" + usuarios.getValueAt(fila, 0);
-            String campos = "nombre, principal, estado";
-
-            int estad = 0;
-            if (this.estado.isSelected()) {
-                estad = 1;
+            if (Utilidades.esObligatorio(this.JPanelCampos, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            Object[] valores = {descripcion.getText(), observacion.getText(), estad,id
-            };
+            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
+            if (resp == 0) {
 
-            seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
-            if (seguardo == 1) {
-                Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                MostrarDatos(busqueda.getText());
-                busqueda.requestFocus();
-                JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                String nomTabla = "menu";
+                String columnaId = "idmenu";
+                int seguardo = 0;
+                int fila = usuarios.getSelectedRow();
+                String id = (String) "" + usuarios.getValueAt(fila, 0);
+                String campos = "nombre, principal, estado";
+
+                int estad = 0;
+                if (this.estado.isSelected()) {
+                    estad = 1;
+                }
+                Object[] valores = {descripcion.getText(), observacion.getText(), estad, id
+                };
+
+                seguardo = peticiones.actualizarRegistro(nomTabla, campos, valores, columnaId, id);
+                if (seguardo == 1) {
+                    Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    MostrarDatos(busqueda.getText());
+                    busqueda.requestFocus();
+                    JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntModificarActionPerformed
 

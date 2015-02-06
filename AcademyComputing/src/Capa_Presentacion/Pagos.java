@@ -6,9 +6,9 @@ package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
 import Capa_Datos.BdConexion;
+import Capa_Negocio.AccesoUsuario;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.CellEditorSpinnerPago;
-import Capa_Negocio.Editor_CheckBox;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
 import Capa_Negocio.Peticiones;
@@ -19,16 +19,13 @@ import static Capa_Presentacion.Principal.dp;
 import Reportes.EstadoCuenta;
 import Reportes.Recibodepago;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +36,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelos.mGrupo;
 import modelos.mTipopago;
@@ -1349,152 +1342,161 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
 
-        if (Utilidades.esObligatorio(this.JPanelRecibo, true)
-                || Utilidades.esObligatorio(this.JPanelGrupo, true)
-                || Utilidades.esObligatorio(this.JPanelPago, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            if (Utilidades.esObligatorio(this.JPanelRecibo, true)
+                    || Utilidades.esObligatorio(this.JPanelGrupo, true)
+                    || Utilidades.esObligatorio(this.JPanelPago, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
+            if (colegiaturas.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && otrosproductos.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "La tabla no contiene datos");
 
-        } else { //Inicio de Guardar datos
-            int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
-            if (resp == 0) {
+            } else { //Inicio de Guardar datos
+                int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
+                if (resp == 0) {
 
-                String printHorario = "";
-                horade.getText();
-                horaa.getText();
-                printHorario = horade.getText() + " a " + horaa.getText() + " " + dia.getText();
+                    String printHorario = "";
+                    horade.getText();
+                    horaa.getText();
+                    printHorario = horade.getText() + " a " + horaa.getText() + " " + dia.getText();
                 //GUARDAR DATOS DE RECIBO***************************************
-                //**************************************************************
-                int idrecibo = 0, n = 0;
-                String sql = "";
-                String fechapag = FormatoFecha.getFormato(fechapago.getCalendar().getTime(), FormatoFecha.A_M_D);
-                mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
-                String idtipop = tipop.getID();
-                float total = Float.parseFloat(totalapagar.getText());
+                    //**************************************************************
+                    int idrecibo = 0, n = 0;
+                    String sql = "";
+                    String fechapag = FormatoFecha.getFormato(fechapago.getCalendar().getTime(), FormatoFecha.A_M_D);
+                    mTipopago tipop = (mTipopago) cTipopago.getSelectedItem();
+                    String idtipop = tipop.getID();
+                    float total = Float.parseFloat(totalapagar.getText());
 
-                sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
-                //int op = 0;
-                PreparedStatement ps = null;
-                conn = BdConexion.getConexion();
+                    sql = "insert into recibodepago (fecha,alumno_idalumno,tipopago_idtipopago,total,usuario_idusuario) values (?,?,?,?,?)";
+                    //int op = 0;
+                    PreparedStatement ps = null;
+                    conn = BdConexion.getConexion();
 
-                try {
-                    conn.setAutoCommit(false);
-                    ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, fechapag);
-                    ps.setInt(2, Integer.parseInt(idalumno));
-                    ps.setInt(3, Integer.parseInt(idtipop));
-                    ps.setFloat(4, total);
-                    ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
+                    try {
+                        conn.setAutoCommit(false);
+                        ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                        ps.setString(1, fechapag);
+                        ps.setInt(2, Integer.parseInt(idalumno));
+                        ps.setInt(3, Integer.parseInt(idtipop));
+                        ps.setFloat(4, total);
+                        ps.setInt(5, Integer.parseInt("" + 1));//modificar por el usuario logeado
 
-                    n = ps.executeUpdate();
-                    if (n > 0) {
-                        ResultSet rs = ps.getGeneratedKeys();
-                        while (rs.next()) {
-                            idrecibo = rs.getInt(1);//retorna el idrecibo guardado
-                        }
+                        n = ps.executeUpdate();
+                        if (n > 0) {
+                            ResultSet rs = ps.getGeneratedKeys();
+                            while (rs.next()) {
+                                idrecibo = rs.getInt(1);//retorna el idrecibo guardado
+                            }
 
                         //GUARDAR MESES PAGADOS y OTROS PRODUCTOS***************
-                        //******************************************************
-                        boolean camprec = false;
-                        int cant = model.getRowCount();
-                        int cant2 = model2.getRowCount();
+                            //******************************************************
+                            boolean camprec = false;
+                            int cant = model.getRowCount();
+                            int cant2 = model2.getRowCount();
 
-                        for (int i = 0; i < cant; i++) { //for pago de meses
-                            if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
-                                camprec = true;
-                                String id = (String) "" + colegiaturas.getValueAt(i, 0);
-                                String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + id + "')";
-                                String proypago = "update proyeccionpagos set  estado=true where idproyeccionpagos=" + id;
-
-                                n = ps.executeUpdate(detrecibo);
-                                n = ps.executeUpdate(proypago);
-
-                                if (colegiaturas.getValueAt(i, 8).toString().equals("true") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    String pmora = "update mora set  estado=true where proyeccionpagos_idproyeccionpagos=" + id;
-                                    n = ps.executeUpdate(pmora);
-                                } else if (colegiaturas.getValueAt(i, 8).toString().equals("false") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
-                                    float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
-                                    String pmora = "update mora set  exoneracion=" + exoneracion + ", estado=true where proyeccionpagos_idproyeccionpagos=" + id;
-                                    n = ps.executeUpdate(pmora);
-                                }
-                            }
-                        }//fin for pago de meses
-
-                        for (int i = 0; i < cant2; i++) {//for pago otros productos
-                            if (otrosproductos.getValueAt(i, 5).toString().equals("true")) {
-
-                                String id = (String) "" + otrosproductos.getValueAt(i, 0);
-                                float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
-                                float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
-
-                                String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
-                                        + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + id + "')";
-                                if (canti > 0) {
+                            for (int i = 0; i < cant; i++) { //for pago de meses
+                                if (colegiaturas.getValueAt(i, 9).toString().equals("true")) {
                                     camprec = true;
-                                    n = ps.executeUpdate(descriprecibo);
-                                } else if (canti == 0) {
+                                    String id = (String) "" + colegiaturas.getValueAt(i, 0);
+                                    String detrecibo = "insert into detrecibo (recibodepago_idrecibo,proyeccionpagos_idproyeccionpagos) values ('" + idrecibo + "','" + id + "')";
+                                    String proypago = "update proyeccionpagos set  estado=true where idproyeccionpagos=" + id;
+
+                                    n = ps.executeUpdate(detrecibo);
+                                    n = ps.executeUpdate(proypago);
+
+                                    if (colegiaturas.getValueAt(i, 8).toString().equals("true") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                        String pmora = "update mora set  estado=true where proyeccionpagos_idproyeccionpagos=" + id;
+                                        n = ps.executeUpdate(pmora);
+                                    } else if (colegiaturas.getValueAt(i, 8).toString().equals("false") && !colegiaturas.getValueAt(i, 6).toString().equals("0.0")) {
+                                        float exoneracion = Float.parseFloat(colegiaturas.getValueAt(i, 6).toString());
+                                        String pmora = "update mora set  exoneracion=" + exoneracion + ", estado=true where proyeccionpagos_idproyeccionpagos=" + id;
+                                        n = ps.executeUpdate(pmora);
+                                    }
+                                }
+                            }//fin for pago de meses
+
+                            for (int i = 0; i < cant2; i++) {//for pago otros productos
+                                if (otrosproductos.getValueAt(i, 5).toString().equals("true")) {
+
+                                    String id = (String) "" + otrosproductos.getValueAt(i, 0);
+                                    float canti = Float.parseFloat(otrosproductos.getValueAt(i, 3).toString());
+                                    float prec = Float.parseFloat(otrosproductos.getValueAt(i, 2).toString());
+
+                                    String descriprecibo = "insert into descripcionrecibo (cantidad,precio,recibo_idrecibo,pago_idpago) "
+                                            + "values ('" + canti + "','" + prec + "','" + idrecibo + "','" + id + "')";
+                                    if (canti > 0) {
+                                        camprec = true;
+                                        n = ps.executeUpdate(descriprecibo);
+                                    } else if (canti == 0) {
+                                    }
+                                }
+                            }//fin for otros productos
+
+                            if (!camprec) {
+                                JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+                                System.out.print(n);
+                            }
+                            if (n > 0) {
+                                int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
+                                if (resp2 == 0) {
+                                    mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                                    String[] id = {grup.getID()};
+                                    idalumnosengrupo(idalumno, "" + grup.getID());
+                                    MostrarPagos();
+                                    MostrarProductos();
+
+                                } else {
+                                    limpiartodo();
                                 }
                             }
-                        }//fin for otros productos
-
-                        if (!camprec) {
-                            JOptionPane.showInternalMessageDialog(this, "No se ha marcado ningun Pago", "Mensage", JOptionPane.INFORMATION_MESSAGE);
-                            System.out.print(n);
-                        }
-                        if (n > 0) {
-                            int resp2 = JOptionPane.showInternalConfirmDialog(this, "El Pago se ha Guardado Correctamente\n ¿Desea realizar otro Pago de este Alumno?", "Pregunta", 0);
-                            if (resp2 == 0) {
-                                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                                String[] id = {grup.getID()};
-                                idalumnosengrupo(idalumno, "" + grup.getID());
-                                MostrarPagos();
-                                MostrarProductos();
-
-                            } else {
-                                limpiartodo();
-                            }
-                        }
                         //FIN GUARDAR MESES PAGADOS*************************************
-                        //**************************************************************
-                    }
+                            //**************************************************************
+                        }
 
-                    conn.commit();// guarda todas las consultas si no ubo error
-                    ps.close();
-                    if (!conn.getAutoCommit()) {
-                        conn.setAutoCommit(true);
-                    }
-
-                    Recibodepago.comprobante(idrecibo, printHorario);
-                } catch (SQLException ex) {
-                    try {
-                        conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                        conn.commit();// guarda todas las consultas si no ubo error
                         ps.close();
                         if (!conn.getAutoCommit()) {
                             conn.setAutoCommit(true);
                         }
-                    } catch (SQLException ex1) {
-                        Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+
+                        Recibodepago.comprobante(idrecibo, printHorario);
+                    } catch (SQLException ex) {
+                        try {
+                            conn.rollback();// no guarda ninguna de las consultas ya que ubo error
+                            ps.close();
+                            if (!conn.getAutoCommit()) {
+                                conn.setAutoCommit(true);
+                            }
+                        } catch (SQLException ex1) {
+                            Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                        JOptionPane.showMessageDialog(null, ex);
                     }
-                    JOptionPane.showMessageDialog(null, ex);
                 }
-            }
-        }//Fin Guardar datos
+            }//Fin Guardar datos
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_bntGuardarActionPerformed
 
     private void bntGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardar1ActionPerformed
         // TODO add your handling code here:
-        if (Utilidades.esObligatorio(this.JPanelGrupo, true)) {
-            JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        if (AccesoUsuario.AccesosUsuario(bntGuardar1.getName()) == true) {
+
+            if (Utilidades.esObligatorio(this.JPanelGrupo, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                String id = grup.getID();
+                EstadoCuenta.comprobante(idalumno, grup.getID());
+            }
         } else {
-            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-            String id = grup.getID();
-            EstadoCuenta.comprobante(idalumno, grup.getID());
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_bntGuardar1ActionPerformed
 

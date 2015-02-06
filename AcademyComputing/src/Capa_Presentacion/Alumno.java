@@ -696,7 +696,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
         bntNuevo.setMnemonic(KeyEvent.VK_N);
         bntNuevo.setText("Nuevo");
-        bntNuevo.setName("Nuevo Alumnos"); // NOI18N
+        bntNuevo.setName("Nuevo Alumno"); // NOI18N
         bntNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntNuevoActionPerformed(evt);
@@ -713,7 +713,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntModificar.setMnemonic(KeyEvent.VK_M);
         bntModificar.setText("Modificar");
         bntModificar.setEnabled(false);
-        bntModificar.setName("Modificar Alumnos"); // NOI18N
+        bntModificar.setName("Modificar Alumno"); // NOI18N
         bntModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntModificarActionPerformed(evt);
@@ -730,7 +730,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
         bntGuardar.setEnabled(false);
-        bntGuardar.setName("Guardar Alumnos"); // NOI18N
+        bntGuardar.setName("Guardar Alumno"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -747,7 +747,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
         bntEliminar.setEnabled(false);
-        bntEliminar.setName("Eliminar Alumnos"); // NOI18N
+        bntEliminar.setName("Eliminar Alumno"); // NOI18N
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
@@ -1206,7 +1206,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             buttonAction1.setText("NuevoGrupo/Carrera");
             buttonAction1.setEnabled(false);
             buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-            buttonAction1.setName("NuevoGrupo/Carrera Alumnos"); // NOI18N
+            buttonAction1.setName("NuevoGrupo/Carrera Alumno"); // NOI18N
             buttonAction1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     buttonAction1ActionPerformed(evt);

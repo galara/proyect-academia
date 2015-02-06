@@ -183,6 +183,7 @@
                   <Connection code="KeyEvent.VK_G" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Generar Reporte"/>
+                <Property name="name" type="java.lang.String" value="Generar Reporte ListadoAlumnos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReporteActionPerformed"/>

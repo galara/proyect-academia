@@ -24,10 +24,9 @@ public class Principal extends javax.swing.JFrame {
         int count = dp.getComponentCount();
         JInternalFrame[] cm = dp.getAllFrames();
 
-        for (int i = 0; i < cm.length; i++) {
-            System.out.print(cm[i].getName() + "\n");
-        }
-
+//        for (int i = 0; i < cm.length; i++) {
+//            System.out.print(cm[i].getName() + "\n");
+//        }
         if (count == 0) {
             int nu = JOptionPane.showConfirmDialog(this, "¿Desea Cerrar esta ventana?", "Cerrar Sistema", JOptionPane.YES_NO_OPTION);
 
@@ -438,7 +437,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmProfesor);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mprofesorActionPerformed
 
@@ -452,7 +450,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmHorario);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mhorarioActionPerformed
 
@@ -466,7 +463,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmCurso);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mcursoActionPerformed
 
@@ -480,7 +476,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmUsuario);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_musuarioActionPerformed
 
@@ -494,7 +489,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmTipoPago);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mgrupoActionPerformed
 
@@ -508,7 +502,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmAlumno);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_malumnoActionPerformed
 
@@ -522,7 +515,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmCiclo);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mcicloActionPerformed
 
@@ -536,7 +528,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmOtrosPagos);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_motrospagosActionPerformed
 
@@ -550,7 +541,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmCarrera);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_mcarreraActionPerformed
 
@@ -564,7 +554,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmAyuda);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -578,7 +567,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmPensum);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -592,7 +580,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmPagos);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
@@ -611,7 +598,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmListadoAlumnos);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
@@ -625,7 +611,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmPagosDiarios);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
@@ -639,7 +624,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmAnulacionPagos);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
@@ -653,7 +637,6 @@ public class Principal extends javax.swing.JFrame {
             AddForms.adminInternalFrame(dp, frmMenu);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
-
         }
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 

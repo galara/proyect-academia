@@ -5,6 +5,7 @@
 package Capa_Presentacion;
 
 import Capa_Datos.AccesoDatos;
+import Capa_Negocio.AccesoUsuario;
 import static Capa_Negocio.AddForms.adminInternalFrame;
 import Capa_Negocio.FormatoDecimal;
 import Capa_Negocio.FormatoFecha;
@@ -894,6 +895,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         Reporte.setBackground(new java.awt.Color(51, 153, 255));
         Reporte.setMnemonic(KeyEvent.VK_G);
         Reporte.setText("Generar Reporte");
+        Reporte.setName("Generar Reporte ListadoAlumnos"); // NOI18N
         Reporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReporteActionPerformed(evt);
@@ -1380,12 +1382,16 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
 
     private void ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(Reporte.getName()) == true) {
+        
         if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
         } else if (cGrupo.getSelectedIndex() != -1) {
             mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
             String id = grup.getID();
             ListadoAlumnosGrupo.ReporteGrupo(id);
+        }} else {
+           JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_ReporteActionPerformed
 
