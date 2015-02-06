@@ -91,6 +91,7 @@
                   <Connection code="KeyEvent.VK_N" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nuevo"/>
+                <Property name="name" type="java.lang.String" value="Nuevo OtrosPagos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntNuevoActionPerformed"/>
@@ -111,6 +112,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Modificar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Modificar OtrosPagos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntModificarActionPerformed"/>
@@ -131,6 +133,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Guardar OtrosPagos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntGuardarActionPerformed"/>
@@ -151,6 +154,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="Eliminar OtrosPagos" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntEliminarActionPerformed"/>

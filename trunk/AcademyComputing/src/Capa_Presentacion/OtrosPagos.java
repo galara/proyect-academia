@@ -64,7 +64,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
      * si por eror se intento cerrar el formulario devera indicar que "NO" para no perder los datos
      * que no haya Guardado de lo contrario presiona "SI" y se cerrara la ventana sin Guardar ningun dato. */
     private void cerrarVentana() {
-        int nu = JOptionPane.showInternalConfirmDialog(this, "Todos los datos que no se ha guardadox "
+        int nu = JOptionPane.showInternalConfirmDialog(this, "Todos los datos que no se ha guardado"
                 + "se perderan.\n"
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
@@ -249,6 +249,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
         bntNuevo.setMnemonic(KeyEvent.VK_N);
         bntNuevo.setText("Nuevo");
+        bntNuevo.setName("Nuevo OtrosPagos"); // NOI18N
         bntNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntNuevoActionPerformed(evt);
@@ -265,6 +266,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         bntModificar.setMnemonic(KeyEvent.VK_M);
         bntModificar.setText("Modificar");
         bntModificar.setEnabled(false);
+        bntModificar.setName("Modificar OtrosPagos"); // NOI18N
         bntModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntModificarActionPerformed(evt);
@@ -281,6 +283,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
         bntGuardar.setEnabled(false);
+        bntGuardar.setName("Guardar OtrosPagos"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -297,6 +300,7 @@ public class OtrosPagos extends javax.swing.JInternalFrame {
         bntEliminar.setMnemonic(KeyEvent.VK_E);
         bntEliminar.setText("Eliminar");
         bntEliminar.setEnabled(false);
+        bntEliminar.setName("Eliminar OtrosPagos"); // NOI18N
         bntEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntEliminarActionPerformed(evt);
