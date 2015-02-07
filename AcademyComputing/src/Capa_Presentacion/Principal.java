@@ -72,6 +72,7 @@ public class Principal extends javax.swing.JFrame {
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -269,6 +270,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem3);
+
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/GroupFusion.png"))); // NOI18N
+        jMenuItem9.setText("Fusión de Grupos");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
 
         jMenuBar1.add(jMenu3);
 
@@ -640,6 +650,19 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(jMenuItem9.getName()) == true) {
+            FusionDeGrupos frmFusionDeGrupos = new FusionDeGrupos();
+            if (frmFusionDeGrupos == null) {
+                frmFusionDeGrupos = new FusionDeGrupos();
+            }
+            AddForms.adminInternalFrame(dp, frmFusionDeGrupos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -684,6 +707,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem malumno;
     private javax.swing.JMenuItem mcarrera;

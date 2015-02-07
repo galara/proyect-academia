@@ -14,9 +14,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Anular o Reimprimir Pagos Principal','Principal','1'),
 ('Usuario Principal','Principal','1'),
 ('Ciclo Escolar Principal','Principal','1'),
-('Gestionar BD Principal','Principal','1'),
 ('Menu Principal','Principal','1'),
-('Reporte de Pagos Principal','Principal','1'),
 ('Listado de Alumnos Grupo Principal','Principal','1'),
 ('Pagos Diarios Principal','Principal','1'),
 
