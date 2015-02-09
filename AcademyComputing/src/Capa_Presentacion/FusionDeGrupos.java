@@ -1319,18 +1319,21 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
-            if (!carrera.getText().equals(carrera1.getText())) {
-                JOptionPane.showMessageDialog(null, "La carrera de los Grupos debe ser Igual");
-                return;
-            }
-            if (Grupo.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && Grupo.getRowCount() == -1) {
-                JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Fucionar");
 
-            }
-            if (cGrupo.getSelectedItem().toString().equals(cGrupo1.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(null, "Los Grupos a fusionar deben ser distintos");
+            if (Grupo.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ || Grupo.getRowCount() == -1) {
+                JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Fucionar");
                 return;
             } else { //Inicio de Guardar datos
+
+                if (!carrera.getText().equals(carrera1.getText())) {
+                    JOptionPane.showMessageDialog(null, "La carrera de los Grupos debe ser Igual");
+                    return;
+                }
+                if (cGrupo.getSelectedItem().toString().equals(cGrupo1.getSelectedItem().toString())) {
+                    JOptionPane.showMessageDialog(null, "Los Grupos a fusionar deben ser distintos");
+                    return;
+                }
+
                 int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
                 if (resp == 0) {
 
