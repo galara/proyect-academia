@@ -170,7 +170,7 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
         Utilidades.esObligatorio(this.JPanelGrupo, false);
     }
 
-   private void grupos() {
+    private void grupos() {
 
         if (cProfesor.getSelectedIndex() != -1) {
             mProfesor prof = (mProfesor) cProfesor.getSelectedItem();
@@ -700,7 +700,6 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
 //     * la clase TipoFiltro()  */
 //    private void setFiltroTexto() {
 //    }
-
     public void idalumnosengrupo(String idalumno, String idgrupo) {
 
         String[] id = {idalumno, idgrupo};
@@ -1324,15 +1323,14 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "La carrera de los Grupos debe ser Igual");
                 return;
             }
-            if (cGrupo.getSelectedItem().toString().equals(cGrupo1.getSelectedItem().toString())) {
-                    JOptionPane.showMessageDialog(null, "Los Grupos a fusionar deben ser distintos");
-                    return;
-                }
             if (Grupo.getRowCount() == 0 /*&& colegiaturas.getSelectedRow() == -1*/ && Grupo.getRowCount() == -1) {
                 JOptionPane.showMessageDialog(null, "La tabla no contiene datos que Fucionar");
 
-            } 
-            else { //Inicio de Guardar datos
+            }
+            if (cGrupo.getSelectedItem().toString().equals(cGrupo1.getSelectedItem().toString())) {
+                JOptionPane.showMessageDialog(null, "Los Grupos a fusionar deben ser distintos");
+                return;
+            } else { //Inicio de Guardar datos
                 int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Grabar el Registro?", "Pregunta", 0);
                 if (resp == 0) {
 
