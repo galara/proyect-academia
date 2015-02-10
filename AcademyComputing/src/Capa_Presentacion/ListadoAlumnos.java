@@ -801,6 +801,8 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         JPanelRecibo = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         clockDigital2 = new elaprendiz.gui.varios.ClockDigital();
+        ciclo = new elaprendiz.gui.textField.TextField();
+        jLabel17 = new javax.swing.JLabel();
         pnlPaginador1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
 
@@ -1247,6 +1249,21 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelRecibo.add(clockDigital2);
                 clockDigital2.setBounds(690, 20, 100, 27);
 
+                ciclo.setPreferredSize(new java.awt.Dimension(250, 27));
+                ciclo.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        cicloActionPerformed(evt);
+                    }
+                });
+                JPanelRecibo.add(ciclo);
+                ciclo.setBounds(120, 10, 97, 24);
+
+                jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+                jLabel17.setText("Ciclo:");
+                JPanelRecibo.add(jLabel17);
+                jLabel17.setBounds(10, 10, 100, 24);
+
                 panelImage.add(JPanelRecibo);
                 JPanelRecibo.setBounds(0, 40, 880, 50);
 
@@ -1389,11 +1406,15 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         } else if (cGrupo.getSelectedIndex() != -1) {
             mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
             String id = grup.getID();
-            ListadoAlumnosGrupo.ReporteGrupo(id);
+            ListadoAlumnosGrupo.ReporteGrupo(id,ciclo.getText());
         }} else {
            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_ReporteActionPerformed
+
+    private void cicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cicloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cicloActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1414,6 +1435,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     public static javax.swing.JComboBox cGrupo;
     public static javax.swing.JComboBox cProfesor;
     private elaprendiz.gui.textField.TextField carrera;
+    public static elaprendiz.gui.textField.TextField ciclo;
     private elaprendiz.gui.varios.ClockDigital clockDigital2;
     public static elaprendiz.gui.textField.TextField codigoa;
     private javax.swing.JFormattedTextField colegiatura;
@@ -1426,6 +1448,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel21;
