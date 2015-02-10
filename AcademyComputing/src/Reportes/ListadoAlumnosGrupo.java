@@ -26,7 +26,7 @@ public class ListadoAlumnosGrupo {
 
     public static void ReporteGrupo(String parameter) {
         try {
-            String theReport = "AlumnosxHorarioyProfe3.jasper";
+            String theReport = "borrar2.jasper";
             if (theReport == null) {
                 System.exit(2);
             }
