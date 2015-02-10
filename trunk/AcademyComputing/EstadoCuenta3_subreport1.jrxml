@@ -4,13 +4,14 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="idalumno" class="java.lang.String"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[SELECT
      alumno.`codigo` AS alumno_codigo,
      alumno.`nombres` AS alumno_nombres,
      alumno.`apellidos` AS alumno_apellidos
 FROM
-     `alumno` alumno]]>
+     `alumno` alumno
+where alumno.idalumno=$P{idalumno}]]>
 	</queryString>
 	<field name="alumno_codigo" class="java.lang.String"/>
 	<field name="alumno_nombres" class="java.lang.String"/>

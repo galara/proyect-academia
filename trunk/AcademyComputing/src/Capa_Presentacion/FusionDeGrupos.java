@@ -1376,7 +1376,7 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
                         if (!conn.getAutoCommit()) {
                             conn.setAutoCommit(true);
                         }
-                        ListadoAlumnosGrupo.ReporteGrupo(idgrupo);
+                        //ListadoAlumnosGrupo.ReporteGrupo(idgrupo);
                         MostrarPagos("1");
                         MostrarPagos("2");
                     } catch (SQLException ex) {

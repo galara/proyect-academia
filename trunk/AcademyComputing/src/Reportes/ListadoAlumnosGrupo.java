@@ -24,7 +24,7 @@ public class ListadoAlumnosGrupo {
 
     static Connection conn;
 
-    public static void ReporteGrupo(String parameter) {
+    public static void ReporteGrupo(String parameter, String ciclo) {
         try {
             String theReport = "borrar2.jasper";
             if (theReport == null) {
@@ -43,7 +43,7 @@ public class ListadoAlumnosGrupo {
             Map parametro = new HashMap();
             String idrecibo = (parameter);
             parametro.put("grupo", "" + idrecibo);
-            //parametro.put("horario", horario);
+            parametro.put("ciclo", ciclo);
 
             JasperPrint impresor = JasperFillManager.fillReport(masterReport, parametro, conn);
             //JasperPrintManager.printReport(impresor, false);

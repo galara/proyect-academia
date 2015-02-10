@@ -5,9 +5,6 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="idgrupo" class="java.lang.String"/>
 	<parameter name="idalumno" class="java.lang.String"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\MY\\Documents\\NetBeansProjects\\AcademyComputing\\"]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,proyeccionpagos.estado, IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos  ),0.0) AS 'Mora',IFNULL((SELECT mora.exoneracion FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos ),0.0) AS 'ExMora',
 IFNULL((SELECT mora.estado FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0) AS 'Mora Estado' FROM proyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes INNER JOIN alumnosengrupo ON proyeccionpagos.alumnosengrupo_iddetallegrupo=alumnosengrupo.iddetallegrupo
@@ -96,11 +93,6 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
-			<subreport>
-				<reportElement uuid="7889efc5-946a-4ad6-ae41-13c20b87afe8" x="5" y="12" width="123" height="36"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "EstadoCuenta3_subreport1.jasper"]]></subreportExpression>
-			</subreport>
 			<staticText>
 				<reportElement uuid="2428c7b3-a201-4306-bc23-3d40f7900fe0" x="6" y="2" width="92" height="9"/>
 				<textElement verticalAlignment="Top">
@@ -108,14 +100,6 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				</textElement>
 				<text><![CDATA[Alumno:]]></text>
 			</staticText>
-			<subreport>
-				<reportElement uuid="2cef7fa9-7040-4d6b-b69d-e64ddaa7e5a6" x="135" y="12" width="123" height="36"/>
-				<subreportParameter name="idgrupo">
-					<subreportParameterExpression><![CDATA[$P{idgrupo}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "EstadoCuentaAlumno_subreport1.jasper"]]></subreportExpression>
-			</subreport>
 			<staticText>
 				<reportElement uuid="2428c7b3-a201-4306-bc23-3d40f7900fe0" x="135" y="2" width="92" height="9"/>
 				<textElement verticalAlignment="Top">
@@ -123,6 +107,23 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				</textElement>
 				<text><![CDATA[Grupo:]]></text>
 			</staticText>
+			<subreport>
+				<reportElement uuid="e6924264-a19a-4f56-9d65-a3a31bacad5d" x="6" y="12" width="118" height="36"/>
+				<subreportParameter name="idalumno">
+					<subreportParameterExpression><![CDATA[$P{idalumno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["EstadoCuenta3_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="3e3a1426-8b8d-4e26-83f1-3053eac61feb" x="135" y="12" width="122" height="36"/>
+				<subreportParameter name="idalumno"/>
+				<subreportParameter name="idgrupo">
+					<subreportParameterExpression><![CDATA[$P{idgrupo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["EstadoCuentaAlumno_subreport1.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</pageHeader>
 	<columnHeader>

@@ -16,6 +16,9 @@
 	<parameter name="grupo" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="ciclo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      alumno.`codigo` AS alumno_codigo,
@@ -26,13 +29,15 @@
      grupo.`dia` AS grupo_dia,
      mes.`mes` AS mes_mes,
      grupo.`horariode` AS grupo_horariode,
-     grupo.`horarioa` AS grupo_horarioa
+     grupo.`horarioa` AS grupo_horarioa,
+     concat(profesor.nombre,' ',profesor.apellido) AS profesor
 FROM
      `alumno` alumno INNER JOIN `alumnosengrupo` alumnosengrupo ON alumno.`idalumno` = alumnosengrupo.`alumno_idalumno`
      INNER JOIN `proyeccionpagos` proyeccionpagos ON alumnosengrupo.`iddetallegrupo` = proyeccionpagos.`alumnosengrupo_iddetallegrupo`
      INNER JOIN `grupo` grupo ON alumnosengrupo.`grupo_idgrupo` = grupo.`idgrupo`
+     INNER JOIN `profesor` profesor ON grupo.`profesor_idcatedratico` = profesor.`idcatedratico`
      INNER JOIN `mes` mes ON proyeccionpagos.`mes_idmes` = mes.`idmes`
-where grupo.idgrupo=$P{grupo}]]>
+where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo}]]>
 	</queryString>
 	<field name="alumno_codigo" class="java.lang.String"/>
 	<field name="alumno_nombres" class="java.lang.String"/>
@@ -43,30 +48,31 @@ where grupo.idgrupo=$P{grupo}]]>
 	<field name="mes_mes" class="java.lang.String"/>
 	<field name="grupo_horariode" class="java.sql.Time"/>
 	<field name="grupo_horarioa" class="java.sql.Time"/>
+	<field name="profesor" class="java.lang.String"/>
 	<group name="alumno_nombres">
 		<groupExpression><![CDATA[$F{alumno_nombres}]]></groupExpression>
 		<groupHeader>
-			<band height="11">
-				<textField isStretchWithOverflow="true">
-					<reportElement uuid="134c51f1-6b03-4b66-aff1-c61288e19200" style="Detail" x="0" y="0" width="48" height="11" forecolor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{alumno_codigo}]]></textFieldExpression>
-				</textField>
+			<band height="10">
 				<textField>
-					<reportElement uuid="d5e3cec5-4a62-483d-abce-f2bac297e80f" style="SubTitle" x="48" y="0" width="73" height="11" forecolor="#000000"/>
-					<textElement>
+					<reportElement uuid="d5e3cec5-4a62-483d-abce-f2bac297e80f" style="SubTitle" x="48" y="0" width="75" height="10" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alumno_nombres}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="760fbb46-d965-45ab-a2cd-8cdfb84ad24e" style="Detail" x="121" y="0" width="72" height="11" forecolor="#000000"/>
-					<textElement>
-						<font size="8" isBold="false"/>
+					<reportElement uuid="760fbb46-d965-45ab-a2cd-8cdfb84ad24e" style="Detail" x="123" y="0" width="75" height="10" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="9" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alumno_apellidos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="134c51f1-6b03-4b66-aff1-c61288e19200" style="Detail" x="0" y="0" width="48" height="10" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{alumno_codigo}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -78,7 +84,7 @@ where grupo.idgrupo=$P{grupo}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="104" splitType="Stretch">
+		<band height="93" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="02d7302d-2f60-4601-ba3c-18edefb0cad1" x="3" y="72" width="48" height="15"/>
 				<textElement textAlignment="Center">
@@ -132,7 +138,7 @@ where grupo.idgrupo=$P{grupo}]]>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{grupo_horariode}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="h.mm a">
 				<reportElement uuid="0a40e54a-f51c-41cf-9abc-4583f87df9ba" x="192" y="49" width="46" height="13"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{grupo_horarioa}]]></textFieldExpression>
@@ -163,30 +169,41 @@ where grupo.idgrupo=$P{grupo}]]>
 				</textElement>
 				<text><![CDATA[Día:]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="4c16462f-f48d-4ad5-8623-6b508cbc2fdd" x="566" y="49" width="188" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{profesor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="02d7302d-2f60-4601-ba3c-18edefb0cad1" x="535" y="49" width="31" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tutor:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="22" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="54f5f67d-4388-411c-9539-e2beef838b63" style="Detail" x="198" y="11" width="20" height="11"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
+				<reportElement uuid="54f5f67d-4388-411c-9539-e2beef838b63" style="Detail" x="198" y="9" width="20" height="9"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{proyeccionpagos_estado}.equals(new Boolean(false))) ? "" : "X"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="a01a2614-706e-4c14-8276-084c81b2ee3f" style="Detail" x="198" y="0" width="20" height="11"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="a01a2614-706e-4c14-8276-084c81b2ee3f" style="Detail" x="198" y="0" width="20" height="9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[
-$F{mes_mes}.equals("Inscripción") ? "Ins":$F{mes_mes}.equals("Enero") ? "Ene" : $F{mes_mes}.equals("Febrero") ? "Feb" : $F{mes_mes}.equals("Marzo") ? "Mar": $F{mes_mes}.equals("Abril") ? "Abr":$F{mes_mes}.equals("Mayo") ? "May": $F{mes_mes}.equals("Junio") ? "Jun":$F{mes_mes}.equals("Julio") ? "Jul":$F{mes_mes}.equals("Agosto") ? "Ago":$F{mes_mes}.equals("Septiembre") ? "Sep":$F{mes_mes}.equals("Octubre") ? "Oct":$F{mes_mes}.equals("Noviembre") ? "Nov":$F{mes_mes}.equals("Diciembre") ? "Dic":""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mes_mes}.equals("Inscripción") ? "Ins":$F{mes_mes}.equals("Enero") ? "Ene" : $F{mes_mes}.equals("Febrero") ? "Feb" : $F{mes_mes}.equals("Marzo") ? "Mar": $F{mes_mes}.equals("Abril") ? "Abr":$F{mes_mes}.equals("Mayo") ? "May": $F{mes_mes}.equals("Junio") ? "Jun":$F{mes_mes}.equals("Julio") ? "Jul":$F{mes_mes}.equals("Agosto") ? "Ago":$F{mes_mes}.equals("Septiembre") ? "Sep":$F{mes_mes}.equals("Octubre") ? "Oct":$F{mes_mes}.equals("Noviembre") ? "Nov":$F{mes_mes}.equals("Diciembre") ? "Dic":""]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="ef4ceae5-83c1-4d35-b99a-334a16889caa" positionType="FixRelativeToBottom" x="0" y="20" width="750" height="1"/>
+				<reportElement uuid="ef4ceae5-83c1-4d35-b99a-334a16889caa" positionType="FixRelativeToBottom" x="0" y="18" width="750" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
