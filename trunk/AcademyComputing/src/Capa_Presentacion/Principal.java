@@ -72,6 +72,8 @@ public class Principal extends javax.swing.JFrame {
         mgrupo = new javax.swing.JMenuItem();
         malumno = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        jMenuItem18 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -271,14 +273,31 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
-        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/GroupFusion.png"))); // NOI18N
-        jMenuItem9.setText("Fusión de Grupos");
+        jMenu9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/GroupFusion.png"))); // NOI18N
+        jMenu9.setText("Fusion");
+        jMenu9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+
+        jMenuItem18.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
+        jMenuItem18.setText("Fusión de Grupos");
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem18);
+
+        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
+        jMenuItem9.setText("Fusión de Alumno");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        jMenu9.add(jMenuItem9);
+
+        jMenu3.add(jMenu9);
 
         jMenuBar1.add(jMenu3);
 
@@ -650,14 +669,27 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         // TODO add your handling code here:
-        if (AccesoUsuario.AccesosUsuario(jMenuItem9.getName()) == true) {
+        if (AccesoUsuario.AccesosUsuario(jMenuItem18.getName()) == true) {
             FusionDeGrupos frmFusionDeGrupos = new FusionDeGrupos();
             if (frmFusionDeGrupos == null) {
                 frmFusionDeGrupos = new FusionDeGrupos();
             }
             AddForms.adminInternalFrame(dp, frmFusionDeGrupos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(jMenuItem9.getName()) == true) {
+            CambioDeGrupo frmCambioDeGrupo = new CambioDeGrupo();
+            if (frmCambioDeGrupo == null) {
+                frmCambioDeGrupo = new CambioDeGrupo();
+            }
+            AddForms.adminInternalFrame(dp, frmCambioDeGrupo);
         } else {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
@@ -690,6 +722,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -700,6 +733,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

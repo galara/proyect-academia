@@ -25,16 +25,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-import modelos.mGrupo;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
+import modelos.mGrupo;
 
 /**
  *
@@ -66,7 +66,8 @@ public class Alumno extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
         limpiar();
-
+        
+        tbPane1.remove(jPanel5);
         cDia.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -414,10 +415,12 @@ public class Alumno extends javax.swing.JInternalFrame {
                                 estado.setText("Activo");
                                 estado.setSelected(true);
                                 estado.setBackground(new java.awt.Color(102, 204, 0));
+                                tbPane1.remove(jPanel5);
                             } else {
                                 estado.setText("Inactivo");
                                 estado.setSelected(false);
                                 estado.setBackground(Color.red);
+                                tbPane1.addTab("Baja Alumno", jPanel5);
                             }
                             nidalumno = rs.getInt(12);
                             establecimiento.setText(rs.getString(13));
@@ -629,6 +632,12 @@ public class Alumno extends javax.swing.JInternalFrame {
         inscripalumno = new javax.swing.JFormattedTextField();
         jLabel31 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        fechabaja = new com.toedter.calendar.JDateChooser();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel33 = new javax.swing.JLabel();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         alumnos = new javax.swing.JTable();
@@ -928,6 +937,11 @@ public class Alumno extends javax.swing.JInternalFrame {
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechanacimiento);
+        estado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoActionPerformed(evt);
+            }
+        });
         jPanel1.add(estado);
         estado.setBounds(620, 50, 130, 21);
 
@@ -1265,6 +1279,46 @@ public class Alumno extends javax.swing.JInternalFrame {
             jSeparator2.setBounds(290, 93, 320, 10);
 
             tbPane1.addTab("Matricular Alumno", jPanel4);
+
+            jPanel5.setBackground(java.awt.SystemColor.activeCaption);
+            jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+            jPanel5.setForeground(new java.awt.Color(204, 204, 204));
+            jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            jPanel5.setLayout(null);
+
+            jLabel32.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            jLabel32.setText("Motivo Baja:");
+            jPanel5.add(jLabel32);
+            jLabel32.setBounds(70, 50, 90, 21);
+
+            fechabaja.setDate(Calendar.getInstance().getTime());
+            fechabaja.setDateFormatString("dd/MM/yyyy");
+            fechabaja.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+            fechabaja.setMaxSelectableDate(new java.util.Date(3093496470100000L));
+            fechabaja.setMinSelectableDate(new java.util.Date(-62135744300000L));
+            fechabaja.setNextFocusableComponent(fechanacimiento);
+            fechabaja.setPreferredSize(new java.awt.Dimension(120, 22));
+            jPanel5.add(fechabaja);
+            fechabaja.setBounds(170, 20, 130, 21);
+
+            jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+            jTextArea2.setColumns(20);
+            jTextArea2.setRows(5);
+            jScrollPane4.setViewportView(jTextArea2);
+
+            jPanel5.add(jScrollPane4);
+            jScrollPane4.setBounds(170, 50, 440, 80);
+
+            jLabel33.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+            jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            jLabel33.setText("Fecha Baja:");
+            jPanel5.add(jLabel33);
+            jLabel33.setBounds(80, 20, 80, 21);
+
+            tbPane1.addTab("Baja Alumno", jPanel5);
 
             JPanelCampos.add(tbPane1);
             tbPane1.setBounds(0, 0, 880, 190);
@@ -1604,7 +1658,6 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void bntModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntModificarActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(bntModificar.getName()) == true) {
-
             if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true))) {
                 JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1834,6 +1887,17 @@ public class Alumno extends javax.swing.JInternalFrame {
         selecciondia();
     }//GEN-LAST:event_Actualizar_GrupoActionPerformed
 
+    private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
+        // TODO add your handling code here:
+        if (alumnos.getSelectedRow() != -1) {
+            if (!estado.isSelected()) {
+                tbPane1.addTab("Baja Alumno", jPanel5);
+            } else if (estado.isSelected()) {
+                tbPane1.remove(jPanel5);
+            }
+        }
+    }//GEN-LAST:event_estadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar_Grupo;
@@ -1863,6 +1927,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private elaprendiz.gui.textField.TextField dpi;
     private elaprendiz.gui.textField.TextField establecimiento;
     private javax.swing.JRadioButton estado;
+    private com.toedter.calendar.JDateChooser fechabaja;
     private elaprendiz.gui.textField.TextField fechafin;
     private elaprendiz.gui.textField.TextField fechaini;
     private com.toedter.calendar.JDateChooser fechainicioalumno;
@@ -1897,6 +1962,8 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1907,10 +1974,13 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextArea jTextArea2;
     private elaprendiz.gui.textField.TextField nombres;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
