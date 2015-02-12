@@ -759,6 +759,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         Reporte = new elaprendiz.gui.button.ButtonRect();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
+        Reporte1 = new elaprendiz.gui.button.ButtonRect();
         JPanelGrupo = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -903,12 +904,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 ReporteActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(Reporte, gridBagConstraints);
+        pnlActionButtons.add(Reporte, new java.awt.GridBagConstraints());
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -938,6 +934,22 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 93);
         pnlActionButtons.add(bntSalir, gridBagConstraints);
+
+        Reporte1.setBackground(new java.awt.Color(51, 153, 255));
+        Reporte1.setMnemonic(KeyEvent.VK_G);
+        Reporte1.setText("Reporte Mineduc");
+        Reporte1.setName("Reporte Mineduc"); // NOI18N
+        Reporte1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Reporte1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
+        pnlActionButtons.add(Reporte1, gridBagConstraints);
 
         panelImage.add(pnlActionButtons);
         pnlActionButtons.setBounds(0, 580, 880, 50);
@@ -1416,6 +1428,21 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cicloActionPerformed
 
+    private void Reporte1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reporte1ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(Reporte1.getName()) == true) {
+        if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
+        } else if (cGrupo.getSelectedIndex() != -1) {
+            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+            String id = grup.getID();
+            //Cambiar por la nueva clase del reporte Mineduc
+            //ListadoAlumnosGrupo.ReporteGrupo(id,ciclo.getText());
+        }} else {
+           JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_Reporte1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Actualizar;
@@ -1430,6 +1457,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem Nuevo_Profesor;
     private javax.swing.JMenuItem Nuevo_Tipopago;
     private elaprendiz.gui.button.ButtonRect Reporte;
+    private elaprendiz.gui.button.ButtonRect Reporte1;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     public static javax.swing.JComboBox cGrupo;
