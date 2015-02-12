@@ -102,6 +102,8 @@ public class Utilidades {
             return marcarCamposObligatorios(((JScrollPane) cm).getComponents(), opcion);
         } else if (cm instanceof JViewport) {
             return marcarCamposObligatorios(((JViewport) cm).getComponents(), opcion);
+        } else if (cm instanceof JTabbedPane) {
+            return marcarCamposObligatorios(((JTabbedPane) cm).getComponents(), opcion);
         } else {
             return marcarCamposObligatorios(new Component[]{cm}, opcion);
         }
