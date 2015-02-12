@@ -126,7 +126,7 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
      */
     private void MostrarDatos(String Dato) {
         String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "DATE_FORMAT(alumno.fechanacimiento,'%d-%m-%Y')", "alumno.estado","alumno.idalumno"};
-        String[] condiciones = {"alumno.codigo"};
+        String[] condiciones = {"alumno.estado=1 and alumno.codigo"};
         String[] Id = {Dato};
 
         if (this.rbCodigo.isSelected()) {
@@ -139,11 +139,11 @@ public class BuscarAlumno extends javax.swing.JInternalFrame {
         }
         if (this.rbNombre.isSelected()) {
             removejtable();
-            model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.nombres", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.estado=1 and alumno.nombres", Dato, "");
         }
         if (this.rbApellido.isSelected()) {
             removejtable();
-            model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.apellidos", Dato, "");
+            model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.estado=1 and alumno.apellidos", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(alumnos);
     }
