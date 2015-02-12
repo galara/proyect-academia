@@ -16,7 +16,10 @@ import Capa_Negocio.Peticiones;
 import Capa_Negocio.TipoFiltro;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 import java.awt.Color;
+import static java.awt.Color.WHITE;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
@@ -54,7 +57,9 @@ public class Alumno extends javax.swing.JInternalFrame {
     int nidalumno, idalumno, iddetallegrupo;
     boolean matricula = true;
     java.sql.Connection conn;//getConnection intentara establecer una conexión.
-    //public Hashtable<String, String> hashGrupo = new Hashtable<>();
+    Color FObligatorio = WHITE; //Color ColorR; //cambiar por uno mas claro    
+    Color BObligatorio = (Color.getHSBColor(0, 155, 185));
+//public Hashtable<String, String> hashGrupo = new Hashtable<>();
 
     /*Se hace una instancia de la clase que recibira las peticiones de mensages de la capa de aplicación*/
     //public static JOptionMessage msg = new JOptionMessage();
@@ -66,7 +71,7 @@ public class Alumno extends javax.swing.JInternalFrame {
         setFiltroTexto();
         addEscapeKey();
         limpiar();
-        
+
         tbPane1.remove(jPanel5);
         cDia.addItemListener(
                 (ItemEvent e) -> {
@@ -105,7 +110,12 @@ public class Alumno extends javax.swing.JInternalFrame {
                 + "¿Desea Cerrar esta ventana?", "Cerrar ventana", JOptionPane.YES_NO_OPTION);
         if (nu == JOptionPane.YES_OPTION || nu == 0) {
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
+            //Utilidades.esObligatorio(this.JPanelCampos, false);
+            Utilidades.esObligatorio(this.jPanel1, false);
+            Utilidades.esObligatorio(this.jPanel2, false);
+            //Utilidades.esObligatorio(this.jPanel3, false);
+            Utilidades.esObligatorio(this.jPanel4, false);
+            Utilidades.esObligatorio(this.jPanel5, false);
             this.bntGuardar.setEnabled(false);
             this.bntModificar.setEnabled(false);
             this.bntEliminar.setEnabled(false);
@@ -324,7 +334,11 @@ public class Alumno extends javax.swing.JInternalFrame {
             if (!Dato.isEmpty()) {
                 removejtable();
                 Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-                Utilidades.esObligatorio(this.JPanelCampos, false);
+                //Utilidades.esObligatorio(this.JPanelCampos, false);
+                Utilidades.esObligatorio(this.jPanel1, false);
+                Utilidades.esObligatorio(this.jPanel2, false);
+                Utilidades.esObligatorio(this.jPanel4, false);
+                Utilidades.esObligatorio(this.jPanel5, false);
                 model = peticiones.getRegistroPorPks(model, "alumno", campos, condiciones, Id, "");
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe ingresar un codigo para la busqueda");
@@ -333,13 +347,21 @@ public class Alumno extends javax.swing.JInternalFrame {
         if (this.rbNombre.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
+            //Utilidades.esObligatorio(this.JPanelCampos, false);
+            Utilidades.esObligatorio(this.jPanel1, false);
+            Utilidades.esObligatorio(this.jPanel2, false);
+            Utilidades.esObligatorio(this.jPanel4, false);
+            Utilidades.esObligatorio(this.jPanel5, false);
             model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.nombres", Dato, "");
         }
         if (this.rbApellido.isSelected()) {
             removejtable();
             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-            Utilidades.esObligatorio(this.JPanelCampos, false);
+            //Utilidades.esObligatorio(this.JPanelCampos, false);
+            Utilidades.esObligatorio(this.jPanel1, false);
+            Utilidades.esObligatorio(this.jPanel2, false);
+            Utilidades.esObligatorio(this.jPanel4, false);
+            Utilidades.esObligatorio(this.jPanel5, false);
             model = peticiones.getRegistroPorLike(model, "alumno", campos, "alumno.apellidos", Dato, "");
         }
         Utilidades.ajustarAnchoColumnas(alumnos);
@@ -385,9 +407,15 @@ public class Alumno extends javax.swing.JInternalFrame {
         String[] id = {(String) alumnos.getValueAt(fila, 0)};
         if (alumnos.getValueAt(fila, 0) != null) {
             matricula = false;
-            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno", "alumno.establecimiento", "alumno.direccionestablecimiento", "alumno.gradoestablecimiento", "alumno.codigomineduc"};
-            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
+            String[] campos = {"alumno.codigo", "alumno.nombres", "alumno.apellidos", "alumno.fechanacimiento", "alumno.direccion", "alumno.sexo", "alumno.telefono", "alumno.titularnombres", "alumno.titularapellidos", "alumno.titulardpi", "alumno.estado", "alumno.idalumno", "alumno.establecimiento", "alumno.direccionestablecimiento", "alumno.gradoestablecimiento", "alumno.codigomineduc", "alumno.fechabaja", "alumno.observacion"};
+            //Utilidades.esObligatorio(this.JPanelCampos, false);
+            Utilidades.esObligatorio(this.jPanel1, false);
+            Utilidades.esObligatorio(this.jPanel2, false);
+            //Utilidades.esObligatorio(this.jPanel3, false);
+            Utilidades.esObligatorio(this.jPanel4, false);
+            Utilidades.esObligatorio(this.jPanel5, false);
 
+            Utilidades.setEditableTexto(this.JPanelCampos, true, null, true, "");
             ResultSet rs;
             AccesoDatos ac = new AccesoDatos();
 
@@ -427,11 +455,13 @@ public class Alumno extends javax.swing.JInternalFrame {
                             direccion_establecimiento.setText(rs.getString(14));
                             grado_establecimiento.setText(rs.getString(15));
                             codigomineduc.setText(rs.getString(16));
+                            fechabaja.setDate((rs.getDate(17)));
+                            motivobaja.setText(rs.getString(18));
 
                             MostrarDatosGrupos(alumnos.getValueAt(fila, 0).toString());
-                            establecimiento.setText(rs.getString(13));
-                            direccion_establecimiento.setText(rs.getString(14));
-                            grado_establecimiento.setText(rs.getString(15));
+                            //establecimiento.setText(rs.getString(13));
+                            //direccion_establecimiento.setText(rs.getString(14));
+                            //grado_establecimiento.setText(rs.getString(15));
                         }
                     }
                 } catch (SQLException e) {
@@ -636,8 +666,9 @@ public class Alumno extends javax.swing.JInternalFrame {
         jLabel32 = new javax.swing.JLabel();
         fechabaja = new com.toedter.calendar.JDateChooser();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        motivobaja = new javax.swing.JTextArea();
         jLabel33 = new javax.swing.JLabel();
+        buttonMostrar1 = new elaprendiz.gui.button.ButtonRect();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         alumnos = new javax.swing.JTable();
@@ -935,7 +966,6 @@ public class Alumno extends javax.swing.JInternalFrame {
         estado.setForeground(new java.awt.Color(255, 255, 255));
         estado.setText("Activo");
         estado.setEnabled(false);
-        estado.setName("JRadioButton"); // NOI18N
         estado.setNextFocusableComponent(fechanacimiento);
         estado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1297,6 +1327,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             fechabaja.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
             fechabaja.setMaxSelectableDate(new java.util.Date(3093496470100000L));
             fechabaja.setMinSelectableDate(new java.util.Date(-62135744300000L));
+            fechabaja.setName("JDateChooserbaja"); // NOI18N
             fechabaja.setNextFocusableComponent(fechanacimiento);
             fechabaja.setPreferredSize(new java.awt.Dimension(120, 22));
             jPanel5.add(fechabaja);
@@ -1305,9 +1336,10 @@ public class Alumno extends javax.swing.JInternalFrame {
             jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-            jTextArea2.setColumns(20);
-            jTextArea2.setRows(5);
-            jScrollPane4.setViewportView(jTextArea2);
+            motivobaja.setColumns(20);
+            motivobaja.setRows(5);
+            motivobaja.setName("motivobaja"); // NOI18N
+            jScrollPane4.setViewportView(motivobaja);
 
             jPanel5.add(jScrollPane4);
             jScrollPane4.setBounds(170, 50, 440, 80);
@@ -1317,6 +1349,16 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel33.setText("Fecha Baja:");
             jPanel5.add(jLabel33);
             jLabel33.setBounds(80, 20, 80, 21);
+
+            buttonMostrar1.setBackground(new java.awt.Color(102, 204, 0));
+            buttonMostrar1.setText("Datos del Usuario");
+            buttonMostrar1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    buttonMostrar1ActionPerformed(evt);
+                }
+            });
+            jPanel5.add(buttonMostrar1);
+            buttonMostrar1.setBounds(630, 50, 140, 25);
 
             tbPane1.addTab("Baja Alumno", jPanel5);
 
@@ -1662,6 +1704,27 @@ public class Alumno extends javax.swing.JInternalFrame {
                 JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (!estado.isSelected()) {
+                if (fechabaja.getDate() == null || motivobaja.getText().isEmpty()) {
+                    if (fechabaja.getDate() == null) {
+                        ((JTextFieldDateEditor) ((JDateChooser) fechabaja).getDateEditor()).setBackground(BObligatorio);
+                        ((JTextFieldDateEditor) ((JDateChooser) fechabaja).getDateEditor()).setForeground(FObligatorio);
+                    } else {
+                        ((JTextFieldDateEditor) ((JDateChooser) fechabaja).getDateEditor()).setBackground(Color.WHITE);
+                        ((JTextFieldDateEditor) ((JDateChooser) fechabaja).getDateEditor()).setForeground(Color.BLACK);
+                    }
+                    if (motivobaja.getText().isEmpty()) {
+                        motivobaja.setBackground(BObligatorio);
+                        motivobaja.setForeground(FObligatorio);
+                    } else {
+                        motivobaja.setBackground(Color.WHITE);
+                        motivobaja.setForeground(Color.BLACK);
+                    }
+                    JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+            }
             int resp = JOptionPane.showInternalConfirmDialog(this, "¿Desea Modificar el Registro?", "Pregunta", 0);
             if (resp == 0) {
 
@@ -1672,15 +1735,15 @@ public class Alumno extends javax.swing.JInternalFrame {
                 String columnaId = "codigo";
 
                 String nombreTabla = "alumno";
-                String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc";
-                //String fechainici = FormatoFecha.getFormato(fechainicio.getCalendar().getTime(), FormatoFecha.A_M_D);
+                String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc, fechabaja, observacion";
+                String fechabajaalumno = FormatoFecha.getFormato(fechabaja.getCalendar().getTime(), FormatoFecha.A_M_D);
                 String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
 
                 int estad = 0;
                 if (this.estado.isSelected()) {
                     estad = 1;
                 }
-                Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), id
+                Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), fechabajaalumno, motivobaja.getText(), id
                 };
 
                 seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
@@ -1706,7 +1769,11 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
         // TODO add your handling code here:
         Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
-        Utilidades.esObligatorio(this.JPanelCampos, false);
+        Utilidades.esObligatorio(this.jPanel1, false);
+        Utilidades.esObligatorio(this.jPanel2, false);
+        //Utilidades.esObligatorio(this.jPanel3, false);
+        Utilidades.esObligatorio(this.jPanel4, false);
+        Utilidades.esObligatorio(this.jPanel5, false);
         this.bntGuardar.setEnabled(false);
         this.bntModificar.setEnabled(false);
         this.bntEliminar.setEnabled(false);
@@ -1892,11 +1959,18 @@ public class Alumno extends javax.swing.JInternalFrame {
         if (alumnos.getSelectedRow() != -1) {
             if (!estado.isSelected()) {
                 tbPane1.addTab("Baja Alumno", jPanel5);
+                Utilidades.setEditableTexto(this.jPanel5, true, null, true, "");
+                tbPane1.setSelectedComponent(jPanel5);
             } else if (estado.isSelected()) {
                 tbPane1.remove(jPanel5);
             }
         }
     }//GEN-LAST:event_estadoActionPerformed
+
+    private void buttonMostrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMostrar1ActionPerformed
+        // TODO add your handling code here:
+        tbPane1.setSelectedComponent(jPanel1);
+    }//GEN-LAST:event_buttonMostrar1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1916,6 +1990,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntSalir;
     private elaprendiz.gui.textField.TextField busqueda;
     private elaprendiz.gui.button.ButtonAction buttonAction1;
+    private elaprendiz.gui.button.ButtonRect buttonMostrar1;
     public static javax.swing.JComboBox cDia;
     public static javax.swing.JComboBox cGrupo;
     private elaprendiz.gui.textField.TextField carrera;
@@ -1980,7 +2055,7 @@ public class Alumno extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea motivobaja;
     private elaprendiz.gui.textField.TextField nombres;
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
