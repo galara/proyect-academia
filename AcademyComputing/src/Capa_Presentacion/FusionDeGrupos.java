@@ -914,7 +914,7 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Fusionar");
-        bntGuardar.setName("Anular Pago"); // NOI18N
+        bntGuardar.setName("Fusionar Fusion de Grupos"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);

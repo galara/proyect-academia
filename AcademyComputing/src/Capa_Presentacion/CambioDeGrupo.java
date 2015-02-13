@@ -751,7 +751,7 @@ public class CambioDeGrupo extends javax.swing.JInternalFrame {
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
         bntGuardar.setMnemonic(KeyEvent.VK_G);
         bntGuardar.setText("Guardar");
-        bntGuardar.setName("Guardar Pagos"); // NOI18N
+        bntGuardar.setName("Guardar Fusion Alumno"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntGuardarActionPerformed(evt);
@@ -993,7 +993,7 @@ public class CambioDeGrupo extends javax.swing.JInternalFrame {
         jLabel11.setFont(new java.awt.Font("Script MT Bold", 1, 32)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/money.png"))); // NOI18N
-        jLabel11.setText("<--Registro de pagos-->");
+        jLabel11.setText("<--Fusión de Alumno-->");
         pnlPaginador1.add(jLabel11, new java.awt.GridBagConstraints());
 
         panelImage.add(pnlPaginador1);

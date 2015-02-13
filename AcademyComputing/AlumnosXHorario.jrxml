@@ -65,6 +65,12 @@ where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alumno_nombres}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement uuid="ef4ceae5-83c1-4d35-b99a-334a16889caa" positionType="FixRelativeToBottom" x="0" y="0" width="718" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.75" lineColor="#999999"/>
+					</graphicElement>
+				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -166,12 +172,6 @@ where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!
 				</textElement>
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
-			<line>
-				<reportElement uuid="ef4ceae5-83c1-4d35-b99a-334a16889caa" positionType="FixRelativeToBottom" x="0" y="78" width="718" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.75" lineColor="#999999"/>
-				</graphicElement>
-			</line>
 			<image>
 				<reportElement uuid="db3b0b9e-e7e2-40d2-b511-a24c5b2bd5cb" x="2" y="0" width="40" height="40"/>
 				<imageExpression><![CDATA["gogoogog.jpg"]]></imageExpression>
@@ -183,12 +183,6 @@ where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!
 	</pageHeader>
 	<detail>
 		<band height="10" splitType="Stretch">
-			<line>
-				<reportElement uuid="ef4ceae5-83c1-4d35-b99a-334a16889caa" positionType="FixRelativeToBottom" x="0" y="9" width="204" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.75" lineColor="#999999"/>
-				</graphicElement>
-			</line>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="54f5f67d-4388-411c-9539-e2beef838b63" style="Detail" x="158" y="0" width="18" height="10"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
