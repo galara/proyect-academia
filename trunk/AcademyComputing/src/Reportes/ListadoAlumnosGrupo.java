@@ -26,7 +26,7 @@ public class ListadoAlumnosGrupo {
 
     public static void ReporteGrupo(String parameter, String ciclo) {
         try {
-            String theReport = "borrar2.jasper";
+            String theReport = "AlumnosXHorario.jasper";
             if (theReport == null) {
                 System.exit(2);
             }
