@@ -280,22 +280,26 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem18.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         jMenuItem18.setText("Fusión de Grupos");
+        jMenuItem18.setName("Fusión de Grupos Pincipal"); // NOI18N
         jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem18ActionPerformed(evt);
             }
         });
         jMenu9.add(jMenuItem18);
+        jMenuItem18.getAccessibleContext().setAccessibleName("Fusion de Grupos");
 
         jMenuItem9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
         jMenuItem9.setText("Fusión de Alumno");
+        jMenuItem9.setName("Fusión de Alumno Principal"); // NOI18N
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
             }
         });
         jMenu9.add(jMenuItem9);
+        jMenuItem9.getAccessibleContext().setAccessibleName("Fusion de Alumno");
 
         jMenu3.add(jMenu9);
 

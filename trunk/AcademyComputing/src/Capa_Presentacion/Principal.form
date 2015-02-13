@@ -221,7 +221,11 @@
                       <Image iconType="3" name="/Recursos/grupos.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Fusi&#xf3;n de Grupos"/>
+                    <Property name="name" type="java.lang.String" value="Fusi&#xf3;n de Grupos Pincipal" noResource="true"/>
                   </Properties>
+                  <AccessibilityProperties>
+                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Fusion de Grupos"/>
+                  </AccessibilityProperties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem18ActionPerformed"/>
                   </Events>
@@ -235,7 +239,11 @@
                       <Image iconType="3" name="/Recursos/alumno.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Fusi&#xf3;n de Alumno"/>
+                    <Property name="name" type="java.lang.String" value="Fusi&#xf3;n de Alumno Principal" noResource="true"/>
                   </Properties>
+                  <AccessibilityProperties>
+                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Fusion de Alumno"/>
+                  </AccessibilityProperties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>
                   </Events>

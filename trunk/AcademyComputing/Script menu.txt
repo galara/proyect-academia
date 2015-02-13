@@ -17,6 +17,8 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Menu Principal','Principal','1'),
 ('Listado de Alumnos Grupo Principal','Principal','1'),
 ('Pagos Diarios Principal','Principal','1'),
+('Fusion de Grupos Pincipal','Principal','1'),
+('Fusion de Alumno Principal','Principal','1'),
 
 --
 -- Botones 
@@ -72,4 +74,6 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Nuevo Usuario','Formulario Usuario','1'),
 ('Modificar Usuario','Formulario Usuario','1'),
 ('Guardar Usuario','Formulario Usuario','1'),
-('Eliminar Usuario','Formulario Usuario','1');
+('Eliminar Usuario','Formulario Usuario','1'),
+('Fusionar Fusion de Grupos','Formulario Fusion de Grupos','1'),
+('Guardar Fusion Alumno','Formulario Fusion de Alumno','1');
