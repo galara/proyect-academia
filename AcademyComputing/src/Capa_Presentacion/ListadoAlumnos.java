@@ -19,6 +19,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -61,7 +64,11 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         addEscapeKey();
         //llenarcombotipopago();
         llenarcomboprofesor();
-
+        //Date d=new Date(); 
+         Calendar c1 = GregorianCalendar.getInstance();
+        //c1.get(Calendar.YEAR);
+        ciclo.setText(Integer.toString(c1.get(Calendar.YEAR)));
+        
         cGrupo.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -1261,6 +1268,9 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 JPanelRecibo.add(clockDigital2);
                 clockDigital2.setBounds(690, 20, 100, 27);
 
+                ciclo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                ciclo.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
+                ciclo.setName("ciclo"); // NOI18N
                 ciclo.setPreferredSize(new java.awt.Dimension(250, 27));
                 ciclo.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1412,6 +1422,11 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private void ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(Reporte.getName()) == true) {
+        
+            if (Utilidades.esObligatorio(this.JPanelRecibo, true)) {
+                JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         
         if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
