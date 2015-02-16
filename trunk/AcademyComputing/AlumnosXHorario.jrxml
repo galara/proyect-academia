@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="borrar2" language="groovy" columnCount="16" printOrder="Horizontal" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="47" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1db39f75-d1e9-4793-a9ce-4b253505b3da">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="208"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -36,7 +36,7 @@ FROM
      INNER JOIN `grupo` grupo ON alumnosengrupo.`grupo_idgrupo` = grupo.`idgrupo`
      INNER JOIN `profesor` profesor ON grupo.`profesor_idcatedratico` = profesor.`idcatedratico`
      INNER JOIN `mes` mes ON proyeccionpagos.`mes_idmes` = mes.`idmes`
-where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!='13']]>
+where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!='13' and alumno.estado = TRUE]]>
 	</queryString>
 	<field name="alumno_codigo" class="java.lang.String"/>
 	<field name="alumno_nombres" class="java.lang.String"/>
@@ -50,18 +50,18 @@ where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!
 	<group name="alumno_nombres">
 		<groupExpression><![CDATA[$F{alumno_nombres}]]></groupExpression>
 		<groupHeader>
-			<band height="9">
+			<band height="7">
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="134c51f1-6b03-4b66-aff1-c61288e19200" style="Detail" x="2" y="0" width="38" height="9" forecolor="#000000"/>
+					<reportElement uuid="134c51f1-6b03-4b66-aff1-c61288e19200" style="Detail" x="0" y="0" width="44" height="7" forecolor="#000000"/>
 					<textElement verticalAlignment="Bottom">
-						<font size="7" isBold="false"/>
+						<font size="6" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alumno_codigo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="d5e3cec5-4a62-483d-abce-f2bac297e80f" style="SubTitle" x="40" y="0" width="119" height="9" forecolor="#000000"/>
+					<reportElement uuid="d5e3cec5-4a62-483d-abce-f2bac297e80f" style="SubTitle" x="43" y="0" width="127" height="7" forecolor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font size="7" isBold="false"/>
+						<font size="6" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alumno_nombres}]]></textFieldExpression>
 				</textField>
@@ -182,11 +182,11 @@ where grupo.idgrupo=$P{grupo} and proyeccionpagos.año=$P{ciclo} and  mes.idmes!
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="10" splitType="Stretch">
+		<band height="6" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="54f5f67d-4388-411c-9539-e2beef838b63" style="Detail" x="158" y="0" width="18" height="10"/>
+				<reportElement uuid="54f5f67d-4388-411c-9539-e2beef838b63" style="Detail" x="158" y="0" width="18" height="6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{proyeccionpagos_estado}.equals(new Boolean(false))) ? "" : "X"]]></textFieldExpression>
 			</textField>
