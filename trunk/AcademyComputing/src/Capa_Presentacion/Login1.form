@@ -180,7 +180,7 @@
                 </Component>
                 <Component class="elaprendiz.gui.button.ButtonAction" name="iniciar">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Iniciar seci&#xf3;n"/>
+                    <Property name="text" type="java.lang.String" value="Iniciar sesi&#xf3;n"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iniciarActionPerformed"/>
