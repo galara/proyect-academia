@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mes_pagos" language="groovy" columnCount="16" printOrder="Horizontal" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="47" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="954fb875-378e-4af2-9492-84bd2d825cc8">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="127"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="año" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -34,8 +34,7 @@ where pagos.año =$P{año}  and grupo.idgrupo=$P{idgrupo} and mes.idmes!='13' or
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mes_mes}.equals("Inscripción") ? "Ins":$F{mes_mes}.equals("Enero") ? "Ene" : $F{mes_mes}.equals("Febrero") ? "Feb" : $F{mes_mes}.equals("Marzo") ? "Mar": $F{mes_mes}.equals("Abril") ? "Abr":$F{mes_mes}.equals("Mayo") ? "May": $F{mes_mes}.equals("Junio") ? "Jun":$F{mes_mes}.equals("Julio") ? "Jul":$F{mes_mes}.equals("Agosto") ? "Ago":$F{mes_mes}.equals("Septiembre") ? "Sep":$F{mes_mes}.equals("Octubre") ? "Oct":$F{mes_mes}.equals("Noviembre") ? "Nov":$F{mes_mes}.equals("Diciembre") ? "Dic":""
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mes_mes}.equals("Inscripción") ? "Ins":$F{mes_mes}.equals("Enero") ? "Ene" : $F{mes_mes}.equals("Febrero") ? "Feb" : $F{mes_mes}.equals("Marzo") ? "Mar": $F{mes_mes}.equals("Abril") ? "Abr":$F{mes_mes}.equals("Mayo") ? "May": $F{mes_mes}.equals("Junio") ? "Jun":$F{mes_mes}.equals("Julio") ? "Jul":$F{mes_mes}.equals("Agosto") ? "Ago":$F{mes_mes}.equals("Septiembre") ? "Sep":$F{mes_mes}.equals("Octubre") ? "Oct":$F{mes_mes}.equals("Noviembre") ? "Nov":$F{mes_mes}.equals("Diciembre") ? "Dic":""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
