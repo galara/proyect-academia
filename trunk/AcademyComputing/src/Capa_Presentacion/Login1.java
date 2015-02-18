@@ -34,16 +34,17 @@ public class Login1 extends javax.swing.JFrame {
             AccesoUsuario.Estado configUsuario = AccesoUsuario.configUsuario(usuario.getText(), password.getText());
 
             if (configUsuario == AccesoUsuario.Estado.NO_EXISTE) {
-                msg = "El usuario: " + this.usuario.getText() + " no existe.";
+                msg = "El usuario:  " + this.usuario.getText() + "  no existe.";
             } else if (configUsuario == AccesoUsuario.Estado.USR_INACTICVO) {
-                msg = "El usuario: " + this.usuario.getText() + " no esta Activo.";
+                msg = "El usuario: " + this.usuario.getText() + " no esta Activo.\n"
+                        + "Comuniquese con el Administrador del Sistema";
             } else if (configUsuario == AccesoUsuario.Estado.ERROR_CLAVE) {
-                msg = "Contraseña Incorrecta!";
+                msg = "¡Contraseña Incorrecta!";
             } else if (configUsuario == AccesoUsuario.Estado.ACCESO_OK) {
                 Principal j = new Principal();
                 j.setVisible(true);
                 this.dispose();
-                CalcularMoras.moras();
+                CalcularMoras.moras();//Si el usuario tiene acceso calcula moras si las hay
                 accesoConcedido = true;
                 return;
             }
