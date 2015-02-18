@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDiario" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1781e5e1-9c48-4cda-9b6a-52e4db4fb0e8">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="56"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
@@ -28,7 +28,9 @@
      recibodepago.fecha,
      recibodepago.total,
      FORMAT(IFNULL((SELECT SUM(proyeccionpagos.monto) AS proyeccionpagos_monto FROM detrecibo , proyeccionpagos where proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos and detrecibo.recibodepago_idrecibo=recibodepago.idrecibo),0.0),2) AS colegiatura,
+
      FORMAT(IFNULL((SELECT sum(descripcionrecibo.cantidad*descripcionrecibo.precio) FROM descripcionrecibo,recibodepago where descripcionrecibo.recibo_idrecibo = recibodepago.idrecibo and descripcionrecibo.recibo_idrecibo=detrecibo.recibodepago_idrecibo ),0.0),2) AS otrospagos,
+
      FORMAT(IFNULL((SELECT sum(mora) FROM proyeccionpagos INNER JOIN mora ON proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos INNER JOIN detrecibo ON proyeccionpagos.idproyeccionpagos = detrecibo.proyeccionpagos_idproyeccionpagos where detrecibo.recibodepago_idrecibo= recibodepago.idrecibo) ,0.0),2) AS mora
 
 FROM alumno alumno
@@ -36,7 +38,7 @@ FROM alumno alumno
      INNER JOIN detrecibo ON recibodepago.idrecibo = detrecibo.recibodepago_idrecibo
 
 where recibodepago.fecha >=$P{desde} and recibodepago.fecha <=$P{hasta}
-group by alumno.codigo,recibodepago.idrecibo asc]]>
+group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
