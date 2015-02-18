@@ -6,6 +6,7 @@
 package Capa_Presentacion;
 
 import Capa_Negocio.AccesoUsuario;
+import Capa_Negocio.CalcularMoras;
 import inicio.start;
 import javax.swing.JOptionPane;
 
@@ -32,8 +33,6 @@ public class Login1 extends javax.swing.JFrame {
             String msg = "";
             AccesoUsuario.Estado configUsuario = AccesoUsuario.configUsuario(usuario.getText(), password.getText());
 
-            System.out.print(configUsuario + "\n");
-
             if (configUsuario == AccesoUsuario.Estado.NO_EXISTE) {
                 msg = "El usuario: " + this.usuario.getText() + " no existe.";
             } else if (configUsuario == AccesoUsuario.Estado.USR_INACTICVO) {
@@ -44,6 +43,7 @@ public class Login1 extends javax.swing.JFrame {
                 Principal j = new Principal();
                 j.setVisible(true);
                 this.dispose();
+                CalcularMoras.moras();
                 accesoConcedido = true;
                 return;
             }

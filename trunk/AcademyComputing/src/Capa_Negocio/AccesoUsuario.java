@@ -26,31 +26,31 @@ public class AccesoUsuario {
     public static boolean AccesosUsuario(String menuacceso) //throws ParserConfigurationException
     {
         boolean acceso = false;
-          try //throws ParserConfigurationException
-            {
-                conn = BdConexion.getConexion();
-                ResultSet rs;
+        try //throws ParserConfigurationException
+        {
+            conn = BdConexion.getConexion();
+            ResultSet rs;
 
-                String sql = "SELECT perfilusuario.estado , menu.nombre FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu INNER JOIN usuario ON perfilusuario.usuario_idusuario = usuario.idusuario where usuario.usuario='" + usuario + "' and menu.nombre='" + menuacceso + "' ";
-                Statement s = conn.createStatement();
-                rs = s.executeQuery(sql);
+            String sql = "SELECT perfilusuario.estado , menu.nombre FROM menu INNER JOIN perfilusuario ON menu.idmenu = perfilusuario.menu_idmenu INNER JOIN usuario ON perfilusuario.usuario_idusuario = usuario.idusuario where usuario.usuario='" + usuario + "' and menu.nombre='" + menuacceso + "' ";
+            Statement s = conn.createStatement();
+            rs = s.executeQuery(sql);
 
-                if (rs != null) {
-                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
-                        rs.beforeFirst();//regresa el puntero al primer registro
-                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
-                            acceso = rs.getBoolean(1);
-                            //System.out.print(acceso + " cnsulta");
-                        }
-                    } else {
-                        acceso = true;
+            if (rs != null) {
+                if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                    rs.beforeFirst();//regresa el puntero al primer registro
+                    while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                        acceso = rs.getBoolean(1);
+                        //System.out.print(acceso + " cnsulta");
                     }
+                } else {
+                    acceso = true;
                 }
-                //*********************************************************************
-                rs.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
             }
+            //*********************************************************************
+            rs.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
         return acceso;
     }
 

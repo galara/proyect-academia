@@ -6,7 +6,6 @@
 package Capa_Negocio;
 
 import Capa_Datos.BdConexion;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 
@@ -30,15 +29,13 @@ public class CalcularMoras {
             n = ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.print("error " + e);
             JOptionPane.showMessageDialog(null, e);
         }
 
         if (n > 0) {
-            System.out.print("morassssss");
-            JOptionPane.showMessageDialog(null, "Se han calculado Moras");
+            JOptionPane.showMessageDialog(null, "El sistema encontro pagos atrasados y ha calculado Moras", "Moras Calculadas", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "No Se encontraron moras que calcular");
+            //JOptionPane.showMessageDialog(null, "No Se encontraron moras que calcular");
         }
 
     }
