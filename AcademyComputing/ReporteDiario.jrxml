@@ -246,28 +246,28 @@ group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="fcc20971-7557-4476-a8d8-5c6e65a911ff" style="Detail" x="472" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="5bca7f32-38d8-422a-b610-0588ba91a945" style="Detail" x="562" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{colegiatura}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="1d2a0f07-0e3b-4cd6-bd12-7bc879e1e32a" style="Detail" x="621" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="caadac97-c4cc-4a01-be47-5b766af56e34" style="Detail" x="680" y="0" width="60" height="15"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{otrospagos}]]></textFieldExpression>
