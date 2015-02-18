@@ -13,6 +13,7 @@ import Capa_Negocio.Peticiones;
 import Capa_Negocio.Utilidades;
 import static Capa_Presentacion.Principal.dp;
 import Reportes.ListadoAlumnosGrupo;
+import Reportes.ListadoAlumnosGrupoMineduc;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -65,10 +66,10 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         //llenarcombotipopago();
         llenarcomboprofesor();
         //Date d=new Date(); 
-         Calendar c1 = GregorianCalendar.getInstance();
+        Calendar c1 = GregorianCalendar.getInstance();
         //c1.get(Calendar.YEAR);
         ciclo.setText(Integer.toString(c1.get(Calendar.YEAR)));
-        
+
         cGrupo.addItemListener(
                 (ItemEvent e) -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -130,11 +131,10 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
      * sola instancia y lo unico que se hace antes de actualizar la JTable es limpiar el modelo y enviarle los
      * nuevos datos a mostrar en la JTable  */
     public void removejtable() {
-            inscritos.setText("");
+        inscritos.setText("");
         while (colegiaturas.getRowCount() != 0) {
             model.removeRow(0);
-        
-            
+
         }
     }
 
@@ -142,7 +142,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         retirado.setText("");
         while (otrosproductos.getRowCount() != 0) {
             model2.removeRow(0);
-            
+
         }
     }
 
@@ -403,7 +403,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
             colegiatura.setValue(null);
             removejtable2();
             removejtable();
-            
+
             //sumartotal();
             //inicioalumno.setText("");
             //beca.setText("");
@@ -554,7 +554,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         }
 
         Utilidades.ajustarAnchoColumnas(colegiaturas);
-        inscritos.setText(""+colegiaturas.getRowCount());
+        inscritos.setText("" + colegiaturas.getRowCount());
         colegiaturas.getColumnModel().getColumn(0).setMaxWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setMinWidth(0);
         colegiaturas.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -646,7 +646,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         }
 
         Utilidades.ajustarAnchoColumnas(otrosproductos);
-        retirado.setText(""+otrosproductos.getRowCount());
+        retirado.setText("" + otrosproductos.getRowCount());
         otrosproductos.getColumnModel().getColumn(0).setMaxWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setMinWidth(0);
         otrosproductos.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -750,7 +750,6 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         popupprofesor = new javax.swing.JPopupMenu();
         Nuevo_Profesor = new javax.swing.JMenuItem();
@@ -767,6 +766,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
         bntSalir = new elaprendiz.gui.button.ButtonRect();
         Reporte1 = new elaprendiz.gui.button.ButtonRect();
+        Reporte2 = new elaprendiz.gui.button.ButtonRect();
         JPanelGrupo = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -900,18 +900,16 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         pnlActionButtons.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 153, 255), 1, true));
         pnlActionButtons.setForeground(new java.awt.Color(204, 204, 204));
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
-        pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
         Reporte.setBackground(new java.awt.Color(51, 153, 255));
         Reporte.setMnemonic(KeyEvent.VK_G);
-        Reporte.setText("Generar Reporte");
+        Reporte.setText("Alumnos Activos");
         Reporte.setName("Generar Reporte ListadoAlumnos"); // NOI18N
         Reporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReporteActionPerformed(evt);
             }
         });
-        pnlActionButtons.add(Reporte, new java.awt.GridBagConstraints());
 
         bntCancelar.setBackground(new java.awt.Color(51, 153, 255));
         bntCancelar.setMnemonic(KeyEvent.VK_X);
@@ -921,12 +919,6 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 bntCancelarActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(bntCancelar, gridBagConstraints);
 
         bntSalir.setBackground(new java.awt.Color(51, 153, 255));
         bntSalir.setText("Salir    ");
@@ -935,28 +927,63 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
                 bntSalirActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 93);
-        pnlActionButtons.add(bntSalir, gridBagConstraints);
 
         Reporte1.setBackground(new java.awt.Color(51, 153, 255));
         Reporte1.setMnemonic(KeyEvent.VK_G);
         Reporte1.setText("Reporte Mineduc");
-        Reporte1.setName("Reporte Mineduc"); // NOI18N
+        Reporte1.setName("Reporte Mineduc Alta ListadoAlumnos"); // NOI18N
         Reporte1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Reporte1ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 5, 12, 0);
-        pnlActionButtons.add(Reporte1, gridBagConstraints);
+
+        Reporte2.setBackground(new java.awt.Color(51, 153, 255));
+        Reporte2.setMnemonic(KeyEvent.VK_G);
+        Reporte2.setText("Alumnos de Baja");
+        Reporte2.setName("Reporte Mineduc Baja ListadoAlumnos"); // NOI18N
+        Reporte2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Reporte2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlActionButtonsLayout = new javax.swing.GroupLayout(pnlActionButtons);
+        pnlActionButtons.setLayout(pnlActionButtonsLayout);
+        pnlActionButtonsLayout.setHorizontalGroup(
+            pnlActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(Reporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(Reporte1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Reporte2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bntCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(bntSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pnlActionButtonsLayout.setVerticalGroup(
+            pnlActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                .addGroup(pnlActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(Reporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(Reporte1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(pnlActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bntCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Reporte2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlActionButtonsLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(bntSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11))
+        );
 
         panelImage.add(pnlActionButtons);
         pnlActionButtons.setBounds(0, 580, 880, 50);
@@ -1399,7 +1426,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         cProfesor.setEnabled(false);
         codigoa.setEditable(true);
         codigoa.setEnabled(true);
-        
+
         jButton1.setEnabled(true);
         //cProfesor.setSelectedIndex(-1);
         //cGrupo.removeAllItems();
@@ -1422,20 +1449,21 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private void ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(Reporte.getName()) == true) {
-        
+
             if (Utilidades.esObligatorio(this.JPanelRecibo, true)) {
                 JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-        
-        if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
-        } else if (cGrupo.getSelectedIndex() != -1) {
-            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-            String id = grup.getID();
-            ListadoAlumnosGrupo.ReporteGrupo(id,ciclo.getText());
-        }} else {
-           JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+
+            if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
+            } else if (cGrupo.getSelectedIndex() != -1) {
+                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                String id = grup.getID();
+                ListadoAlumnosGrupo.ReporteGrupo(id, ciclo.getText());
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_ReporteActionPerformed
 
@@ -1446,17 +1474,34 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private void Reporte1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reporte1ActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(Reporte1.getName()) == true) {
-        if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
-        } else if (cGrupo.getSelectedIndex() != -1) {
-            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-            String id = grup.getID();
-            //Cambiar por la nueva clase del reporte Mineduc
-            //ListadoAlumnosGrupo.ReporteGrupo(id,ciclo.getText());
-        }} else {
-           JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+            if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
+            } else if (cGrupo.getSelectedIndex() != -1) {
+                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                String id = grup.getID();
+                //Cambiar por la nueva clase del reporte Mineduc
+                ListadoAlumnosGrupoMineduc.ReporteGrupo(id, "1");
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_Reporte1ActionPerformed
+
+    private void Reporte2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reporte2ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(Reporte2.getName()) == true) {
+            if (cGrupo.getSelectedIndex() == -1 || cGrupo.getSelectedIndex() == 0) {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un Grupo");
+            } else if (cGrupo.getSelectedIndex() != -1) {
+                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                String id = grup.getID();
+                //Cambiar por la nueva clase del reporte Mineduc
+                ListadoAlumnosGrupoMineduc.ReporteGrupo(id, "2");
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_Reporte2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1473,6 +1518,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem Nuevo_Tipopago;
     private elaprendiz.gui.button.ButtonRect Reporte;
     private elaprendiz.gui.button.ButtonRect Reporte1;
+    private elaprendiz.gui.button.ButtonRect Reporte2;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
     public static javax.swing.JComboBox cGrupo;
