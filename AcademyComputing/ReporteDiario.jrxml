@@ -228,18 +228,11 @@ group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="5e5a32e0-121e-41f9-a31f-376a3e736189" style="Detail" x="86" y="0" width="151" height="15"/>
+				<reportElement uuid="5e5a32e0-121e-41f9-a31f-376a3e736189" style="Detail" x="86" y="0" width="291" height="15"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="120c3283-5b24-421a-841a-7484d05956c1" style="Detail" x="234" y="0" width="156" height="15"/>
-				<textElement>
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombres}.concat(" "+$F{apellidos})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="">
 				<reportElement uuid="35469c33-9e6e-4e0a-bb2e-99eb852e63eb" style="Detail" x="384" y="0" width="41" height="15"/>
