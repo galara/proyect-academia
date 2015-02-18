@@ -211,6 +211,9 @@ group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]
 			</staticText>
 			<line>
 				<reportElement uuid="3dd2dea0-6991-417e-9cff-d4adb95c6f9e" x="547" y="0" width="1" height="15"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
 			</line>
 		</band>
 	</columnHeader>
@@ -265,7 +268,7 @@ group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement uuid="caadac97-c4cc-4a01-be47-5b766af56e34" style="Detail" x="680" y="0" width="60" height="15"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
@@ -281,6 +284,9 @@ group by alumno.codigo,recibodepago.idrecibo ORDER BY recibodepago.idrecibo ASC]
 			</textField>
 			<line>
 				<reportElement uuid="3dd2dea0-6991-417e-9cff-d4adb95c6f9e" x="547" y="0" width="1" height="15"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
 			</line>
 		</band>
 	</detail>
