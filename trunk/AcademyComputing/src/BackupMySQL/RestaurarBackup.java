@@ -6,17 +6,15 @@
 /*
  * principal.java
  *
- * Created on 18-02-2015, 14:59:34
+ * Created on 20-02-2015
  */
 package BackupMySQL;
 
 import Capa_Negocio.AccesoUsuario;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Calendar;
+import java.io.OutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -24,55 +22,51 @@ import javax.swing.JOptionPane;
  *
  * @author GLARA
  */
-public class Backup extends javax.swing.JInternalFrame {
+public class RestaurarBackup extends javax.swing.JInternalFrame {
 
-    JFileChooser RealizarBackupMySQL = new JFileChooser();
+    JFileChooser RestaurarBackupMySQL = new JFileChooser();
 
     /**
      * Creates new form principal
      */
-    public Backup() {
+    public RestaurarBackup() {
         initComponents();
     }
 
     void GenerarBackupMySQL() {
         int resp;
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.MONTH, 1);
-        
-        String fecha = "" + c.get(Calendar.DATE);
-        fecha = fecha + "-" + c.get(Calendar.MONTH);//String.valueOf(c.get(Calendar.MONTH));
-        fecha = fecha + "-" + c.get(Calendar.YEAR);
-        //String nombre = this.jTextField1.getText();
-        //String pass = this.jTextField2.getText();
-        RealizarBackupMySQL.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
-        resp = RealizarBackupMySQL.showSaveDialog(this);//JFileChooser de nombre RealizarBackupMySQL
+        Runtime runtime = Runtime.getRuntime();
+        RestaurarBackupMySQL.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        resp = RestaurarBackupMySQL.showOpenDialog(this);//JFileChooser de nombre RealizarBackupMySQL
+
         if (resp == JFileChooser.APPROVE_OPTION) {//Si el usuario presiona aceptar; se genera el Backup
             try {
-                Runtime runtime = Runtime.getRuntime();
-                File backupFile = new File(String.valueOf(RealizarBackupMySQL.getSelectedFile().toString())
-                        + "_" + fecha + ".sql");
-                FileWriter fw = new FileWriter(backupFile);
-                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysqldump -u root -padolfo123 --default-character_set=utf8 academia");
-                InputStreamReader irs = new InputStreamReader(child.getInputStream());
-                BufferedReader br = new BufferedReader(irs);
 
-                String line;
-                while ((line = br.readLine()) != null) {
-                    fw.write(line + "\n");
+                File backupFile = new File(String.valueOf(RestaurarBackupMySQL.getSelectedFile().toString()));
+                String ubicacion = backupFile.getAbsolutePath();
+                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysql -u root -padolfo123 academia");
+                OutputStream os = child.getOutputStream();
+
+                FileInputStream fis = new FileInputStream(ubicacion);
+                byte[] buffer = new byte[1000];
+
+                int leido = fis.read(buffer);
+                while (leido > 0) {
+                    os.write(buffer, 0, leido);
+                    leido = fis.read(buffer);
                 }
-                fw.close();
-                irs.close();
-                br.close();
-
+                os.flush();
+                os.close();
+                fis.close();
             } catch (IOException e) {
-                JOptionPane.showInternalMessageDialog(this, "Error no se Genero el Backup por el siguiente motivo:" + e.getMessage(), "Verificar", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showInternalMessageDialog(this, "Error no se Restauro el Backup por el siguiente motivo:" + e.getMessage(), "Verificar", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showInternalMessageDialog(this, "El Backup se ha Generado Correctamente", "Mensage", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(this, "El Backup se ha Restaurado Correctamente", "Mensage", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
+
         } else if (resp == JFileChooser.CANCEL_OPTION) {
-            JOptionPane.showInternalMessageDialog(this, "Ha sido cancelada la Generacion del Backup");
+            JOptionPane.showInternalMessageDialog(this, "Ha sido cancelada la Restauración del Backup");
         }
     }
 
@@ -89,14 +83,14 @@ public class Backup extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMinimumSize(new java.awt.Dimension(299, 93));
-        setName("Crear Backup"); // NOI18N
+        setName("Restaurar Backup"); // NOI18N
         setPreferredSize(new java.awt.Dimension(299, 93));
         setRequestFocusEnabled(false);
         setVisible(true);
 
-        buttonAction1.setText("Generar Backup BD");
+        buttonAction1.setText("Restaurar Backup BD");
         buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-        buttonAction1.setName("Crear Backup Backup"); // NOI18N
+        buttonAction1.setName("Restaurar Backup Backup"); // NOI18N
         buttonAction1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAction1ActionPerformed(evt);

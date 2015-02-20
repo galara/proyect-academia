@@ -721,7 +721,7 @@ public class CambioDeGrupo extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Registro de Pagos");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setName("pagos"); // NOI18N
+        setName("Cambio de Grupo"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
