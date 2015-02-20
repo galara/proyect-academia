@@ -875,7 +875,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Reporte");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setName("ReporteGrupos"); // NOI18N
+        setName("Listado de Alumnos"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

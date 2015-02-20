@@ -1,6 +1,7 @@
 package Capa_Presentacion;
 
 import BackupMySQL.Backup;
+import BackupMySQL.RestaurarBackup;
 import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.AddForms;
 import Capa_Negocio.CalcularMoras;
@@ -377,6 +378,11 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem16.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem16.setText("Restaurar");
         jMenuItem16.setName("Restaurar Backup Principal"); // NOI18N
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem16);
 
         jMenu2.add(jMenu7);
@@ -705,6 +711,19 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        // TODO add your handling code here:
+                if (AccesoUsuario.AccesosUsuario(jMenuItem16.getName()) == true) {
+            RestaurarBackup frmRestaurarBackup = new RestaurarBackup();
+            if (frmRestaurarBackup == null) {
+                frmRestaurarBackup = new RestaurarBackup();
+            }
+            AddForms.adminInternalFrame(dp, frmRestaurarBackup);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     /**
      * @param args the command line arguments

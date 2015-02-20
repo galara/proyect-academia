@@ -81,4 +81,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Guardar Usuario','Formulario Usuario','1'),
 ('Eliminar Usuario','Formulario Usuario','1'),
 ('Fusionar Fusion de Grupos','Formulario Fusion de Grupos','1'),
-('Guardar Fusion Alumno','Formulario Fusion de Alumno','1');
+('Guardar Fusion Alumno','Formulario Fusion de Alumno','1'),
+('Restaurar Backup Backup','Formulario Backup','1'),
+('Crear Backup Backup','Formulario Backup','1');
+
