@@ -368,7 +368,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/generarBK.png"))); // NOI18N
         jMenuItem14.setText("Generar Backup");
-        jMenuItem14.setName("Backup Principal"); // NOI18N
+        jMenuItem14.setName("Generar Backup Principal"); // NOI18N
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem14ActionPerformed(evt);

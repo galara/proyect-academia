@@ -19,9 +19,9 @@ public class BdConexion {
     private static Statement st = null;
     private static PreparedStatement ps = null;
     private static String host = "localhost";
-    private static String dataBase = "academia"; //nombre base de datos
-    private static String user = "root"; // usuario de la base de datos
-    private static String pass = "123456"; // contraseña de la base de datos
+    public static String dataBase = "academia"; //nombre base de datos
+    public static String user = "compuvision"; // usuario de la base de datos
+    public static String pass = "6BB432910C67ED2CA2AD"; // contraseña de la base de datos
     public static int TODO = 1;
     public static int SOLO_STATEMENT = 2;
     public static int SOLO_RESULTSET = 3;
