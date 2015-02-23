@@ -361,12 +361,13 @@ public class Principal extends javax.swing.JFrame {
         jMenu2.add(mciclo);
 
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/iconobackup.jpg"))); // NOI18N
-        jMenu7.setText("Gestionar BD");
+        jMenu7.setText("Gestionar Base de Datos");
         jMenu7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenu7.setName("Gestionar BD Principal"); // NOI18N
 
         jMenuItem14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem14.setText("Backup");
+        jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/generarBK.png"))); // NOI18N
+        jMenuItem14.setText("Generar Backup");
         jMenuItem14.setName("Backup Principal"); // NOI18N
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,7 +377,8 @@ public class Principal extends javax.swing.JFrame {
         jMenu7.add(jMenuItem14);
 
         jMenuItem16.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem16.setText("Restaurar");
+        jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/restaurarBD.png"))); // NOI18N
+        jMenuItem16.setText("Restaurar Backup");
         jMenuItem16.setName("Restaurar Backup Principal"); // NOI18N
         jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -387,6 +389,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.add(jMenu7);
 
+        jMenuItem17.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Menu.png"))); // NOI18N
         jMenuItem17.setText("Menu");
         jMenuItem17.setName("Menu Principal"); // NOI18N
@@ -409,6 +412,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.setName("Reporte de Pagos Principal"); // NOI18N
 
         jMenuItem11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/list-alumnos.png"))); // NOI18N
         jMenuItem11.setText("Listado de Alumnos Grupo");
         jMenuItem11.setName("Listado de Alumnos Grupo Principal"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
@@ -419,6 +423,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem11);
 
         jMenuItem12.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/pagosdiarios.png"))); // NOI18N
         jMenuItem12.setText("Pagos Diarios");
         jMenuItem12.setName("Pagos Diarios Principal"); // NOI18N
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {

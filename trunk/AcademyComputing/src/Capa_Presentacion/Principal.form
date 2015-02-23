@@ -345,7 +345,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Recursos/iconobackup.jpg"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gestionar BD"/>
+                <Property name="text" type="java.lang.String" value="Gestionar Base de Datos"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="13" style="0"/>
                 </Property>
@@ -357,7 +357,10 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="13" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Backup"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Recursos/generarBK.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Generar Backup"/>
                     <Property name="name" type="java.lang.String" value="Backup Principal" noResource="true"/>
                   </Properties>
                   <Events>
@@ -369,7 +372,10 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="13" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Restaurar"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Recursos/restaurarBD.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Restaurar Backup"/>
                     <Property name="name" type="java.lang.String" value="Restaurar Backup Principal" noResource="true"/>
                   </Properties>
                   <Events>
@@ -380,6 +386,9 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem17">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="13" style="0"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Recursos/Menu.png"/>
                 </Property>
@@ -422,6 +431,9 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="13" style="0"/>
                     </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Recursos/list-alumnos.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Listado de Alumnos Grupo"/>
                     <Property name="name" type="java.lang.String" value="Listado de Alumnos Grupo Principal" noResource="true"/>
                   </Properties>
@@ -433,6 +445,9 @@
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="13" style="0"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Recursos/pagosdiarios.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Pagos Diarios"/>
                     <Property name="name" type="java.lang.String" value="Pagos Diarios Principal" noResource="true"/>

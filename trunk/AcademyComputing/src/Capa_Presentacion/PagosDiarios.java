@@ -229,7 +229,7 @@ public class PagosDiarios extends javax.swing.JInternalFrame {
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
         bntNuevo.setBackground(new java.awt.Color(51, 153, 255));
-        bntNuevo.setMnemonic(KeyEvent.VK_N);
+        bntNuevo.setMnemonic(KeyEvent.VK_R);
         bntNuevo.setText("Generar Reporte");
         bntNuevo.setName("Reporte PagosDiarios"); // NOI18N
         bntNuevo.addActionListener(new java.awt.event.ActionListener() {

@@ -180,7 +180,7 @@
                   <Color blue="ff" green="99" red="33" type="rgb"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="KeyEvent.VK_G" type="code"/>
+                  <Connection code="KeyEvent.VK_A" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Anular"/>
                 <Property name="name" type="java.lang.String" value="Anular Pago" noResource="true"/>

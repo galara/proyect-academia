@@ -861,7 +861,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         pnlActionButtons.add(bntSalir, gridBagConstraints);
 
         bntGuardar1.setBackground(new java.awt.Color(51, 153, 255));
-        bntGuardar1.setMnemonic(KeyEvent.VK_G);
+        bntGuardar1.setMnemonic(KeyEvent.VK_E);
         bntGuardar1.setText("Estado de Cuenta");
         bntGuardar1.setName("EstadoDeCuenta"); // NOI18N
         bntGuardar1.addActionListener(new java.awt.event.ActionListener() {

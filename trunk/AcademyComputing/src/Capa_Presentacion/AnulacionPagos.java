@@ -636,7 +636,7 @@ public class AnulacionPagos extends javax.swing.JInternalFrame {
         pnlActionButtons.setLayout(new java.awt.GridBagLayout());
 
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
-        bntGuardar.setMnemonic(KeyEvent.VK_G);
+        bntGuardar.setMnemonic(KeyEvent.VK_A);
         bntGuardar.setText("Anular");
         bntGuardar.setName("Anular Pago"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
