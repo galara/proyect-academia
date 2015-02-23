@@ -46,7 +46,7 @@ public class RestaurarBackup extends javax.swing.JInternalFrame {
 
                 File backupFile = new File(String.valueOf(RestaurarBackupMySQL.getSelectedFile().toString()));
                 String ubicacion = backupFile.getAbsolutePath();
-                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysql -u "+BdConexion.user+" -p"+BdConexion.pass+" "+BdConexion.dataBase);
+                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysql -u "+BdConexion.user+" -p"+BdConexion.pass+" --default-character_set=utf8 "+BdConexion.dataBase);
                 OutputStream os = child.getOutputStream();
 
                 FileInputStream fis = new FileInputStream(ubicacion);

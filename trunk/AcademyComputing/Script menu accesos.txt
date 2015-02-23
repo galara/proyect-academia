@@ -19,7 +19,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Pagos Diarios Principal','Principal','1'),
 ('Fusion de Grupos Pincipal','Principal','1'),
 ('Fusion de Alumno Principal','Principal','1'),
-('Backup Principal','Principal','1'),
+('Generar Backup Principal','Principal','1'),
 ('Restaurar Backup Principal','Principal','1'),
 
 
