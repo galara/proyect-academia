@@ -10,6 +10,7 @@
  */
 package BackupMySQL;
 
+import Capa_Datos.BdConexion;
 import Capa_Negocio.AccesoUsuario;
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,7 +46,7 @@ public class RestaurarBackup extends javax.swing.JInternalFrame {
 
                 File backupFile = new File(String.valueOf(RestaurarBackupMySQL.getSelectedFile().toString()));
                 String ubicacion = backupFile.getAbsolutePath();
-                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysql -u root -padolfo123 academia");
+                Process child = runtime.exec("C:\\Archivos de programa\\MySQL\\MySQL Server 5.6\\bin\\mysql -u "+BdConexion.user+" -p"+BdConexion.pass+" "+BdConexion.dataBase);
                 OutputStream os = child.getOutputStream();
 
                 FileInputStream fis = new FileInputStream(ubicacion);

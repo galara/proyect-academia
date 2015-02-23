@@ -361,7 +361,7 @@
                       <Image iconType="3" name="/Recursos/generarBK.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Generar Backup"/>
-                    <Property name="name" type="java.lang.String" value="Backup Principal" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="Generar Backup Principal" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem14ActionPerformed"/>

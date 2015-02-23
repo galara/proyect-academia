@@ -485,7 +485,7 @@ INSERT INTO `mes` (`idmes`, `mes`) VALUES (9, 'Septiembre');
 INSERT INTO `mes` (`idmes`, `mes`) VALUES (10, 'Octubre');
 INSERT INTO `mes` (`idmes`, `mes`) VALUES (11, 'Noviembre');
 INSERT INTO `mes` (`idmes`, `mes`) VALUES (12, 'Diciembre');
-INSERT INTO `mes` (`idmes`, `mes`) VALUES (13, 'InscripciÃ³n');
+INSERT INTO `mes` (`idmes`, `mes`) VALUES (13, 'Inscripción');
 
 COMMIT;
 
