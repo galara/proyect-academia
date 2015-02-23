@@ -902,7 +902,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         pnlActionButtons.setPreferredSize(new java.awt.Dimension(786, 52));
 
         Reporte.setBackground(new java.awt.Color(51, 153, 255));
-        Reporte.setMnemonic(KeyEvent.VK_G);
+        Reporte.setMnemonic(KeyEvent.VK_A);
         Reporte.setText("Alumnos Activos");
         Reporte.setName("Generar Reporte ListadoAlumnos"); // NOI18N
         Reporte.addActionListener(new java.awt.event.ActionListener() {
@@ -929,7 +929,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         });
 
         Reporte1.setBackground(new java.awt.Color(51, 153, 255));
-        Reporte1.setMnemonic(KeyEvent.VK_G);
+        Reporte1.setMnemonic(KeyEvent.VK_M);
         Reporte1.setText("Reporte Mineduc");
         Reporte1.setName("Reporte Mineduc Alta ListadoAlumnos"); // NOI18N
         Reporte1.addActionListener(new java.awt.event.ActionListener() {
@@ -939,7 +939,7 @@ public class ListadoAlumnos extends javax.swing.JInternalFrame {
         });
 
         Reporte2.setBackground(new java.awt.Color(51, 153, 255));
-        Reporte2.setMnemonic(KeyEvent.VK_G);
+        Reporte2.setMnemonic(KeyEvent.VK_B);
         Reporte2.setText("Alumnos de Baja");
         Reporte2.setName("Reporte Mineduc Baja ListadoAlumnos"); // NOI18N
         Reporte2.addActionListener(new java.awt.event.ActionListener() {

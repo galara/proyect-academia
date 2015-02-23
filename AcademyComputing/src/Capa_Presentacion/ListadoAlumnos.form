@@ -225,7 +225,7 @@
                   <Color blue="ff" green="99" red="33" type="rgb"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="KeyEvent.VK_G" type="code"/>
+                  <Connection code="KeyEvent.VK_A" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumnos Activos"/>
                 <Property name="name" type="java.lang.String" value="Generar Reporte ListadoAlumnos" noResource="true"/>
@@ -265,7 +265,7 @@
                   <Color blue="ff" green="99" red="33" type="rgb"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="KeyEvent.VK_G" type="code"/>
+                  <Connection code="KeyEvent.VK_M" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Reporte Mineduc"/>
                 <Property name="name" type="java.lang.String" value="Reporte Mineduc Alta ListadoAlumnos" noResource="true"/>
@@ -280,7 +280,7 @@
                   <Color blue="ff" green="99" red="33" type="rgb"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="KeyEvent.VK_G" type="code"/>
+                  <Connection code="KeyEvent.VK_B" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumnos de Baja"/>
                 <Property name="name" type="java.lang.String" value="Reporte Mineduc Baja ListadoAlumnos" noResource="true"/>

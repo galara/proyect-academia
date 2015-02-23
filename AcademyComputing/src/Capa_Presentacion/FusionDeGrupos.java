@@ -912,7 +912,7 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
         pnlActionButtons.add(bntSalir, gridBagConstraints);
 
         bntGuardar.setBackground(new java.awt.Color(51, 153, 255));
-        bntGuardar.setMnemonic(KeyEvent.VK_G);
+        bntGuardar.setMnemonic(KeyEvent.VK_F);
         bntGuardar.setText("Fusionar");
         bntGuardar.setName("Fusionar Fusion de Grupos"); // NOI18N
         bntGuardar.addActionListener(new java.awt.event.ActionListener() {
