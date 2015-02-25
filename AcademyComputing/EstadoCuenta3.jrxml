@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo3" language="groovy" pageWidth="305" pageHeight="395" columnWidth="265" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb2ac39d-94bc-4ef5-9971-3dd68a029fff">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo3" language="groovy" pageWidth="305" pageHeight="395" columnWidth="280" leftMargin="14" rightMargin="11" topMargin="20" bottomMargin="20" uuid="eb2ac39d-94bc-4ef5-9971-3dd68a029fff">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -8,7 +8,7 @@
 	<queryString>
 		<![CDATA[SELECT proyeccionpagos.idproyeccionpagos, mes.idmes ,mes.mes,proyeccionpagos.año ,proyeccionpagos.monto , proyeccionpagos.fechavencimiento ,proyeccionpagos.estado, IFNULL((SELECT mora.mora FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos  ),0.0) AS 'Mora',IFNULL((SELECT mora.exoneracion FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos ),0.0) AS 'ExMora',
 IFNULL((SELECT mora.estado FROM mora where proyeccionpagos.idproyeccionpagos = mora.proyeccionpagos_idproyeccionpagos),0) AS 'Mora Estado' FROM proyeccionpagos INNER JOIN mes ON proyeccionpagos.mes_idmes = mes.idmes INNER JOIN alumnosengrupo ON proyeccionpagos.alumnosengrupo_iddetallegrupo=alumnosengrupo.iddetallegrupo
-where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumno=$P{idalumno}]]>
+where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumno=$P{idalumno} and proyeccionpagos.asignado='1']]>
 	</queryString>
 	<field name="idproyeccionpagos" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -42,7 +42,7 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 	<title>
 		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="27" y="0" width="141" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
+				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="27" y="0" width="153" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Verdana" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -58,7 +58,7 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="168" y="0" width="89" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
+				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="180" y="0" width="77" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Verdana" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -66,7 +66,7 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				<text><![CDATA[COMPUVISIÓN]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="8df583f8-a29a-4e29-9aed-1107d52fb1d5" x="1" y="39" width="264" height="1"/>
+				<reportElement uuid="8df583f8-a29a-4e29-9aed-1107d52fb1d5" x="1" y="39" width="279" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Double"/>
 				</graphicElement>
@@ -76,7 +76,7 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				<imageExpression><![CDATA["gogoogog.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="1" y="24" width="264" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
+				<reportElement uuid="03a89cb2-207c-4111-8180-c00ae809ab76" mode="Transparent" x="1" y="24" width="279" height="15" forecolor="#0000CC" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Verdana" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -86,11 +86,11 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 		</band>
 	</title>
 	<pageHeader>
-		<band height="52" splitType="Stretch">
-			<rectangle radius="1">
-				<reportElement uuid="0e5c0550-769e-41dc-b7b6-495c96491083" x="1" y="2" width="264" height="50"/>
+		<band height="57" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement uuid="0e5c0550-769e-41dc-b7b6-495c96491083" x="1" y="2" width="279" height="55"/>
 				<graphicElement>
-					<pen lineWidth="0.75"/>
+					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
@@ -101,14 +101,14 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				<text><![CDATA[Alumno:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2428c7b3-a201-4306-bc23-3d40f7900fe0" x="135" y="2" width="92" height="9"/>
+				<reportElement uuid="2428c7b3-a201-4306-bc23-3d40f7900fe0" x="141" y="2" width="92" height="9"/>
 				<textElement verticalAlignment="Top">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Grupo:]]></text>
 			</staticText>
 			<subreport>
-				<reportElement uuid="e6924264-a19a-4f56-9d65-a3a31bacad5d" x="6" y="12" width="118" height="36"/>
+				<reportElement uuid="e6924264-a19a-4f56-9d65-a3a31bacad5d" x="6" y="12" width="128" height="36"/>
 				<subreportParameter name="idalumno">
 					<subreportParameterExpression><![CDATA[$P{idalumno}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -116,7 +116,7 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 				<subreportExpression><![CDATA["EstadoCuenta3_subreport1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement uuid="3e3a1426-8b8d-4e26-83f1-3053eac61feb" x="135" y="12" width="122" height="36"/>
+				<reportElement uuid="3e3a1426-8b8d-4e26-83f1-3053eac61feb" x="141" y="12" width="128" height="36"/>
 				<subreportParameter name="idalumno"/>
 				<subreportParameter name="idgrupo">
 					<subreportParameterExpression><![CDATA[$P{idgrupo}]]></subreportParameterExpression>
@@ -129,54 +129,54 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 	<columnHeader>
 		<band height="10" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="21f25c10-1048-43d6-9ce3-7d2f5ffbbb0f" x="20" y="0" width="44" height="10"/>
+				<reportElement uuid="21f25c10-1048-43d6-9ce3-7d2f5ffbbb0f" x="24" y="0" width="44" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b3d346b9-4e46-4299-bec8-43149c4bc1f1" x="64" y="0" width="30" height="10"/>
+				<reportElement uuid="b3d346b9-4e46-4299-bec8-43149c4bc1f1" x="68" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ciclo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="94" y="0" width="30" height="10"/>
+				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="98" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Monto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="124" y="0" width="44" height="10"/>
+				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="128" y="0" width="44" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha Venc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="198" y="0" width="30" height="10"/>
+				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="202" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Estatus]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="0" y="0" width="265" height="1"/>
+				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="24" y="0" width="237" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="0" y="9" width="265" height="1"/>
+				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="24" y="9" width="237" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="168" y="0" width="30" height="10"/>
+				<reportElement uuid="bb97dacb-0df5-44a9-95f3-149f17752652" x="172" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -187,42 +187,42 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField>
-				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="20" y="0" width="44" height="10"/>
+				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="24" y="0" width="44" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0d7d0ef1-1dfb-45be-bda4-c8f7dd61babc" x="64" y="0" width="30" height="10"/>
+				<reportElement uuid="0d7d0ef1-1dfb-45be-bda4-c8f7dd61babc" x="68" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{año}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0ae92acf-2d44-4d58-ad58-0db3275973ce" x="94" y="0" width="30" height="10"/>
+				<reportElement uuid="0ae92acf-2d44-4d58-ad58-0db3275973ce" x="98" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="0ae92acf-2d44-4d58-ad58-0db3275973ce" x="124" y="0" width="44" height="10"/>
+				<reportElement uuid="0ae92acf-2d44-4d58-ad58-0db3275973ce" x="128" y="0" width="44" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fechavencimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="198" y="0" width="30" height="10"/>
+				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="202" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{estado}.equals(new Boolean(false))) ? "" : "X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="168" y="0" width="30" height="10"/>
+				<reportElement uuid="1a465e6d-1ee9-4294-9e70-1a7134746a2f" x="172" y="0" width="30" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
@@ -233,14 +233,14 @@ where alumnosengrupo.grupo_idgrupo=$P{idgrupo} and alumnosengrupo.alumno_idalumn
 	<columnFooter>
 		<band height="9">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="1387ec03-ae9b-4fe1-b0d3-ee74c228aa6e" x="2" y="0" width="96" height="9"/>
+				<reportElement uuid="1387ec03-ae9b-4fe1-b0d3-ee74c228aa6e" x="24" y="0" width="78" height="9"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="0" y="0" width="265" height="1"/>
+				<reportElement uuid="b2f40f11-3102-4c0c-859f-66cfae95070f" x="24" y="0" width="237" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>

@@ -1735,18 +1735,23 @@ public class Alumno extends javax.swing.JInternalFrame {
                 String columnaId = "codigo";
 
                 String nombreTabla = "alumno";
-                String campos = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc, fechabaja, observacion";
-                String fechabajaalumno = FormatoFecha.getFormato(fechabaja.getCalendar().getTime(), FormatoFecha.A_M_D);
                 String fechanacimient = FormatoFecha.getFormato(fechanacimiento.getCalendar().getTime(), FormatoFecha.A_M_D);
 
                 int estad = 0;
-                if (this.estado.isSelected()) {
-                    estad = 1;
-                }
-                Object[] valores = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), fechabajaalumno, motivobaja.getText(), id
-                };
 
-                seguardo = peticiones.actualizarRegistro(nombreTabla, campos, valores, columnaId, id);
+                if (estado.isSelected()) {
+                    estad = 1;
+                    String campos1 = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado";
+                    Object[] valores1 = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, id
+                    };
+                    seguardo = peticiones.actualizarRegistro(nombreTabla, campos1, valores1, columnaId, id);
+                } else if (!estado.isSelected()) {
+                    String fechabajaalumno = FormatoFecha.getFormato(fechabaja.getCalendar().getTime(), FormatoFecha.A_M_D);
+                    String campos2 = "codigo, nombres, apellidos, fechanacimiento, sexo, direccion, telefono, titularnombres, titularapellidos, titulardpi, establecimiento, direccionestablecimiento, gradoestablecimiento, estado, codigomineduc, fechabaja, observacion";
+                    Object[] valores2 = {codigo.getText(), nombres.getText(), apellidos.getText(), fechanacimient, sexo.getSelectedItem(), direccion.getText(), telefono.getText(), titularnombre.getText(), titularapellido.getText(), dpi.getText(), establecimiento.getText(), direccion_establecimiento.getText(), grado_establecimiento.getText(), estad, codigomineduc.getText(), fechabajaalumno, motivobaja.getText(), id
+                    };
+                    seguardo = peticiones.actualizarRegistro(nombreTabla, campos2, valores2, columnaId, id);
+                }
 
                 if (seguardo == 1) {
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");

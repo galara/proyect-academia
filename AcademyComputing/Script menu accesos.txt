@@ -21,7 +21,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Fusion de Alumno Principal','Principal','1'),
 ('Generar Backup Principal','Principal','1'),
 ('Restaurar Backup Principal','Principal','1'),
-
+('Modificar Proyección de Pago Principal','1'),
 
 --
 -- Botones 
@@ -62,6 +62,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Eliminar OtrosPagos','Formualrio OtrosPagos','1'),
 ('Guardar Pagos',' Formulario Pagos','1'),
 ('EstadoDeCuenta',' Formulario Pagos','1'),
+('Guardar Modificar Pagos',' Formulario Modificar Pagos','1'),
 ('Reporte PagosDiarios','Formulario PagosDiarios [Reporte]','1'),
 ('Nuevo Pensum','Formulario Pensum','1'),
 ('Modificar Pensum','Formulario Pensum','1'),
@@ -82,6 +83,6 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Eliminar Usuario','Formulario Usuario','1'),
 ('Fusionar Fusion de Grupos','Formulario Fusion de Grupos','1'),
 ('Guardar Fusion Alumno','Formulario Fusion de Alumno','1'),
-('Restaurar Backup Backup','Formulario Backup','1'),
-('Crear Backup Backup','Formulario Backup','1');
+('Restaurar Backup Backup','Formulario Generar Backup','1'),
+('Crear Backup Backup','Formulario Restaurar Backup','1');
 

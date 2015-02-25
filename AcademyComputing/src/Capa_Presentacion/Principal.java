@@ -80,6 +80,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu8 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         musuario = new javax.swing.JMenuItem();
         mciclo = new javax.swing.JMenuItem();
@@ -322,7 +323,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu8.add(jMenuItem10);
 
         jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/list-pagos.png"))); // NOI18N
         jMenuItem8.setText("Anular o Reimprimir Pagos");
         jMenuItem8.setName("Anular o Reimprimir Pagos Principal"); // NOI18N
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -331,6 +332,17 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu8.add(jMenuItem8);
+
+        jMenuItem13.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/check_listpagos.png"))); // NOI18N
+        jMenuItem13.setText("Modificar Proyección de Pago");
+        jMenuItem13.setName("Modificar Proyección de Pago Principal"); // NOI18N
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem13);
 
         jMenuBar1.add(jMenu8);
 
@@ -730,6 +742,19 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(jMenuItem13.getName()) == true) {
+            ModificarProyeccionPagos frmModificarProyeccionPagos = new ModificarProyeccionPagos();
+            if (frmModificarProyeccionPagos == null) {
+                frmModificarProyeccionPagos = new ModificarProyeccionPagos();
+            }
+            AddForms.adminInternalFrame(dp, frmModificarProyeccionPagos);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -763,6 +788,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
