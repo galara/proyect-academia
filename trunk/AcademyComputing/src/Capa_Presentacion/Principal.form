@@ -286,13 +286,28 @@
                   <Font name="Segoe UI" size="13" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Recursos/Pago_UR.png"/>
+                  <Image iconType="3" name="/Recursos/list-pagos.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Anular o Reimprimir Pagos"/>
                 <Property name="name" type="java.lang.String" value="Anular o Reimprimir Pagos Principal" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem8ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="13" style="0"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/check_listpagos.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Modificar Proyecci&#xf3;n de Pago"/>
+                <Property name="name" type="java.lang.String" value="Modificar Proyecci&#xf3;n de Pago Principal" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem13ActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

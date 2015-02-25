@@ -20,44 +20,44 @@ where alumno.idalumno=$P{idalumno}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="39" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="0" width="37" height="13"/>
+				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="0" width="37" height="12"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Código:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="f7984e9e-6675-49c3-a4e4-b5936d7da308" x="37" y="26" width="182" height="13"/>
+				<reportElement uuid="f7984e9e-6675-49c3-a4e4-b5936d7da308" x="37" y="25" width="169" height="15"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{alumno_apellidos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ffb483d7-16e6-4981-9cbe-8c41d620b7e4" x="37" y="0" width="54" height="13"/>
+				<reportElement uuid="ffb483d7-16e6-4981-9cbe-8c41d620b7e4" x="37" y="0" width="54" height="12"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{alumno_codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="716d611f-21f0-478d-b115-001d149c55d7" x="37" y="13" width="182" height="13"/>
+				<reportElement uuid="716d611f-21f0-478d-b115-001d149c55d7" x="37" y="11" width="169" height="15"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{alumno_nombres}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="26" width="37" height="13"/>
+				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="25" width="37" height="15"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Apellidos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="13" width="37" height="13"/>
+				<reportElement uuid="612c8c2a-0f44-4283-a923-edcae4228f75" x="0" y="11" width="37" height="15"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
