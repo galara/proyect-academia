@@ -27,6 +27,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="Nuevo_Pensum">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nuevo Pensum"/>
+            <Property name="name" type="java.lang.String" value="Pensum Principal" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Nuevo_PensumActionPerformed"/>
@@ -239,6 +240,23 @@
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="170" y="70" width="310" height="21"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="elaprendiz.gui.button.ButtonAction" name="buttonAction1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nuevo Pensum"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Arial" size="13" style="1"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="Pensum Principal" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAction1ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="490" y="65" width="110" height="30"/>
                 </Constraint>
               </Constraints>
             </Component>

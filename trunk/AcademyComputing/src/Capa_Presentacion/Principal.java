@@ -171,6 +171,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.setText("Archivo");
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        msalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         msalir.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         msalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/salir.png"))); // NOI18N
         msalir.setText("Salir");
@@ -209,6 +210,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mcarrera);
 
+        mhorario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         mhorario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         mhorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         mhorario.setText("Grupo/Horario");
@@ -253,6 +255,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mgrupo);
 
+        malumno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         malumno.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         malumno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/alumno.png"))); // NOI18N
         malumno.setText("Alumno");
@@ -267,7 +270,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/horario3.png"))); // NOI18N
         jMenuItem3.setText("Pensum");
-        jMenuItem3.setName("Pensum Principal"); // NOI18N
+        jMenuItem3.setName("PensumDetalle Principal"); // NOI18N
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -279,6 +282,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu9.setText("Fusion");
         jMenu9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem18.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/grupos.png"))); // NOI18N
         jMenuItem18.setText("Fusión de Grupos");
@@ -311,6 +315,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu8.setText("Pagos");
         jMenu8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem10.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Pago_UR.png"))); // NOI18N
         jMenuItem10.setText("Registro de Pagos");
@@ -322,6 +327,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu8.add(jMenuItem10);
 
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/list-pagos.png"))); // NOI18N
         jMenuItem8.setText("Anular o Reimprimir Pagos");
@@ -333,6 +339,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu8.add(jMenuItem8);
 
+        jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem13.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/check_listpagos.png"))); // NOI18N
         jMenuItem13.setText("Modificar Proyección de Pago");
@@ -397,6 +404,7 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem16ActionPerformed(evt);
             }
         });
+        jMenuItem16.setVisible(false);
         jMenu7.add(jMenuItem16);
 
         jMenu2.add(jMenu7);
@@ -411,6 +419,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem17);
+        jMenuItem17.setVisible(false);
 
         jMenuBar1.add(jMenu2);
 

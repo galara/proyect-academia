@@ -530,6 +530,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
         Nuevo_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
         Nuevo_Profesor.setText("Nuevo Profesor");
+        Nuevo_Profesor.setName("Profesor Principal"); // NOI18N
         Nuevo_Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nuevo_ProfesorActionPerformed(evt);
@@ -548,6 +549,7 @@ public class Horario extends javax.swing.JInternalFrame {
 
         Nueva_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         Nueva_Carrera.setText("Nueva Carrera");
+        Nueva_Carrera.setName("Carrera Principal"); // NOI18N
         Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nueva_CarreraActionPerformed(evt);
@@ -1291,20 +1293,28 @@ public class Horario extends javax.swing.JInternalFrame {
 
     private void Nuevo_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_ProfesorActionPerformed
         // TODO add your handling code here:
-        Profesor frmProfesor = new Profesor();
-        if (frmProfesor == null) {
-            frmProfesor = new Profesor();
+        if (AccesoUsuario.AccesosUsuario(Nuevo_Profesor.getName()) == true) {
+            Profesor frmProfesor = new Profesor();
+            if (frmProfesor == null) {
+                frmProfesor = new Profesor();
+            }
+            adminInternalFrame(dp, frmProfesor);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
-        adminInternalFrame(dp, frmProfesor);
     }//GEN-LAST:event_Nuevo_ProfesorActionPerformed
 
     private void Nueva_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_CarreraActionPerformed
         // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(Nueva_Carrera.getName()) == true) {
         Carrera frmCarrera = new Carrera();
         if (frmCarrera == null) {
             frmCarrera = new Carrera();
         }
         adminInternalFrame(dp, frmCarrera);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
     }//GEN-LAST:event_Nueva_CarreraActionPerformed
 
     private void Actualizar_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_CarreraActionPerformed

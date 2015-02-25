@@ -325,6 +325,7 @@ public class Pensum extends javax.swing.JInternalFrame {
 
         Nueva_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         Nueva_Carrera.setText("Nueva Carrera");
+        Nueva_Carrera.setName("Carrera Principal"); // NOI18N
         Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nueva_CarreraActionPerformed(evt);
@@ -800,11 +801,15 @@ public class Pensum extends javax.swing.JInternalFrame {
 
     private void Nueva_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_CarreraActionPerformed
         // TODO add your handling code here:
-        Carrera frmCarrera = new Carrera();
-        if (frmCarrera == null) {
-            frmCarrera = new Carrera();
+        if (AccesoUsuario.AccesosUsuario(Nueva_Carrera.getName()) == true) {
+            Carrera frmCarrera = new Carrera();
+            if (frmCarrera == null) {
+                frmCarrera = new Carrera();
+            }
+            adminInternalFrame(dp, frmCarrera);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
-        adminInternalFrame(dp, frmCarrera);
     }//GEN-LAST:event_Nueva_CarreraActionPerformed
 
     private void Actualizar_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_CarreraActionPerformed

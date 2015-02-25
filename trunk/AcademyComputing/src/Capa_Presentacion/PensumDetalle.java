@@ -383,6 +383,7 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
         JPanelCampos = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         pensum = new javax.swing.JComboBox();
+        buttonAction1 = new elaprendiz.gui.button.ButtonAction();
         JPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detallepensum = new javax.swing.JTable();
@@ -404,6 +405,7 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
         PdetallePensum.add(Eliminar);
 
         Nuevo_Pensum.setText("Nuevo Pensum");
+        Nuevo_Pensum.setName("Pensum Principal"); // NOI18N
         Nuevo_Pensum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nuevo_PensumActionPerformed(evt);
@@ -520,6 +522,17 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
         pensum.setName("Pensum"); // NOI18N
         JPanelCampos.add(pensum);
         pensum.setBounds(170, 70, 310, 21);
+
+        buttonAction1.setText("Nuevo Pensum");
+        buttonAction1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        buttonAction1.setName("Pensum Principal"); // NOI18N
+        buttonAction1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAction1ActionPerformed(evt);
+            }
+        });
+        JPanelCampos.add(buttonAction1);
+        buttonAction1.setBounds(490, 65, 110, 30);
 
         panelImage.add(JPanelCampos);
         JPanelCampos.setBounds(0, 40, 880, 190);
@@ -741,17 +754,34 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
 
     private void Nuevo_PensumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_PensumActionPerformed
         // TODO add your handling code here:
-        Pensum frmPensum = new Pensum();
-        if (frmPensum == null) {
-            frmPensum = new Pensum();
+        if (AccesoUsuario.AccesosUsuario(Nuevo_Pensum.getName()) == true) {
+            Pensum frmPensum = new Pensum();
+            if (frmPensum == null) {
+                frmPensum = new Pensum();
+            }
+            AddForms.adminInternalFrame(dp, frmPensum);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
-        AddForms.adminInternalFrame(dp, frmPensum);
     }//GEN-LAST:event_Nuevo_PensumActionPerformed
 
     private void Actualizar_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_comboActionPerformed
         // TODO add your handling code here:
         llenarcombopensum();
     }//GEN-LAST:event_Actualizar_comboActionPerformed
+
+    private void buttonAction1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction1ActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(buttonAction1.getName()) == true) {
+            Pensum frmPensum = new Pensum();
+            if (frmPensum == null) {
+                frmPensum = new Pensum();
+            }
+            AddForms.adminInternalFrame(dp, frmPensum);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+    }//GEN-LAST:event_buttonAction1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -767,6 +797,7 @@ public class PensumDetalle extends javax.swing.JInternalFrame {
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
+    private elaprendiz.gui.button.ButtonAction buttonAction1;
     private javax.swing.JTable cursos;
     private javax.swing.JTable detallepensum;
     private javax.swing.JLabel jLabel1;
