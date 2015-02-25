@@ -273,6 +273,8 @@ public class Alumno extends javax.swing.JInternalFrame {
                                 fechafin.setText((rs.getString(6)));
                                 inscripcion.setValue(rs.getFloat(7));
                                 colegiatura.setValue(rs.getFloat(8));
+                                
+                                inscripalumno.setValue(rs.getFloat(7));
                             }
                         }
                         //profesor.setEditable(false);
@@ -574,6 +576,59 @@ public class Alumno extends javax.swing.JInternalFrame {
         }
     }
 
+    public boolean cantalumnosgrupo(String idg) {
+        String id = idg;
+        ResultSet rs;
+        //String sql = "select count(*) from alumnosengrupo  where grupo_idgrupo=" + idg + " union all select cantalumnos  from grupo where idgrupo=" + idg;
+        String sql = "select count(*) from alumnosengrupo  where grupo_idgrupo=" + idg;
+        String sql2 = "select cantalumnos  from grupo where idgrupo=" + idg;
+
+        int cantalumnos = 0, maxallumnos = 0;
+        boolean estado = false;
+
+        if (!id.equals(0)) {
+            rs = BdConexion.getResultSet(sql);
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            cantalumnos = rs.getInt(1);
+                        }
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
+        }
+
+        if (!id.equals(0)) {
+            rs = BdConexion.getResultSet(sql2);
+            if (rs != null) {
+                try {
+                    if (rs.next()) {//verifica si esta vacio, pero desplaza el puntero al siguiente elemento
+                        rs.beforeFirst();//regresa el puntero al primer registro
+                        while (rs.next()) {//mientras tenga registros que haga lo siguiente
+                            maxallumnos = rs.getInt(1);
+                        }
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showInternalMessageDialog(this, e);
+                }
+            }
+        }
+
+        System.out.print(cantalumnos + "\n" + maxallumnos + "\n");
+
+        if (cantalumnos < maxallumnos) {
+            estado = true;
+        } else if (cantalumnos >= maxallumnos) {
+            estado = false;
+        }
+
+        return estado;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -683,6 +738,7 @@ public class Alumno extends javax.swing.JInternalFrame {
 
         Nuevo_Grupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
         Nuevo_Grupo.setText("Nuevo Grupo");
+        Nuevo_Grupo.setName("Grupo/Horario Principal"); // NOI18N
         Nuevo_Grupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nuevo_GrupoActionPerformed(evt);
@@ -1292,7 +1348,7 @@ public class Alumno extends javax.swing.JInternalFrame {
             jLabel30.setBounds(520, 100, 90, 16);
 
             inscripalumno.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new FormatoDecimal("#####0.00",true))));
-            inscripalumno.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+            inscripalumno.setHorizontalAlignment(javax.swing.JTextField.CENTER);
             inscripalumno.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
             inscripalumno.setName("inscripalumno"); // NOI18N
             inscripalumno.setPreferredSize(new java.awt.Dimension(80, 23));
@@ -1522,7 +1578,6 @@ public class Alumno extends javax.swing.JInternalFrame {
     private void bntGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGuardarActionPerformed
         // TODO add your handling code here:
         if (AccesoUsuario.AccesosUsuario(bntGuardar.getName()) == true) {
-
             if (Utilidades.esObligatorio(this.jPanel1, true) || (Utilidades.esObligatorio(this.jPanel2, true)) || (Utilidades.esObligatorio(this.jPanel4, true))) {
                 JOptionPane.showInternalMessageDialog(this, "Los campos marcados son Obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1560,6 +1615,13 @@ public class Alumno extends javax.swing.JInternalFrame {
                 int n = 0;
                 PreparedStatement ps = null;
                 conn = BdConexion.getConexion();
+                mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
+                String idg = grup.getID();
+
+                if (cantalumnosgrupo(idg) == false) {
+                    JOptionPane.showInternalMessageDialog(this, "El grupo se encuentra lleno.\nAsigne un grupo diferente o amplie la capacidad del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 try {
                     // DATOS DEL ALUMNO ********************************************
@@ -1592,8 +1654,7 @@ public class Alumno extends javax.swing.JInternalFrame {
                             // DATOS DEL ALUMNOS EN GRUPO **************************
                             mensagecodigo = codigo.getText();
                             String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
-                            mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
-                            String idg = grup.getID();
+
                             String alumnosengrup = "insert into alumnosengrupo  (alumno_idalumno, grupo_idgrupo,fechainicio,beca) values ('" + alumnoid + "','" + idg + "','" + fechainicioalum + "','" + becagrupo.getText() + "' )";
                             n = ps.executeUpdate(alumnosengrup);
 
@@ -1626,6 +1687,13 @@ public class Alumno extends javax.swing.JInternalFrame {
                     if (!conn.getAutoCommit()) {
                         conn.setAutoCommit(true);
                     }
+                    //Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
+                    Utilidades.esObligatorio(this.jPanel1, false);
+                    Utilidades.esObligatorio(this.jPanel2, false);
+                    //Utilidades.esObligatorio(this.jPanel3, false);
+                    Utilidades.esObligatorio(this.jPanel4, false);
+                    Utilidades.esObligatorio(this.jPanel5, false);
+
                     Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                     MostrarDatos(busqueda.getText());
                     removejtablegrupo();
@@ -1635,6 +1703,9 @@ public class Alumno extends javax.swing.JInternalFrame {
                     this.bntNuevo.setEnabled(true);
                     busqueda.requestFocus();
                     idalumno = 0;
+                    matricula = false;
+                    buttonAction1.setEnabled(false);
+
                 } catch (SQLException ex) {
                     try {
                         conn.rollback();// no guarda ninguna de las consultas ya que ubo error
@@ -1867,15 +1938,23 @@ public class Alumno extends javax.swing.JInternalFrame {
                         //Para saber si el grupo ya ha sigo asignado y no asiganar el mismo grupo dos veces.
                         boolean carrera = false;
                         int cant = modelgrupo.getRowCount();
-                        for (int i = 0; i < cant; i++) {
-                            if (modelgrupo.getValueAt(i, 0).toString().equals(cGrupo.getSelectedItem().toString())) {
-                                carrera = true;
+                        if (cant != 0) {
+                            for (int i = 0; i < cant; i++) {
+                                if (modelgrupo.getValueAt(i, 0).toString().equals(cGrupo.getSelectedItem().toString())) {
+                                    carrera = true;
+                                }
                             }
                         }
 
                         if (carrera == false) { // si no se ha asignado el grupo 
                             mGrupo grup = (mGrupo) cGrupo.getSelectedItem();
                             String idg = grup.getID();
+
+                            if (cantalumnosgrupo(idg) == false) {
+                                JOptionPane.showInternalMessageDialog(this, "El grupo se encuentra lleno.\nAsigne un grupo diferente o amplie la capacidad del Grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
                             idalumnog(codigo.getText());
                             String fechainicioalum = FormatoFecha.getFormato(fechainicioalumno.getCalendar().getTime(), FormatoFecha.A_M_D);
                             String alumnoid = "" + idalumno;
@@ -1947,11 +2026,15 @@ public class Alumno extends javax.swing.JInternalFrame {
 
     private void Nuevo_GrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_GrupoActionPerformed
         // TODO add your handling code here:
-        Horario frmHorario = new Horario();
-        if (frmHorario == null) {
-            frmHorario = new Horario();
+        if (AccesoUsuario.AccesosUsuario(Nuevo_Grupo.getName()) == true) {
+            Horario frmHorario = new Horario();
+            if (frmHorario == null) {
+                frmHorario = new Horario();
+            }
+            adminInternalFrame(dp, frmHorario);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene Acceso para realizar esta operación ");
         }
-        adminInternalFrame(dp, frmHorario);
     }//GEN-LAST:event_Nuevo_GrupoActionPerformed
 
     private void Actualizar_GrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_GrupoActionPerformed

@@ -738,15 +738,6 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        popupprofesor = new javax.swing.JPopupMenu();
-        Nuevo_Profesor = new javax.swing.JMenuItem();
-        Actualizar_Profesor = new javax.swing.JMenuItem();
-        popupcarrera = new javax.swing.JPopupMenu();
-        Nueva_Carrera = new javax.swing.JMenuItem();
-        Actualizar_Carrera = new javax.swing.JMenuItem();
-        popupprotipopago = new javax.swing.JPopupMenu();
-        Nuevo_Tipopago = new javax.swing.JMenuItem();
-        Actualizar = new javax.swing.JMenuItem();
         panelImage = new elaprendiz.gui.panel.PanelImage();
         pnlActionButtons = new javax.swing.JPanel();
         bntCancelar = new elaprendiz.gui.button.ButtonRect();
@@ -793,60 +784,6 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
         Grupo2 = new javax.swing.JTable();
         pnlPaginador1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-
-        Nuevo_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
-        Nuevo_Profesor.setText("Nuevo Profesor");
-        Nuevo_Profesor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Nuevo_ProfesorActionPerformed(evt);
-            }
-        });
-        popupprofesor.add(Nuevo_Profesor);
-
-        Actualizar_Profesor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
-        Actualizar_Profesor.setText("Actualizar Combo");
-        Actualizar_Profesor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Actualizar_ProfesorActionPerformed(evt);
-            }
-        });
-        popupprofesor.add(Actualizar_Profesor);
-
-        Nueva_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carrera.png"))); // NOI18N
-        Nueva_Carrera.setText("Nueva Carrera");
-        Nueva_Carrera.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Nueva_CarreraActionPerformed(evt);
-            }
-        });
-        popupcarrera.add(Nueva_Carrera);
-
-        Actualizar_Carrera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
-        Actualizar_Carrera.setText("Actualizar Combo");
-        Actualizar_Carrera.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Actualizar_CarreraActionPerformed(evt);
-            }
-        });
-        popupcarrera.add(Actualizar_Carrera);
-
-        Nuevo_Tipopago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/profesor.png"))); // NOI18N
-        Nuevo_Tipopago.setText("Nuevo Tipo Pago");
-        Nuevo_Tipopago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Nuevo_TipopagoActionPerformed(evt);
-            }
-        });
-        popupprotipopago.add(Nuevo_Tipopago);
-
-        Actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/update.png"))); // NOI18N
-        Actualizar.setText("Actualizar Combo");
-        Actualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActualizarActionPerformed(evt);
-            }
-        });
-        popupprotipopago.add(Actualizar);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setClosable(true);
@@ -1251,47 +1188,6 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
         cerrarVentana();
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void Actualizar_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_ProfesorActionPerformed
-        // TODO add your handling code here:
-        //llenarcomboprofesor();
-    }//GEN-LAST:event_Actualizar_ProfesorActionPerformed
-
-    private void Nuevo_ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_ProfesorActionPerformed
-        // TODO add your handling code here:
-        Profesor frmProfesor = new Profesor();
-        if (frmProfesor == null) {
-            frmProfesor = new Profesor();
-        }
-        adminInternalFrame(dp, frmProfesor);
-    }//GEN-LAST:event_Nuevo_ProfesorActionPerformed
-
-    private void Nueva_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nueva_CarreraActionPerformed
-        // TODO add your handling code here:
-        Carrera frmCarrera = new Carrera();
-        if (frmCarrera == null) {
-            frmCarrera = new Carrera();
-        }
-        adminInternalFrame(dp, frmCarrera);
-    }//GEN-LAST:event_Nueva_CarreraActionPerformed
-
-    private void Actualizar_CarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_CarreraActionPerformed
-        // TODO add your handling code here  
-    }//GEN-LAST:event_Actualizar_CarreraActionPerformed
-
-    private void Nuevo_TipopagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_TipopagoActionPerformed
-        // TODO add your handling code here:
-        TipoPago frmTipoPago = new TipoPago();
-        if (frmTipoPago == null) {
-            frmTipoPago = new TipoPago();
-        }
-        adminInternalFrame(dp, frmTipoPago);
-
-    }//GEN-LAST:event_Nuevo_TipopagoActionPerformed
-
-    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ActualizarActionPerformed
-
     private void GrupoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GrupoKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_GrupoKeyPressed
@@ -1400,17 +1296,11 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Actualizar;
-    private javax.swing.JMenuItem Actualizar_Carrera;
-    private javax.swing.JMenuItem Actualizar_Profesor;
     private javax.swing.JTable Grupo;
     private javax.swing.JTable Grupo2;
     private javax.swing.JPanel JPanelGrupo;
     private javax.swing.JPanel JPanelTable;
     private javax.swing.JPanel JPanelTable1;
-    private javax.swing.JMenuItem Nueva_Carrera;
-    private javax.swing.JMenuItem Nuevo_Profesor;
-    private javax.swing.JMenuItem Nuevo_Tipopago;
     private elaprendiz.gui.button.ButtonRect bntCancelar;
     private elaprendiz.gui.button.ButtonRect bntGuardar;
     private elaprendiz.gui.button.ButtonRect bntSalir;
@@ -1450,9 +1340,6 @@ public class FusionDeGrupos extends javax.swing.JInternalFrame {
     private elaprendiz.gui.panel.PanelImage panelImage;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador1;
-    private javax.swing.JPopupMenu popupcarrera;
-    private javax.swing.JPopupMenu popupprofesor;
-    private javax.swing.JPopupMenu popupprotipopago;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane;
     private elaprendiz.gui.panel.TabbedPaneHeader tbPane2;
     // End of variables declaration//GEN-END:variables

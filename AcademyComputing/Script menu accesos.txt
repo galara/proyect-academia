@@ -10,6 +10,7 @@ INSERT INTO menu (nombre,principal,estado) VALUES
 ('Tipo de Pago Principal','Principal','1'),
 ('Alumno Principal','Principal','1'),
 ('Pensum Principal','Principal','1'),
+('PensumDetalle Principal','Principal','1'),
 ('Registrode Pagos Principal','Principal','1'),
 ('Anular o Reimprimir Pagos Principal','Principal','1'),
 ('Usuario Principal','Principal','1'),
