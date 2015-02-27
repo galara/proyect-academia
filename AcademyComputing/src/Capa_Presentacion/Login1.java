@@ -96,15 +96,18 @@ public class Login1 extends javax.swing.JFrame {
         panelCurves1.setLayout(null);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 38)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("\"COMPUVISIÓN\"");
         panelCurves1.add(jLabel5);
-        jLabel5.setBounds(-3, 408, 330, 30);
+        jLabel5.setBounds(-3, 398, 330, 40);
 
         panelImage2.setBackground(java.awt.SystemColor.activeCaption);
         panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/foil-154927_640.png"))); // NOI18N
 
+        usuario.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+
+        password.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordActionPerformed(evt);
@@ -119,7 +122,8 @@ public class Login1 extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Contraseña:");
 
-        iniciar.setText("Iniciar sesión");
+        iniciar.setText("Acceder al Sistema");
+        iniciar.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         iniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 iniciarActionPerformed(evt);

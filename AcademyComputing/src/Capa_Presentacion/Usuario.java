@@ -104,6 +104,8 @@ public class Usuario extends javax.swing.JInternalFrame {
             rbNombres.setSelected(true);
             rbCodigo.setSelected(false);
             rbApellidos.setSelected(false);
+            psword.setText("");
+            Cvercontraseña.setSelected(false);
             busqueda.requestFocus();
 
             this.dispose();
@@ -201,6 +203,8 @@ public class Usuario extends javax.swing.JInternalFrame {
             this.bntModificar.setEnabled(true);
             this.bntEliminar.setEnabled(true);
             this.bntNuevo.setEnabled(false);
+            psword.setText("");
+            Cvercontraseña.setSelected(false);
         }
     }
 
@@ -301,6 +305,8 @@ public class Usuario extends javax.swing.JInternalFrame {
         fecharegistro = new com.toedter.calendar.JDateChooser();
         estado = new javax.swing.JRadioButton();
         password = new elaprendiz.gui.passwordField.PasswordFieldRectIcon();
+        Cvercontraseña = new javax.swing.JCheckBox();
+        psword = new javax.swing.JLabel();
         JPanelPago1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         perfilusuarios = new javax.swing.JTable();
@@ -326,6 +332,10 @@ public class Usuario extends javax.swing.JInternalFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("usuarios"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
@@ -336,10 +346,6 @@ public class Usuario extends javax.swing.JInternalFrame {
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -526,12 +532,34 @@ public class Usuario extends javax.swing.JInternalFrame {
         estado.setText("Activo");
         estado.setEnabled(false);
         estado.setName("JRadioButton"); // NOI18N
+        estado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoActionPerformed(evt);
+            }
+        });
         JPanelCampos1.add(estado);
         estado.setBounds(610, 40, 160, 21);
 
         password.setPreferredSize(new java.awt.Dimension(150, 24));
         JPanelCampos1.add(password);
         password.setBounds(180, 100, 250, 24);
+
+        Cvercontraseña.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Cvercontraseña.setForeground(new java.awt.Color(255, 255, 255));
+        Cvercontraseña.setText("Ver Contraseña");
+        Cvercontraseña.setName("Ver Contraseña Usuarios"); // NOI18N
+        Cvercontraseña.setOpaque(false);
+        Cvercontraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CvercontraseñaActionPerformed(evt);
+            }
+        });
+        JPanelCampos1.add(Cvercontraseña);
+        Cvercontraseña.setBounds(180, 120, 120, 23);
+
+        psword.setForeground(new java.awt.Color(255, 255, 255));
+        JPanelCampos1.add(psword);
+        psword.setBounds(310, 122, 120, 20);
 
         tbPane2.addTab("Datos Usuario", JPanelCampos1);
 
@@ -780,6 +808,8 @@ public class Usuario extends javax.swing.JInternalFrame {
                             this.bntModificar.setEnabled(false);
                             this.bntEliminar.setEnabled(false);
                             this.bntNuevo.setEnabled(true);
+                            psword.setText("");
+                            Cvercontraseña.setSelected(false);
                             busqueda.requestFocus();
                             JOptionPane.showInternalMessageDialog(this, "El dato se ha Guardado Correctamente", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -842,6 +872,8 @@ public class Usuario extends javax.swing.JInternalFrame {
                     this.bntModificar.setEnabled(false);
                     this.bntEliminar.setEnabled(false);
                     this.bntNuevo.setEnabled(true);
+                    psword.setText("");
+                    Cvercontraseña.setSelected(false);
                     busqueda.requestFocus();
                     JOptionPane.showInternalMessageDialog(this, "El dato se ha Eliminado Correctamente", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -905,6 +937,8 @@ public class Usuario extends javax.swing.JInternalFrame {
                             Utilidades.setEditableTexto(this.JPanelCampos, false, null, true, "");
                             MostrarDatos(busqueda.getText());
                             busqueda.requestFocus();
+                            psword.setText("");
+                            Cvercontraseña.setSelected(false);
                             tbPane2.setSelectedIndex(0);
                             JOptionPane.showInternalMessageDialog(this, "El dato se ha Modificado Correctamente", "Modificar", JOptionPane.INFORMATION_MESSAGE);
                         } else {
@@ -952,6 +986,8 @@ public class Usuario extends javax.swing.JInternalFrame {
         removejtable();
         removejtable2();
         busqueda.setText("");
+        psword.setText("");
+        Cvercontraseña.setSelected(false);
         busqueda.requestFocus();
         tbPane2.setSelectedIndex(0);
 
@@ -1004,8 +1040,30 @@ public class Usuario extends javax.swing.JInternalFrame {
         tbPane2.setSelectedIndex(1);
     }//GEN-LAST:event_buttonMostrar1ActionPerformed
 
+    private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoActionPerformed
+
+    private void CvercontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CvercontraseñaActionPerformed
+        // TODO add your handling code here:
+        if (AccesoUsuario.AccesosUsuario(Cvercontraseña.getName()) == true) {
+            if (Cvercontraseña.isSelected()) {
+                if (usuarios.getSelectedRow() == -1) {
+                } else {
+                    psword.setText(password.getText());
+                }
+            } else {
+                psword.setText("");
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No tiene Acceso para realizar esta operación ");
+        }
+
+    }//GEN-LAST:event_CvercontraseñaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox Cvercontraseña;
     private javax.swing.JPanel JPanelBusqueda;
     private javax.swing.JPanel JPanelCampos;
     private javax.swing.JPanel JPanelCampos1;
@@ -1036,6 +1094,7 @@ public class Usuario extends javax.swing.JInternalFrame {
     private javax.swing.JTable perfilusuarios;
     private javax.swing.JPanel pnlActionButtons;
     private javax.swing.JPanel pnlPaginador;
+    private javax.swing.JLabel psword;
     private javax.swing.JRadioButton rbApellidos;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNombres;
