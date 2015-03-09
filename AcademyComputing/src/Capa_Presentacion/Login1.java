@@ -5,6 +5,7 @@
  */
 package Capa_Presentacion;
 
+import BackupMySQL.BackupDiario;
 import Capa_Negocio.AccesoUsuario;
 import Capa_Negocio.CalcularMoras;
 import inicio.start;
@@ -45,6 +46,7 @@ public class Login1 extends javax.swing.JFrame {
                 j.setVisible(true);
                 this.dispose();
                 CalcularMoras.moras();//Si el usuario tiene acceso calcula moras si las hay
+                BackupDiario.GenerarBackupDiarioMySQL();
                 accesoConcedido = true;
                 return;
             }
