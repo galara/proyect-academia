@@ -6,9 +6,6 @@
 	<parameter name="idrecibo" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="horario" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      alumno.`codigo` AS alumno_codigo,
@@ -68,7 +65,7 @@ FROM
      INNER JOIN `mes` mes ON proyeccionpagos.`mes_idmes` = mes.`idmes`
      INNER JOIN `mora` mora ON proyeccionpagos.`idproyeccionpagos` = mora.`proyeccionpagos_idproyeccionpagos`
 
-WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
+WHERE recibodepago.`idrecibo`=$P{idrecibo} and mora.exoneracion = '0']]>
 	</queryString>
 	<field name="alumno_codigo" class="java.lang.String"/>
 	<field name="nombreapelidos" class="java.lang.String"/>
@@ -207,28 +204,28 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	<columnHeader>
 		<band height="11" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="84716dbd-6278-43da-aee5-fed1e2ed54df" x="196" y="0" width="32" height="10"/>
+				<reportElement uuid="84716dbd-6278-43da-aee5-fed1e2ed54df" x="211" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="71737071-68ae-43a2-8512-3728defb0724" x="2" y="0" width="130" height="10"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement uuid="71737071-68ae-43a2-8512-3728defb0724" x="27" y="0" width="120" height="10"/>
+				<textElement verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c2af4c83-7ab4-481e-8850-17d8b2cd74a8" x="164" y="0" width="32" height="10"/>
+				<reportElement uuid="c2af4c83-7ab4-481e-8850-17d8b2cd74a8" x="179" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Monto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="55845e8c-c40b-45ef-9df3-c6e71aa64975" x="132" y="0" width="32" height="10"/>
+				<reportElement uuid="55845e8c-c40b-45ef-9df3-c6e71aa64975" x="147" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 					<paragraph tabStopWidth="40"/>
@@ -252,28 +249,28 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	<detail>
 		<band height="11" splitType="Stretch">
 			<textField>
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="2" y="0" width="130" height="10"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="27" y="0" width="120" height="10"/>
+				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{otrospagos_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00">
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="132" y="0" width="32" height="10"/>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="147" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcionrecibo_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00">
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="164" y="0" width="32" height="10"/>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="179" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcionrecibo_precio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00">
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="196" y="0" width="32" height="10"/>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="211" y="0" width="32" height="10"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
@@ -290,14 +287,14 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 	<columnFooter>
 		<band height="13">
 			<staticText>
-				<reportElement uuid="baa77b40-a270-4221-96da-51f58a67a359" x="164" y="0" width="32" height="12"/>
+				<reportElement uuid="baa77b40-a270-4221-96da-51f58a67a359" x="179" y="0" width="32" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Verdana" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Q.:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="196" y="0" width="32" height="12"/>
+				<reportElement uuid="22a787a2-c189-4d9b-bdcb-f596814a964c" x="211" y="0" width="32" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Verdana" size="8" isBold="true"/>
 				</textElement>
@@ -311,7 +308,7 @@ WHERE recibodepago.`idrecibo`=$P{idrecibo}]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="49e47ad1-03c3-44b3-8ca9-8365b22b7d62" x="163" y="12" width="68" height="1"/>
+				<reportElement uuid="49e47ad1-03c3-44b3-8ca9-8365b22b7d62" x="178" y="12" width="68" height="1"/>
 			</line>
 		</band>
 	</columnFooter>
