@@ -41,8 +41,8 @@ public class BackupDiario {
         fechadelete = fechadelete + "-" + cdelete.get(Calendar.MONTH);//String.valueOf(c.get(Calendar.MONTH));
         fechadelete = fechadelete + "-" + cdelete.get(Calendar.YEAR);
 
-        currentDir = currentDir + "\\dist\\Backup_Compuvision_" + fecha + ".sql"; //Nuevo Backup
-        currentDirDelete = currentDirDelete + "\\dist\\Backup_Compuvision_" + fechadelete + ".sql"; //Boarrar Backup
+        currentDir = currentDir + "\\Backup_Compuvision_" + fecha + ".sql"; //Nuevo Backup
+        currentDirDelete = currentDirDelete + "\\Backup_Compuvision_" + fechadelete + ".sql"; //Boarrar Backup
 
         File fichero = new File(currentDir); //Para verificar si el Backup ya esxiste si no existe crearlo
         File ficherodelete = new File(currentDirDelete); //Para verificar si el Backup esxiste si existe borrarlo
